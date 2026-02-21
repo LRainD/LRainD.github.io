@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云筑蜂汇 - 招标采购</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    color: #333;
+    background-color: #f5f5f5;
+    line-height: 1.5;
+}
+
+/* 顶部导航栏 */
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background: linear-gradient(90deg, #1a1a2e 0%, #16213e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.logo i {
+    font-size: 24px;
+    color: #ffc107;
+}
+
+.header-nav {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-item {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 0;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    color: #fff;
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #ffc107;
+}
+
+.header-center {
+    flex: 1;
+    max-width: 480px;
+    margin: 0 40px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 0 16px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-box i {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+}
+
+.search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 0 12px;
+    font-size: 13px;
+}
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.action-item {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s;
+}
+
+.action-item:hover {
+    color: #fff;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.user-info:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.username {
+    color: #fff;
+    font-size: 13px;
+}
+
+.user-id {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+.user-info i {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+}
+
+/* 主容器 */
+.main-container {
+    display: flex;
+    margin-top: 56px;
+    min-height: calc(100vh - 56px);
+}
+
+/* 左侧边栏 */
+.sidebar {
+    width: 64px;
+    background-color: #fff;
+    border-right: 1px solid #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 0;
+    position: fixed;
+    left: 0;
+    top: 56px;
+    bottom: 0;
+    z-index: 100;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.3s;
+    border-radius: 4px;
+    margin: 0 6px;
+}
+
+.menu-item:hover {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.menu-item.active {
+    background-color: #fff7e6;
+    color: #fa8c16;
+}
+
+.menu-item i {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.menu-item span {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 主内容区 */
+.main-content {
+    flex: 1;
+    margin-left: 64px;
+    padding: 20px 24px;
+    padding-top: 70px;
+    background-color: #f5f5f5;
+    min-height: calc(100vh - 56px);
+}
+
+/* 面包屑导航 */
+.breadcrumb {
+    position: fixed;
+    top: 56px;
+    left: 88px;
+    right: 0;
+    z-index: 100;
+    background-color: #f5f5f5;
+    padding: 12px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.breadcrumb-item {
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.breadcrumb-item:hover {
+    color: #fa8c16;
+}
+
+.breadcrumb-item.active {
+    color: #333;
+    font-weight: 500;
+    cursor: default;
+}
+
+.breadcrumb-separator {
+    color: #999;
+    font-size: 12px;
+}
+
+/* 标签页 */
+.tabs-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #fff;
+    padding: 0 24px;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid #e8e8e8;
+    gap: 16px;
+}
+
+.tabs {
+    display: flex;
+    gap: 0;
+}
+
+.tab-item {
+    padding: 14px 16px;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.tab-item:hover {
+    color: #fa8c16;
+}
+
+.tab-item.active {
+    color: #fa8c16;
+    font-weight: 500;
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background-color: #fa8c16;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff4d4f;
+    color: #fff;
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    margin-left: 4px;
+    font-weight: 500;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.btn-primary {
+    background-color: #fa8c16;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #ff9c2a;
+}
+
+/* 搜索筛选区 */
+.search-filter {
+    background-color: #fff;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.filter-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-end;
+}
+
+.filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.filter-item label {
+    font-size: 13px;
+    color: #666;
+}
+
+.filter-item input,
+.filter-item select {
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.3s;
+    background-color: #fff;
+}
+
+.filter-item input:focus,
+.filter-item select:focus {
+    border-color: #fa8c16;
+}
+
+.filter-item input::placeholder {
+    color: #bfbfbf;
+}
+
+.date-range {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date-inputs input {
+    flex: 1;
+    min-width: 80px;
+}
+
+.date-range .separator {
+    color: #999;
+}
+
+.date-range i {
+    color: #999;
+    font-size: 16px;
+}
+
+.checkbox-item {
+    flex: 1;
+    padding-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox input {
+    display: none;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.checkbox input:checked + .checkmark {
+    background-color: #fa8c16;
+    border-color: #fa8c16;
+}
+
+.checkbox input:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label {
+    font-size: 13px;
+    color: #666;
+}
+
+.filter-actions-row {
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-search {
+    background-color: #fa8c16;
+    color: #fff;
+    border: none;
+    padding: 6px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-search:hover {
+    background-color: #ff9c2a;
+}
+
+.btn-reset {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #d9d9d9;
+    padding: 6px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.btn-reset:hover {
+    border-color: #fa8c16;
+    color: #fa8c16;
+}
+
+.btn-collapse {
+    background-color: transparent;
+    color: #999;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.3s;
+}
+
+.btn-collapse:hover {
+    color: #666;
+}
+
+/* 视图切换 */
+.view-toggle {
+    background-color: #fff;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.view-label {
+    font-size: 13px;
+    color: #999;
+}
+
+.view-options {
+    display: flex;
+    gap: 16px;
+}
+
+.view-option {
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.view-option:hover,
+.view-option.active {
+    color: #fa8c16;
+}
+
+/* 数据表格 */
+.data-table-container {
+    background-color: #fff;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+}
+
+.data-table tbody tr {
+    height: 48px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.data-table th {
+    background-color: #fafafa;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.data-table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.col-status {
+    width: 200px;
+    max-width: 200px;
+}
+
+.col-name {
+    width: 280px;
+    max-width: 280px;
+}
+
+.col-unit {
+    min-width: 180px;
+}
+
+.col-type {
+    width: 100px;
+}
+
+.col-method {
+    width: 100px;
+}
+
+.col-area {
+    min-width: 200px;
+}
+
+.col-time {
+    width: 150px;
+    white-space: nowrap;
+}
+
+.status-tag {
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+}
+
+.name-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.link-primary {
+    color: #fa8c16;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 14px;
+}
+
+.link-primary:hover {
+    color: #ff9c2a;
+}
+
+.tag-new {
+    display: none;
+}
+
+/* 分页 */
+.pagination {
+    background-color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    border-radius: 0 0 4px 4px;
+}
+
+.total {
+    font-size: 13px;
+    color: #666;
+}
+
+.page-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#page-numbers {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.page-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    color: #666;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-btn:hover {
+    border-color: #fa8c16;
+    color: #fa8c16;
+}
+
+.page-btn.active {
+    background-color: #fa8c16;
+    border-color: #fa8c16;
+    color: #fff;
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-btn:disabled:hover {
+    border-color: #d9d9d9;
+    color: #666;
+}
+
+.page-btn.next,
+.page-btn.prev {
+    padding: 0 6px;
+}
+
+.page-ellipsis {
+    color: #999;
+    font-size: 13px;
+}
+
+.page-size select {
+    height: 32px;
+    padding: 0 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.page-size select:focus {
+    border-color: #fa8c16;
+}
+
+/* 响应式适配 */
+@media (max-width: 1440px) {
+    .header-center {
+        max-width: 360px;
+        margin: 0 20px;
+    }
+    
+    .header-actions {
+        gap: 12px;
+    }
+    
+    .action-item {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1280px) {
+    .filter-row {
+        flex-wrap: wrap;
+    }
+    
+    .filter-item {
+        min-width: 150px;
+    }
+    
+    .breadcrumb {
+        left: 88px;
+        padding: 12px 16px 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        left: 64px;
+        padding: 10px 12px 14px;
+        font-size: 13px;
+    }
+    
+    .main-content {
+        padding-top: 60px;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="top-header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="ri-bee-line"></i>
+                <span>云筑蜂汇</span>
+            </div>
+            <nav class="header-nav">
+                <a href="#" class="nav-item">寻源工作台</a>
+                <a href="#" class="nav-item active">招标工作台</a>
+            </nav>
+        </div>
+        <div class="header-center">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="请输入招标编号、名称、采购单位">
+                <i class="ri-camera-line"></i>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="header-actions">
+                <a href="#" class="action-item">筑共赢</a>
+                <a href="#" class="action-item">寻源平台</a>
+                <a href="#" class="action-item">行业工作台</a>
+                <a href="#" class="action-item">帮助</a>
+                <a href="#" class="action-item">下载</a>
+                <a href="#" class="action-item">投诉反馈</a>
+                <a href="#" class="action-item">消息</a>
+            </div>
+            <div class="user-info">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="用户头像" class="avatar">
+                <span class="username">bug测试</span>
+                <span class="user-id">bug000</span>
+                <i class="ri-arrow-down-s-line"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- 左侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-menu">
+                <div class="menu-item active">
+                    <i class="ri-dashboard-line"></i>
+                    <span>工作台</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-file-list-3-line"></i>
+                    <span>招标</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-article-line"></i>
+                    <span>合同</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-shopping-cart-line"></i>
+                    <span>订单</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-archive-line"></i>
+                    <span>收货</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-bank-card-line"></i>
+                    <span>结算</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-flashlight-line"></i>
+                    <span>寻源</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-team-line"></i>
+                    <span>供应商</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-pie-chart-line"></i>
+                    <span>数据</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-settings-3-line"></i>
+                    <span>管理</span>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <div class="menu-item">
+                    <i class="ri-customer-service-line"></i>
+                    <span>客服</span>
+                </div>
+                <div class="menu-item">
+                    <i class="ri-question-line"></i>
+                    <span>帮助</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 面包屑导航 -->
+            <div class="breadcrumb">
+                <span class="breadcrumb-item">投标/报价管理</span>
+                <span class="breadcrumb-separator">&gt;</span>
+                <span class="breadcrumb-item active">投标/报价列表</span>
+            </div>
+
+            <!-- 标签页 -->
+            <div class="tabs-container">
+                <div class="tabs">
+                    <div class="tab-item active">全部</div>
+                    <div class="tab-item">可报名(1)</div>
+                    <div class="tab-item">已报名(0)</div>
+                    <div class="tab-item">报名截止/资审中(0)</div>
+                    <div class="tab-item">待投标/待报价(4)</div>
+                    <div class="tab-item">已投标/已报价(67)</div>
+                    <div class="tab-item">询价中(1)</div>
+                    <div class="tab-item">已中标/已成交(4)</div>
+                    <div class="tab-item">其他(132)</div>
+                </div>
+                <button class="btn-primary">公开招标/采购</button>
+            </div>
+
+            <!-- 搜索筛选区 -->
+            <div class="search-filter">
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <label>招标/采购编号</label>
+                        <input type="text" placeholder="请输入">
+                    </div>
+                    <div class="filter-item">
+                        <label>招标/采购名称</label>
+                        <input type="text" placeholder="请输入">
+                    </div>
+                    <div class="filter-item">
+                        <label>招标/采购单位</label>
+                        <input type="text" placeholder="请输入">
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-item">
+                        <label>地区</label>
+                        <select>
+                            <option>全部</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>招标/采购类型</label>
+                        <select>
+                            <option>全部</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>状态</label>
+                        <select>
+                            <option>全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-item date-range">
+                        <label>发布日期</label>
+                        <div class="date-inputs">
+                            <input type="text" placeholder="开始日期">
+                            <span class="separator">-</span>
+                            <input type="text" placeholder="结束日期">
+                            <i class="ri-calendar-line"></i>
+                        </div>
+                    </div>
+                    <div class="filter-item checkbox-item">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">只展示进行中招标/采购</span>
+                        </label>
+                    </div>
+                    <div class="filter-item">
+                        <label>招标/采购方式</label>
+                        <select>
+                            <option>全部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row filter-actions-row">
+                    <div class="filter-actions">
+                        <button class="btn-search">查询</button>
+                        <button class="btn-reset">重置</button>
+                        <button class="btn-collapse">收起 <i class="ri-arrow-up-s-line"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 视图切换 -->
+            <div class="view-toggle">
+                <span class="view-label">按招标/采购形式：</span>
+                <div class="view-options">
+                    <span class="view-option active">列表式</span>
+                    <span class="view-option">卡片式</span>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="col-status">状态</th>
+                            <th class="col-name">招标/采购名称</th>
+                            <th class="col-unit">招标/采购单位</th>
+                            <th class="col-type">招标/采购类型</th>
+                            <th class="col-method">招标/采购方式</th>
+                            <th class="col-area">地区</th>
+                            <th class="col-time">发布时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-tag">投标截止</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">投加履分润计算测试</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>北京市市辖区西城区</td>
+                            <td>2025-01-20 14:53:28</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">投标截止</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">投加履分润计算</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>北京市市辖区西城区</td>
+                            <td>2026-01-26 14:02:41</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">报名截止/资格审核中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">fancy专业分包-风险报告</a>
+                            </td>
+                            <td>中建八局二建</td>
+                            <td>专业分包</td>
+                            <td>谈判采购</td>
+                            <td>北京市市辖区东城区 四川省成都市武侯区 北京市市辖区西城区</td>
+                            <td>2026-01-23 13:59:06</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">投标截止</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">ip重复测试</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>北京市市辖区西城区</td>
+                            <td>2026-01-22 11:07:23</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">报名截止/资格审核中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">fancy劳务分包-测试项目</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>劳务分包</td>
+                            <td>公开招标</td>
+                            <td>四川省成都市武侯区</td>
+                            <td>2026-01-22 10:34:12</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">报名截止/资格审核中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">特殊类型甲指乙供招标测试</a>
+                            </td>
+                            <td>中国建筑一局（集团）有限公司</td>
+                            <td>专业分包</td>
+                            <td>公开招标</td>
+                            <td>北京市市辖区东城区</td>
+                            <td>2025-01-19 14:48:49</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">报名截止/资格审核中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">资格测试20-04</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>河北省保定市望都县</td>
+                            <td>2024-01-17 16:01:56</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">接收询价中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">fancy询报价测试</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>四川省成都市武侯区</td>
+                            <td>2026-01-14 10:47:14</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">报名截止/资格审核中</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">测试</a>
+                            </td>
+                            <td>三级公司01</td>
+                            <td>物资</td>
+                            <td>询比采购</td>
+                            <td>北京市市辖区西城区</td>
+                            <td>2026-01-05 10:47:27</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-tag">资审通过</span></td>
+                            <td class="name-cell">
+                                <a href="#" class="link-primary">测试</a>
+                            </td>
+                            <td>中国建筑股份有限公司</td>
+                            <td>物资</td>
+                            <td>公开招标</td>
+                            <td>北京市市辖区西城区</td>
+                            <td>2026-01-04 16:50:20</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="pagination">
+                <span class="total" id="total-count">共计228条</span>
+                <div class="page-nav" id="page-nav">
+                    <button class="page-btn prev" id="prev-btn"><i class="ri-arrow-left-s-line"></i></button>
+                    <div id="page-numbers"></div>
+                    <button class="page-btn next" id="next-btn"><i class="ri-arrow-right-s-line"></i></button>
+                </div>
+                <div class="page-size">
+                    <select id="page-size-select">
+                        <option value="10">10条/页</option>
+                        <option value="20">20条/页</option>
+                        <option value="50">50条/页</option>
+                    </select>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 假数据生成
+        const statusList = ['投标截止', '报名截止/资格审核中', '接收询价中', '资审通过', '评标中', '已中标'];
+        const unitList = ['中国建筑股份有限公司', '中建八局二建', '中国建筑一局（集团）有限公司', '三级公司01', '中建三局集团有限公司'];
+        const typeList = ['物资', '专业分包', '劳务分包'];
+        const methodList = ['公开招标', '谈判采购', '询比采购'];
+        const areaList = ['北京市市辖区西城区', '北京市市辖区东城区', '四川省成都市武侯区', '河北省保定市望都县', '上海市浦东新区'];
+        
+        const projectNames = [
+            '投加履分润计算测试', '投加履分润计算', 'fancy专业分包-风险报告', 'ip重复测试',
+            'fancy劳务分包-测试项目', '特殊类型甲指乙供招标测试', '资格测试20-04', 'fancy询报价测试',
+            '测试', '钢筋采购项目', '混凝土供应招标', '模板脚手架租赁', '机电设备安装',
+            '装饰装修工程', '防水保温工程', '钢结构制作安装', '幕墙工程施工', '智能化系统工程'
+        ];
+
+        // 生成假数据
+        function generateData(count) {
+            const data = [];
+            for (let i = 0; i < count; i++) {
+                const date = new Date(2024 + Math.floor(Math.random() * 2), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+                const hours = String(Math.floor(Math.random() * 24)).padStart(2, '0');
+                const minutes = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+                const seconds = String(Math.floor(Math.random() * 60)).padStart(2, '0');
+                
+                data.push({
+                    status: statusList[Math.floor(Math.random() * statusList.length)],
+                    name: projectNames[Math.floor(Math.random() * projectNames.length)] + (i > 17 ? '-' + (i - 17) : ''),
+                    unit: unitList[Math.floor(Math.random() * unitList.length)],
+                    type: typeList[Math.floor(Math.random() * typeList.length)],
+                    method: methodList[Math.floor(Math.random() * methodList.length)],
+                    area: areaList[Math.floor(Math.random() * areaList.length)],
+                    time: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${hours}:${minutes}:${seconds}`
+                });
+            }
+            return data;
+        }
+
+        // 数据存储
+        const allData = generateData(228);
+        let currentPage = 1;
+        let pageSize = 10;
+        let totalPages = Math.ceil(allData.length / pageSize);
+
+        // 渲染表格
+        function renderTable(data) {
+            const tbody = document.querySelector('.data-table tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td><span class="status-tag">${item.status}</span></td>
+                    <td class="name-cell">
+                        <a href="#" class="link-primary">${item.name}</a>
+                    </td>
+                    <td>${item.unit}</td>
+                    <td>${item.type}</td>
+                    <td>${item.method}</td>
+                    <td>${item.area}</td>
+                    <td>${item.time}</td>
+                </tr>
+            `).join('');
+        }
+
+        // 渲染分页按钮
+        function renderPagination() {
+            const pageNumbers = document.getElementById('page-numbers');
+            let html = '';
+            
+            // 计算显示的页码范围
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            // 第一页
+            if (startPage > 1) {
+                html += `<button class="page-btn ${currentPage === 1 ? 'active' : ''}" data-page="1">1</button>`;
+                if (startPage > 2) {
+                    html += `<span class="page-ellipsis">...</span>`;
+                }
+            }
+
+            // 中间页码
+            for (let i = startPage; i <= endPage; i++) {
+                html += `<button class="page-btn ${currentPage === i ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            }
+
+            // 最后一页
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    html += `<span class="page-ellipsis">...</span>`;
+                }
+                html += `<button class="page-btn ${currentPage === totalPages ? 'active' : ''}" data-page="${totalPages}">${totalPages}</button>`;
+            }
+
+            pageNumbers.innerHTML = html;
+
+            // 更新上一页/下一页按钮状态
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === totalPages;
+
+            // 更新总条数显示
+            document.getElementById('total-count').textContent = `共计${allData.length}条`;
+        }
+
+        // 获取当前页数据
+        function getCurrentPageData() {
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            return allData.slice(start, end);
+        }
+
+        // 更新页面
+        function updatePage() {
+            renderTable(getCurrentPageData());
+            renderPagination();
+        }
+
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化
+            updatePage();
+
+            // 页码点击
+            document.getElementById('page-nav').addEventListener('click', function(e) {
+                if (e.target.classList.contains('page-btn') && e.target.dataset.page) {
+                    currentPage = parseInt(e.target.dataset.page);
+                    updatePage();
+                }
+            });
+
+            // 上一页
+            document.getElementById('prev-btn').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePage();
+                }
+            });
+
+            // 下一页
+            document.getElementById('next-btn').addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePage();
+                }
+            });
+
+            // 每页条数改变
+            document.getElementById('page-size-select').addEventListener('change', function(e) {
+                pageSize = parseInt(e.target.value);
+                totalPages = Math.ceil(allData.length / pageSize);
+                currentPage = 1;
+                updatePage();
+            });
+        });
+    </script>
+</body>
+</html>
