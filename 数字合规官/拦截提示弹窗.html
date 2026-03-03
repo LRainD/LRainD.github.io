@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>合规检测风险报告 - 采购管理系统</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#0078D4",
+                        "background-light": "#F3F4F6",
+                        "background-dark": "#111827",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "PingFang SC", "Microsoft YaHei", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "4px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4">
+<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+<div class="bg-white dark:bg-gray-800 w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+<div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-icons text-orange-500 text-xl">error_outline</span>
+<h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">合规检测</h2>
+</div>
+<button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+<span class="material-icons">close</span>
+</button>
+</div>
+<div class="px-6 py-4 bg-orange-50 dark:bg-orange-900/20 border-b border-orange-100 dark:border-orange-800/30 flex items-center justify-between">
+<div class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    本次共完成 <span class="text-primary font-bold">X</span> 个业务风险项检测，通过 <span class="text-green-600 font-bold">X</span> 个检测项，未通过 <span class="text-red-500 font-bold">Y</span> 个检测项，检测通过比例 <span class="text-primary font-bold">XX%</span>。
+                    <span class="ml-2 text-red-500 font-medium italic underline underline-offset-4">存在拦截项请先完成风险处置</span>
+</div>
+<button class="bg-primary hover:bg-blue-600 text-white px-4 py-1.5 rounded text-sm font-medium transition-all flex items-center gap-1 shadow-sm">
+<span class="material-icons text-sm">download</span>
+                    下载风险明细
+                </button>
+</div>
+<div class="flex-1 overflow-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 z-10">
+<tr class="bg-blue-50 dark:bg-gray-700 text-primary dark:text-blue-300 text-sm">
+<th class="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600 w-16 text-center whitespace-nowrap">序号</th>
+<th class="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600">风险预警名称</th>
+<th class="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600 w-24 whitespace-nowrap">检测结果</th>
+<th class="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600">风险预警信息</th>
+<th class="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600">处置建议</th>
+</tr>
+</thead>
+<tbody class="text-sm text-gray-700 dark:text-gray-300 divide-y divide-gray-100 dark:divide-gray-700">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+<td class="px-6 py-4 text-center text-gray-400">1</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center justify-center">拦截</span>
+<span class="font-medium">模板生成校验</span>
+</div>
+</td>
+<td class="px-6 py-4 text-gray-500">未通过</td>
+<td class="px-6 py-4 leading-relaxed">本次采购公告不是通过范本生成</td>
+<td class="px-6 py-4 leading-relaxed">采购公告必须通过范本生成</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+<td class="px-6 py-4 text-center text-gray-400">2</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center justify-center">拦截</span>
+<span class="font-medium">报名时间校验</span>
+</div>
+</td>
+<td class="px-6 py-4 text-gray-500">未通过</td>
+<td class="px-6 py-4 leading-relaxed">报名截止时间不满足最短2天报名时长要求</td>
+<td class="px-6 py-4 leading-relaxed text-red-500">报名时间必须大于2天，报名截止时间必须满足当前时间+48小时</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+<td class="px-6 py-4 text-center text-gray-400">3</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="bg-orange-400 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center justify-center">预警</span>
+<span class="font-medium">公告是否明确资质标准校验</span>
+</div>
+</td>
+<td class="px-6 py-4 text-gray-500">未通过</td>
+<td class="px-6 py-4 leading-relaxed">本次采购公告中没有包含企业资质</td>
+<td class="px-6 py-4 leading-relaxed">采购公告中需要增加对企业资质要求</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+<td class="px-6 py-4 text-center text-gray-400">4</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="bg-orange-400 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center justify-center">预警</span>
+<span class="font-medium">资质条件校验</span>
+</div>
+</td>
+<td class="px-6 py-4 text-gray-500">未通过</td>
+<td class="px-6 py-4 leading-relaxed">
+                                采购公告中设置的资质条件<span class="font-semibold text-gray-900 dark:text-white">【电力工程施工总承包 一级】</span>资质与 根据《建筑业企业资质标准》要求本次采购应该具备 <span class="font-semibold text-gray-900 dark:text-white">【机电工程施工总承包 二级】</span> 资质不符
+                            </td>
+<td class="px-6 py-4 leading-relaxed">
+                                建议将供应商的资质条件调整为 <span class="font-semibold text-gray-900 dark:text-white">【机电工程施工总承包 二级】</span> 资质
+                            </td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+<button class="bg-primary hover:bg-blue-600 text-white px-8 py-2 rounded font-medium shadow-md active:scale-95 transition-all">
+                    我知道了
+                </button>
+</div>
+</div>
+</div>
+
+</body></html>
