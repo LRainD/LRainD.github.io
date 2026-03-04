@@ -3,6 +3,7 @@
 <head>
   <title>Markdown 预览</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -64,6 +65,40 @@
 <body>
   <div id="content"></div>
   <script>
+    // 初始化mermaid
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'default'
+    });
+    
+    // 配置marked以支持mermaid
+    marked.use({
+      extensions: [
+        {
+          name: 'mermaid',
+          level: 'block',
+          start(src) {
+            return src.match(/^```mermaid/)?.index;
+          },
+          tokenizer(src, tokens) {
+            const rule = /^```mermaid[\s\S]*?```/;
+            const match = rule.exec(src);
+            if (match) {
+              return {
+                type: 'mermaid',
+                raw: match[0],
+                text: match[0].replace(/^```mermaid\n/, '').replace(/```$/, '')
+              };
+            }
+            return null;
+          },
+          renderer(token) {
+            return `<div class="mermaid">${token.text}</div>`;
+          }
+        }
+      ]
+    });
+    
     // 尝试加载markdown文件
     function loadMarkdownFile() {
       // 获取URL参数中的文件名，默认为测试.md
@@ -80,6 +115,8 @@
         })
         .then(text => {
           document.getElementById('content').innerHTML = marked.parse(text);
+          // 渲染mermaid图表
+          mermaid.run();
         })
         .catch(error => {
           // 如果fetch失败，显示错误信息
