@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown 预览</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    #content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #333;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1em 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+    pre code {
+      background-color: transparent;
+      padding: 0;
+    }
+    .error {
+      color: red;
+      padding: 20px;
+      background-color: #ffe6e6;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    // 尝试加载markdown文件
+    function loadMarkdownFile() {
+      // 获取URL参数中的文件名，默认为测试.md
+      const urlParams = new URLSearchParams(window.location.search);
+      const mdFile = urlParams.get('file') || '测试.md';
+      
+      // 尝试通过fetch加载文件
+      fetch(mdFile)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`无法加载文件: ${mdFile}`);
+          }
+          return response.text();
+        })
+        .then(text => {
+          document.getElementById('content').innerHTML = marked.parse(text);
+        })
+        .catch(error => {
+          // 如果fetch失败，显示错误信息
+          document.getElementById('content').innerHTML = `
+            <div class="error">
+              <h2>错误</h2>
+              <p>${error.message}</p>
+              <p>请确保markdown文件存在且路径正确。</p>
+              <p>你可以通过URL参数指定文件，例如: <code>doc.html?file=你的文件.md</code></p>
+            </div>
+          `;
+        });
+    }
+    
+    // 页面加载时执行
+    window.onload = loadMarkdownFile;
+  </script>
+</body>
+</html>
