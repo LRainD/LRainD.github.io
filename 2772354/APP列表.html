@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>投标/报价管理</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF6A00",
+                        "background-light": "#F7F8FA",
+                        "background-dark": "#121212",
+                    },
+                    fontFamily: {
+                        display: ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "8px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-slate-800 dark:text-slate-200">
+<div class="h-11 flex items-center justify-between px-6 bg-white dark:bg-zinc-900 sticky top-0 z-50">
+<div class="text-[14px] font-semibold">0:16</div>
+<div class="flex items-center space-x-1.5">
+<span class="material-icons text-[16px]">signal_cellular_alt</span>
+<span class="text-[12px] font-bold">5G</span>
+<span class="material-icons text-[16px]">wifi</span>
+<span class="material-icons text-[20px] rotate-90">battery_full</span>
+<span class="text-[12px] font-semibold">61</span>
+</div>
+</div>
+<header class="bg-white dark:bg-zinc-900 border-b border-gray-100 dark:border-zinc-800 sticky top-11 z-50">
+<div class="flex items-center h-12 px-4">
+<button class="p-1">
+<span class="material-icons text-slate-600 dark:text-slate-400">arrow_back_ios</span>
+</button>
+<h1 class="flex-1 text-center text-[18px] font-medium pr-8">投标/报价管理</h1>
+</div>
+<div class="flex items-center overflow-x-auto hide-scrollbar px-4 space-x-6 text-[15px] text-gray-500 dark:text-gray-400 h-11 relative">
+<div class="whitespace-nowrap">全部(5240)</div>
+<div class="whitespace-nowrap">可报名(8)</div>
+<div class="whitespace-nowrap">待投标/待...</div>
+<div class="whitespace-nowrap">调价中(1)</div>
+<div class="flex items-center space-x-1 whitespace-nowrap text-slate-900 dark:text-white font-medium relative h-full">
+<span>其他...</span>
+<span class="material-icons text-[18px]">expand_more</span>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-primary rounded-full"></div>
+</div>
+</div>
+</header>
+<main class="p-3 space-y-3">
+<div class="bg-white dark:bg-zinc-900 rounded-xl p-4 shadow-sm">
+<h2 class="text-[17px] font-bold text-slate-800 dark:text-slate-100 mb-3">招标测试物资2025022605</h2>
+<div class="space-y-1.5 text-[14px]">
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标单位：</span>
+<span class="text-slate-600 dark:text-slate-300">新测试组织三级01</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标编号：</span>
+<span class="text-slate-600 dark:text-slate-300">BBI202602090000230135</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">企业名称：</span>
+<span class="text-slate-600 dark:text-slate-300">某某有限公司</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">项目状态：</span>
+<span class="text-slate-600 dark:text-slate-300">已作废</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">发布时间：</span>
+<span class="text-slate-600 dark:text-slate-300">2026-02-09 15:17:16</span>
+</div>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-2 py-0.5 text-[12px] bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/50 rounded">物资</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">北京市市辖区东城区</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">天津市市辖区和平区</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 rounded-xl p-4 shadow-sm">
+<h2 class="text-[17px] font-bold text-slate-800 dark:text-slate-100 mb-3">定标1</h2>
+<div class="space-y-1.5 text-[14px]">
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标单位：</span>
+<span class="text-slate-600 dark:text-slate-300">新测试组织三级01</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标编号：</span>
+<span class="text-slate-600 dark:text-slate-300">BBI202602090000395396</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">企业名称：</span>
+<span class="text-slate-600 dark:text-slate-300">某某有限公司</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">项目状态：</span>
+<span class="text-slate-600 dark:text-slate-300">已作废</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">发布时间：</span>
+<span class="text-slate-600 dark:text-slate-300">2026-02-09 10:43:27</span>
+</div>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-2 py-0.5 text-[12px] bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/50 rounded">物资</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">四川省成都市武侯区</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 rounded-xl p-4 shadow-sm">
+<h2 class="text-[17px] font-bold text-slate-800 dark:text-slate-100 mb-3">111111</h2>
+<div class="space-y-1.5 text-[14px]">
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标单位：</span>
+<span class="text-slate-600 dark:text-slate-300">新测试组织三级01</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标编号：</span>
+<span class="text-slate-600 dark:text-slate-300">BBI202602060000917841</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">企业名称：</span>
+<span class="text-slate-600 dark:text-slate-300">某某有限公司</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">项目状态：</span>
+<span class="text-slate-600 dark:text-slate-300">已作废</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">发布时间：</span>
+<span class="text-slate-600 dark:text-slate-300">2026-02-06 17:58:28</span>
+</div>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-2 py-0.5 text-[12px] bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/50 rounded">物资</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">四川省成都市武侯区</span>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 rounded-xl p-4 shadow-sm">
+<h2 class="text-[17px] font-bold text-slate-800 dark:text-slate-100 mb-3">招标测试物资2025022605</h2>
+<div class="space-y-1.5 text-[14px]">
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标单位：</span>
+<span class="text-slate-600 dark:text-slate-300">新测试组织三级01</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">招标编号：</span>
+<span class="text-slate-600 dark:text-slate-300">BBI202602060000868079</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">企业名称：</span>
+<span class="text-slate-600 dark:text-slate-300">某某有限公司</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">项目状态：</span>
+<span class="text-slate-600 dark:text-slate-300">已作废</span>
+</div>
+<div class="flex">
+<span class="text-gray-500 dark:text-gray-400 w-20">发布时间：</span>
+<span class="text-slate-600 dark:text-slate-300">2026-02-06 17:31:17</span>
+</div>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="px-2 py-0.5 text-[12px] bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 border border-orange-100 dark:border-orange-900/50 rounded">物资</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">北京市市辖区东城区</span>
+<span class="px-2 py-0.5 text-[12px] bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400 border border-blue-100 dark:border-blue-900/50 rounded">天津市市辖区和平区</span>
+</div>
+</div>
+</main>
+<div class="h-8 w-full bg-background-light dark:bg-background-dark">
+<div class="mx-auto w-32 h-1 bg-gray-300 dark:bg-zinc-700 rounded-full mt-4"></div>
+</div>
+
+</body></html>
