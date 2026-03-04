@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bidding Management List Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#ff8c00",
+                        "background-light": "#f0f2f5",
+                        "background-dark": "#0f172a",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e293b",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#334155",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "system-ui", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "4px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+        .sidebar-item:hover .tooltip { display: block; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-700 dark:text-slate-200 transition-colors duration-200">
+<header class="h-14 bg-[#1c1c1c] text-white flex items-center justify-between px-4 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-icons-outlined text-white">shield</span>
+</div>
+<span class="font-bold text-lg tracking-tight">云筑蜂王</span>
+</div>
+<nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
+<a class="hover:text-primary transition-colors" href="#">寻源工作台</a>
+<a class="text-primary border-b-2 border-primary py-4" href="#">投标工作台</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl mx-8">
+<div class="relative group">
+<span class="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full bg-[#333] border-none rounded py-1.5 pl-9 pr-4 text-sm focus:ring-1 focus:ring-primary placeholder:text-slate-500" placeholder="找商机、功能、服务、帮助" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-5 text-slate-300">
+<div class="flex items-center gap-4 text-xs">
+<div class="flex flex-col items-center cursor-pointer hover:text-white">
+<span class="material-icons-outlined text-lg">corporate_fare</span>
+<span>筑共赢</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:text-white">
+<span class="material-icons-outlined text-lg">travel_explore</span>
+<span>寻源平台</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:text-white">
+<span class="material-icons-outlined text-lg">work_outline</span>
+<span>行业工作台</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:text-white">
+<span class="material-icons-outlined text-lg">help_outline</span>
+<span>帮助</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer hover:text-white relative">
+<span class="material-icons-outlined text-lg">notifications_none</span>
+<span>消息</span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] px-1 rounded-full border border-[#1c1c1c]">92</span>
+</div>
+</div>
+<div class="h-8 w-px bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-2 cursor-pointer">
+<img alt="User Avatar" class="w-8 h-8 rounded-full bg-slate-600" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOzGYCvDpmsQLKvbwQ7WmxACCyMu1W710g9KzFMUd8rxamSuN3tb0rAsQsUsYkWlm3KS8KmlFlMCPZcyowJG9IFs4zvguXMwFJ5CUCKbEMtYPGavrwMNfqpjmI8E_eMlF_vHeQ1ZoGIW6RtNfGgXC53GybLnX3N_-lIe6eGdddU9dfsBf92LOGNM-nm6SIr5Z2JMBs0xqEfhA8FVbkZGvv-v0FhVoT6bOObBRmUVotR8DTxdP4yDbo8IqyNJMDCvea3pDXGjt1mSs"/>
+<div class="text-xs">
+<div class="flex items-center gap-1">
+<span class="bg-blue-500 text-[10px] px-1 rounded">L2</span>
+<span>sup测试</span>
+</div>
+<span class="text-slate-500">(sup300)</span>
+</div>
+<span class="material-icons-outlined text-xs">expand_more</span>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-3.5rem)]">
+<aside class="w-14 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col items-center py-4 gap-6 shrink-0">
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">home</span>
+<span class="text-[10px] text-slate-500">首页</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group text-primary">
+<span class="material-icons-outlined">gavel</span>
+<span class="text-[10px]">投标</span>
+<div class="w-1 h-4 bg-primary absolute left-0 rounded-r-full"></div>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">verified_user</span>
+<span class="text-[10px] text-slate-500">分供</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">assignment</span>
+<span class="text-[10px] text-slate-500">合同</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">list_alt</span>
+<span class="text-[10px] text-slate-500">订单</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">edit_note</span>
+<span class="text-[10px] text-slate-500">业务</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">local_shipping</span>
+<span class="text-[10px] text-slate-500">物流</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">payments</span>
+<span class="text-[10px] text-slate-500">资金</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">recycling</span>
+<span class="text-[10px] text-slate-500">废旧</span>
+</div>
+<div class="flex flex-col items-center gap-1 cursor-pointer group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary">map</span>
+<span class="text-[10px] text-slate-500">地磅</span>
+</div>
+<div class="mt-auto flex flex-col items-center gap-1 cursor-pointer">
+<span class="material-icons-outlined text-slate-400">menu_open</span>
+</div>
+</aside>
+<main class="flex-1 p-4 overflow-x-hidden">
+<nav class="flex items-center gap-2 text-xs text-slate-500 mb-4">
+<span class="hover:text-primary cursor-pointer">投标/报价管理</span>
+<span class="material-icons-outlined text-xs">chevron_right</span>
+<span class="text-slate-900 dark:text-slate-100 font-medium">投标/报价列表</span>
+</nav>
+<div class="bg-surface-light dark:bg-surface-dark rounded shadow-sm">
+<div class="px-4 border-b border-border-light dark:border-border-dark flex items-center justify-between">
+<div class="flex gap-8">
+<button class="py-4 text-sm font-medium border-b-2 border-primary text-primary">全部</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">可报名(1)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">已报名(0)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">报名截止/资审中(19)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">待投标/待报价(4)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">已投标/已报价(67)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">调价中(1)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">已中标/已成交(4)</button>
+<button class="py-4 text-sm font-medium text-slate-500 hover:text-primary">其他(132)</button>
+</div>
+<button class="bg-primary text-white text-xs px-3 py-1.5 rounded hover:bg-orange-600 transition-colors">
+                    公开招标/采购
+                </button>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-4 text-xs">
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">招标/采购编号</label>
+<input class="flex-1 border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">招标/采购名称</label>
+<input class="flex-1 border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">招标/采购单位</label>
+<input class="flex-1 border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">地区</label>
+<div class="flex-1 relative">
+<select class="w-full appearance-none border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary">
+<option>全部</option>
+</select>
+<span class="material-icons-outlined absolute right-2 top-1.5 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">状态</label>
+<div class="flex-1 relative">
+<select class="w-full appearance-none border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary">
+<option>全部</option>
+</select>
+<span class="material-icons-outlined absolute right-2 top-1.5 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">发布日期</label>
+<div class="flex-1 flex items-center border border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0" placeholder="开始日期" type="text"/>
+<span class="mx-1 text-slate-300">~</span>
+<input class="w-full bg-transparent border-none p-0 focus:ring-0" placeholder="结束日期" type="text"/>
+<span class="material-icons-outlined text-slate-400 text-sm">calendar_today</span>
+</div>
+</div>
+<div class="flex items-center gap-2 pl-24">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-border-light text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-slate-600 dark:text-slate-400">只展示进行中招标/采购</span>
+</label>
+</div>
+<div class="flex items-center gap-2">
+<label class="w-24 text-right text-slate-500">招标/采购方式</label>
+<div class="flex-1 relative">
+<select class="w-full appearance-none border-border-light dark:border-border-dark dark:bg-slate-800 rounded px-2 py-1.5 focus:ring-1 focus:ring-primary">
+<option>全部</option>
+</select>
+<span class="material-icons-outlined absolute right-2 top-1.5 text-slate-400 text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="lg:col-span-4 flex justify-between items-center mt-2 border-t border-border-light dark:border-border-dark pt-6">
+<div class="flex items-center gap-2 text-slate-500">
+<span>投标/报价展示样式:</span>
+<span class="text-slate-900 dark:text-slate-100 cursor-pointer">列表式</span>
+<span class="text-slate-300">/</span>
+<span class="hover:text-primary cursor-pointer">卡片式</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-primary text-white px-8 py-1.5 rounded hover:bg-orange-600 shadow-sm transition-all">查询</button>
+<button class="bg-white dark:bg-slate-700 border border-border-light dark:border-border-dark px-8 py-1.5 rounded hover:bg-slate-50 dark:hover:bg-slate-600 transition-all">重置</button>
+<button class="text-primary flex items-center gap-1 hover:underline ml-2">
+                            收起 <span class="material-icons-outlined text-sm">expand_less</span>
+</button>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="bg-[#fafafa] dark:bg-slate-800/50 text-slate-500 border-b border-border-light dark:border-border-dark">
+<th class="px-4 py-3 font-medium">状态</th>
+<th class="px-4 py-3 font-medium">招标/采购名称</th>
+<th class="px-4 py-3 font-medium">招标/采购单位</th>
+<th class="px-4 py-3 font-medium">企业名称</th>
+<th class="px-4 py-3 font-medium">招标/采购类型</th>
+<th class="px-4 py-3 font-medium">招标/采购方式</th>
+<th class="px-4 py-3 font-medium">地区</th>
+<th class="px-4 py-3 font-medium flex items-center gap-1">
+                            发布时间
+                            <span class="material-icons-outlined text-[10px]">swap_vert</span>
+</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">投标截止</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">投加履分计算测试</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">中建集团总部</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-26 14:53:28</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">投标截止</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">投加履分计算</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">上海建工集团</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-26 14:02:41</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">报名截止/资审中</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">fancy专业分包-风控报告</a></td>
+<td class="px-4 py-4">中建八局二建</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">腾讯科技有限公司</td>
+<td class="px-4 py-4">专业分包</td>
+<td class="px-4 py-4">谈判采购</td>
+<td class="px-4 py-4">北京市市辖区东城区 四川省成都市武侯区 北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-23 13:59:06</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">投标截止</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">ip重复测试</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">阿里巴巴集团</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-22 11:07:23</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">报名截止/资审中</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">fancy劳务分包-风控报告</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">华为技术有限公司</td>
+<td class="px-4 py-4">劳务分包</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">四川省成都市武侯区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-22 10:34:12</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">报名截止/资审中</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">特殊资审项审查依据冒烟</a></td>
+<td class="px-4 py-4">中国建筑一局（集团）有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">百度网络技术有限公司</td>
+<td class="px-4 py-4">专业分包</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">北京市市辖区东城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-19 14:48:49</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">报名截止/资审中</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">资审依据29-64</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">联想集团</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">河北省保定市容城县</td>
+<td class="px-4 py-4 text-slate-500">2024-01-17 16:01:56</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">接收招标结果</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">fancy风险报告cdc</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">京东集团股份有限公司</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">四川省成都市武侯区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-14 10:47:14</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">报名截止-未报名</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">测试</a></td>
+<td class="px-4 py-4">三级公司01</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">测试企业有限公司</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">询比采购</td>
+<td class="px-4 py-4">北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-05 10:47:27</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">资审通过</td>
+<td class="px-4 py-4"><a class="text-primary hover:underline" href="#">测试</a></td>
+<td class="px-4 py-4">中国建筑股份有限公司</td>
+<td class="px-4 py-4 text-slate-600 dark:text-slate-400">中建二局集团</td>
+<td class="px-4 py-4">物资</td>
+<td class="px-4 py-4">公开招标</td>
+<td class="px-4 py-4">北京市市辖区西城区</td>
+<td class="px-4 py-4 text-slate-500">2026-01-04 16:50:20</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-border-light dark:border-border-dark flex items-center justify-end gap-2 text-xs text-slate-500">
+<span>共计228条</span>
+<div class="flex items-center gap-1 mx-2">
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:text-primary disabled:opacity-30" disabled="">
+<span class="material-icons-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-7 h-7 flex items-center justify-center rounded bg-primary text-white">1</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">2</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">3</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">4</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">5</button>
+<span class="px-1">...</span>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">23</button>
+<button class="w-7 h-7 flex items-center justify-center rounded border border-border-light dark:border-border-dark hover:border-primary hover:text-primary">
+<span class="material-icons-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-2 border border-border-light dark:border-border-dark rounded px-2 py-1 ml-2">
+<span>10 条/页</span>
+<span class="material-icons-outlined text-sm">expand_more</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<div class="fixed right-4 bottom-10 flex flex-col gap-2">
+<div class="w-12 h-12 bg-white dark:bg-slate-700 shadow-lg rounded flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors group">
+<span class="material-icons-outlined text-primary text-xl">auto_fix_high</span>
+<span class="text-[10px] text-slate-500 group-hover:text-primary">AI工坊</span>
+</div>
+<div class="w-12 h-12 bg-white dark:bg-slate-700 shadow-lg rounded flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary text-xl">headset_mic</span>
+<span class="text-[10px] text-slate-500 group-hover:text-primary">VIP客服</span>
+</div>
+<div class="w-12 h-12 bg-white dark:bg-slate-700 shadow-lg rounded flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary text-xl">call</span>
+<span class="text-[10px] text-slate-500 group-hover:text-primary">电话</span>
+</div>
+<div class="w-12 h-12 bg-white dark:bg-slate-700 shadow-lg rounded flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors group">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary text-xl">feedback</span>
+<span class="text-[10px] text-slate-500 group-hover:text-primary">投诉平台</span>
+</div>
+<button class="w-12 h-12 bg-white dark:bg-slate-700 shadow-lg rounded flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors group" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons-outlined text-slate-400 group-hover:text-primary text-xl">dark_mode</span>
+<span class="text-[10px] text-slate-500 group-hover:text-primary">外观</span>
+</button>
+</div>
+
+</body></html>

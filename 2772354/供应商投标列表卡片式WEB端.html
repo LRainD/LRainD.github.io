@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>投标管理列表 - 云筑蜂王</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#ff8c00",
+                        "background-light": "#f0f2f5",
+                        "background-dark": "#1a1a1a",
+                        "nav-bg": "#333333",
+                        "card-bg": "#ffffff",
+                    },
+                    fontFamily: {
+                        display: ["PingFang SC", "Microsoft YaHei", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "4px",
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .nav-item-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 4px;
+            background-color: #ff8c00;
+        }
+        .sidebar-item:hover {
+            color: #ff8c00;
+        }
+        .sidebar-item-active {
+            color: #ff8c00;
+            background-color: #fff7e6;
+        }
+        .filter-input {
+            border: 1px solid #d9d9d9;
+            padding: 4px 12px;
+            height: 32px;
+            outline: none;
+            width: 100%;
+        }
+        .filter-input:focus {
+            border-color: #ff8c00;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-gray-800">
+<nav class="bg-nav-bg text-white h-14 flex items-center px-4 sticky top-0 z-50">
+<div class="flex items-center gap-2 mr-12">
+<span class="text-xl font-bold flex items-center">
+<span class="material-icons text-primary mr-1">hive</span>
+            云筑蜂王
+        </span>
+</div>
+<div class="flex h-full items-center text-sm">
+<a class="px-4 h-full flex items-center hover:bg-white/10" href="#">寻源工作台</a>
+<a class="px-4 h-full flex items-center relative nav-item-active" href="#">投标工作台</a>
+</div>
+<div class="flex-1 max-w-xl mx-8 relative">
+<input class="w-full bg-white text-gray-800 rounded px-4 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary" placeholder="找商机、功能、服务、帮助" type="text"/>
+<span class="material-icons absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+</div>
+<div class="flex items-center gap-5 text-xs">
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">corporate_fare</span>
+<span>筑共赢</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">hub</span>
+<span>寻源平台</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">dashboard</span>
+<span>行业工作台</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">help_outline</span>
+<span>帮助</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">download</span>
+<span>下载</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">feedback</span>
+<span>投诉反馈</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">forum</span>
+<span>会话</span>
+</div>
+<div class="flex flex-col items-center cursor-pointer relative">
+<span class="material-icons text-xl">notifications_none</span>
+<span>消息</span>
+<span class="absolute -top-1 -right-2 bg-red-500 text-[10px] px-1 rounded-full border border-white">99+</span>
+</div>
+<div class="flex items-center gap-2 ml-4 cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-sm font-bold">
+<span class="material-icons text-lg">person</span>
+</div>
+<span>sup202 (sup202)</span>
+</div>
+</div>
+</nav>
+<div class="flex min-h-[calc(100vh-56px)]">
+<aside class="w-16 bg-white dark:bg-zinc-900 border-r border-gray-200 dark:border-zinc-800 flex flex-col py-4 items-center shrink-0">
+<div class="flex flex-col items-center gap-6 w-full">
+<div class="sidebar-item flex flex-col items-center cursor-pointer group">
+<span class="material-icons text-xl">handshake</span>
+<span class="text-[10px] mt-1">合作</span>
+</div>
+<div class="sidebar-item sidebar-item-active flex flex-col items-center cursor-pointer w-full py-2">
+<span class="material-icons text-xl">assignment</span>
+<span class="text-[10px] mt-1">投标</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">account_tree</span>
+<span class="text-[10px] mt-1">分供</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">description</span>
+<span class="text-[10px] mt-1">合同</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">shopping_cart</span>
+<span class="text-[10px] mt-1">订单</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">build</span>
+<span class="text-[10px] mt-1">筑易</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">local_shipping</span>
+<span class="text-[10px] mt-1">物流</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">payments</span>
+<span class="text-[10px] mt-1">资金</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">recycling</span>
+<span class="text-[10px] mt-1">废旧</span>
+</div>
+<div class="sidebar-item flex flex-col items-center cursor-pointer">
+<span class="material-icons text-xl">monitor_weight</span>
+<span class="text-[10px] mt-1">地磅</span>
+</div>
+</div>
+<div class="mt-auto">
+<span class="material-icons text-gray-400 cursor-pointer">menu_open</span>
+</div>
+</aside>
+<main class="flex-1 p-4 overflow-y-auto">
+<div class="text-xs text-gray-500 mb-4 dark:text-gray-400">
+            投标/报价管理 <span class="mx-1 text-gray-300 dark:text-gray-600">&gt;</span> <span class="text-gray-700 dark:text-gray-300">投标/报价列表</span>
+</div>
+<div class="bg-white dark:bg-zinc-900 rounded p-4 shadow-sm">
+<div class="flex items-center justify-between border-b border-gray-100 dark:border-zinc-800 mb-4">
+<div class="flex items-center gap-6 text-sm">
+<span class="py-2 border-b-2 border-primary text-primary cursor-pointer font-medium">全部</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">可报名(5)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">已报名(10)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">报名截止/资审中(272)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">待投标/待报价(29)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">已投标/已报价(1404)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">调期中(10)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">已中标/已成交(168)</span>
+<span class="py-2 text-gray-600 dark:text-gray-400 cursor-pointer hover:text-primary">其他(2716)</span>
+</div>
+<button class="bg-primary text-white px-4 py-1.5 rounded text-sm mb-2">公开招标/采购</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-y-4 gap-x-8 text-sm text-gray-600 dark:text-gray-400">
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">招标/采购编号</label>
+<input class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">招标/采购名称</label>
+<input class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">招标/采购单位</label>
+<input class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded" placeholder="请输入" type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-12 text-right">地区</label>
+<select class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded appearance-none">
+<option>全部</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">招标/采购类型</label>
+<select class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded appearance-none">
+<option>全部</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">状态</label>
+<select class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded appearance-none">
+<option>全部</option>
+</select>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">发布日期</label>
+<div class="flex items-center gap-1 w-full">
+<input class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded text-xs" placeholder="开始日期" type="text"/>
+<span>-</span>
+<input class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded text-xs" placeholder="结束日期" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<label class="flex items-center gap-2 cursor-pointer ml-4">
+<input checked="" class="text-primary focus:ring-primary rounded border-gray-300" type="checkbox"/>
+<span>只展示进行中招标/采购</span>
+</label>
+</div>
+<div class="flex items-center gap-2">
+<label class="whitespace-nowrap w-24 text-right">招标/采购方式</label>
+<select class="filter-input dark:bg-zinc-800 dark:border-zinc-700 dark:text-white rounded appearance-none">
+<option>全部</option>
+</select>
+</div>
+<div class="col-span-3 flex justify-end gap-3 items-center">
+<button class="bg-primary text-white px-6 py-1.5 rounded hover:opacity-90">查询</button>
+<button class="border border-gray-300 dark:border-zinc-700 px-6 py-1.5 rounded hover:bg-gray-50 dark:hover:bg-zinc-800 dark:text-white">重置</button>
+<button class="text-primary flex items-center gap-1 ml-4">
+                        收起 <span class="material-icons text-sm">expand_less</span>
+</button>
+</div>
+</div>
+</div>
+<div class="my-4 text-sm">
+<span class="text-gray-500">投标/报价展示样式：</span>
+<span class="text-gray-400 cursor-pointer hover:text-gray-700">列表式</span>
+<span class="mx-2 text-gray-300">/</span>
+<span class="font-bold text-gray-800 dark:text-gray-200">卡片式</span>
+</div>
+<div class="space-y-4">
+<div class="bg-white dark:bg-zinc-900 p-4 rounded-sm border border-transparent hover:border-primary transition-all cursor-pointer shadow-sm relative group">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded">物资采购</span>
+<h3 class="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-primary">一局二对接风控-邀请招标</h3>
+</div>
+<span class="text-xs text-gray-400">发布时间：2026-03-04 11:07:20</span>
+</div>
+<div class="grid grid-cols-4 gap-y-3 gap-x-4 text-xs">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标编号：</span>
+<span class="text-gray-600 dark:text-gray-300">cscec202603040000000826</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标单位：</span>
+<span class="text-gray-600 dark:text-gray-300">中建一局集团第二建筑有限公司</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">企业名称：</span>
+<span class="text-gray-600 dark:text-gray-300">北京建峰材料有限公司</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标方式：</span>
+<span class="text-gray-600 dark:text-gray-300">邀请招标</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">状态：</span>
+<span class="text-primary">已投标</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标区域：</span>
+<span class="text-gray-600 dark:text-gray-300">北京市市辖区东城区</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-4 rounded-sm border border-transparent hover:border-primary transition-all cursor-pointer shadow-sm relative group">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded">物资采购</span>
+<h3 class="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-primary">二局对接风控-公开招标</h3>
+</div>
+<span class="text-xs text-gray-400">发布时间：2026-03-04 10:55:51</span>
+</div>
+<div class="grid grid-cols-4 gap-y-3 gap-x-4 text-xs">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标编号：</span>
+<span class="text-gray-600 dark:text-gray-300">cscec202603040000000719</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标单位：</span>
+<span class="text-gray-600 dark:text-gray-300">中建二局第二建筑工程有限公司</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">企业名称：</span>
+<span class="text-gray-600 dark:text-gray-300">成都天府建筑工程材料厂</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标方式：</span>
+<span class="text-gray-600 dark:text-gray-300">公开招标</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">状态：</span>
+<span class="text-primary">已报名</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标区域：</span>
+<span class="text-gray-600 dark:text-gray-300">四川省成都市高新区</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-4 rounded-sm border border-transparent hover:border-primary transition-all cursor-pointer shadow-sm relative group">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded">物资采购</span>
+<h3 class="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-primary">一局二对接风控-公开招标</h3>
+</div>
+<span class="text-xs text-gray-400">发布时间：2026-03-04 10:43:32</span>
+</div>
+<div class="grid grid-cols-4 gap-y-3 gap-x-4 text-xs">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标编号：</span>
+<span class="text-gray-600 dark:text-gray-300">cscec202603040000020625</span>
+</div>
+<div class="flex flex-col gap-2 col-span-2">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标单位：</span>
+<span class="text-gray-600 dark:text-gray-300">中建一局集团第二建筑有限公司</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">企业名称：</span>
+<span class="text-gray-600 dark:text-gray-300">海淀建筑材料供应公司</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标区域：</span>
+<span class="text-gray-600 dark:text-gray-300">北京市市辖区海淀区</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-zinc-900 p-4 rounded-sm border border-transparent hover:border-primary transition-all cursor-pointer shadow-sm relative group">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded">物资采购</span>
+<h3 class="text-base font-medium text-gray-800 dark:text-gray-200 group-hover:text-primary">三局二对接风控-公开招标</h3>
+</div>
+<span class="text-xs text-gray-400">发布时间：2026-03-04 10:30:15</span>
+</div>
+<div class="grid grid-cols-4 gap-y-3 gap-x-4 text-xs">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标编号：</span>
+<span class="text-gray-600 dark:text-gray-300">cscec202603040000020699</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标单位：</span>
+<span class="text-gray-600 dark:text-gray-300">中建三局第一建设工程有限公司</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">企业名称：</span>
+<span class="text-gray-600 dark:text-gray-300">武汉楚天建筑材料有限公司</span>
+</div>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标方式：</span>
+<span class="text-gray-600 dark:text-gray-300">公开招标</span>
+</div>
+<div class="flex gap-2">
+<span class="text-gray-400 shrink-0">招标区域：</span>
+<span class="text-gray-600 dark:text-gray-300">湖北省武汉市武昌区</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>
