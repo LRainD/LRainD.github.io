@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="zh-CN"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -34,171 +40,262 @@
             },
         }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
             vertical-align: middle;
             font-size: 20px;
         }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e0e3e6; border-radius: 3px; }
-        
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e0e3e6;
+            border-radius: 3px;
+        }
+
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             opacity: 1;
         }
     </style>
 </head>
+
 <body class="bg-[#f0f2f5] min-h-screen flex items-center justify-center font-body p-4">
-<!-- Modal Container -->
-<div class="bg-white w-full max-w-[1100px] border border-outline shadow-sm flex flex-col overflow-hidden">
-<!-- Header -->
-<div class="px-4 py-3 flex justify-between items-center border-b border-outline">
-<div class="flex items-center gap-2">
-<div class="w-[3px] h-4 bg-primary -ml-4"></div>
-<h1 class="font-headline text-base font-bold text-on-surface">智能推荐</h1>
-</div>
-<button class="text-gray-400 hover:text-gray-600 transition-colors">
-<span class="material-symbols-outlined" data-icon="close">close</span>
-</button>
-</div>
-<!-- Content -->
-<div class="p-6 bg-[#f9fafc]">
-<!-- Form Container -->
-<div class="bg-white border border-outline p-6">
-<!-- Section Title -->
-<div class="flex items-center gap-2 mb-8">
-<div class="w-[3px] h-4 bg-primary -ml-6"></div>
-<h2 class="text-sm font-bold text-on-surface">编制采购(资格预审)公告</h2>
-</div>
-<div class="border-b border-outline -mx-6 mb-6"></div>
-<div class="space-y-6">
-<!-- Row 1 -->
-<div class="grid grid-cols-12 gap-x-8 items-center">
-<!-- Col 1 -->
-<div class="col-span-4 flex items-center">
-<label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4">
-<span class="text-error mr-1">*</span>是否自动发布公告 <span class="text-primary bg-primary/10 px-1 text-[10px] rounded">配</span> :
-                        </label>
-<div class="flex items-center gap-4">
-<label class="flex items-center gap-1.5 cursor-pointer group">
-<div class="w-3.5 h-3.5 rounded-full border border-primary flex items-center justify-center">
-<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
-</div>
-<span class="text-on-surface text-[13px]">是</span>
-</label>
-<label class="flex items-center gap-1.5 cursor-pointer group">
-<div class="w-3.5 h-3.5 rounded-full border border-outline group-hover:border-primary"></div>
-<span class="text-on-surface text-[13px]">否</span>
-</label>
-</div>
-</div>
-<!-- Col 2 -->
-<div class="col-span-4 flex items-center">
-<label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-2">
-<span class="text-error mr-1">*</span>预计报名截止时间：
-                        </label>
-<div class="flex items-center gap-2">
-<span class="text-on-surface text-[13px] whitespace-nowrap">公告审批通过后</span>
-<input class="w-16 border border-outline rounded px-2 py-1 text-[13px] focus:border-primary focus:ring-0 outline-none" type="number" value="24"/>
-<span class="text-on-surface text-[13px]">小时</span>
-</div>
-</div>
-<!-- Col 3 -->
-<div class="col-span-4 flex items-center">
-<label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-2 flex items-center">
-<span class="text-error mr-1">*</span>拟成交供应商数 
-                            <span class="material-symbols-outlined text-[14px] text-gray-400 ml-0.5" data-icon="help">help</span> :
-                        </label>
-<input class="flex-grow max-w-[200px] border border-outline rounded px-2 py-1 text-[13px] focus:border-primary focus:ring-0 outline-none" type="number" value="4"/>
-</div>
-</div>
-<!-- Row 2 -->
-<div class="grid grid-cols-12 gap-x-8 items-center">
-<div class="col-span-12 flex items-center">
-<label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4 ml-2">
-<span class="text-error mr-1">*</span>采购公告格式：
-                        </label>
-<div class="flex items-center gap-4">
-<label class="flex items-center gap-1.5 cursor-pointer">
-<div class="w-3.5 h-3.5 rounded-full border border-primary flex items-center justify-center">
-<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
-</div>
-<span class="text-on-surface text-[13px]">范本</span>
-</label>
-<label class="flex items-center gap-1.5 cursor-pointer">
-<div class="w-3.5 h-3.5 rounded-full border border-outline"></div>
-<span class="text-on-surface text-[13px]">富文本</span>
-</label>
-</div>
-</div>
-</div>
-<!-- Row 3: Announcement Content -->
-<div class="grid grid-cols-12 gap-x-8 items-start">
-<div class="col-span-12 flex items-start">
-<label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4 ml-4 mt-2">
-<span class="text-error mr-1">*</span>公告内容：
-                        </label>
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2 border border-outline px-3 py-1.5 rounded bg-[#fcfcfc] relative group">
-<span class="material-symbols-outlined text-red-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
-<span class="text-[13px] text-on-surface">测试采购公告.pdf</span>
-<div class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-error rounded-full flex items-center justify-center cursor-pointer">
-<span class="material-symbols-outlined text-white text-[10px]" data-icon="close">close</span>
-</div>
-</div>
-<a class="text-primary text-[13px] hover:underline" href="#">去编辑 &gt;&gt;</a>
-</div>
-</div>
-</div>
-<!-- Row 4: Internal Attachments -->
-<div class="grid grid-cols-12 gap-x-8 items-start">
-<div class="col-span-12 flex flex-col">
-<div class="flex items-start">
-<label class="text-on-surface-variant text-[13px] leading-tight text-right w-[100px] mr-4 mt-1">
-                                公告附件<br/>(仅内部可见)：
-                            </label>
-<button class="flex items-center gap-1 border border-outline px-3 py-1 rounded text-[13px] hover:bg-gray-50 text-on-surface">
-<span class="material-symbols-outlined text-[16px]">add</span>
-                                添加附件
-                            </button>
-</div>
-</div>
-</div>
-<!-- Row 5: Supplier Attachments -->
-<div class="grid grid-cols-12 gap-x-8 items-start pb-4">
-<div class="col-span-12 flex flex-col gap-3">
-<div class="flex items-start">
-<label class="text-error text-[13px] leading-tight text-right w-[100px] mr-4 mt-1">
-<span class="mr-1">*</span>公告附件<br/>(供应商可见)：
-                            </label>
-<div class="flex flex-col gap-3">
-<div class="flex items-center gap-2 border border-outline px-3 py-1.5 rounded bg-[#fcfcfc] relative w-fit">
-<span class="material-symbols-outlined text-red-500 text-[18px]" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
-<span class="text-[13px] text-on-surface">测试采购公告.pdf</span>
-<span class="material-symbols-outlined text-gray-400 text-[16px] ml-1">close</span>
-<span class="absolute -right-6 top-1/2 -translate-y-1/2 bg-[#faad14] text-white text-[10px] px-1 rounded-sm">模</span>
-</div>
-<button class="flex items-center gap-1 border border-outline px-3 py-1 rounded text-[13px] hover:bg-gray-50 text-on-surface w-fit">
-<span class="material-symbols-outlined text-[16px]">add</span>
-                                    添加附件
-                                </button>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Footer -->
-<div class="px-6 py-4 flex justify-end items-center gap-3">
-<button class="px-8 py-1.5 border border-outline text-[13px] text-on-surface hover:bg-gray-50 rounded transition-all">
-            取消
-        </button>
-<button class="px-6 py-1.5 bg-primary text-on-primary text-[13px] font-medium rounded hover:bg-primary/90 transition-all shadow-sm">
-            确认使用
-        </button>
-</div>
-</div>
-</body></html>
+    <!-- Modal Container -->
+    <div class="bg-white w-full max-w-[1100px] border border-outline shadow-sm flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="px-4 py-3 flex justify-between items-center border-b border-outline">
+            <div class="flex items-center gap-2">
+                <div class="w-[3px] h-4 bg-primary -ml-4"></div>
+                <h1 class="font-headline text-base font-bold text-on-surface">智能推荐</h1>
+            </div>
+            <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                <span class="material-symbols-outlined" data-icon="close">close</span>
+            </button>
+        </div>
+        <!-- Content -->
+        <div class="p-6 bg-[#f9fafc]">
+            <!-- Form Container -->
+            <div class="bg-white border border-outline p-6">
+                <!-- Section Title -->
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-2">
+                        <div class="w-[3px] h-4 bg-primary -ml-6"></div>
+                        <h2 class="text-sm font-bold text-on-surface">编制采购(资格预审)公告</h2>
+                    </div>
+                    <label class="flex items-center gap-1.5 cursor-pointer">
+                        <input type="checkbox" id="selectAll"
+                            class="w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <span class="text-[13px] text-on-surface-variant">全选</span>
+                    </label>
+                </div>
+                <div class="border-b border-outline -mx-6 mb-6"></div>
+                <div class="space-y-6">
+                    <!-- Row 1 -->
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox"
+                            class="row-checkbox w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <div class="flex-grow grid grid-cols-12 gap-x-8 items-center">
+                            <!-- Col 1 -->
+                            <div class="col-span-4 flex items-center">
+                                <label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4">
+                                    <span class="text-error mr-1">*</span>是否自动发布公告 <span
+                                        class="text-primary bg-primary/10 px-1 text-[10px] rounded">配</span> :
+                                </label>
+                                <div class="flex items-center gap-4">
+                                    <label class="flex items-center gap-1.5 cursor-pointer group">
+                                        <div
+                                            class="w-3.5 h-3.5 rounded-full border border-primary flex items-center justify-center">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                        </div>
+                                        <span class="text-on-surface text-[13px]">是</span>
+                                    </label>
+                                    <label class="flex items-center gap-1.5 cursor-pointer group">
+                                        <div
+                                            class="w-3.5 h-3.5 rounded-full border border-outline group-hover:border-primary">
+                                        </div>
+                                        <span class="text-on-surface text-[13px]">否</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Col 2 -->
+                            <div class="col-span-4 flex items-center">
+                                <label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-2">
+                                    <span class="text-error mr-1">*</span>预计报名截止时间：
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-on-surface text-[13px] whitespace-nowrap">公告审批通过后</span>
+                                    <input
+                                        class="w-16 border border-outline rounded px-2 py-1 text-[13px] focus:border-primary focus:ring-0 outline-none"
+                                        type="number" value="24" />
+                                    <span class="text-on-surface text-[13px]">小时</span>
+                                </div>
+                            </div>
+                            <!-- Col 3 -->
+                            <div class="col-span-4 flex items-center">
+                                <label
+                                    class="text-on-surface-variant text-[13px] whitespace-nowrap mr-2 flex items-center">
+                                    <span class="text-error mr-1">*</span>拟成交供应商数
+                                    <span class="material-symbols-outlined text-[14px] text-gray-400 ml-0.5"
+                                        data-icon="help">help</span> :
+                                </label>
+                                <input
+                                    class="flex-grow max-w-[200px] border border-outline rounded px-2 py-1 text-[13px] focus:border-primary focus:ring-0 outline-none"
+                                    type="number" value="4" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 2 -->
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox"
+                            class="row-checkbox w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <div class="flex-grow grid grid-cols-12 gap-x-8 items-center">
+                            <div class="col-span-12 flex items-center">
+                                <label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4 ml-2">
+                                    <span class="text-error mr-1">*</span>采购公告格式：
+                                </label>
+                                <div class="flex items-center gap-4">
+                                    <label class="flex items-center gap-1.5 cursor-pointer">
+                                        <div
+                                            class="w-3.5 h-3.5 rounded-full border border-primary flex items-center justify-center">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                        </div>
+                                        <span class="text-on-surface text-[13px]">范本</span>
+                                    </label>
+                                    <label class="flex items-center gap-1.5 cursor-pointer">
+                                        <div class="w-3.5 h-3.5 rounded-full border border-outline"></div>
+                                        <span class="text-on-surface text-[13px]">富文本</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 3: Announcement Content -->
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox"
+                            class="row-checkbox mt-2 w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <div class="flex-grow grid grid-cols-12 gap-x-8 items-start">
+                            <div class="col-span-12 flex items-start">
+                                <label class="text-on-surface-variant text-[13px] whitespace-nowrap mr-4 ml-4 mt-2">
+                                    <span class="text-error mr-1">*</span>公告内容：
+                                </label>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="flex items-center gap-2 border border-outline px-3 py-1.5 rounded bg-[#fcfcfc] relative group">
+                                        <span class="material-symbols-outlined text-red-500 text-[18px]"
+                                            style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+                                        <span class="text-[13px] text-on-surface">测试采购公告.pdf</span>
+                                        <div
+                                            class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-error rounded-full flex items-center justify-center cursor-pointer">
+                                            <span class="material-symbols-outlined text-white text-[10px]"
+                                                data-icon="close">close</span>
+                                        </div>
+                                    </div>
+                                    <a class="text-primary text-[13px] hover:underline" href="#">去编辑 &gt;&gt;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 4: Internal Attachments -->
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox"
+                            class="row-checkbox mt-1 w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <div class="flex-grow grid grid-cols-12 gap-x-8 items-start">
+                            <div class="col-span-12 flex flex-col">
+                                <div class="flex items-start">
+                                    <label
+                                        class="text-on-surface-variant text-[13px] leading-tight text-right w-[100px] mr-4 mt-1">
+                                        公告附件<br />(仅内部可见)：
+                                    </label>
+                                    <button
+                                        class="flex items-center gap-1 border border-outline px-3 py-1 rounded text-[13px] hover:bg-gray-50 text-on-surface">
+                                        <span class="material-symbols-outlined text-[16px]">add</span>
+                                        添加附件
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Row 5: Supplier Attachments -->
+                    <div class="flex items-start gap-3 pb-4">
+                        <input type="checkbox"
+                            class="row-checkbox mt-1 w-4 h-4 text-primary border-outline rounded focus:ring-primary cursor-pointer"
+                            checked>
+                        <div class="flex-grow grid grid-cols-12 gap-x-8 items-start">
+                            <div class="col-span-12 flex flex-col gap-3">
+                                <div class="flex items-start">
+                                    <label class="text-error text-[13px] leading-tight text-right w-[100px] mr-4 mt-1">
+                                        <span class="mr-1">*</span>公告附件<br />(供应商可见)：
+                                    </label>
+                                    <div class="flex flex-col gap-3">
+                                        <div
+                                            class="flex items-center gap-2 border border-outline px-3 py-1.5 rounded bg-[#fcfcfc] relative w-fit">
+                                            <span class="material-symbols-outlined text-red-500 text-[18px]"
+                                                style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+                                            <span class="text-[13px] text-on-surface">测试采购公告.pdf</span>
+                                            <span
+                                                class="material-symbols-outlined text-gray-400 text-[16px] ml-1">close</span>
+                                            <span
+                                                class="absolute -right-6 top-1/2 -translate-y-1/2 bg-[#faad14] text-white text-[10px] px-1 rounded-sm">模</span>
+                                        </div>
+                                        <button
+                                            class="flex items-center gap-1 border border-outline px-3 py-1 rounded text-[13px] hover:bg-gray-50 text-on-surface w-fit">
+                                            <span class="material-symbols-outlined text-[16px]">add</span>
+                                            添加附件
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="px-6 py-4 flex justify-end items-center gap-3">
+            <button
+                class="px-8 py-1.5 border border-outline text-[13px] text-on-surface hover:bg-gray-50 rounded transition-all">
+                取消
+            </button>
+            <button
+                class="px-6 py-1.5 bg-primary text-on-primary text-[13px] font-medium rounded hover:bg-primary/90 transition-all shadow-sm">
+                确认使用
+            </button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectAll = document.getElementById('selectAll');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+
+            // Select All change event
+            selectAll.addEventListener('change', (e) => {
+                rowCheckboxes.forEach(cb => {
+                    cb.checked = e.target.checked;
+                });
+            });
+
+            // Row checkbox change event
+            rowCheckboxes.forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const allChecked = Array.from(rowCheckboxes).every(c => c.checked);
+                    selectAll.checked = allChecked;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
