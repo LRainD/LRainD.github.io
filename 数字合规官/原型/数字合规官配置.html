@@ -127,8 +127,8 @@
         id: '1',
         orgName: '北京总部-采购中心',
         scope: '本下级',
-        systems: ['招投标系统', '合同系统'],
-        personnel: ['张合规', '李风控'],
+        systems: ['招投标', '合同'],
+        personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
         updateTime: '2026-03-24 13:01:08',
         status: true,
@@ -138,8 +138,8 @@
         id: '2',
         orgName: '华东区分公司',
         scope: '本级',
-        systems: ['招投标系统'],
-        personnel: ['王小明'],
+        systems: ['招投标'],
+        personnel: ['王小明(wangxiaoming)'],
         avatar: '',
         updateTime: '2025-12-11 17:59:22',
         status: true,
@@ -149,8 +149,8 @@
         id: '3',
         orgName: '华南区分公司',
         scope: '本级',
-        systems: ['合同系统'],
-        personnel: ['赵法务'],
+        systems: ['合同'],
+        personnel: ['赵法务(zhaofawu)'],
         avatar: '',
         updateTime: '2025-12-09 20:08:43',
         status: false,
@@ -180,11 +180,11 @@
 
     // 人员 mock 数据
     const personnelOptions = [
-      { label: '张合规 (采购商)', value: '张合规' },
-      { label: '李风控 (采购商)', value: '李风控' },
-      { label: '王小明 (采购商)', value: '王小明' },
-      { label: '赵法务 (采购商)', value: '赵法务' },
-      { label: '孙专员 (采购商)', value: '孙专员' },
+      { label: '张合规 (zhanghegui)', value: '张合规(zhanghegui)' },
+      { label: '李风控 (lifengkong)', value: '李风控(lifengkong)' },
+      { label: '王小明 (wangxiaoming)', value: '王小明(wangxiaoming)' },
+      { label: '赵法务 (zhaofawu)', value: '赵法务(zhaofawu)' },
+      { label: '孙专员 (sunzhuanyuan)', value: '孙专员(sunzhuanyuan)' },
     ];
 
     const App = () => {
@@ -195,6 +195,8 @@
       const [isModalOpen, setIsModalOpen] = React.useState(false); // 弹窗状态
       const [form] = Form.useForm();
       const [searchStatus, setSearchStatus] = React.useState('全部'); // 筛选状态
+      const [searchOrgNode, setSearchOrgNode] = React.useState(undefined); // 组织机构筛选
+      const [includeChildren, setIncludeChildren] = React.useState(true); // 包含下级复选框
 
       // 处理状态切换
       const handleStatusChange = (checked, record) => {
@@ -432,7 +434,28 @@
                     <div className="filter-title">查询</div>
                     <Form layout="inline">
                       <Form.Item label="组织名称">
-                        <Input placeholder="请输入组织名称" style={{ width: 240 }} />
+                        <Input placeholder="请输入组织名称" style={{ width: 200 }} />
+                      </Form.Item>
+                      <Form.Item label="组织机构" style={{ marginRight: 0 }}>
+                        <TreeSelect
+                          style={{ width: 200 }}
+                          value={searchOrgNode}
+                          dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                          treeData={treeData}
+                          placeholder="请选择组织"
+                          treeDefaultExpandAll
+                          allowClear
+                          onChange={setSearchOrgNode}
+                        />
+                      </Form.Item>
+                      <Form.Item style={{ marginRight: 24, marginLeft: 8 }}>
+                        <Checkbox 
+                          checked={includeChildren} 
+                          onChange={(e) => setIncludeChildren(e.target.checked)}
+                          disabled={!searchOrgNode}
+                        >
+                          包含下级
+                        </Checkbox>
                       </Form.Item>
                       <Form.Item label="状态">
                         <Select 
@@ -508,8 +531,8 @@
 
                             <Form.Item label="业务系统">
                                 <Checkbox.Group value={viewingRecord.systems} disabled>
-                                    <Checkbox value="招投标系统">招投标系统</Checkbox>
-                                    <Checkbox value="合同系统">合同系统</Checkbox>
+                                    <Checkbox value="招投标">招投标</Checkbox>
+                                    <Checkbox value="合同">合同</Checkbox>
                                 </Checkbox.Group>
                             </Form.Item>
 
@@ -579,8 +602,8 @@
                       rules={[{ required: true, message: '请至少选择一个业务系统' }]}
                     >
                       <Checkbox.Group>
-                        <Checkbox value="招投标系统">招投标系统</Checkbox>
-                        <Checkbox value="合同系统">合同系统</Checkbox>
+                        <Checkbox value="招投标">招投标</Checkbox>
+                        <Checkbox value="合同">合同</Checkbox>
                       </Checkbox.Group>
                     </Form.Item>
 
