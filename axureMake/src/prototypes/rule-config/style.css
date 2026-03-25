@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* 规则配置页面样式 */
+.rule-config-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 左侧边栏样式 */
+.rule-config-page .ant-layout-sider {
+  background: #fff;
+}
+
+.rule-config-page .ant-menu-inline {
+  border-right: none;
+}
+
+.rule-config-page .ant-menu-item-selected {
+  background-color: #e6f4ff;
+  color: #1677ff;
+}
+
+/* 顶部导航样式 */
+.rule-config-page .header {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Tab 样式 */
+.rule-config-page .ant-tabs-nav {
+  margin-bottom: 0;
+}
+
+.rule-config-page .ant-tabs-tab {
+  padding: 12px 24px;
+}
+
+/* 规则树样式 */
+.rule-config-page .ant-tree {
+  background: transparent;
+}
+
+.rule-config-page .ant-tree-treenode {
+  padding: 4px 0;
+}
+
+.rule-config-page .ant-tree-node-content-wrapper {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.rule-config-page .ant-tree-node-content-wrapper:hover {
+  background-color: #f5f5f5;
+}
+
+.rule-config-page .ant-tree-node-selected {
+  background-color: #e6f4ff !important;
+  color: #1677ff;
+}
+
+/* 表单样式 */
+.rule-config-page .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.rule-config-page .ant-form-item-label {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+/* 卡片样式 */
+.rule-config-page .ant-card {
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* 预警级别颜色 */
+.warning-level-high {
+  color: #ff4d4f;
+}
+
+.warning-level-medium-high {
+  color: #fa8c16;
+}
+
+.warning-level-medium {
+  color: #faad14;
+}
+
+.warning-level-low {
+  color: #52c41a;
+}
+
+/* 按钮样式 */
+.rule-config-page .ant-btn-primary {
+  background-color: #1677ff;
+  border-color: #1677ff;
+}
+
+.rule-config-page .ant-btn-primary:hover {
+  background-color: #4096ff;
+  border-color: #4096ff;
+}
+
+/* 分割线样式 */
+.rule-config-page .ant-divider {
+  margin: 24px 0;
+}
+
+/* 标签样式 */
+.rule-config-page .ant-tag {
+  border-radius: 4px;
+}
+
+/* 单选按钮组样式 */
+.rule-config-page .ant-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* 复选框组样式 */
+.rule-config-page .ant-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* 面包屑样式 */
+.rule-config-page .ant-breadcrumb {
+  font-size: 14px;
+}
+
+/* 机构信息样式 */
+.rule-config-page .org-info {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.rule-config-page .org-info-item {
+  font-size: 14px;
+  color: #666;
+}
+
+.rule-config-page .org-info-item strong {
+  color: #333;
+  font-weight: 500;
+}
+
+/* 内层 Tab 样式 */
+.rule-config-page .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+}
+
+.rule-config-page .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+  background: #fff;
+  border-bottom-color: #fff;
+}
+
+/* 树形控件复选框样式 */
+.rule-config-page .ant-tree-checkbox {
+  margin-right: 8px;
+}
+
+/* 响应式适配 */
+@media (max-width: 1200px) {
+  .rule-config-page .ant-layout-sider {
+    width: 200px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .rule-config-page .ant-layout-sider {
+    display: none;
+  }
+  
+  .rule-config-page .header {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+  }
+  
+  .rule-config-page .header .ant-space {
+    margin-top: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
