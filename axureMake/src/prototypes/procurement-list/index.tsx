@@ -46,8 +46,13 @@ import './style.css';
 
 /**
  * @name 编制采购清单
+ * @mode axure
+ *
+ * 参考资料：
+ * - /rules/development-guide.md
+ * - /skills/axure-export-workflow/SKILL.md
  */
-export default function ProcurementList() {
+const Component = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCheckingModalOpen, setIsCheckingModalOpen] = useState(false);
   const [isConfirmCheckModalOpen, setIsConfirmCheckModalOpen] = useState(false);
@@ -1002,4 +1007,6 @@ export default function ProcurementList() {
 
     </div>
   );
-}
+};
+
+export default Component;
