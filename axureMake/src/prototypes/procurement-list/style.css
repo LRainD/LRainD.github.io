@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #007add;
+  --color-primary-dark: #005bb5;
+  --color-background-light: #f5f7fa;
+  --color-background-dark: #121212;
+  --color-sidebar-light: #007add;
+  --color-sidebar-dark: #1e1e1e;
+  --color-border-light: #e5e7eb;
+  --color-border-dark: #374151;
+  --color-text-main: #333333;
+  --color-text-muted: #666666;
+  
+  --font-sans: "Inter", "Noto Sans SC", sans-serif;
+  --text-xxs: 0.65rem;
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    background: #2d2d2d;
+  }
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #555;
+  }
+
+  .chat-container::-webkit-scrollbar {
+    width: 4px;
+  }
+  .chat-container::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+
+  /* Note: Tailwind v4 handles custom utilities differently, but we can still use raw CSS for complex shapes */
+}
+
+/* Complex CSS Shapes */
+.step-arrow {
+  position: relative;
+}
+.step-arrow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -14px;
+  width: 0;
+  height: 0;
+  border-top: 24px solid transparent;
+  border-bottom: 24px solid transparent;
+  border-left: 14px solid #f3f4f6;
+  z-index: 2;
+}
+.step-arrow-active::after {
+  border-left-color: #007add;
+}
+.step-arrow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -14px;
+  width: 0;
+  height: 0;
+  border-top: 24px solid transparent;
+  border-bottom: 24px solid transparent;
+  border-left: 14px solid white;
+  z-index: 1;
+}
+
+.nav-item-active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left: 3px solid #fbbf24;
+}
+
+.backdrop-blur-custom {
+  backdrop-filter: blur(4px);
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.stepper-line {
+  position: absolute;
+  left: 11px;
+  top: 24px;
+  bottom: -8px;
+  width: 1px;
+  background-color: #e5e7eb;
+}
+.dark .stepper-line {
+  background-color: #374151;
+}
+.stepper-item:last-child .stepper-line {
+  display: none;
+}

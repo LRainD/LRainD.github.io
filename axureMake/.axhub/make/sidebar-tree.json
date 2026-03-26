@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-23T10:12:41.733Z",
+  "updatedAt": "2026-03-26T07:59:19.574Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-procurement-list",
+      "kind": "item",
+      "title": "procurement list",
+      "itemKey": "prototypes/procurement-list"
+    },
     {
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
