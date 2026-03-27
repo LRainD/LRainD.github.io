@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-26T08:57:55.267Z",
+  "updatedAt": "2026-03-27T02:11:08.685Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-rule-config",
+      "kind": "item",
+      "title": "rule config",
+      "itemKey": "prototypes/rule-config"
+    },
     {
       "id": "item-prototypes-procurement-list-copy",
       "kind": "item",
@@ -166,6 +172,7 @@
     "firecrawl"
   ],
   "data": [
+    "risk-rules",
     "orders"
   ],
   "templates": [
