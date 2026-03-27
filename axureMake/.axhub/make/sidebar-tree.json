@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-27T02:11:08.685Z",
+  "updatedAt": "2026-03-27T02:31:37.865Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-digital-compliance-officer",
+      "kind": "item",
+      "title": "digital compliance officer",
+      "itemKey": "prototypes/digital-compliance-officer"
+    },
     {
       "id": "item-prototypes-rule-config",
       "kind": "item",
