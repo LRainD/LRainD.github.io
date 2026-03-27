@@ -1,188 +1,453 @@
 @import "tailwindcss";
 
-/* 规则配置页面样式 */
+/* 规则配置页面样式 - 完全匹配截图 */
 .rule-config-page {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
 }
 
-/* 左侧边栏样式 */
-.rule-config-page .ant-layout-sider {
-  background: #fff;
+/* 左侧边栏 */
+.left-sidebar {
+  background: #fff !important;
+  border-right: 1px solid #e8e8e8;
+  position: relative;
 }
 
-.rule-config-page .ant-menu-inline {
-  border-right: none;
-}
-
-.rule-config-page .ant-menu-item-selected {
-  background-color: #e6f4ff;
-  color: #1677ff;
-}
-
-/* 顶部导航样式 */
-.rule-config-page .header {
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Tab 样式 */
-.rule-config-page .ant-tabs-nav {
-  margin-bottom: 0;
-}
-
-.rule-config-page .ant-tabs-tab {
-  padding: 12px 24px;
-}
-
-/* 规则树样式 */
-.rule-config-page .ant-tree {
-  background: transparent;
-}
-
-.rule-config-page .ant-tree-treenode {
-  padding: 4px 0;
-}
-
-.rule-config-page .ant-tree-node-content-wrapper {
-  padding: 4px 8px;
-  border-radius: 4px;
-}
-
-.rule-config-page .ant-tree-node-content-wrapper:hover {
-  background-color: #f5f5f5;
-}
-
-.rule-config-page .ant-tree-node-selected {
-  background-color: #e6f4ff !important;
-  color: #1677ff;
-}
-
-/* 表单样式 */
-.rule-config-page .ant-form-item {
-  margin-bottom: 20px;
-}
-
-.rule-config-page .ant-form-item-label {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.85);
-}
-
-/* 卡片样式 */
-.rule-config-page .ant-card {
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-}
-
-/* 预警级别颜色 */
-.warning-level-high {
-  color: #ff4d4f;
-}
-
-.warning-level-medium-high {
-  color: #fa8c16;
-}
-
-.warning-level-medium {
-  color: #faad14;
-}
-
-.warning-level-low {
-  color: #52c41a;
-}
-
-/* 按钮样式 */
-.rule-config-page .ant-btn-primary {
-  background-color: #1677ff;
-  border-color: #1677ff;
-}
-
-.rule-config-page .ant-btn-primary:hover {
-  background-color: #4096ff;
-  border-color: #4096ff;
-}
-
-/* 分割线样式 */
-.rule-config-page .ant-divider {
-  margin: 24px 0;
-}
-
-/* 标签样式 */
-.rule-config-page .ant-tag {
-  border-radius: 4px;
-}
-
-/* 单选按钮组样式 */
-.rule-config-page .ant-radio-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-/* 复选框组样式 */
-.rule-config-page .ant-checkbox-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-/* 面包屑样式 */
-.rule-config-page .ant-breadcrumb {
-  font-size: 14px;
-}
-
-/* 机构信息样式 */
-.rule-config-page .org-info {
+.left-sidebar .logo {
+  height: 48px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  padding: 0 16px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
-.rule-config-page .org-info-item {
+.left-sidebar .logo-icon {
+  font-size: 20px;
+  color: #1890ff;
+}
+
+.left-sidebar .logo-text {
+  margin-left: 8px;
   font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.left-sidebar .sidebar-menu {
+  border-right: none;
+  padding-top: 8px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-item {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.left-sidebar .collapse-btn {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  padding: 8px;
+  color: #999;
+}
+
+/* 主布局 */
+.main-layout {
+  background: #f0f2f5;
+}
+
+/* 顶部导航栏 */
+.top-header {
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+
+.top-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-header .ant-btn-text {
+  color: #666;
+  font-size: 13px;
+}
+
+/* 面包屑导航栏 */
+.breadcrumb-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 8px 16px;
+}
+
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.breadcrumb-item {
   color: #666;
 }
 
-.rule-config-page .org-info-item strong {
+.breadcrumb-item.active {
   color: #333;
   font-weight: 500;
 }
 
-/* 内层 Tab 样式 */
-.rule-config-page .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
-  background: #fafafa;
-  border: 1px solid #f0f0f0;
+.breadcrumb-separator {
+  color: #999;
 }
 
-.rule-config-page .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+/* 机构信息栏 */
+.org-info-bar {
   background: #fff;
-  border-bottom-color: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* 树形控件复选框样式 */
-.rule-config-page .ant-tree-checkbox {
-  margin-right: 8px;
+.org-info-bar .org-search {
+  flex: 1;
 }
 
-/* 响应式适配 */
+.org-info-bar .search-input {
+  width: 320px;
+}
+
+.org-info-bar .search-input .ant-input {
+  background: #f5f5f5;
+  border: none;
+}
+
+.org-info-bar .org-details {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.org-info-item {
+  font-size: 13px;
+}
+
+.org-label {
+  color: #666;
+}
+
+.org-value {
+  color: #333;
+}
+
+/* 业务线 Tab */
+.business-tabs {
+  height: 40px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  padding: 0 16px;
+}
+
+.business-tabs .tab-item {
+  padding: 0 24px;
+  line-height: 38px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.business-tabs .tab-item:hover {
+  color: #1890ff;
+}
+
+.business-tabs .tab-item.active {
+  color: #1890ff;
+  border-bottom-color: #1890ff;
+}
+
+/* 主内容区 */
+.main-content {
+  padding: 16px;
+  overflow: auto;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 16px;
+  background: #fff;
+  border-radius: 4px;
+  min-height: calc(100vh - 140px);
+}
+
+/* 左侧规则树面板 */
+.rule-tree-panel {
+  width: 320px;
+  border-right: 1px solid #e8e8e8;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-search {
+  padding: 12px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.tree-search-input {
+  width: 100%;
+}
+
+.tree-search-input .ant-input {
+  background: #f5f5f5;
+  border: none;
+}
+
+/* 树形组件样式 */
+.rule-tree {
+  flex: 1;
+  overflow: auto;
+}
+
+.rule-tree .ant-tree-treenode {
+  padding: 0;
+}
+
+.rule-tree .ant-tree-node-content-wrapper {
+  padding: 4px 8px;
+  min-height: 32px;
+}
+
+.rule-tree .ant-tree-node-content-wrapper:hover {
+  background: #f5f5f5;
+}
+
+.rule-tree .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background: #e6f7ff;
+}
+
+.tree-node-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 规则项样式 */
+.tree-rule-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.rule-type-tag {
+  font-size: 11px;
+  padding: 0 4px;
+  height: 18px;
+  line-height: 16px;
+  margin: 0;
+}
+
+.rule-status-tag {
+  font-size: 11px;
+  padding: 0 4px;
+  height: 18px;
+  line-height: 16px;
+  margin: 0;
+}
+
+.rule-level-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rule-name-text {
+  color: #333;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* 右侧配置面板 */
+.config-panel {
+  flex: 1;
+  padding: 16px;
+}
+
+/* 配置标签页 */
+.config-tabs {
+  display: flex;
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 16px;
+}
+
+.config-tab {
+  padding: 8px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  border: 1px solid #e8e8e8;
+  border-bottom: none;
+  background: #fafafa;
+  margin-right: 4px;
+  border-radius: 4px 4px 0 0;
+}
+
+.config-tab:hover {
+  color: #1890ff;
+}
+
+.config-tab.active {
+  background: #fff;
+  color: #1890ff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+/* 配置内容 */
+.config-content {
+  padding: 16px 0;
+}
+
+/* 黄色提示条 */
+.warning-alert {
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+/* 配置区块 */
+.config-section {
+  margin-bottom: 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-switch {
+  margin-left: auto;
+}
+
+.add-rule-btn {
+  margin-left: 16px;
+}
+
+/* 表单区域 */
+.config-form {
+  margin-bottom: 24px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-label {
+  width: 120px;
+  font-size: 13px;
+  color: #333;
+  text-align: right;
+  padding-right: 16px;
+  flex-shrink: 0;
+}
+
+.form-value {
+  flex: 1;
+}
+
+.level-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+/* 表格区域 */
+.table-section {
+  margin-bottom: 24px;
+}
+
+.config-table {
+  margin-bottom: 16px;
+}
+
+.config-table .ant-table-cell {
+  font-size: 13px;
+  padding: 8px 12px;
+}
+
+.add-row-btn {
+  border-style: dashed;
+}
+
+/* 提交区域 */
+.submit-section {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.submit-btn {
+  min-width: 120px;
+}
+
+/* 空内容 */
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+  color: #999;
+}
+
+/* 响应式 */
 @media (max-width: 1200px) {
-  .rule-config-page .ant-layout-sider {
-    width: 200px !important;
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .rule-tree-panel {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e8e8e8;
   }
 }
 
-@media (max-width: 768px) {
-  .rule-config-page .ant-layout-sider {
-    display: none;
-  }
-  
-  .rule-config-page .header {
-    flex-direction: column;
-    height: auto;
-    padding: 16px;
-  }
-  
-  .rule-config-page .header .ant-space {
-    margin-top: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+/* 树形组件覆盖样式 */
+.rule-tree .ant-tree-switcher {
+  width: 16px;
+}
+
+.rule-tree .ant-tree-indent-unit {
+  width: 16px;
 }
