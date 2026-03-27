@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-23T10:12:41.733Z",
+  "updatedAt": "2026-03-26T08:57:55.267Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-procurement-list-copy",
+      "kind": "item",
+      "title": "procurement list copy",
+      "itemKey": "prototypes/procurement-list-copy"
+    },
+    {
+      "id": "item-prototypes-procurement-list",
+      "kind": "item",
+      "title": "procurement list",
+      "itemKey": "prototypes/procurement-list"
+    },
     {
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
@@ -43,6 +55,24 @@
     }
   ],
   "docs": [
+    {
+      "id": "item-docs-memory-log-md",
+      "kind": "item",
+      "title": "memory log.md",
+      "itemKey": "docs/memory-log.md"
+    },
+    {
+      "id": "item-docs-page-map-md",
+      "kind": "item",
+      "title": "page map.md",
+      "itemKey": "docs/page-map.md"
+    },
+    {
+      "id": "item-docs-project-overview-md",
+      "kind": "item",
+      "title": "project overview.md",
+      "itemKey": "docs/project-overview.md"
+    },
     {
       "id": "item-docs-templates-memory-log-template-md",
       "kind": "item",
