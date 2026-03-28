@@ -412,57 +412,58 @@ const Component = () => {
             </div>
           </div>
 
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-sm mb-4 border border-gray-200 dark:border-gray-700 flex text-sm">
-            <div className="flex-1 bg-primary text-white py-3 text-center font-medium step-arrow step-arrow-active z-30">
-              采购发起
+          <div className="bg-white dark:bg-gray-800 rounded-sm mb-4 border border-gray-200 dark:border-gray-700">
+            <div className="bg-gray-100 dark:bg-gray-800 flex text-sm">
+              <div className="flex-1 bg-primary text-white py-3 text-center font-medium step-arrow step-arrow-active z-30">
+                采购发起
+              </div>
+              <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-20 border-r border-white dark:border-gray-600">
+                采购响应
+              </div>
+              <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-10 border-r border-white dark:border-gray-600">
+                文件开启
+              </div>
+              <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-0 border-r border-white dark:border-gray-600">
+                采购评审
+              </div>
+              <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center">
+                采购成交
+              </div>
             </div>
-            <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-20 border-r border-white dark:border-gray-600">
-              采购响应
-            </div>
-            <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-10 border-r border-white dark:border-gray-600">
-              文件开启
-            </div>
-            <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center step-arrow z-0 border-r border-white dark:border-gray-600">
-              采购评审
-            </div>
-            <div className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-400 py-3 text-center">
-              采购成交
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 p-8 mb-4 rounded border border-gray-200 dark:border-gray-700 relative">
-            <div className="flex justify-between items-end relative z-10 px-12">
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-primary font-medium mb-3 whitespace-nowrap">采购基本信息</span>
-                <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center relative z-10">
-                  <Check className="w-3 h-3 text-white font-bold" />
+            <div className="pt-6 px-8 pb-8 relative">
+              <div className="flex justify-between items-end relative z-10 px-12">
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-primary font-medium mb-3 whitespace-nowrap">采购基本信息</span>
+                  <div className="w-4 h-4 rounded-full bg-primary flex items-center justify-center relative z-10">
+                    <Check className="w-3 h-3 text-white font-bold" />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-primary font-medium mb-3 whitespace-nowrap">编制采购清单</span>
+                  <div className="w-4 h-4 rounded-full border-2 border-primary bg-white dark:bg-gray-800 relative z-10"></div>
+                </div>
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">编制采购(资格预审)公告</span>
+                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
+                </div>
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">发布采购(资格预审)公告</span>
+                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
+                </div>
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">报名与资审汇总</span>
+                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
+                </div>
+                <div className="flex flex-col items-center relative w-1/6">
+                  <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">资审结果通知</span>
+                  <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
                 </div>
               </div>
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-primary font-medium mb-3 whitespace-nowrap">编制采购清单</span>
-                <div className="w-4 h-4 rounded-full border-2 border-primary bg-white dark:bg-gray-800 relative z-10"></div>
+              <div className="absolute bottom-[39px] left-0 right-0 px-24 z-0">
+                <div className="w-full h-[1px] bg-gray-200 dark:bg-gray-700"></div>
               </div>
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">编制采购(资格预审)公告</span>
-                <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
-              </div>
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">发布采购(资格预审)公告</span>
-                <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
-              </div>
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">报名与资审汇总</span>
-                <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
-              </div>
-              <div className="flex flex-col items-center relative w-1/6">
-                <span className="text-[11px] text-gray-400 mb-3 whitespace-nowrap">资审结果通知</span>
-                <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 relative z-10"></div>
-              </div>
+              <div className="absolute bottom-[39px] left-[calc(8.3%)] w-[calc(33.3%)] h-[1px] bg-primary z-0"></div>
             </div>
-            <div className="absolute bottom-[39px] left-0 right-0 px-24 z-0">
-              <div className="w-full h-[1px] bg-gray-200 dark:bg-gray-700"></div>
-            </div>
-            <div className="absolute bottom-[39px] left-[calc(8.3%)] w-[calc(33.3%)] h-[1px] bg-primary z-0"></div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
