@@ -12,6 +12,8 @@
  */
 
 import './style.css';
+import logoImage from '../../../assets/media/运营后台左上角logo.png';
+
 import React, { useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 import {
   Layout,
@@ -50,7 +52,17 @@ import {
   BellOutlined,
   UserOutlined,
   DownOutlined,
-  UploadOutlined
+  UploadOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  TeamOutlined,
+  SettingOutlined,
+  SafetyCertificateOutlined,
+  AuditOutlined,
+  FileProtectOutlined,
+  ContainerOutlined,
+  WarningOutlined,
+  ShoppingCartOutlined
 } from '@ant-design/icons';
 
 import type {
@@ -146,6 +158,39 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const [searchStatus, setSearchStatus] = useState('全部');
   const [searchOrgNode, setSearchOrgNode] = useState<string | undefined>(undefined);
   const [includeChildren, setIncludeChildren] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
+
+  // 左侧菜单项 - 根据参考页面结构定义
+  const menuItems = [
+    { key: 'supplier_mgmt', icon: <TeamOutlined />, label: '分供商管理' },
+    { key: 'template_mgmt', icon: <FileTextOutlined />, label: '模板管理' },
+    { key: 'procurement_plan', icon: <ShoppingCartOutlined />, label: '采购计划管理' },
+    { key: 'bidding', icon: <AuditOutlined />, label: '招标采购' },
+    { key: 'config_mgmt', icon: <SettingOutlined />, label: '配置管理' },
+    { key: 'identity_mgmt', icon: <SafetyCertificateOutlined />, label: '身份管理' },
+    { key: 'solution', icon: <SolutionOutlined />, label: '解决方案' },
+    { key: 'contract_mgmt', icon: <FileProtectOutlined />, label: '合同管理' },
+    { key: 'performance_mgmt', icon: <CheckSquareOutlined />, label: '履约管理' },
+    { key: 'inspection', icon: <ContainerOutlined />, label: '收验货' },
+    { key: 'marketing_mgmt', icon: <ShopOutlined />, label: '营销管理' },
+    { key: 'operation_tools', icon: <ToolOutlined />, label: '运营工具' },
+    {
+      key: 'risk_warning_center',
+      icon: <WarningOutlined />,
+      label: '风控预警中心',
+      children: [
+        { key: 'field_config', label: '字段配置' },
+        { key: 'rule_config', label: '规则配置' },
+        { key: 'scene_mgmt', label: '场景管理' },
+        { key: 'warning_config', label: '预警配置' },
+        { key: 'operation_mgmt', label: '运营管理' },
+        { key: 'rule_mgmt', label: '规则管理' },
+        { key: 'notification_center', label: '通知中心' },
+        { key: 'log_center', label: '日志中心' },
+        { key: 'digital-compliance', label: '数字合规官' }
+      ]
+    }
+  ];
 
   // Helper: Get org value from org name
   const getOrgValue = (orgName: string) => {
@@ -399,66 +444,60 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   });
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={220} theme="light" style={{ borderRight: '1px solid #f0f0f0' }}>
-        <div className="logo-container">
-          <AppstoreOutlined className="logo-icon" />
-          集采运营后台
+    <Layout className="rule-config-page">
+      {/* 左侧边栏 */}
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        width={200}
+        collapsedWidth={60}
+        className="left-sidebar"
+      >
+        <div className="logo">
+          <img src={logoImage} alt="运营后台logo" className="logo-icon" />
+          {!collapsed && <span className="logo-text">集采运营后台</span>}
         </div>
         <Menu
           mode="inline"
-          defaultSelectedKeys={['digital-compliance']}
-          defaultOpenKeys={['risk']}
-          style={{ height: 'calc(100% - 60px)', borderRight: 0 }}
-        >
-          <Menu.Item key="1" icon={<AppstoreOutlined />}>分供商管理</Menu.Item>
-          <Menu.Item key="2" icon={<SolutionOutlined />}>模板管理</Menu.Item>
-          <Menu.SubMenu key="procurement" icon={<ShopOutlined />} title="采购过程">
-            <Menu.Item key="p1">需求管理</Menu.Item>
-          </Menu.SubMenu>
-          <Menu.SubMenu key="config" icon={<AppstoreOutlined />} title="配置管理"></Menu.SubMenu>
-          <Menu.SubMenu key="identity" icon={<UserOutlined />} title="身份管理"></Menu.SubMenu>
-          <Menu.SubMenu key="solution" icon={<FileTextOutlined />} title="解决方案"></Menu.SubMenu>
-          <Menu.SubMenu key="contract" icon={<FileTextOutlined />} title="合同管理"></Menu.SubMenu>
-          <Menu.SubMenu key="plan" icon={<ScheduleOutlined />} title="采购计划管理"></Menu.SubMenu>
-          <Menu.SubMenu key="perform" icon={<CheckSquareOutlined />} title="履约管理"></Menu.SubMenu>
-          <Menu.SubMenu key="receive" icon={<CarOutlined />} title="收验货"></Menu.SubMenu>
-          <Menu.SubMenu key="marketing" icon={<ShopOutlined />} title="营销管理"></Menu.SubMenu>
-          <Menu.SubMenu key="risk-early" icon={<AlertOutlined />} title="风控预警"></Menu.SubMenu>
-          <Menu.SubMenu key="tool" icon={<ToolOutlined />} title="运营工具"></Menu.SubMenu>
-
-          <Menu.SubMenu key="risk" icon={<AlertOutlined />} title="风控预警中心">
-            <Menu.Item key="field">字段配置</Menu.Item>
-            <Menu.Item key="rule">规则配置</Menu.Item>
-            <Menu.Item key="scene">场景管理</Menu.Item>
-            <Menu.Item key="alert">预警配置</Menu.Item>
-            <Menu.Item key="operate">运营管理</Menu.Item>
-            <Menu.Item key="rule-manage">规则管理</Menu.Item>
-            <Menu.Item key="notice">通知中心</Menu.Item>
-            <Menu.Item key="log">日志中心</Menu.Item>
-            <Menu.Item key="digital-compliance">数字合规官</Menu.Item>
-          </Menu.SubMenu>
-        </Menu>
+          selectedKeys={['digital-compliance']}
+          defaultOpenKeys={['risk_warning_center']}
+          items={menuItems}
+          className="sidebar-menu"
+        />
+        <div className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </div>
       </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: '#fff', height: 60, lineHeight: '60px', borderBottom: '1px solid #f0f0f0' }}>
-          <div className="header-content">
-            <div>
-              <Breadcrumb style={{ display: 'inline-block' }}>
-                <Breadcrumb.Item>风控预警中心</Breadcrumb.Item>
-                <Breadcrumb.Item>数字合规官配置</Breadcrumb.Item>
-                {view !== 'list' && <Breadcrumb.Item>{view === 'add' ? '新增配置' : '编辑配置'}</Breadcrumb.Item>}
-              </Breadcrumb>
-            </div>
-            <div>
-              <Space size="large">
-                <span><BellOutlined /> 下载中心</span>
-                <span><Avatar size="small" icon={<UserOutlined />} style={{ backgroundColor: '#1677ff' }} /> jctest1 <DownOutlined style={{ fontSize: '12px' }} /></span>
-              </Space>
-            </div>
+
+      {/* 主内容区 */}
+      <Layout className="main-layout">
+        {/* 顶部导航栏 */}
+        <div className="top-header">
+          <div className="header-right">
+            <Button type="text" icon={<BellOutlined />}>下载中心</Button>
+            <Button type="text" icon={<UserOutlined />}>jctest1</Button>
           </div>
-        </Header>
-        <Content style={{ margin: '24px' }}>
+        </div>
+
+        {/* 面包屑导航栏 */}
+        <div className="breadcrumb-bar">
+          <div className="breadcrumb-nav">
+            <span className="breadcrumb-item">风控预警中心</span>
+            <span className="breadcrumb-separator">&gt;</span>
+            <span className="breadcrumb-item active">数字合规官配置</span>
+            {view !== 'list' && (
+              <>
+                <span className="breadcrumb-separator">&gt;</span>
+                <span className="breadcrumb-item active">{view === 'add' ? '新增配置' : '编辑配置'}</span>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* 页面主体内容 */}
+        <Content className="main-content">
+          <div className="content-wrapper">
           {view === 'list' && (
             <>
               <Card className="filter-card" bodyStyle={{ padding: '20px 24px' }}>
@@ -682,6 +721,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               </Form>
             </Card>
           )}
+          </div>
         </Content>
       </Layout>
     </Layout>
