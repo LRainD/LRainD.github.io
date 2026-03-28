@@ -88,10 +88,11 @@ const initialData = [
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-    createTime: '2026-03-24 13:01:08',
+    createTime: '2026-03-20 09:15:00',
     updateTime: '2026-03-24 13:01:08',
     status: true,
-    operator: 'jctest1',
+    creator: 'admin',
+    updater: 'jctest1',
   },
   {
     id: '2',
@@ -100,10 +101,11 @@ const initialData = [
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
     avatar: '',
-    createTime: '2025-12-11 17:59:22',
+    createTime: '2025-12-01 10:30:00',
     updateTime: '2025-12-11 17:59:22',
     status: true,
-    operator: 'admin',
+    creator: 'admin',
+    updater: 'admin',
   },
   {
     id: '3',
@@ -112,10 +114,11 @@ const initialData = [
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
     avatar: '',
-    createTime: '2025-12-09 20:08:43',
+    createTime: '2025-11-25 14:45:00',
     updateTime: '2025-12-09 20:08:43',
     status: false,
-    operator: 'admin',
+    creator: 'jctest1',
+    updater: 'admin',
   }
 ];
 
@@ -295,7 +298,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         createTime: currentTime,
         updateTime: currentTime,
         status: true,
-        operator: 'jctest1',
+        creator: 'jctest1',
+        updater: 'jctest1',
       };
       setDataSource([newRecord, ...dataSource]);
       message.success('保存成功');
@@ -321,7 +325,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               second: '2-digit',
               hour12: false
             }).replace(/\//g, '-'),
-            operator: 'jctest1',
+            updater: 'jctest1',
           };
         }
         return item;
@@ -380,23 +384,26 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   // Table columns
   const columns = [
     { title: '序号', dataIndex: 'index', key: 'index', render: (_: any, __: any, index: number) => index + 1, width: 80 },
-    { title: '组织名称', dataIndex: 'orgName', key: 'orgName' },
+    { title: '组织名称', dataIndex: 'orgName', key: 'orgName', width: 180 },
     {
       title: '配置范围',
       dataIndex: 'scope',
       key: 'scope',
+      width: 120,
       render: (text: string) => <Tag color={text === '本级' ? 'blue' : 'cyan'}>{text}</Tag>
     },
     {
       title: '业务系统',
       dataIndex: 'systems',
       key: 'systems',
+      width: 150,
       render: (systems: string[]) => systems.join('，')
     },
     {
       title: '合规人员',
       dataIndex: 'personnel',
       key: 'personnel',
+      width: 200,
       render: (personnel: string[]) => {
         if (!personnel || personnel.length === 0) return '-';
         if (personnel.length === 1) return personnel[0];
@@ -407,16 +414,18 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       title: '合规官头像',
       dataIndex: 'avatar',
       key: 'avatar',
+      width: 100,
       render: (avatar: string) => avatar ?
         <Image src={avatar} width={32} height={32} style={{ borderRadius: '50%', objectFit: 'cover' }} /> :
         <div className="avatar-placeholder"><UserOutlined /></div>
     },
-    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
-    { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime' },
+    { title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: 180 },
+    { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', width: 180 },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
+      width: 100,
       render: (status: boolean, record: any) => (
         <Switch
           checked={status}
@@ -426,10 +435,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         />
       )
     },
-    { title: '操作人', dataIndex: 'operator', key: 'operator' },
+    { title: '创建人', dataIndex: 'creator', key: 'creator', width: 120 },
+    { title: '更新人', dataIndex: 'updater', key: 'updater', width: 120 },
     {
       title: '操作',
       key: 'action',
+      width: 150,
+      fixed: 'right',
       render: (_: any, record: any) => (
         <Space size="middle">
           <a onClick={() => openViewModal(record)}>查看</a>
@@ -559,18 +571,21 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   <div></div>
                   <Button type="primary" icon={<PlusOutlined />} onClick={() => goForm()}>新增配置</Button>
                 </div>
-                <Table
-                  columns={columns}
-                  dataSource={filteredData}
-                  rowKey="id"
-                  pagination={{
-                    total: filteredData.length,
-                    showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`,
-                    defaultPageSize: 10,
-                    showSizeChanger: true,
-                    showQuickJumper: true,
-                  }}
-                />
+                <div style={{ overflowX: 'auto' }}>
+                  <Table
+                    columns={columns}
+                    dataSource={filteredData}
+                    rowKey="id"
+                    pagination={{
+                      total: filteredData.length,
+                      showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`,
+                      defaultPageSize: 10,
+                      showSizeChanger: true,
+                      showQuickJumper: true,
+                    }}
+                    scroll={{ x: 1200 }}
+                  />
+                </div>
               </Card>
 
               <Modal
