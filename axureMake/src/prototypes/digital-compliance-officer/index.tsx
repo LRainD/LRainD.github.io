@@ -88,6 +88,7 @@ const initialData = [
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    createTime: '2026-03-24 13:01:08',
     updateTime: '2026-03-24 13:01:08',
     status: true,
     operator: 'jctest1',
@@ -99,6 +100,7 @@ const initialData = [
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
     avatar: '',
+    createTime: '2025-12-11 17:59:22',
     updateTime: '2025-12-11 17:59:22',
     status: true,
     operator: 'admin',
@@ -110,6 +112,7 @@ const initialData = [
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
     avatar: '',
+    createTime: '2025-12-09 20:08:43',
     updateTime: '2025-12-09 20:08:43',
     status: false,
     operator: 'admin',
@@ -273,6 +276,15 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     }
 
     if (view === 'add') {
+      const currentTime = new Date().toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).replace(/\//g, '-');
       const newRecord = {
         id: Date.now().toString(),
         orgName: selectedOrgTitle,
@@ -280,15 +292,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         systems: values.systems,
         personnel: values.personnel,
         avatar: '',
-        updateTime: new Date().toLocaleString('zh-CN', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: false
-        }).replace(/\//g, '-'),
+        createTime: currentTime,
+        updateTime: currentTime,
         status: true,
         operator: 'jctest1',
       };
@@ -406,6 +411,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         <Image src={avatar} width={32} height={32} style={{ borderRadius: '50%', objectFit: 'cover' }} /> :
         <div className="avatar-placeholder"><UserOutlined /></div>
     },
+    { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
     { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime' },
     {
       title: '状态',
