@@ -15,6 +15,7 @@ import {
   Wallet, 
   Shield, 
   ChevronsLeft,
+  ChevronsRight,
   Bot,
   Headset,
   UserCog,
@@ -54,6 +55,7 @@ import './style.css';
  * - /skills/axure-export-workflow/SKILL.md
  */
 const Component = () => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isCheckingModalOpen, setIsCheckingModalOpen] = useState(false);
   const [isConfirmCheckModalOpen, setIsConfirmCheckModalOpen] = useState(false);
@@ -129,88 +131,150 @@ const Component = () => {
   return (
     <div className="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-sans h-screen flex overflow-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-sidebar-light dark:bg-sidebar-dark flex-shrink-0 flex flex-col text-white transition-all duration-300">
-        <div className="h-14 flex items-center px-4 font-bold text-xl tracking-wide bg-white text-blue-500">
+      <aside className={`${isSidebarCollapsed ? 'w-16' : 'w-64'} bg-sidebar-light dark:bg-sidebar-dark flex-shrink-0 flex flex-col text-white transition-all duration-300 overflow-visible`}>
+        <div className="h-14 flex items-center justify-center font-bold text-xl tracking-wide bg-white text-blue-500 w-64 relative z-50">
           <img src={logoImage} alt="集采工作台" className="h-8" />
         </div>
         <nav className="flex-1 overflow-y-auto py-2 text-sm custom-scrollbar">
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <Home className="w-[18px] h-[18px] mr-3" />
-            首页
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Home className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>首页</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                首页
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <UserPlus className="w-[18px] h-[18px] mr-3" />
-            权限申请菜单测试
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <UserPlus className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>权限申请菜单测试</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                权限申请菜单测试
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <ShoppingCart className="w-[18px] h-[18px] mr-3" />
-            采购列表
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <ShoppingCart className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>采购列表</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                采购列表
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-between">
-            <div className="flex items-center">
-              <Store className="w-[18px] h-[18px] mr-3" />
-              分供商管理
-            </div>
-            <ChevronDown className="w-4 h-4" />
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Store className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>分供商管理</span>
+            {!isSidebarCollapsed && <ChevronDown className="w-4 h-4 ml-auto" />}
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                分供商管理
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-between">
-            <div className="flex items-center">
-              <Calendar className="w-[18px] h-[18px] mr-3" />
-              采购计划管理
-            </div>
-            <ChevronDown className="w-4 h-4" />
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Calendar className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>采购计划管理</span>
+            {!isSidebarCollapsed && <ChevronDown className="w-4 h-4 ml-auto" />}
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                采购计划管理
+              </div>
+            )}
           </div>
           <div className="bg-black/10 pb-1">
-            <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-between">
-              <div className="flex items-center">
-                <Gavel className="w-[18px] h-[18px] mr-3" />
-                招标采购
+            <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+              <Gavel className="w-[18px] h-[18px] flex-shrink-0" />
+              <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>招标采购</span>
+              {!isSidebarCollapsed && <ChevronUp className="w-4 h-4 ml-auto" />}
+              {isSidebarCollapsed && (
+                <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                  招标采购
+                </div>
+              )}
+            </div>
+            {!isSidebarCollapsed && (
+              <>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
+                  待采购任务
+                </div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
+                  招标/采购稽查
+                </div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
+                  集中资格预审列表
+                </div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
+                  招标列表
+                </div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer nav-item-active font-medium">
+                  非招标采购
+                </div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
+                  采购列表
+                </div>
+              </>
+            )}
+          </div>
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Users className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>推荐人管理</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                推荐人管理
               </div>
-              <ChevronUp className="w-4 h-4" />
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
-              待采购任务
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
-              招标/采购稽查
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
-              集中资格预审列表
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
-              招标列表
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer nav-item-active font-medium">
-              非招标采购
-            </div>
-            <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">
-              采购列表
-            </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <Users className="w-[18px] h-[18px] mr-3" />
-            推荐人管理
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <FileCheck className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>评标/评审专家列表</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                评标/评审专家列表
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <FileCheck className="w-[18px] h-[18px] mr-3" />
-            评标/评审专家列表
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <ShieldCheck className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>厂家直签审核</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                厂家直签审核
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <ShieldCheck className="w-[18px] h-[18px] mr-3" />
-            厂家直签审核
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Wallet className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>投标/响应保证金管理</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                投标/响应保证金管理
+              </div>
+            )}
           </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <Wallet className="w-[18px] h-[18px] mr-3" />
-            投标/响应保证金管理
-          </div>
-          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
-            <Shield className="w-[18px] h-[18px] mr-3" />
-            履约保证金管理
+          <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
+            <Shield className="w-[18px] h-[18px] flex-shrink-0" />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>履约保证金管理</span>
+            {isSidebarCollapsed && (
+              <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">
+                履约保证金管理
+              </div>
+            )}
           </div>
         </nav>
-        <div className="p-4 border-t border-white/10 flex items-center cursor-pointer hover:bg-white/10">
-          <ChevronsLeft className="w-5 h-5 mr-3" />
-          <span className="text-sm">收起菜单</span>
+        <div 
+          className="p-4 border-t border-white/10 flex items-center cursor-pointer hover:bg-white/10 justify-center"
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        >
+          {isSidebarCollapsed ? (
+            <ChevronsRight className="w-5 h-5" />
+          ) : (
+            <>
+              <ChevronsLeft className="w-5 h-5 mr-3" />
+              <span className="text-sm">收起菜单</span>
+            </>
+          )}
         </div>
       </aside>
 
