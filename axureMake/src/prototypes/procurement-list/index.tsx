@@ -47,7 +47,7 @@ import {
 import './style.css';
 
 /**
- * @name 业务系统接入举例
+ * @name 业务系统接入流程
  * @mode axure
  *
  * 参考资料：
