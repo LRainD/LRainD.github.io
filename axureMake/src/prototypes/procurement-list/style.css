@@ -50,35 +50,159 @@
 }
 
 /* Complex CSS Shapes */
-.step-arrow {
-  position: relative;
+.step-container {
+  display: flex;
+  width: 100%;
+  background: #f5f7fa;
+  height: 48px;
+  border: 1px solid #e8e8e8;
 }
-.step-arrow::after {
-  content: '';
+
+.step-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: #f5f7fa;
+  color: #999;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 1;
+  padding-right: 20px;
+}
+
+.step-item.active {
+  background: #4a86c9;
+  color: #fff;
+  z-index: 10;
+}
+
+.step-item::after {
+  content: "";
   position: absolute;
   top: 0;
-  right: -14px;
+  right: -16px;
   width: 0;
   height: 0;
   border-top: 24px solid transparent;
   border-bottom: 24px solid transparent;
-  border-left: 14px solid #f3f4f6;
+  border-left: 16px solid #f5f7fa;
   z-index: 2;
 }
-.step-arrow-active::after {
-  border-left-color: #007add;
+
+.step-item.active::after {
+  border-left-color: #4a86c9;
 }
-.step-arrow::before {
-  content: '';
+
+.step-item::before {
+  content: "";
   position: absolute;
   top: 0;
-  right: -14px;
+  right: -17px;
   width: 0;
   height: 0;
   border-top: 24px solid transparent;
   border-bottom: 24px solid transparent;
-  border-left: 14px solid white;
+  border-left: 16px solid #fff;
   z-index: 1;
+}
+
+.step-item:last-child {
+  padding-right: 0;
+}
+
+.step-item:last-child::after,
+.step-item:last-child::before {
+  display: none;
+}
+
+/* Sub-step Timeline */
+.sub-step-container {
+  padding: 24px 0 24px;
+  background: #fff;
+  position: relative;
+  min-height: 100px;
+}
+
+.sub-step-items {
+  display: flex;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
+.sub-step-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-width: 0; /* Allow shrinking */
+}
+
+.sub-step-label {
+  font-size: 12px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  color: #999;
+  text-align: center;
+  width: 100%;
+  overflow: visible;
+}
+
+.sub-step-label.active {
+  color: #4a86c9;
+}
+
+.sub-step-label.current {
+  color: #4a86c9;
+  font-weight: bold;
+}
+
+.sub-step-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  z-index: 10;
+  margin-top: auto;
+}
+
+.sub-step-dot.completed {
+  background: #4a86c9;
+  border-color: #4a86c9;
+}
+
+.sub-step-dot.current {
+  background: #fff;
+  border: 3px solid #4a86c9;
+}
+
+.sub-step-line-container {
+  position: absolute;
+  bottom: 32px; /* Center of the 18px dot which is at the bottom of the container */
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 5;
+  display: flex;
+  padding: 0 8.33%; /* Half of one item width (1/6 / 2 = 1/12 = 8.33%) */
+}
+
+.sub-step-line {
+  height: 1px;
+  background: #ddd;
+  flex: 1;
+}
+
+.sub-step-line.active {
+  background: #4a86c9;
+  height: 2px;
 }
 
 .nav-item-active {

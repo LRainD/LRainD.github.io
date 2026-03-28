@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-28T17:37:35.690Z",
+  "updatedAt": "2026-03-28T18:26:27.876Z",
   "prototypes": [
     {
       "id": "folder-1774706974674-5x6tue",
@@ -22,7 +22,7 @@
         {
           "id": "item-prototypes-procurement-list",
           "kind": "item",
-          "title": "编制采购清单",
+          "title": "业务系统接入举例",
           "itemKey": "prototypes/procurement-list"
         }
       ]
@@ -34,29 +34,10 @@
       "itemKey": "prototypes/rule-config"
     },
     {
-      "id": "item-prototypes-procurement-list-copy",
-      "kind": "item",
-      "title": "编制采购清单 副本",
-      "itemKey": "prototypes/procurement-list-copy"
-    },
-    {
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
       "title": "演示原型",
-      "children": [
-        {
-          "id": "item-prototypes-ref-antd",
-          "kind": "item",
-          "title": "Antd 电商后台",
-          "itemKey": "prototypes/ref-antd"
-        },
-        {
-          "id": "item-prototypes-ref-app-home",
-          "kind": "item",
-          "title": "健身 App 首页",
-          "itemKey": "prototypes/ref-app-home"
-        }
-      ]
+      "children": []
     }
   ],
   "components": [
