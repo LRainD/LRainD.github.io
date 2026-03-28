@@ -300,12 +300,18 @@ const Component = () => {
         </header>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-gray-50 dark:bg-gray-900">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-            <span>采购列表</span>
-            <span className="mx-1">/</span>
-            <span className="text-gray-800 dark:text-gray-200">编制采购清单</span>
+        <div className="flex-1 overflow-y-auto custom-scrollbar bg-gray-50 dark:bg-gray-900">
+          {/* 面包屑导航栏 */}
+          <div className="breadcrumb-bar">
+            <div className="breadcrumb-nav">
+              <span className="breadcrumb-item">采购列表</span>
+              <span className="breadcrumb-separator">&gt;</span>
+              <span className="breadcrumb-item active">编制采购清单</span>
+            </div>
           </div>
+
+          {/* 内容区域 */}
+          <div className="p-4">
 
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
@@ -603,6 +609,7 @@ const Component = () => {
               </label>
             </div>
           </div>
+        </div>
         </div>
       </main>
 

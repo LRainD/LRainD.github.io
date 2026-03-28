@@ -105,3 +105,28 @@
 .stepper-item:last-child .stepper-line {
   display: none;
 }
+
+/* 面包屑导航栏 */
+.breadcrumb-bar {
+  background: #f0f2f5;
+  padding: 8px 16px;
+}
+
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.breadcrumb-item {
+  color: #666;
+}
+
+.breadcrumb-item.active {
+  color: #333;
+}
+
+.breadcrumb-separator {
+  color: #999;
+}
