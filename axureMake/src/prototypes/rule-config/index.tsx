@@ -852,7 +852,7 @@ const Component = function RuleConfig() {
       title: <span><span style={{ color: '#ff4d4f' }}>*</span>采购类型&组织形式</span>,
       dataIndex: 'purchaseType',
       key: 'purchaseType',
-      width: 140,
+      width: 160,
       render: (value: string, record: any) => (
         <Select
           mode="multiple"
@@ -868,7 +868,7 @@ const Component = function RuleConfig() {
       title: <span><span style={{ color: '#ff4d4f' }}>*</span>招标方式&采购方式</span>,
       dataIndex: 'purchaseMethod',
       key: 'purchaseMethod',
-      width: 140,
+      width: 160,
       render: (value: string, record: any) => (
         <Select
           mode="multiple"
@@ -949,7 +949,7 @@ const Component = function RuleConfig() {
       title: <span><span style={{ color: '#ff4d4f' }}>*</span>最大调价次数</span>,
       dataIndex: 'maxAdjust',
       key: 'maxAdjust',
-      width: 100,
+      width: 200,
       render: (value: string) => (
         <Input value={value} placeholder="请输入" style={{ width: '100%' }} />
       )
@@ -958,7 +958,7 @@ const Component = function RuleConfig() {
       title: <span><span style={{ color: '#ff4d4f' }}>*</span>最小调价次数</span>,
       dataIndex: 'minAdjust',
       key: 'minAdjust',
-      width: 100,
+      width: 200,
       render: (value: string) => (
         <Input value={value} placeholder="请输入" style={{ width: '100%' }} />
       )
@@ -967,6 +967,7 @@ const Component = function RuleConfig() {
       title: '操作',
       key: 'operation',
       width: 80,
+      fixed: 'right',
       render: () => (
         <Space>
           <a style={{ color: '#1890ff' }}>编辑</a>
@@ -1022,131 +1023,136 @@ const Component = function RuleConfig() {
           </div>
         </div>
 
-        {/* 机构信息栏 */}
-        <div className="org-info-bar">
-          <div className="org-search">
-            <Input
-              prefix={<SearchOutlined />}
-              placeholder="中国建筑股份有限公司"
-              className="search-input"
-            />
-          </div>
-          <div className="org-details">
-            <span className="org-info-item">
-              <span className="org-label">机构名称：</span>
-              <span className="org-value">中国建筑股份有限公司</span>
-            </span>
-            <span className="org-info-item">
-              <span className="org-label">机构代码：</span>
-              <span className="org-value">00010100</span>
-            </span>
-            <span className="org-info-item">
-              <span className="org-label">上级机构：</span>
-              <span className="org-value">平台abc</span>
-            </span>
-          </div>
-        </div>
 
-        {/* 业务线 Tab */}
-        <div className="business-tabs">
-          <div
-            className={`tab-item ${activeTab === 'cloud_procurement' ? 'active' : ''}`}
-            onClick={() => handleTabChange('cloud_procurement')}
-          >
-            云筑集采
-          </div>
-          <div
-            className={`tab-item ${activeTab === 'cloud_mall' ? 'active' : ''}`}
-            onClick={() => handleTabChange('cloud_mall')}
-          >
-            云筑商城
-          </div>
-          <div
-            className={`tab-item ${activeTab === 'cloud_labor' ? 'active' : ''}`}
-            onClick={() => handleTabChange('cloud_labor')}
-          >
-            云筑劳务
-          </div>
-          <div
-            className={`tab-item ${activeTab === 'cloud_finance' ? 'active' : ''}`}
-            onClick={() => handleTabChange('cloud_finance')}
-          >
-            云筑金服
-          </div>
-        </div>
 
         {/* 页面主体内容 */}
         <Content className="main-content">
           <div className="content-wrapper">
-            {/* 左侧规则树 */}
-            <div className="rule-tree-panel">
-              <div className="tree-search">
-                <Input
-                  prefix={<SearchOutlined />}
-                  placeholder="输入规则名称"
-                  className="tree-search-input"
+            {/* 机构信息栏 */}
+            <div className="org-info-bar">
+              <div className="org-search">
+                <Select
+                  defaultValue="中国建筑股份有限公司"
+                  className="org-select"
+                  options={[
+                    { label: '中国建筑股份有限公司', value: '中国建筑股份有限公司' }
+                  ]}
                 />
               </div>
-              <Tree
-                className="rule-tree"
-                defaultExpandAll
-                treeData={ruleTreeData.map(node => ({
-                  ...node,
-                  title: (
-                    <span className="tree-node-title">{node.title}</span>
-                  ),
-                  children: node.children?.map((child: any) => ({
-                    ...child,
-                    title: (
-                      <div className="tree-rule-item">
-                        <Tag className="rule-type-tag" color="default">{child.type}</Tag>
-                        <Tag 
-                          className="rule-status-tag" 
-                          color={child.status === '禁' ? 'red' : 'green'}
-                        >
-                          {child.status}
-                        </Tag>
-                        <span 
-                          className="rule-level-dot"
-                          style={{ backgroundColor: warningLevelColors[child.level] }}
-                        />
-                        <span className="rule-name-text">{child.title}</span>
-                      </div>
-                    )
-                  }))
-                }))}
-                selectedKeys={[selectedRule]}
-                onSelect={(keys) => {
-                  if (keys.length > 0) {
-                    setSelectedRule(keys[0] as string);
-                  }
-                }}
-              />
+              <div className="org-details">
+                <span className="org-info-item">
+                  <span className="org-label">机构名称：</span>
+                  <span className="org-value">中国建筑股份有限公司</span>
+                </span>
+                <span className="org-info-item">
+                  <span className="org-label">机构代码：</span>
+                  <span className="org-value">00010100</span>
+                </span>
+                <span className="org-info-item">
+                  <span className="org-label">上级机构：</span>
+                  <span className="org-value">平台abc</span>
+                </span>
+              </div>
             </div>
 
-            {/* 右侧配置区 */}
-            <div className="config-panel">
-              {/* 标签页 */}
-              <div className="config-tabs">
-                <div
-                  className={`config-tab ${activeConfigTab === 'plan' ? 'active' : ''}`}
-                  onClick={() => handleConfigTabChange('plan')}
-                >
-                  方案配置
-                </div>
-                <div
-                  className={`config-tab ${activeConfigTab === 'deploy' ? 'active' : ''}`}
-                  onClick={() => handleConfigTabChange('deploy')}
-                >
-                  配置下发
-                </div>
-                <div
-                  className={`config-tab ${activeConfigTab === 'log' ? 'active' : ''}`}
-                  onClick={() => handleConfigTabChange('log')}
-                >
-                  操作日志
-                </div>
+            {/* 业务线 Tab */}
+            <div className="business-tabs">
+              <div
+                className={`tab-item ${activeTab === 'cloud_procurement' ? 'active' : ''}`}
+                onClick={() => handleTabChange('cloud_procurement')}
+              >
+                云筑集采
               </div>
+              <div
+                className={`tab-item ${activeTab === 'cloud_mall' ? 'active' : ''}`}
+                onClick={() => handleTabChange('cloud_mall')}
+              >
+                云筑商城
+              </div>
+              <div
+                className={`tab-item ${activeTab === 'cloud_labor' ? 'active' : ''}`}
+                onClick={() => handleTabChange('cloud_labor')}
+              >
+                云筑劳务
+              </div>
+              <div
+                className={`tab-item ${activeTab === 'cloud_finance' ? 'active' : ''}`}
+                onClick={() => handleTabChange('cloud_finance')}
+              >
+                云筑金服
+              </div>
+            </div>
+
+            <div className="content-body">
+              {/* 左侧规则树 */}
+              <div className="rule-tree-panel">
+                <div className="tree-search">
+                  <Input
+                    prefix={<SearchOutlined />}
+                    placeholder="输入规则名称"
+                    className="tree-search-input"
+                  />
+                </div>
+                <Tree
+                  className="rule-tree"
+                  defaultExpandAll
+                  treeData={ruleTreeData.map(node => ({
+                    ...node,
+                    title: (
+                      <span className="tree-node-title">{node.title}</span>
+                    ),
+                    children: node.children?.map((child: any) => ({
+                      ...child,
+                      title: (
+                        <div className="tree-rule-item">
+                          <Tag className="rule-type-tag" color="default">{child.type}</Tag>
+                          <Tag 
+                            className="rule-status-tag" 
+                            color={child.status === '禁' ? 'red' : 'green'}
+                          >
+                            {child.status}
+                          </Tag>
+                          <span 
+                            className="rule-level-dot"
+                            style={{ backgroundColor: warningLevelColors[child.level] }}
+                          />
+                          <span className="rule-name-text">{child.title}</span>
+                        </div>
+                      )
+                    }))
+                  }))}
+                  selectedKeys={[selectedRule]}
+                  onSelect={(keys) => {
+                    if (keys.length > 0) {
+                      setSelectedRule(keys[0] as string);
+                    }
+                  }}
+                />
+              </div>
+
+              {/* 右侧配置区 */}
+              <div className="config-panel">
+                {/* 标签页 */}
+                <div className="config-tabs">
+                  <div
+                    className={`config-tab ${activeConfigTab === 'plan' ? 'active' : ''}`}
+                    onClick={() => handleConfigTabChange('plan')}
+                  >
+                    方案配置
+                  </div>
+                  <div
+                    className={`config-tab ${activeConfigTab === 'deploy' ? 'active' : ''}`}
+                    onClick={() => handleConfigTabChange('deploy')}
+                  >
+                    配置下发
+                  </div>
+                  <div
+                    className={`config-tab ${activeConfigTab === 'log' ? 'active' : ''}`}
+                    onClick={() => handleConfigTabChange('log')}
+                  >
+                    操作日志
+                  </div>
+                </div>
 
               {/* 配置内容 */}
               {activeConfigTab === 'plan' && (
@@ -1243,6 +1249,7 @@ const Component = function RuleConfig() {
                       bordered
                       size="small"
                       className="config-table"
+                      scroll={{ x: 1200 }}
                     />
                     <Button type="dashed" block className="add-row-btn">
                       <PlusOutlined /> 添加一项
@@ -1273,6 +1280,7 @@ const Component = function RuleConfig() {
               )}
             </div>
           </div>
+        </div>
         </Content>
       </Layout>
     </Layout>

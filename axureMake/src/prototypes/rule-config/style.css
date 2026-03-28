@@ -133,8 +133,7 @@
 
 /* 面包屑导航栏 */
 .breadcrumb-bar {
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
+  background: #f0f2f5;
   padding: 8px 16px;
 }
 
@@ -142,7 +141,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .breadcrumb-item {
@@ -151,7 +150,6 @@
 
 .breadcrumb-item.active {
   color: #333;
-  font-weight: 500;
 }
 
 .breadcrumb-separator {
@@ -172,13 +170,8 @@
   flex: 1;
 }
 
-.org-info-bar .search-input {
+.org-info-bar .org-select {
   width: 320px;
-}
-
-.org-info-bar .search-input .ant-input {
-  background: #f5f5f5;
-  border: none;
 }
 
 .org-info-bar .org-details {
@@ -201,20 +194,21 @@
 
 /* 业务线 Tab */
 .business-tabs {
-  height: 40px;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
   display: flex;
-  padding: 0 16px;
+  padding: 12px 16px;
+  background: #fff;
 }
 
 .business-tabs .tab-item {
-  padding: 0 24px;
-  line-height: 38px;
+  padding: 4px 20px;
   cursor: pointer;
   font-size: 14px;
   color: #666;
-  border-bottom: 2px solid transparent;
+  border: 1px solid #e8e8e8;
+  border-bottom: none;
+  background: #fafafa;
+  margin-right: 2px;
+  border-radius: 4px 4px 0 0;
   transition: all 0.3s;
 }
 
@@ -223,22 +217,27 @@
 }
 
 .business-tabs .tab-item.active {
+  background: #fff;
   color: #1890ff;
-  border-bottom-color: #1890ff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
 }
 
 /* 主内容区 */
 .main-content {
-  padding: 16px;
+  padding: 4px 16px 16px;
   overflow: auto;
 }
 
 .content-wrapper {
-  display: flex;
-  gap: 16px;
   background: #fff;
-  border-radius: 4px;
   min-height: calc(100vh - 140px);
+}
+
+.content-body {
+  display: flex;
+  gap: 0;
+  min-height: calc(100vh - 280px);
 }
 
 /* 左侧规则树面板 */
@@ -334,6 +333,8 @@
 .config-panel {
   flex: 1;
   padding: 16px;
+  min-width: 0;
+  overflow-x: auto;
 }
 
 /* 配置标签页 */
@@ -344,15 +345,13 @@
 }
 
 .config-tab {
-  padding: 8px 24px;
+  padding: 0 24px;
+  line-height: 38px;
   cursor: pointer;
   font-size: 14px;
   color: #666;
-  border: 1px solid #e8e8e8;
-  border-bottom: none;
-  background: #fafafa;
-  margin-right: 4px;
-  border-radius: 4px 4px 0 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
 }
 
 .config-tab:hover {
@@ -360,15 +359,15 @@
 }
 
 .config-tab.active {
-  background: #fff;
   color: #1890ff;
-  border-bottom: 1px solid #fff;
-  margin-bottom: -1px;
+  border-bottom-color: #1890ff;
 }
 
 /* 配置内容 */
 .config-content {
   padding: 16px 0;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 /* 黄色提示条 */
@@ -523,6 +522,9 @@
 /* 表格区域 */
 .table-section {
   margin-bottom: 24px;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .config-table {
