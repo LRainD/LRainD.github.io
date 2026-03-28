@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import logoImage from '../../../assets/media/集采工作台logo图标.png';
 import { 
   Home, 
   UserPlus, 
@@ -45,7 +46,7 @@ import {
 import './style.css';
 
 /**
- * @name 编制采购清单
+ * @name 业务系统接入举例
  * @mode axure
  *
  * 参考资料：
@@ -130,8 +131,7 @@ const Component = () => {
       {/* Sidebar */}
       <aside className="w-64 bg-sidebar-light dark:bg-sidebar-dark flex-shrink-0 flex flex-col text-white transition-all duration-300">
         <div className="h-14 flex items-center px-4 font-bold text-xl tracking-wide bg-white text-blue-500">
-          <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cloud%20procurement%20workbench%20logo&image_size=square" alt="集采工作台" className="h-8" />
-          <span className="ml-2">集采工作台</span>
+          <img src={logoImage} alt="集采工作台" className="h-8" />
         </div>
         <nav className="flex-1 overflow-y-auto py-2 text-sm custom-scrollbar">
           <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center">
