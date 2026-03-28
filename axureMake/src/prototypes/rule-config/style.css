@@ -385,21 +385,102 @@
 .section-header {
   display: flex;
   align-items: center;
-  gap: 16px;
 }
 
 .section-title {
   font-size: 16px;
   font-weight: 600;
   color: #333;
+  margin-right: 16px;
+}
+
+.config-section:not(.rule-name-section) .section-title {
+  font-size: 13px;
+  font-weight: normal;
+  margin-bottom: 8px;
 }
 
 .section-switch {
-  margin-left: auto;
+  margin-right: 16px;
 }
 
 .add-rule-btn {
-  margin-left: 16px;
+  margin-left: auto;
+  border-radius: 0 !important;
+}
+
+.add-rule-btn .anticon {
+  margin-left: 4px;
+}
+
+/* 自定义开关样式 */
+.custom-switch {
+  position: relative;
+  margin-right: 16px;
+}
+
+.switch-input {
+  display: none;
+}
+
+.switch-label {
+  display: inline-block;
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #e8e8e8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.switch-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.switch-text-on {
+  left: 10px;
+  color: #fff;
+  opacity: 0;
+}
+
+.switch-text-off {
+  right: 10px;
+  color: #999;
+}
+
+.switch-handle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.switch-input:checked + .switch-label {
+  background-color: #1890ff;
+}
+
+.switch-input:checked + .switch-label .switch-text-on {
+  opacity: 1;
+}
+
+.switch-input:checked + .switch-label .switch-text-off {
+  opacity: 0;
+}
+
+.switch-input:checked + .switch-label .switch-handle {
+  transform: translateX(24px);
 }
 
 /* 表单区域 */
@@ -410,16 +491,21 @@
 .form-row {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .form-label {
   width: 120px;
   font-size: 13px;
   color: #333;
-  text-align: right;
+  text-align: left;
   padding-right: 16px;
   flex-shrink: 0;
+}
+
+.form-label .required {
+  color: #ff4d4f;
+  margin-right: 4px;
 }
 
 .form-value {

@@ -1153,27 +1153,41 @@ const Component = function RuleConfig() {
                 <div className="config-content">
                   {/* 黄色提示条 */}
                   <Alert
-                    message="该规则已被应用到 中国建筑股份有限公司 及其下级，您可以继续编辑或停用该配置"
+                    message="该风控规则以本组织 中国建筑股份有限公司 配置为准，您可以根据组织要求修改配置"
                     type="warning"
                     showIcon
                     className="warning-alert"
                   />
 
                   {/* 规则名称 */}
-                  <div className="config-section">
+                  <div className="config-section rule-name-section">
                     <div className="section-header">
-                      <span className="section-title">调价轮次限制</span>
-                      <Switch defaultChecked className="section-switch" />
-                      <Button type="primary" className="add-rule-btn">一键复制</Button>
+                      <span className="section-title">招标时长过长</span>
+                      <div className="custom-switch">
+                        <input type="checkbox" id="rule-switch" className="switch-input" />
+                        <label htmlFor="rule-switch" className="switch-label">
+                          <span className="switch-text switch-text-on">开</span>
+                          <span className="switch-text switch-text-off">关</span>
+                          <span className="switch-handle"></span>
+                        </label>
+                      </div>
+                      <Button type="primary" className="add-rule-btn">
+                        一键复制 <QuestionCircleOutlined />
+                      </Button>
                     </div>
+                  </div>
+
+                  {/* 规则说明 */}
+                  <div className="config-section">
+                    <div className="section-title">规则说明：</div>
                   </div>
 
                   {/* 表单区域 */}
                   <div className="config-form">
                     <div className="form-row">
-                      <div className="form-label">适用组织范围：</div>
+                      <div className="form-label"><span className="required">*</span>适用组织范围：</div>
                       <div className="form-value">
-                        <Radio.Group defaultValue="current">
+                        <Radio.Group defaultValue="subordinate">
                           <Radio value="current">本级</Radio>
                           <Radio value="subordinate">本下级</Radio>
                         </Radio.Group>
@@ -1181,7 +1195,7 @@ const Component = function RuleConfig() {
                     </div>
 
                     <div className="form-row">
-                      <div className="form-label">下级独立配置：</div>
+                      <div className="form-label"><span className="required">*</span>下级独立配置：</div>
                       <div className="form-value">
                         <Radio.Group defaultValue="allow">
                           <Radio value="allow">允许</Radio>
@@ -1191,27 +1205,19 @@ const Component = function RuleConfig() {
                     </div>
 
                     <div className="form-row">
-                      <div className="form-label">预警级别：</div>
+                      <div className="form-label"><span className="required">*</span>预警级别：</div>
                       <div className="form-value">
-                        <Radio.Group defaultValue="medium">
-                          <Radio value="high" style={{ color: '#ff4d4f' }}>
-                            <span className="level-dot" style={{ backgroundColor: '#ff4d4f' }} /> 高风险
-                          </Radio>
-                          <Radio value="medium_high" style={{ color: '#fa8c16' }}>
-                            <span className="level-dot" style={{ backgroundColor: '#fa8c16' }} /> 中高风险
-                          </Radio>
-                          <Radio value="medium" style={{ color: '#faad14' }}>
-                            <span className="level-dot" style={{ backgroundColor: '#faad14' }} /> 中风险
-                          </Radio>
-                          <Radio value="low" style={{ color: '#52c41a' }}>
-                            <span className="level-dot" style={{ backgroundColor: '#52c41a' }} /> 低风险
-                          </Radio>
+                        <Radio.Group defaultValue="low">
+                          <Radio value="high">高风险</Radio>
+                          <Radio value="medium_high">中高风险</Radio>
+                          <Radio value="medium">中风险</Radio>
+                          <Radio value="low">低风险</Radio>
                         </Radio.Group>
                       </div>
                     </div>
 
                     <div className="form-row">
-                      <div className="form-label">是否去重：</div>
+                      <div className="form-label"><span className="required">*</span>是否去重：</div>
                       <div className="form-value">
                         <Radio.Group defaultValue="no">
                           <Radio value="yes">去重</Radio>
@@ -1223,7 +1229,7 @@ const Component = function RuleConfig() {
                     <div className="form-row">
                       <div className="form-label">规则类型：</div>
                       <div className="form-value">
-                        <Tag color="blue">合规风险</Tag>
+                        合规风险
                       </div>
                     </div>
                   </div>
