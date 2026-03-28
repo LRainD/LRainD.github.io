@@ -52,6 +52,48 @@
   color: #1890ff;
 }
 
+/* 子菜单样式 - 匹配截图 */
+.left-sidebar .sidebar-menu .ant-menu-submenu-title {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub {
+  background: #fff;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 48px !important;
+  font-size: 13px;
+  color: #666;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item:hover {
+  color: #1890ff;
+}
+
+/* 展开的子菜单父项样式 */
+.left-sidebar .sidebar-menu .ant-menu-submenu-open > .ant-menu-submenu-title {
+  color: #333;
+}
+
+/* 菜单图标样式 */
+.left-sidebar .sidebar-menu .ant-menu-item .anticon,
+.left-sidebar .sidebar-menu .ant-menu-submenu-title .anticon {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
 .left-sidebar .collapse-btn {
   position: absolute;
   bottom: 16px;

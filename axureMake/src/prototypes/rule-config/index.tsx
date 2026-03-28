@@ -755,21 +755,35 @@ const Component = function RuleConfig() {
     setActiveConfigTab(key);
   }, []);
 
-  // 左侧菜单项
+  // 左侧菜单项 - 根据截图结构定义
   const menuItems = [
-    { key: 'dashboard', icon: <HomeOutlined />, label: '首页' },
-    { key: 'supplier', icon: <TeamOutlined />, label: '供应商管理' },
-    { key: 'procurement', icon: <ShoppingCartOutlined />, label: '集采管理' },
-    { key: 'contract', icon: <FileTextOutlined />, label: '合同管理' },
-    { key: 'settlement', icon: <WalletOutlined />, label: '结算管理' },
-    { key: 'invoice', icon: <ContainerOutlined />, label: '发票管理' },
+    { key: 'supplier_mgmt', icon: <TeamOutlined />, label: '分供商管理' },
+    { key: 'template_mgmt', icon: <FileTextOutlined />, label: '模板管理' },
+    { key: 'procurement_plan', icon: <ShoppingCartOutlined />, label: '采购计划管理' },
+    { key: 'bidding', icon: <AuditOutlined />, label: '招标采购' },
+    { key: 'config_mgmt', icon: <SettingOutlined />, label: '配置管理' },
+    { key: 'identity_mgmt', icon: <SafetyCertificateOutlined />, label: '身份管理' },
     { key: 'solution', icon: <SolutionOutlined />, label: '解决方案' },
-    { key: 'risk', icon: <SafetyCertificateOutlined />, label: '风控中心' },
-    { key: 'config', icon: <SettingOutlined />, label: '平台配置' },
-    { key: 'operation', icon: <ToolOutlined />, label: '运营管理' },
-    { key: 'system', icon: <ControlOutlined />, label: '系统设置' },
-    { key: 'message', icon: <BellOutlined />, label: '通知中心' },
-    { key: 'log', icon: <FileTextIconOutlined />, label: '日志中心' }
+    { key: 'contract_mgmt', icon: <FileProtectOutlined />, label: '合同管理' },
+    { key: 'performance_mgmt', icon: <CheckCircleOutlined />, label: '履约管理' },
+    { key: 'inspection', icon: <ContainerOutlined />, label: '收验货' },
+    { key: 'marketing_mgmt', icon: <ShopOutlined />, label: '营销管理' },
+    { key: 'operation_tools', icon: <ToolOutlined />, label: '运营工具' },
+    {
+      key: 'risk_warning_center',
+      icon: <WarningOutlined />,
+      label: '风控预警中心',
+      children: [
+        { key: 'field_config', label: '字段配置' },
+        { key: 'rule_config', label: '规则配置' },
+        { key: 'scene_mgmt', label: '场景管理' },
+        { key: 'warning_config', label: '预警配置' },
+        { key: 'operation_mgmt', label: '运营管理' },
+        { key: 'rule_mgmt', label: '规则管理' },
+        { key: 'notification_center', label: '通知中心' },
+        { key: 'log_center', label: '日志中心' }
+      ]
+    }
   ];
 
   // 采购品类选项
@@ -969,7 +983,7 @@ const Component = function RuleConfig() {
         trigger={null}
         collapsible
         collapsed={collapsed}
-        width={160}
+        width={200}
         collapsedWidth={60}
         className="left-sidebar"
       >
@@ -979,7 +993,8 @@ const Component = function RuleConfig() {
         </div>
         <Menu
           mode="inline"
-          selectedKeys={['risk']}
+          selectedKeys={['rule_mgmt']}
+          defaultOpenKeys={['risk_warning_center']}
           items={menuItems}
           className="sidebar-menu"
         />
