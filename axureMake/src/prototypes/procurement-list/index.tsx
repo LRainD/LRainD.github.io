@@ -823,7 +823,7 @@ const Component = () => {
 
       {/* Confirm Check Modal */}
       {isConfirmCheckModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
             <div className="flex gap-4 mb-6">
               <div className="flex-shrink-0">
@@ -850,7 +850,7 @@ const Component = () => {
 
       {/* Checking Modal */}
       {isCheckingModalOpen && !isWarningModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-[#1E1E1E] w-full max-w-4xl shadow-2xl rounded-xl overflow-hidden relative">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-zinc-800">
               <div className="flex items-center gap-2">
@@ -949,7 +949,7 @@ const Component = () => {
 
       {/* Warning Modal (Switched from Checking) */}
       {isWarningModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -1010,7 +1010,7 @@ const Component = () => {
 
       {/* Intercept Modal */}
       {isInterceptModalOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
               <div className="flex items-center gap-2">
