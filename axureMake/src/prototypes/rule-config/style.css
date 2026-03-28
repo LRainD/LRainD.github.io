@@ -22,8 +22,9 @@
 }
 
 .left-sidebar .logo-icon {
-  font-size: 20px;
-  color: #1890ff;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 .left-sidebar .logo-text {

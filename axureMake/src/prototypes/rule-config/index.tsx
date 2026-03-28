@@ -9,6 +9,7 @@
  */
 
 import './style.css';
+import logoImage from '../../../assets/media/运营后台左上角logo.png';
 
 import React, { useState, useCallback } from 'react';
 import {
@@ -973,7 +974,7 @@ const Component = function RuleConfig() {
         className="left-sidebar"
       >
         <div className="logo">
-          <AppstoreOutlined className="logo-icon" />
+          <img src={logoImage} alt="运营后台logo" className="logo-icon" />
           {!collapsed && <span className="logo-text">集采运营后台</span>}
         </div>
         <Menu
