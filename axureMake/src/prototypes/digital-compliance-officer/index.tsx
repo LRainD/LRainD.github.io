@@ -124,20 +124,18 @@ const initialData = [
 
 const treeData = [
   {
-    value: 'org_1',
-    title: '北京总部',
+    value: 'org_cscec',
+    title: '中国建筑',
     children: [
-      { value: 'org_1_1', title: '北京总部-采购中心' },
-      { value: 'org_1_2', title: '北京总部-财务中心' },
+      { value: 'org_cscec_1', title: '中建一局' },
+      { value: 'org_cscec_2', title: '中建二局' },
+      { value: 'org_cscec_3', title: '中建三局' },
+      { value: 'org_cscec_4', title: '中建四局' },
+      { value: 'org_cscec_5', title: '中建五局' },
+      { value: 'org_cscec_6', title: '中建六局' },
+      { value: 'org_cscec_7', title: '中建七局' },
+      { value: 'org_cscec_8', title: '中建八局' },
     ],
-  },
-  {
-    value: 'org_2',
-    title: '华东区分公司',
-  },
-  {
-    value: 'org_3',
-    title: '华南区分公司',
   },
 ];
 
@@ -200,10 +198,18 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
   // Helper: Get org value from org name
   const getOrgValue = (orgName: string) => {
-    if (orgName === '北京总部-采购中心') return 'org_1_1';
-    if (orgName === '华东区分公司') return 'org_2';
-    if (orgName === '华南区分公司') return 'org_3';
-    return '';
+    const valueMap: Record<string, string> = {
+      '中国建筑': 'org_cscec',
+      '中建一局': 'org_cscec_1',
+      '中建二局': 'org_cscec_2',
+      '中建三局': 'org_cscec_3',
+      '中建四局': 'org_cscec_4',
+      '中建五局': 'org_cscec_5',
+      '中建六局': 'org_cscec_6',
+      '中建七局': 'org_cscec_7',
+      '中建八局': 'org_cscec_8',
+    };
+    return valueMap[orgName] || '';
   };
 
   // Helper: Get org title from value
