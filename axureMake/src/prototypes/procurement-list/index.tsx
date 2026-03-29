@@ -832,7 +832,7 @@ const Component = () => {
               <div className="flex-1 text-left">
                 <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">开始合规检测</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  点击"确定"将开始数字合规官检测，检测期间请勿关闭页面。
+                  是否确定开始合规检测？
                 </p>
               </div>
             </div>
@@ -939,6 +939,25 @@ const Component = () => {
                   </div>
                 </div>
               </div>
+            </div>
+            {/* 重新检测按钮 - 常显在右下角 */}
+            <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
+              {/* 聊天气泡提示 - 数据变化时显示 */}
+              <div className="bg-orange-50 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 rounded-lg px-3 py-2 text-xs text-orange-700 dark:text-orange-300 max-w-[200px] relative mb-1">
+                <div className="absolute bottom-[-6px] right-8 w-3 h-3 bg-orange-50 dark:bg-orange-900/30 border-r border-b border-orange-200 dark:border-orange-700 transform rotate-45"></div>
+                检测到您的信息发生变化，建议重新检测
+              </div>
+              <button 
+                className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-2 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-2 shadow-sm"
+                onClick={() => {
+                  // 重新检测逻辑：关闭当前弹窗，重新发起检测
+                  setIsCheckingModalOpen(false);
+                  setTimeout(() => setIsCheckingModalOpen(true), 100);
+                }}
+              >
+                <RefreshCcw className="w-4 h-4" />
+                重新检测
+              </button>
             </div>
             <div className="h-1 bg-gray-100 dark:bg-zinc-800 w-full">
               <div className="h-full bg-primary w-[66%] transition-all duration-1000"></div>
