@@ -753,7 +753,11 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   <Input placeholder="请输入合规官别名，用于业务系统展示" style={{ width: '100%' }} />
                 </Form.Item>
 
-                <Form.Item label="合规官头像">
+                <Form.Item
+                  label="合规官头像"
+                  name="avatar"
+                  rules={[{ required: true, message: '请上传合规官头像' }]}
+                >
                   <Upload
                     name="avatar"
                     listType="picture-card"
