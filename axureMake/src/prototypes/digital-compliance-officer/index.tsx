@@ -559,7 +559,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                     <Checkbox
                       checked={includeChildren}
                       onChange={(e) => setIncludeChildren(e.target.checked)}
-                      disabled={!searchOrgNode}
                     >
                       包含下级
                     </Checkbox>
