@@ -87,6 +87,7 @@ const initialData = [
     scope: '本下级',
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
+    alias: '合规小助手',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
     createTime: '2026-03-20 09:15:00',
     updateTime: '2026-03-24 13:01:08',
@@ -100,6 +101,7 @@ const initialData = [
     scope: '本级',
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
+    alias: '华东合规官',
     avatar: '',
     createTime: '2025-12-01 10:30:00',
     updateTime: '2025-12-11 17:59:22',
@@ -113,6 +115,7 @@ const initialData = [
     scope: '本级',
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
+    alias: '华南风控官',
     avatar: '',
     createTime: '2025-11-25 14:45:00',
     updateTime: '2025-12-09 20:08:43',
@@ -254,6 +257,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         scope: record.scope,
         systems: record.systems,
         personnel: record.personnel,
+        alias: record.alias,
       });
       setView('edit');
     } else {
@@ -300,6 +304,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         scope: values.scope,
         systems: values.systems,
         personnel: values.personnel,
+        alias: values.alias,
         avatar: '',
         createTime: currentTime,
         updateTime: currentTime,
@@ -322,6 +327,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             scope: values.scope,
             systems: values.systems,
             personnel: values.personnel,
+            alias: values.alias,
             updateTime: new Date().toLocaleString('zh-CN', {
               year: 'numeric',
               month: '2-digit',
@@ -415,6 +421,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         if (personnel.length === 1) return personnel[0];
         return `${personnel[0]}等${personnel.length}人`;
       }
+    },
+    {
+      title: '合规官别名',
+      dataIndex: 'alias',
+      key: 'alias',
+      width: 120,
+      render: (alias: string) => alias || '-'
     },
     {
       title: '合规官头像',
@@ -646,6 +659,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
                     <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
 
+                    <Form.Item label="合规官别名">
+                      <Input value={viewingRecord.alias} disabled style={{ width: '100%' }} />
+                    </Form.Item>
+
                     <Form.Item label="合规官头像">
                       {viewingRecord.avatar ? (
                         <Image src={viewingRecord.avatar} width={100} height={100} style={{ borderRadius: '8px', objectFit: 'cover' }} />
@@ -724,6 +741,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 </Form.Item>
 
                 <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
+
+                <Form.Item
+                  label="合规官别名"
+                  name="alias"
+                  rules={[
+                    { required: true, message: '请输入合规官别名' },
+                    { min: 2, max: 20, message: '合规官别名长度需在 2-20 个字符之间' }
+                  ]}
+                >
+                  <Input placeholder="请输入合规官别名，用于业务系统展示" style={{ width: '100%' }} />
+                </Form.Item>
 
                 <Form.Item label="合规官头像">
                   <Upload
