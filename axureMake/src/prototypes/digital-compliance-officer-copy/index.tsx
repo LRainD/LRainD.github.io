@@ -85,7 +85,7 @@ const initialData = [
     id: '1',
     orgName: '北京总部-采购中心',
     scope: '本下级',
-    modules: ['合规官', '智能采购'],
+    modules: ['风控预警', '智能问答'],
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
     alias: '合规小助手',
@@ -100,10 +100,10 @@ const initialData = [
     id: '2',
     orgName: '华东区分公司',
     scope: '本级',
-    modules: ['合规官'],
+    modules: ['风控预警'],
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
-    alias: '华东合规官',
+    alias: '华东风控助手',
     avatar: '',
     createTime: '2025-12-01 10:30:00',
     updateTime: '2025-12-11 17:59:22',
@@ -115,10 +115,10 @@ const initialData = [
     id: '3',
     orgName: '华南区分公司',
     scope: '本级',
-    modules: ['合规官'],
+    modules: ['风控预警'],
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
-    alias: '华南风控官',
+    alias: '华南风控助手',
     avatar: '',
     createTime: '2025-11-25 14:45:00',
     updateTime: '2025-12-09 20:08:43',
@@ -648,8 +648,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                     <Form.Item label="功能模块">
                       <Checkbox.Group
                         options={[
-                          { label: '合规官', value: '合规官' },
-                          { label: '智能采购', value: '智能采购' }
+                          { label: '风控预警', value: '风控预警' },
+                          { label: '智能问答', value: '智能问答' }
                         ]}
                         value={viewingRecord.modules}
                         disabled
@@ -670,13 +670,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                       )}
                     </Form.Item>
 
-                    {viewingRecord.modules?.includes('合规官') && (
+                    {viewingRecord.modules?.includes('风控预警') && (
                       <>
                         <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
 
-                        <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>合规官</div>
+                        <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>风控预警</div>
 
-                        <Form.Item label="合规官开启业务系统">
+                        <Form.Item label="风控预警开启业务系统">
                           <Checkbox.Group
                             options={[
                               { label: '招投标', value: '招投标' },
@@ -747,8 +747,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 >
                   <Checkbox.Group
                     options={[
-                      { label: '合规官', value: '合规官' },
-                      { label: '智能采购', value: '智能采购' }
+                      { label: '风控预警', value: '风控预警' },
+                      { label: '智能问答', value: '智能问答' }
                     ]}
                     onChange={(values) => setSelectedModules(values as string[])}
                   />
@@ -783,14 +783,14 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   </Upload>
                 </Form.Item>
 
-                {selectedModules.includes('合规官') && (
+                {selectedModules.includes('风控预警') && (
                   <>
                     <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
 
-                    <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>合规官</div>
+                    <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>风控预警</div>
 
                     <Form.Item
-                      label="合规官开启业务系统"
+                      label="风控预警开启业务系统"
                       name="systems"
                       rules={[{ required: true, message: '请至少选择一个业务系统' }]}
                     >
