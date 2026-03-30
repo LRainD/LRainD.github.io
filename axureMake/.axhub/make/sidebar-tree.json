@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-29T17:03:27.762Z",
+  "updatedAt": "2026-03-30T01:45:23.925Z",
   "prototypes": [
     {
       "id": "folder-1774706974674-5x6tue",
@@ -30,6 +30,12 @@
           "kind": "item",
           "title": "数字合规官AI交互",
           "itemKey": "prototypes/procurement-list-copy"
+        },
+        {
+          "id": "item-prototypes-procurement-list-copy-copy",
+          "kind": "item",
+          "title": "数字合规官AI交互第二种交互",
+          "itemKey": "prototypes/procurement-list-copy-copy"
         }
       ]
     },
