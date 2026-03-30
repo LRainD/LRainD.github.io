@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+/* 数字合规官配置页面样式 - 统一标准 */
+.rule-config-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* 左侧边栏 */
+.left-sidebar {
+  background: #fff !important;
+  position: relative;
+}
+
+.left-sidebar .logo {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.left-sidebar .logo-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.left-sidebar .logo-text {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.left-sidebar .sidebar-menu {
+  border-right: none;
+  padding-top: 8px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-item {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+/* 子菜单样式 */
+.left-sidebar .sidebar-menu .ant-menu-submenu-title {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub {
+  background: #fff;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 48px !important;
+  font-size: 13px;
+  color: #666;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.left-sidebar .sidebar-menu .ant-menu-sub .ant-menu-item:hover {
+  color: #1890ff;
+}
+
+/* 展开的子菜单父项样式 */
+.left-sidebar .sidebar-menu .ant-menu-submenu-open > .ant-menu-submenu-title {
+  color: #333;
+}
+
+/* 菜单图标样式 */
+.left-sidebar .sidebar-menu .ant-menu-item .anticon,
+.left-sidebar .sidebar-menu .ant-menu-submenu-title .anticon {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.left-sidebar .collapse-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  padding: 8px;
+  color: #999;
+  background: #fff;
+  border-top: 1px solid #e8e8e8;
+  text-align: center;
+  z-index: 10;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 主布局 */
+.main-layout {
+  background: #f0f2f5;
+}
+
+/* 顶部导航栏 */
+.top-header {
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+
+.top-header .header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-header .ant-btn-text {
+  color: #666;
+  font-size: 13px;
+}
+
+/* 面包屑导航栏 */
+.breadcrumb-bar {
+  background: #f0f2f5;
+  padding: 8px 16px;
+}
+
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.breadcrumb-item {
+  color: #666;
+}
+
+.breadcrumb-item.active {
+  color: #333;
+}
+
+.breadcrumb-separator {
+  color: #999;
+}
+
+/* 主内容区 */
+.main-content {
+  padding: 4px 16px 16px;
+  overflow: auto;
+}
+
+.content-wrapper {
+  background: #fff;
+  min-height: calc(100vh - 140px);
+  padding: 24px;
+}
+
+/* 原有样式 */
+.filter-card {
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.filter-title {
+  font-weight: bold;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background-color: #1677ff;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.avatar-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.avatar-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e6f4ff;
+  color: #1677ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.avatar-upload-placeholder {
+  width: 100px;
+  height: 100px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.avatar-upload-placeholder:hover {
+  border-color: #1677ff;
+}

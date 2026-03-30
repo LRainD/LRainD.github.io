@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-30T01:45:23.925Z",
+  "updatedAt": "2026-03-30T08:28:36.312Z",
   "prototypes": [
     {
       "id": "folder-1774706974674-5x6tue",
@@ -36,6 +36,12 @@
           "kind": "item",
           "title": "数字合规官AI交互第二种交互",
           "itemKey": "prototypes/ai-interaction-v2"
+        },
+        {
+          "id": "item-prototypes-digital-compliance-officer-copy",
+          "kind": "item",
+          "title": "数字合规官配置第二版",
+          "itemKey": "prototypes/digital-compliance-officer-copy"
         }
       ]
     },
