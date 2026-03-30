@@ -993,6 +993,7 @@ const Component = () => {
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-blue-50 dark:bg-gray-700 text-primary dark:text-blue-300 text-sm">
                     <th className="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600 w-16 text-center whitespace-nowrap">序号</th>
+                    <th className="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600 w-28 whitespace-nowrap">检测场景</th>
                     <th className="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600">风险预警名称</th>
                     <th className="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600 w-24 whitespace-nowrap">检测结果</th>
                     <th className="px-6 py-3 font-semibold border-b border-blue-100 dark:border-gray-600">风险预警信息</th>
@@ -1002,6 +1003,7 @@ const Component = () => {
                 <tbody className="text-sm text-gray-700 dark:text-gray-300 divide-y divide-gray-100 dark:divide-gray-700">
                   <tr className="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
                     <td className="px-6 py-4 text-center text-gray-400">1</td>
+                    <td className="px-6 py-4 text-gray-500">合规自查</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <span className="bg-orange-400 text-white text-[10px] px-2 py-0.5 rounded whitespace-nowrap flex items-center justify-center">预警</span>
