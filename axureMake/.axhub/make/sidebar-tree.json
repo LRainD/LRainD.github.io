@@ -32,10 +32,10 @@
           "itemKey": "prototypes/procurement-list-copy"
         },
         {
-          "id": "item-prototypes-procurement-list-copy-copy",
+          "id": "item-prototypes-ai-interaction-v2",
           "kind": "item",
           "title": "数字合规官AI交互第二种交互",
-          "itemKey": "prototypes/procurement-list-copy-copy"
+          "itemKey": "prototypes/ai-interaction-v2"
         }
       ]
     },
