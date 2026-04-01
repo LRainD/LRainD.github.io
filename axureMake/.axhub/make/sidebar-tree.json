@@ -1,23 +1,30 @@
 {
   "version": 1,
-  "updatedAt": "2026-03-30T08:28:36.312Z",
+  "updatedAt": "2026-04-01T09:12:11.492Z",
   "prototypes": [
+    {
+      "id": "folder-1775034717051-ua8zdu",
+      "kind": "folder",
+      "title": "云智采",
+      "children": [
+        {
+          "id": "item-prototypes-procurement-list-copy2",
+          "kind": "item",
+          "title": "业务系统接入流程 副本2",
+          "itemKey": "prototypes/procurement-list-copy2"
+        }
+      ]
+    },
     {
       "id": "folder-1774706974674-5x6tue",
       "kind": "folder",
       "title": "数字合规官",
       "children": [
         {
-          "id": "item-prototypes-digital-compliance-officer",
+          "id": "item-prototypes-digital-compliance-officer-copy",
           "kind": "item",
-          "title": "数字合规官配置",
-          "itemKey": "prototypes/digital-compliance-officer"
-        },
-        {
-          "id": "folder-1774707123009-80pi9r",
-          "kind": "folder",
-          "title": "风控规则",
-          "children": []
+          "title": "集采AI配置第二版",
+          "itemKey": "prototypes/digital-compliance-officer-copy"
         },
         {
           "id": "item-prototypes-procurement-list",
@@ -26,22 +33,35 @@
           "itemKey": "prototypes/procurement-list"
         },
         {
-          "id": "item-prototypes-procurement-list-copy",
-          "kind": "item",
-          "title": "数字合规官AI交互",
-          "itemKey": "prototypes/procurement-list-copy"
-        },
-        {
           "id": "item-prototypes-ai-interaction-v2",
           "kind": "item",
           "title": "数字合规官AI交互第二种交互",
           "itemKey": "prototypes/ai-interaction-v2"
         },
         {
-          "id": "item-prototypes-digital-compliance-officer-copy",
-          "kind": "item",
-          "title": "数字合规官配置第二版",
-          "itemKey": "prototypes/digital-compliance-officer-copy"
+          "id": "folder-1774707123009-80pi9r",
+          "kind": "folder",
+          "title": "风控规则",
+          "children": []
+        },
+        {
+          "id": "folder-1774863249957-vszss3",
+          "kind": "folder",
+          "title": "老版本暂定废弃的",
+          "children": [
+            {
+              "id": "item-prototypes-procurement-list-copy",
+              "kind": "item",
+              "title": "数字合规官AI交互",
+              "itemKey": "prototypes/procurement-list-copy"
+            },
+            {
+              "id": "item-prototypes-digital-compliance-officer",
+              "kind": "item",
+              "title": "数字合规官配置",
+              "itemKey": "prototypes/digital-compliance-officer"
+            }
+          ]
         }
       ]
     },

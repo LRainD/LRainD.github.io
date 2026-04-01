@@ -47,7 +47,7 @@ import {
 import './style.css';
 
 /**
- * @name 业务系统接入流程
+ * @name 编制采购公告
  * @mode axure
  *
  * 参考资料：
