@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-01T09:12:11.492Z",
+  "updatedAt": "2026-04-01T10:11:13.615Z",
   "prototypes": [
+    {
+      "id": "folder-1775037907912-7zoldr",
+      "kind": "folder",
+      "title": "模版页面",
+      "children": []
+    },
     {
       "id": "folder-1775034717051-ua8zdu",
       "kind": "folder",
@@ -10,7 +16,7 @@
         {
           "id": "item-prototypes-procurement-list-copy2",
           "kind": "item",
-          "title": "业务系统接入流程 副本2",
+          "title": "编制采购公告",
           "itemKey": "prototypes/procurement-list-copy2"
         }
       ]
