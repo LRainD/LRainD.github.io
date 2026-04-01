@@ -139,7 +139,7 @@ const Component = () => {
         <div className="h-14 flex items-center justify-center font-bold text-xl tracking-wide bg-white text-blue-500 w-64 relative z-50">
           <img src={logoImage} alt="集采工作台" className="h-8" />
         </div>
-        <nav className="flex-1 overflow-y-auto py-2 text-sm custom-scrollbar">
+        <nav className="flex-1 overflow-y-auto py-2 text-sm min-h-0">
           <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center justify-center group relative">
             <Home className="w-[18px] h-[18px] flex-shrink-0" />
             <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>首页</span>
