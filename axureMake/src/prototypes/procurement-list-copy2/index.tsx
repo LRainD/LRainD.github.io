@@ -530,7 +530,7 @@ const Component = () => {
                   </div>
                 </div>
                 <div className="mb-4 flex items-center">
-                  <div className="flex-shrink-0 text-right mr-2" style={{ width: '100px' }}>
+                  <div className="flex-shrink-0 flex flex-col items-center mr-2" style={{ width: '100px' }}>
                     <div className="text-gray-700 dark:text-gray-300 text-sm">公告附件</div>
                     <div className="text-gray-400 text-xs whitespace-nowrap">（仅内部可见）</div>
                   </div>
@@ -542,9 +542,9 @@ const Component = () => {
                   </div>
                 </div>
                 <div className="mb-2 flex items-center">
-                  <div className="flex-shrink-0 text-right mr-2" style={{ width: '100px' }}>
-                    <div className="text-red-500 text-sm">
-                      <span>*</span>
+                  <div className="flex-shrink-0 flex flex-col items-center mr-2" style={{ width: '100px' }}>
+                    <div className="text-red-500 text-sm relative">
+                      <span className="absolute -left-3">*</span>
                       <span>公告附件</span>
                     </div>
                     <div className="text-red-500 text-xs whitespace-nowrap">（供应商可见）</div>
