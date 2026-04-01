@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logoImage from '../../../assets/media/集采工作台logo图标.png';
-import { 
-  Home, 
-  UserPlus, 
-  ShoppingCart, 
-  Store, 
-  ChevronDown, 
-  ChevronUp, 
-  Calendar, 
-  Gavel, 
-  Users, 
-  FileCheck, 
-  ShieldCheck, 
-  Wallet, 
-  Shield, 
+import {
+  Home,
+  UserPlus,
+  ShoppingCart,
+  Store,
+  ChevronDown,
+  ChevronUp,
+  Calendar,
+  Gavel,
+  Users,
+  FileCheck,
+  ShieldCheck,
+  Wallet,
+  Shield,
   ChevronsLeft,
   ChevronsRight,
   Bot,
@@ -44,6 +44,8 @@ import {
   Square,
   CheckSquare
 } from 'lucide-react';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
 import './style.css';
 
 /**
@@ -61,6 +63,8 @@ const Component = () => {
   const [isConfirmCheckModalOpen, setIsConfirmCheckModalOpen] = useState(false);
   const [isInterceptModalOpen, setIsInterceptModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [autoPublish, setAutoPublish] = useState(false);
+  const [hoursAfterApproval, setHoursAfterApproval] = useState('');
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -120,7 +124,7 @@ const Component = () => {
   };
 
   const [expandedNodes, setExpandedNodes] = useState<{ [key: string]: boolean }>({});
-  
+
   const toggleNode = (nodeId: string) => {
     setExpandedNodes((prev: { [key: string]: boolean }) => ({
       ...prev,
@@ -263,7 +267,7 @@ const Component = () => {
             )}
           </div>
         </nav>
-        <div 
+        <div
           className="p-4 border-t border-white/10 flex items-center cursor-pointer hover:bg-white/10 justify-center"
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         >
@@ -280,33 +284,6 @@ const Component = () => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
-        {/* Right Floating Panel */}
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-40 flex flex-col items-center bg-white dark:bg-gray-800 shadow-lg border-l border-t border-b border-gray-200 dark:border-gray-700 rounded-l-lg py-2 w-12 space-y-4">
-          <div className="absolute right-14 top-0 w-48 bg-white dark:bg-gray-700 p-2 rounded shadow-md border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">
-            检测到您有1项合规风险
-            <div className="absolute top-3 right-[-6px] w-3 h-3 bg-white dark:bg-gray-700 border-r border-t border-gray-200 dark:border-gray-600 transform rotate-45"></div>
-          </div>
-          <div className="flex flex-col items-center group cursor-pointer" onClick={() => setIsChatOpen(true)}>
-            <div className="w-8 h-8 rounded-full bg-blue-50 dark:bg-gray-700 flex items-center justify-center text-primary mb-1">
-              <Bot className="w-5 h-5" />
-            </div>
-            <span className="text-[10px] text-center leading-tight">数字<br />合规官</span>
-          </div>
-          <div className="w-8 h-[1px] bg-gray-200 dark:bg-gray-600"></div>
-          <div className="flex flex-col items-center group cursor-pointer text-gray-500 dark:text-gray-400 hover:text-primary">
-            <Headset className="w-5 h-5" />
-            <span className="text-[10px] text-center leading-tight mt-1">联系<br />客服</span>
-          </div>
-          <div className="flex flex-col items-center group cursor-pointer text-gray-500 dark:text-gray-400 hover:text-primary">
-            <UserCog className="w-5 h-5" />
-            <span className="text-[10px] text-center leading-tight mt-1">权限<br />助手</span>
-          </div>
-          <div className="flex flex-col items-center group cursor-pointer text-gray-500 dark:text-gray-400 hover:text-primary">
-            <Smartphone className="w-5 h-5" />
-            <span className="text-[10px] text-center leading-tight mt-1">掌上<br />作业</span>
-          </div>
-        </div>
-
         {/* Header */}
         <header className="h-14 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 flex-shrink-0">
           <div className="flex items-center space-x-2"></div>
@@ -370,301 +347,343 @@ const Component = () => {
             <div className="breadcrumb-nav">
               <span className="breadcrumb-item">采购列表</span>
               <span className="breadcrumb-separator">&gt;</span>
-              <span className="breadcrumb-item active">编制采购清单</span>
+              <span className="breadcrumb-item active">编制采购公告</span>
             </div>
           </div>
 
           {/* 内容区域 */}
           <div className="p-4">
 
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-sm mr-2">劳务分包</span>
-              <h1 className="text-lg font-bold text-gray-800 dark:text-white">测试劳务</h1>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600">上一步</button>
-              <button className="bg-primary text-white px-4 py-1.5 rounded text-sm hover:bg-primary-dark shadow-sm">保存</button>
-              <button onClick={() => setIsConfirmCheckModalOpen(true)} className="bg-primary text-white px-4 py-1.5 rounded text-sm hover:bg-primary-dark shadow-sm">下一步</button>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded shadow-sm p-4 mb-4 border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center mb-4 text-sm">
-              <span className="text-gray-600 dark:text-gray-400 mr-2">距废除截止还剩：</span>
-              <div className="flex items-center space-x-1 font-mono text-primary">
-                <span className="border border-primary px-1 rounded">999996</span>
-                <span className="text-gray-500">天</span>
-                <span className="border border-primary px-1 rounded">23</span>
-                <span className="text-gray-500">:</span>
-                <span className="border border-primary px-1 rounded">48</span>
-                <span className="text-gray-500">:</span>
-                <span className="border border-primary px-1 rounded">49</span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-sm mr-2">物资</span>
+                <h1 className="text-lg font-bold text-gray-800 dark:text-white">XXX项目物资采购</h1>
+              </div>
+              <div className="flex items-center space-x-2">
+                <button className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600">上一步</button>
+                <button className="bg-primary text-white px-4 py-1.5 rounded text-sm hover:bg-primary-dark shadow-sm">保存</button>
+                <button onClick={() => setIsConfirmCheckModalOpen(true)} className="bg-primary text-white px-4 py-1.5 rounded text-sm hover:bg-primary-dark shadow-sm">下一步</button>
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-y-2 text-xs text-gray-600 dark:text-gray-400">
-              <div>采购编号：<span className="text-blue-500 hover:underline cursor-pointer">cscec202602020000002071</span></div>
-              <div>组织机构：中国建筑股份有限公司</div>
-              <div>采购方式：竞价采购</div>
-              <div>项目：<span className="text-blue-500 hover:underline cursor-pointer">supzyc</span></div>
-              <div>品类：劳务分包-主体结构劳务</div>
-              <div>经办人：admin11</div>
-            </div>
-          </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-sm mb-4 border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div className="step-container">
-              <div className="step-item active">采购发起</div>
-              <div className="step-item">采购响应</div>
-              <div className="step-item">文件开启</div>
-              <div className="step-item">采购评审</div>
-              <div className="step-item">采购成交</div>
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm p-4 mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center mb-4 text-sm">
+                <span className="text-gray-600 dark:text-gray-400 mr-2">距废除截止还剩：</span>
+                <div className="flex items-center space-x-1 font-mono text-primary">
+                  <span className="border border-primary px-1 rounded">999996</span>
+                  <span className="text-gray-500">天</span>
+                  <span className="border border-primary px-1 rounded">23</span>
+                  <span className="text-gray-500">:</span>
+                  <span className="border border-primary px-1 rounded">58</span>
+                  <span className="text-gray-500">:</span>
+                  <span className="border border-primary px-1 rounded">10</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-y-2 text-xs text-gray-600 dark:text-gray-400">
+                <div>采购编号：<span className="text-blue-500 hover:underline cursor-pointer">cscec2026040100000021220</span></div>
+                <div>组织机构：中国建筑股份有限公司</div>
+                <div>采购方式：询比采购</div>
+                <div>项目：<span className="text-blue-500 hover:underline cursor-pointer">测试项目41927</span></div>
+                <div>品类：物资-钢材</div>
+                <div>经办人：奥巴马</div>
+              </div>
             </div>
-            <div className="sub-step-container">
-              <div className="sub-step-items">
-                <div className="sub-step-item">
-                  <span className="sub-step-label active">采购基本信息</span>
-                  <div className="sub-step-dot completed">
-                    <Check className="w-3 h-3 text-white stroke-[3]" />
+
+            <div className="bg-white dark:bg-gray-800 rounded-sm mb-4 border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="step-container">
+                <div className="step-item active">采购发起</div>
+                <div className="step-item">采购响应</div>
+                <div className="step-item">文件开启</div>
+                <div className="step-item">采购评审</div>
+                <div className="step-item">采购成交</div>
+              </div>
+              <div className="sub-step-container">
+                <div className="sub-step-items">
+                  <div className="sub-step-item">
+                    <span className="sub-step-label active">采购基本信息</span>
+                    <div className="sub-step-dot completed">
+                      <Check className="w-3 h-3 text-white stroke-[3]" />
+                    </div>
+                  </div>
+                  <div className="sub-step-item">
+                    <span className="sub-step-label active">编制采购清单</span>
+                    <div className="sub-step-dot completed">
+                      <Check className="w-3 h-3 text-white stroke-[3]" />
+                    </div>
+                  </div>
+                  <div className="sub-step-item">
+                    <span className="sub-step-label current">编制采购(资格预审)公告</span>
+                    <div className="sub-step-dot current"></div>
+                  </div>
+                  <div className="sub-step-item">
+                    <span className="sub-step-label">发布采购(资格预审)公告</span>
+                    <div className="sub-step-dot"></div>
+                  </div>
+                  <div className="sub-step-item">
+                    <span className="sub-step-label">报名与资审汇总</span>
+                    <div className="sub-step-dot"></div>
+                  </div>
+                  <div className="sub-step-item">
+                    <span className="sub-step-label">资审结果通知</span>
+                    <div className="sub-step-dot"></div>
                   </div>
                 </div>
-                <div className="sub-step-item">
-                  <span className="sub-step-label current">编制采购清单</span>
-                  <div className="sub-step-dot current"></div>
+                <div className="sub-step-line-container">
+                  <div className="sub-step-line active" style={{ flex: '0 0 40%' }}></div>
+                  <div className="sub-step-line"></div>
                 </div>
-                <div className="sub-step-item">
-                  <span className="sub-step-label">编制采购(资格预审)公告</span>
-                  <div className="sub-step-dot"></div>
-                </div>
-                <div className="sub-step-item">
-                  <span className="sub-step-label">发布采购(资格预审)公告</span>
-                  <div className="sub-step-dot"></div>
-                </div>
-                <div className="sub-step-item">
-                  <span className="sub-step-label">报名与资审汇总</span>
-                  <div className="sub-step-dot"></div>
-                </div>
-                <div className="sub-step-item">
-                  <span className="sub-step-label">资审结果通知</span>
-                  <div className="sub-step-dot"></div>
-                </div>
-              </div>
-              <div className="sub-step-line-container">
-                <div className="sub-step-line active" style={{ flex: '0 0 20%' }}></div>
-                <div className="sub-step-line"></div>
               </div>
             </div>
-          </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="w-1 h-4 bg-primary mr-2"></div>
-                <h2 className="font-bold text-gray-800 dark:text-white text-sm">采购清单</h2>
-              </div>
-              <button className="bg-primary hover:bg-primary-dark text-white text-xs px-3 py-1.5 rounded flex items-center">
-                导出清单 <HelpCircle className="w-[14px] h-[14px] ml-1" />
-              </button>
-            </div>
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-blue-50/30 dark:bg-blue-900/10">
-              <button className="bg-primary hover:bg-primary-dark text-white text-xs px-3 py-1.5 rounded">选择清单模板</button>
-            </div>
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-              <div className="flex items-center text-sm">
-                <span className="text-red-500 mr-1">*</span>
-                <span className="text-gray-700 dark:text-gray-300 mr-2">清单名称：</span>
-                <input className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded px-2 py-1 text-sm w-48 focus:border-primary outline-none" type="text" defaultValue="分包类精度" />
-              </div>
-              <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
-            </div>
-            <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center space-x-4 text-xs">
-              <button className="text-primary hover:text-primary-dark flex items-center">
-                <Search className="w-[14px] h-[14px] mr-1" /> 查询历史价格
-              </button>
-              <span className="text-gray-300">|</span>
-              <button className="text-primary hover:text-primary-dark flex items-center">
-                <Plus className="w-[14px] h-[14px] mr-1" /> 添加类别
-              </button>
-              <button className="text-primary hover:text-primary-dark flex items-center">
-                <Upload className="w-[14px] h-[14px] mr-1" /> 批量导入
-              </button>
-              <button className="text-primary hover:text-primary-dark flex items-center">
-                <Trash2 className="w-[14px] h-[14px] mr-1" /> 删除行
-              </button>
-              <span className="text-gray-300">|</span>
-              <button className="text-primary hover:text-primary-dark border border-primary px-2 py-0.5 rounded">删除清单</button>
-              <button className="text-primary hover:text-primary-dark border border-primary px-2 py-0.5 rounded">收藏清单</button>
-              <button className="text-primary hover:text-primary-dark border border-primary px-2 py-0.5 rounded">创建副本</button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left text-gray-600 dark:text-gray-300">
-                <thead className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium">
-                  <tr>
-                    <th className="p-2 w-8 text-center border-r border-gray-200 dark:border-gray-600"></th>
-                    <th className="p-2 w-8 text-center border-r border-gray-200 dark:border-gray-600"><input className="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox" /></th>
-                    <th className="p-2 w-12 text-center border-r border-gray-200 dark:border-gray-600">序号</th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <div className="flex flex-col">
-                        <span>投标方数字</span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(最多3位小数)</span>
-                      </div>
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <span className="text-red-500">*</span> 清单名称
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <div className="flex flex-col">
-                        <span><span className="text-red-500">*</span> 工程量</span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(最多4位小数)</span>
-                      </div>
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <div className="flex flex-col">
-                        <span className="flex items-center">招标方数字 <HelpCircle className="w-[10px] h-[10px] text-gray-400 ml-1" /></span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(最多5位小数)</span>
-                      </div>
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">项目特征</th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <div className="flex flex-col">
-                        <span>含税单价</span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(最多4位小数)</span>
-                      </div>
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600"><span className="text-red-500">*</span> 单位</th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">
-                      <div className="flex flex-col">
-                        <span className="flex items-center">合价 <HelpCircle className="w-[10px] h-[10px] text-gray-400 ml-1" /></span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(最多4位小数)</span>
-                      </div>
-                    </th>
-                    <th className="p-2 border-r border-gray-200 dark:border-gray-600">税率</th>
-                    <th className="p-2">
-                      <div className="flex flex-col">
-                        <span className="flex items-center">不含税单价 <HelpCircle className="w-[10px] h-[10px] text-gray-400 ml-1" /></span>
-                        <span className="text-gray-400 scale-90 origin-top-left">(只支持整数)</span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  <tr className="bg-gray-50 dark:bg-gray-800 font-medium">
-                    <td className="p-2 text-center text-gray-400"><Plus className="w-[14px] h-[14px] mx-auto" /></td>
-                    <td className="p-2 text-center"><Square className="w-[14px] h-[14px] text-gray-400 mx-auto" /></td>
-                    <td className="p-2 text-center"><input className="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox" /></td>
-                    <td className="p-2 text-center">1</td>
-                    <td className="p-2 font-bold" colSpan={2}>土石方工程</td>
-                    <td className="p-2 text-right">0</td>
-                    <td className="p-2">
-                      <button className="text-primary hover:underline border border-primary px-2 py-0.5 rounded text-xs bg-white dark:bg-gray-700">添加清单项</button>
-                    </td>
-                    <td className="p-2"></td>
-                    <td className="p-2"></td>
-                    <td className="p-2"></td>
-                    <td className="p-2 text-right">0</td>
-                    <td className="p-2 text-right">0</td>
-                    <td className="p-2 text-right">0</td>
-                  </tr>
-                  <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="p-2 text-center text-gray-400"><Plus className="w-[14px] h-[14px] mx-auto" /></td>
-                    <td className="p-2 text-center"><input className="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox" /></td>
-                    <td className="p-2 text-center">1-1</td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">供应商填写</span></td>
-                    <td className="p-2">土石方工程-03</td>
-                    <td className="p-2">
-                      <input className="w-full border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5 text-xs bg-white dark:bg-gray-700" type="text" />
-                    </td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">系统自动计算</span></td>
-                    <td className="p-2">
-                      <div className="relative">
-                        <input className="w-full border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5 text-xs bg-white dark:bg-gray-700 pr-10" type="text" />
-                        <span className="absolute right-1 bottom-1 text-[9px] text-gray-400">0 / 2000</span>
-                      </div>
-                    </td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">供应商填写</span></td>
-                    <td className="p-2">
-                      <div className="relative">
-                        <input className="w-16 border border-gray-300 dark:border-gray-600 rounded px-1 py-0.5 text-xs bg-white dark:bg-gray-700" type="text" defaultValue="方" />
-                      </div>
-                    </td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">系统自动计算</span></td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">供应商填写</span></td>
-                    <td className="p-2"><span className="text-gray-400 text-[10px]">系统自动计算</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="p-3 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
-              共选中 <span className="text-primary font-bold">0</span> 条数据
-            </div>
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex text-xs">
-                <span className="text-gray-600 dark:text-gray-300 mr-2 w-20 flex-shrink-0 pt-1">清单附件<br />(仅内部可见)：</span>
-                <div className="flex-1">
-                  <p className="text-gray-400 mb-2">大小限制：500M 支持格式：.jpeg .jpg .gif .png .doc .docx .xls .xlsx .txt .pdf .rar .zip .7z .tar .jar .dwg .dws .dwt .dxf .csv</p>
-                  <button className="flex items-center text-primary border border-primary dark:border-primary-dark rounded px-3 py-1 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                    <Plus className="w-[14px] h-[14px] mr-1" /> 添加附件
+            {/* 编制采购(资格预审)公告 */}
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-1 h-4 bg-primary mr-2"></div>
+                  <h2 className="font-bold text-gray-800 dark:text-white text-sm">编制采购(资格预审)公告</h2>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button className="text-gray-500 hover:text-gray-700 text-xs flex items-center">
+                    加密设置 <HelpCircle className="w-[14px] h-[14px] ml-1" />
                   </button>
+                  <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
+                </div>
+              </div>
+              <div className="p-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-1">*</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">是否自动发布公告</span>
+                    <HelpCircle className="w-[14px] h-[14px] text-gray-400 mr-2" />
+                    <span className="mr-2">：</span>
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name="autoPublish"
+                          className="mr-1"
+                          checked={autoPublish}
+                          onChange={() => setAutoPublish(true)}
+                        />
+                        <span className="text-sm">是</span>
+                      </label>
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name="autoPublish"
+                          className="mr-1"
+                          checked={!autoPublish}
+                          onChange={() => setAutoPublish(false)}
+                        />
+                        <span className="text-sm">否</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-red-500 mr-1">*</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">预计报名截止时间：</span>
+                    {autoPublish ? (
+                      <>
+                        <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">公告审批通过后</span>
+                        <input
+                          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded px-2 py-1 text-sm w-20 focus:border-primary outline-none mr-2"
+                          type="text"
+                          placeholder="请输入"
+                          value={hoursAfterApproval}
+                          onChange={(e) => setHoursAfterApproval(e.target.value)}
+                        />
+                        <span className="text-gray-700 dark:text-gray-300 text-sm">小时</span>
+                      </>
+                    ) : (
+                      <DatePicker
+                        showTime
+                        format="YYYY-MM-DD HH:mm:ss"
+                        placeholder="请选择日期"
+                        style={{ width: 200 }}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-center mb-2">
+                    <span className="text-red-500 mr-1">*</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">采购公告格式：</span>
+                    <div className="flex items-center space-x-4">
+                      <label className="flex items-center cursor-pointer">
+                        <input type="radio" name="noticeFormat" className="mr-1" defaultChecked />
+                        <span className="text-sm">范本</span>
+                      </label>
+                      <label className="flex items-center cursor-pointer">
+                        <input type="radio" name="noticeFormat" className="mr-1" />
+                        <span className="text-sm">富文本</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-center mb-2">
+                    <span className="text-red-500 mr-1">*</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">公告内容：</span>
+                    <button className="bg-primary text-white text-xs px-3 py-1 rounded flex items-center">
+                      去生成 &gt;&gt;
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-4 flex items-center">
+                  <div className="flex-shrink-0 text-right mr-2" style={{ width: '100px' }}>
+                    <div className="text-gray-700 dark:text-gray-300 text-sm">公告附件</div>
+                    <div className="text-gray-400 text-xs whitespace-nowrap">（仅内部可见）</div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-gray-400 text-xs">：大小限制：1024M 支持格式：.jpeg .jpg .gif .png .doc .docx .xls .xlsx .txt .pdf .rar .zip .7z .tar .jar .dwg .dws .dwt .dxf .csv</div>
+                    <button className="mt-2 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 text-xs px-3 py-1.5 rounded flex items-center hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <Plus className="w-[14px] h-[14px] mr-1" /> 添加附件
+                    </button>
+                  </div>
+                </div>
+                <div className="mb-2 flex items-center">
+                  <div className="flex-shrink-0 text-right mr-2" style={{ width: '100px' }}>
+                    <div className="text-red-500 text-sm">
+                      <span>*</span>
+                      <span>公告附件</span>
+                    </div>
+                    <div className="text-red-500 text-xs whitespace-nowrap">（供应商可见）</div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-gray-400 text-xs">：大小限制：1024M 支持格式：.jpeg .jpg .gif .png .doc .docx .xls .xlsx .txt .pdf .rar .zip .7z .tar .jar .dwg .dws .dwt .dxf .csv</div>
+                    <button className="mt-2 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 text-xs px-3 py-1.5 rounded flex items-center hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <Plus className="w-[14px] h-[14px] mr-1" /> 添加附件
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 资格审查附件组成 */}
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-1 h-4 bg-primary mr-2"></div>
+                  <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查附件组成</h2>
+                </div>
+                <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-center">
+                  <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">是否设定资格审查附件组成</span>
+                  <HelpCircle className="w-[14px] h-[14px] text-gray-400 mr-2" />
+                  <span className="mr-2">：</span>
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="attachmentGroup" className="mr-1" />
+                      <span className="text-sm">是</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="attachmentGroup" className="mr-1" defaultChecked />
+                      <span className="text-sm">否</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 资格审查条件 */}
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-1 h-4 bg-primary mr-2"></div>
+                  <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查条件</h2>
+                  <span className="text-primary text-xs ml-2 cursor-pointer">智能资审条件推荐，点击查看！</span>
+                </div>
+                <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-center">
+                  <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">是否设定资格审查条件：</span>
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="qualificationCondition" className="mr-1" />
+                      <span className="text-sm">是</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="qualificationCondition" className="mr-1" defaultChecked />
+                      <span className="text-sm">否</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 供应商履约设置 */}
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-1 h-4 bg-primary mr-2"></div>
+                  <h2 className="font-bold text-gray-800 dark:text-white text-sm">供应商履约设置</h2>
+                </div>
+                <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
+              </div>
+              <div className="p-4">
+                <div className="flex items-center">
+                  <span className="text-red-500 mr-1">*</span>
+                  <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">供应商履约金额展示</span>
+                  <HelpCircle className="w-[14px] h-[14px] text-gray-400 mr-1" />
+                  <span className="mr-2">：</span>
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="performanceDisplay" className="mr-1" />
+                      <span className="text-sm">是</span>
+                    </label>
+                    <label className="flex items-center cursor-pointer">
+                      <input type="radio" name="performanceDisplay" className="mr-1" defaultChecked />
+                      <span className="text-sm">否</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 采购方联系方式 */}
+            <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
+              <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-1 h-4 bg-primary mr-2"></div>
+                  <h2 className="font-bold text-gray-800 dark:text-white text-sm">采购方联系方式</h2>
+                  <HelpCircle className="w-[14px] h-[14px] text-gray-400 ml-1" />
+                </div>
+                <ChevronUp className="w-5 h-5 text-gray-400 cursor-pointer" />
+              </div>
+              <div className="p-4">
+                <table className="w-full text-xs text-left">
+                  <thead className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                    <tr>
+                      <th className="p-2 text-center w-16">序号</th>
+                      <th className="p-2"><span className="text-red-500">*</span> 联系人</th>
+                      <th className="p-2"><span className="text-red-500">*</span> 联系方式</th>
+                      <th className="p-2 text-center w-20">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tr>
+                      <td className="p-2 text-center">1</td>
+                      <td className="p-2">
+                        <input className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700" type="text" defaultValue="奥巴马（账号: hehetest）" />
+                      </td>
+                      <td className="p-2">
+                        <input className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700" type="text" defaultValue="17700000007" />
+                      </td>
+                      <td className="p-2 text-center">
+                        <button className="text-primary hover:text-primary-dark text-xs">删除</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="mt-2 text-center">
+                  <button className="text-primary hover:text-primary-dark text-xs">添加</button>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-              <div className="flex items-center">
-                <div className="w-1 h-4 bg-primary mr-2"></div>
-                <h2 className="font-bold text-gray-800 dark:text-white text-sm">私有库建议栏</h2>
-              </div>
-              <ChevronUp className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="p-4">
-              <div className="relative">
-                <textarea className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-xs h-24 bg-white dark:bg-gray-700 resize-none focus:border-primary outline-none"></textarea>
-                <span className="absolute right-2 bottom-2 text-xs text-gray-400">0 / 4000</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-              <div className="flex items-center">
-                <div className="w-1 h-4 bg-primary mr-2"></div>
-                <h2 className="font-bold text-gray-800 dark:text-white text-sm flex items-center">供应商报价说明（仅在采购文件发布后，供应商才可见该内容）
-                <HelpCircle className="w-[14px] h-[14px] text-gray-400 ml-1" /></h2>
-              </div>
-              <ChevronUp className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="p-4">
-              <div className="relative">
-                <textarea className="w-full border border-gray-300 dark:border-gray-600 rounded p-2 text-xs h-24 bg-white dark:bg-gray-700 resize-none focus:border-primary outline-none"></textarea>
-                <span className="absolute right-2 bottom-2 text-xs text-gray-400">0 / 4000</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-10 border border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-              <div className="flex items-center">
-                <div className="w-1 h-4 bg-primary mr-2"></div>
-                <h2 className="font-bold text-gray-800 dark:text-white text-sm">招募供应商 <span className="text-blue-500 font-normal text-xs ml-2 cursor-pointer hover:underline">什么是招募供应商?</span></h2>
-              </div>
-              <ChevronUp className="w-5 h-5 text-gray-400" />
-            </div>
-            <div className="p-4 flex items-center text-sm">
-              <span className="text-red-500 mr-1">*</span>
-              <span className="mr-4 text-gray-700 dark:text-gray-300">是否招募供应商：</span>
-              <label className="inline-flex items-center mr-6 cursor-pointer">
-                <input className="text-primary focus:ring-primary h-4 w-4 border-gray-300" name="recruit" type="radio" />
-                <span className="ml-2 text-gray-700 dark:text-gray-300">是</span>
-              </label>
-              <label className="inline-flex items-center cursor-pointer">
-                <input defaultChecked className="text-primary focus:ring-primary h-4 w-4 border-gray-300" name="recruit" type="radio" />
-                <span className="ml-2 text-gray-700 dark:text-gray-300">否</span>
-              </label>
-            </div>
-          </div>
-        </div>
         </div>
       </main>
 
@@ -686,14 +705,14 @@ const Component = () => {
                 </div>
               </div>
             </div>
-            <button 
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 shadow-sm border border-white/20" 
+            <button
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 shadow-sm border border-white/20"
               onClick={() => setIsChatOpen(false)}
             >
               <X className="w-5 h-5" />
             </button>
           </div>
-          
+
           {/* 聊天内容区 */}
           <div className="flex-1 overflow-y-auto p-5 chat-container" ref={chatHistoryRef}>
             {chatMessages.map((msg) => (
@@ -763,7 +782,7 @@ const Component = () => {
               </div>
             ))}
           </div>
-          
+
           {/* 输入区 */}
           <div className="px-5 pb-5 pt-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
             <div className="relative flex items-center gap-3">
@@ -792,11 +811,11 @@ const Component = () => {
           </div>
         </div>
       </div>
-      
+
       {/* 遮罩层 - 仅视觉提示，不拦截点击 */}
       {isChatOpen && (
-        <div 
-          className="fixed inset-0 bg-black/5 z-40 transition-opacity duration-300 pointer-events-none" 
+        <div
+          className="fixed inset-0 bg-black/5 z-40 transition-opacity duration-300 pointer-events-none"
         />
       )}
 
@@ -926,7 +945,7 @@ const Component = () => {
                 <div className="absolute bottom-[-6px] right-8 w-3 h-3 bg-orange-50 dark:bg-orange-900/30 border-r border-b border-orange-200 dark:border-orange-700 transform rotate-45"></div>
                 检测到您的信息发生变化，建议重新检测
               </div>
-              <button 
+              <button
                 className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-2 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-2 shadow-sm"
                 onClick={() => {
                   // 重新检测逻辑：关闭当前弹窗，重新发起检测
