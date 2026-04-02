@@ -141,15 +141,16 @@ const Component = () => {
     }));
   };
 
-  // AI智能推荐字段配置
+  // AI智能推荐字段配置（不包含附件字段）
   const aiFields = [
     { id: 'autoPublish', label: '是否自动发布公告' },
     { id: 'hoursAfterApproval', label: '预计报名截止时间' },
     { id: 'noticeFormat', label: '采购公告格式' },
     { id: 'noticeContent', label: '公告内容' },
-    { id: 'internalAttachment', label: '公告附件（内部）' },
-    { id: 'externalAttachment', label: '公告附件（供应商）' },
   ];
+
+  // 统计已填写字段数量（示例逻辑，实际应根据表单值判断）
+  const filledFieldsCount = 0; // 这里可以根据实际表单状态计算
 
   // 计算AI小人位置，避免被屏幕边缘遮挡
   const calculateAIBubblePosition = (fieldElement: HTMLElement) => {
@@ -207,9 +208,7 @@ const Component = () => {
         clearInterval(interval);
         setIsAIRecommending(false);
         setCurrentHighlightField(null);
-        setTimeout(() => {
-          setShowAIBubble(false);
-        }, 2000);
+        // 推荐完成后不自动关闭，保持显示完成状态
         return;
       }
 
@@ -226,6 +225,11 @@ const Component = () => {
       setAiRecommendationProgress(((currentIndex + 1) / aiFields.length) * 100);
       currentIndex++;
     }, 1500); // 每个字段停留1.5秒
+  };
+
+  // 关闭AI气泡
+  const handleCloseAIBubble = () => {
+    setShowAIBubble(false);
   };
 
   return (
@@ -1287,13 +1291,25 @@ const Component = () => {
 
             {/* 气泡提示 */}
             <div className="relative">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-xl border border-purple-100 dark:border-purple-800 max-w-[200px]">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-xl border border-purple-100 dark:border-purple-800 max-w-[220px]">
+                {/* 关闭按钮 - 仅在推荐完成后显示 */}
+                {!isAIRecommending && (
+                  <button
+                    onClick={handleCloseAIBubble}
+                    className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
                 <div className="flex items-center gap-2 mb-1">
                   <Sparkles className="w-4 h-4 text-purple-500" />
                   <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">AI智能推荐</span>
                 </div>
                 <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {isAIRecommending ? '小云正在帮您生成中...' : '推荐完成！'}
+                  {isAIRecommending
+                    ? '小云正在帮您生成中...'
+                    : `小云已为您推荐 ${aiFields.length} 个字段，跳过 ${filledFieldsCount} 个已填写字段`
+                  }
                 </p>
                 {currentHighlightField && isAIRecommending && (
                   <p className="text-xs text-gray-500 mt-1">

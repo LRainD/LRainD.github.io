@@ -132,11 +132,20 @@ transition-all duration-500            /* 平滑过渡 */
 
 **状态文案**：
 - 进行中："小云正在帮您生成中..."
-- 已完成："推荐完成！"
+- 已完成："小云已为您推荐 X 个字段，跳过 X 个已填写字段"
+  - 动态显示实际推荐字段数和已填写字段数
+  - 需要手动关闭，不会自动消失
 
 **当前字段提示**（可选）：
 - 文案格式："正在填充：{字段名称}"
 - 样式：text-xs text-gray-500
+
+**关闭按钮**（推荐完成后显示）：
+- 位置：气泡右上角
+- 样式：圆形按钮，w-5 h-5，灰色背景
+- 图标：X (w-3 h-3)
+- 交互：点击后关闭气泡
+- 仅在 `!isAIRecommending` 时显示
 
 ## 6. 状态管理
 
@@ -189,10 +198,11 @@ const aiFields = [
    气泡显示当前填充的字段名称
    ↓
 5. 所有字段遍历完成
-   气泡显示"推荐完成！"
+   气泡显示"小云已为您推荐 X 个字段，跳过 X 个已填写字段"
    按钮恢复默认状态
+   气泡右上角显示关闭按钮
    ↓
-6. 2秒后气泡自动消失
+6. 用户点击关闭按钮后气泡消失
    遮罩层消失
 ```
 
@@ -204,8 +214,9 @@ const aiFields = [
 
 关键实现点：
 - 按钮位置：编制采购(资格预审)公告模块标题栏
-- 字段高亮：6个字段（自动发布、截止时间、公告格式、公告内容、内部附件、外部附件）
+- 字段高亮：4个字段（自动发布、截止时间、公告格式、公告内容）
 - AI小人：使用在线图片生成服务创建机器人形象
+- 完成提示：显示推荐字段数和跳过字段数，需手动关闭
 
 ### 8.2 快速接入代码模板
 
@@ -238,7 +249,7 @@ const handleAIRecommend = () => {
       clearInterval(interval);
       setIsAIRecommending(false);
       setCurrentHighlightField(null);
-      setTimeout(() => setShowAIBubble(false), 2000);
+      // 推荐完成后不自动关闭，需手动点击关闭按钮
       return;
     }
 
@@ -256,7 +267,37 @@ const handleAIRecommend = () => {
   }, 1500);
 };
 
-// 5. 字段高亮样式
+// 5. 关闭气泡
+const handleCloseAIBubble = () => {
+  setShowAIBubble(false);
+};
+
+// 6. 气泡提示（含关闭按钮）
+<div className="relative">
+  <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-xl border border-purple-100 dark:border-purple-800 max-w-[220px]">
+    {/* 关闭按钮 - 仅在推荐完成后显示 */}
+    {!isAIRecommending && (
+      <button
+        onClick={handleCloseAIBubble}
+        className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+      >
+        <X className="w-3 h-3" />
+      </button>
+    )}
+    <div className="flex items-center gap-2 mb-1">
+      <Sparkles className="w-4 h-4 text-purple-500" />
+      <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">AI智能推荐</span>
+    </div>
+    <p className="text-sm text-gray-700 dark:text-gray-300">
+      {isAIRecommending
+        ? '小云正在帮您生成中...'
+        : `小云已为您推荐 ${aiFields.length} 个字段，跳过 ${filledFieldsCount} 个已填写字段`
+      }
+    </p>
+  </div>
+</div>
+
+// 7. 字段高亮样式
 <div
   id="field-field1"
   className={`transition-all duration-500 ${
