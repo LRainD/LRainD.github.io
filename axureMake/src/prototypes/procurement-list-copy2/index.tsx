@@ -151,6 +151,42 @@ const Component = () => {
     { id: 'externalAttachment', label: '公告附件（供应商）' },
   ];
 
+  // 计算AI小人位置，避免被屏幕边缘遮挡
+  const calculateAIBubblePosition = (fieldElement: HTMLElement) => {
+    const rect = fieldElement.getBoundingClientRect();
+    const bubbleWidth = 240; // AI小人+气泡的预估宽度
+    const bubbleHeight = 100; // AI小人+气泡的预估高度
+    const padding = 20; // 边距
+
+    // 默认显示在字段右侧
+    let x = rect.right + padding;
+    let y = rect.top;
+
+    // 检测右侧是否超出屏幕
+    if (x + bubbleWidth > window.innerWidth) {
+      // 如果右侧超出，显示在字段左侧
+      x = rect.left - bubbleWidth - padding;
+    }
+
+    // 检测底部是否超出屏幕
+    if (y + bubbleHeight > window.innerHeight) {
+      // 如果底部超出，向上调整
+      y = window.innerHeight - bubbleHeight - padding;
+    }
+
+    // 确保不会超出左侧
+    if (x < padding) {
+      x = padding;
+    }
+
+    // 确保不会超出顶部
+    if (y < padding) {
+      y = padding;
+    }
+
+    return { x, y };
+  };
+
   // 处理AI智能推荐
   const handleAIRecommend = () => {
     setIsAIRecommending(true);
@@ -160,11 +196,8 @@ const Component = () => {
     // 获取第一个字段的位置用于显示AI小人
     const firstField = document.getElementById('field-autoPublish');
     if (firstField) {
-      const rect = firstField.getBoundingClientRect();
-      setAiBubblePosition({
-        x: rect.right + 20,
-        y: rect.top
-      });
+      const position = calculateAIBubblePosition(firstField);
+      setAiBubblePosition(position);
     }
 
     // 模拟逐个字段填充和高亮效果
@@ -186,11 +219,8 @@ const Component = () => {
       // 更新AI小人位置到当前高亮字段
       const fieldElement = document.getElementById(`field-${field.id}`);
       if (fieldElement) {
-        const rect = fieldElement.getBoundingClientRect();
-        setAiBubblePosition({
-          x: rect.right + 20,
-          y: rect.top
-        });
+        const position = calculateAIBubblePosition(fieldElement);
+        setAiBubblePosition(position);
       }
 
       setAiRecommendationProgress(((currentIndex + 1) / aiFields.length) * 100);
