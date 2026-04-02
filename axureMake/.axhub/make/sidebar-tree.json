@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-02T04:37:29.820Z",
+  "updatedAt": "2026-04-02T05:53:30.712Z",
   "prototypes": [
     {
       "id": "folder-1775037907912-7zoldr",
@@ -112,6 +112,12 @@
     }
   ],
   "docs": [
+    {
+      "id": "item-docs-ai-recommendation-pattern-md",
+      "kind": "item",
+      "title": "ai recommendation pattern.md",
+      "itemKey": "docs/ai-recommendation-pattern.md"
+    },
     {
       "id": "item-docs-templates-PRD---PRD_-----md",
       "kind": "item",
