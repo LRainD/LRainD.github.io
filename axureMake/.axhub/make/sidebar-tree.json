@@ -1,12 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-01T10:11:13.615Z",
+  "updatedAt": "2026-04-02T04:37:29.820Z",
   "prototypes": [
     {
       "id": "folder-1775037907912-7zoldr",
       "kind": "folder",
       "title": "模版页面",
-      "children": []
+      "children": [
+        {
+          "id": "item-prototypes-procurement-list-copy2-copy",
+          "kind": "item",
+          "title": "编制采购公告 副本",
+          "itemKey": "prototypes/procurement-list-copy2-copy"
+        }
+      ]
     },
     {
       "id": "folder-1775034717051-ua8zdu",

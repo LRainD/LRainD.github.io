@@ -42,16 +42,14 @@ import {
   CheckCircle2,
   Info,
   Square,
-  CheckSquare,
-  Sparkles,
-  Loader2
+  CheckSquare
 } from 'lucide-react';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import './style.css';
 
 /**
- * @name 编制采购公告
+ * @name 编制采购公告 副本
  * @mode axure
  *
  * 参考资料：
@@ -67,13 +65,6 @@ const Component = () => {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [autoPublish, setAutoPublish] = useState(false);
   const [hoursAfterApproval, setHoursAfterApproval] = useState('');
-
-  // AI智能推荐相关状态
-  const [isAIRecommending, setIsAIRecommending] = useState(false);
-  const [currentHighlightField, setCurrentHighlightField] = useState<string | null>(null);
-  const [aiRecommendationProgress, setAiRecommendationProgress] = useState(0);
-  const [showAIBubble, setShowAIBubble] = useState(false);
-  const [aiBubblePosition, setAiBubblePosition] = useState({ x: 0, y: 0 });
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -139,63 +130,6 @@ const Component = () => {
       ...prev,
       [nodeId]: !prev[nodeId]
     }));
-  };
-
-  // AI智能推荐字段配置
-  const aiFields = [
-    { id: 'autoPublish', label: '是否自动发布公告' },
-    { id: 'hoursAfterApproval', label: '预计报名截止时间' },
-    { id: 'noticeFormat', label: '采购公告格式' },
-    { id: 'noticeContent', label: '公告内容' },
-    { id: 'internalAttachment', label: '公告附件（内部）' },
-    { id: 'externalAttachment', label: '公告附件（供应商）' },
-  ];
-
-  // 处理AI智能推荐
-  const handleAIRecommend = () => {
-    setIsAIRecommending(true);
-    setShowAIBubble(true);
-    setAiRecommendationProgress(0);
-
-    // 获取第一个字段的位置用于显示AI小人
-    const firstField = document.getElementById('field-autoPublish');
-    if (firstField) {
-      const rect = firstField.getBoundingClientRect();
-      setAiBubblePosition({
-        x: rect.right + 20,
-        y: rect.top
-      });
-    }
-
-    // 模拟逐个字段填充和高亮效果
-    let currentIndex = 0;
-    const interval = setInterval(() => {
-      if (currentIndex >= aiFields.length) {
-        clearInterval(interval);
-        setIsAIRecommending(false);
-        setCurrentHighlightField(null);
-        setTimeout(() => {
-          setShowAIBubble(false);
-        }, 2000);
-        return;
-      }
-
-      const field = aiFields[currentIndex];
-      setCurrentHighlightField(field.id);
-
-      // 更新AI小人位置到当前高亮字段
-      const fieldElement = document.getElementById(`field-${field.id}`);
-      if (fieldElement) {
-        const rect = fieldElement.getBoundingClientRect();
-        setAiBubblePosition({
-          x: rect.right + 20,
-          y: rect.top
-        });
-      }
-
-      setAiRecommendationProgress(((currentIndex + 1) / aiFields.length) * 100);
-      currentIndex++;
-    }, 1500); // 每个字段停留1.5秒
   };
 
   return (
@@ -509,27 +443,6 @@ const Component = () => {
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">编制采购(资格预审)公告</h2>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button
-                    onClick={handleAIRecommend}
-                    disabled={isAIRecommending}
-                    className={`text-xs flex items-center px-3 py-1.5 rounded transition-all duration-300 ${
-                      isAIRecommending
-                        ? 'bg-purple-100 text-purple-600 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600 shadow-sm hover:shadow-md'
-                    }`}
-                  >
-                    {isAIRecommending ? (
-                      <>
-                        <Loader2 className="w-[14px] h-[14px] mr-1 animate-spin" />
-                        智能推荐中...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-[14px] h-[14px] mr-1" />
-                        智能推荐
-                      </>
-                    )}
-                  </button>
                   <button className="text-gray-500 hover:text-gray-700 text-xs flex items-center">
                     加密设置 <HelpCircle className="w-[14px] h-[14px] ml-1" />
                   </button>
@@ -538,14 +451,7 @@ const Component = () => {
               </div>
               <div className="p-4">
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div
-                    id="field-autoPublish"
-                    className={`flex items-center p-2 rounded-lg transition-all duration-500 ${
-                      currentHighlightField === 'autoPublish'
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                        : ''
-                    }`}
-                  >
+                  <div className="flex items-center">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">是否自动发布公告</span>
                     <HelpCircle className="w-[14px] h-[14px] text-gray-400 mr-2" />
@@ -573,14 +479,7 @@ const Component = () => {
                       </label>
                     </div>
                   </div>
-                  <div
-                    id="field-hoursAfterApproval"
-                    className={`flex items-center p-2 rounded-lg transition-all duration-500 ${
-                      currentHighlightField === 'hoursAfterApproval'
-                        ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                        : ''
-                    }`}
-                  >
+                  <div className="flex items-center">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">预计报名截止时间：</span>
                     {autoPublish ? (
@@ -605,14 +504,7 @@ const Component = () => {
                     )}
                   </div>
                 </div>
-                <div
-                  id="field-noticeFormat"
-                  className={`mb-4 p-2 rounded-lg transition-all duration-500 ${
-                    currentHighlightField === 'noticeFormat'
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                      : ''
-                  }`}
-                >
+                <div className="mb-4">
                   <div className="flex items-center mb-2">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">采购公告格式：</span>
@@ -628,14 +520,7 @@ const Component = () => {
                     </div>
                   </div>
                 </div>
-                <div
-                  id="field-noticeContent"
-                  className={`mb-4 p-2 rounded-lg transition-all duration-500 ${
-                    currentHighlightField === 'noticeContent'
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                      : ''
-                  }`}
-                >
+                <div className="mb-4">
                   <div className="flex items-center mb-2">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">公告内容：</span>
@@ -644,14 +529,7 @@ const Component = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="field-internalAttachment"
-                  className={`mb-4 flex items-center p-2 rounded-lg transition-all duration-500 ${
-                    currentHighlightField === 'internalAttachment'
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                      : ''
-                  }`}
-                >
+                <div className="mb-4 flex items-center">
                   <div className="flex-shrink-0 flex flex-col items-center mr-2" style={{ width: '100px' }}>
                     <div className="text-gray-700 dark:text-gray-300 text-sm">公告附件</div>
                     <div className="text-gray-400 text-xs whitespace-nowrap">（仅内部可见）</div>
@@ -663,14 +541,7 @@ const Component = () => {
                     </button>
                   </div>
                 </div>
-                <div
-                  id="field-externalAttachment"
-                  className={`mb-2 flex items-center p-2 rounded-lg transition-all duration-500 ${
-                    currentHighlightField === 'externalAttachment'
-                      ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
-                      : ''
-                  }`}
-                >
+                <div className="mb-2 flex items-center">
                   <div className="flex-shrink-0 flex flex-col items-center mr-2" style={{ width: '100px' }}>
                     <div className="text-red-500 text-sm relative">
                       <span className="absolute -left-3">*</span>
@@ -1210,69 +1081,6 @@ const Component = () => {
               <button className="bg-primary hover:bg-blue-600 text-white px-8 py-2 rounded font-medium shadow-md active:scale-95 transition-all" onClick={() => setIsInterceptModalOpen(false)}>
                 我知道了
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* AI智能推荐 - 漫游式引导遮罩层 */}
-      {isAIRecommending && (
-        <div className="fixed inset-0 z-40 pointer-events-none">
-          {/* 半透明遮罩 */}
-          <div className="absolute inset-0 bg-black/20 transition-opacity duration-500"></div>
-        </div>
-      )}
-
-      {/* AI小人形象和气泡提示 */}
-      {showAIBubble && (
-        <div
-          className="fixed z-50 transition-all duration-500 ease-in-out"
-          style={{
-            left: `${aiBubblePosition.x}px`,
-            top: `${aiBubblePosition.y}px`,
-          }}
-        >
-          <div className="flex items-start gap-3">
-            {/* AI小人形象 */}
-            <div className="flex-shrink-0">
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-400 via-blue-400 to-cyan-400 p-0.5 shadow-lg animate-bounce">
-                <div className="w-full h-full rounded-full bg-white dark:bg-gray-800 flex items-center justify-center overflow-hidden">
-                  <img
-                    src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=cute%20AI%20robot%20mascot%20avatar%20friendly%20smiling%20blue%20purple%20gradient&image_size=square"
-                    alt="AI小云"
-                    className="w-12 h-12 object-cover"
-                  />
-                </div>
-              </div>
-              {/* 进度条 */}
-              {isAIRecommending && (
-                <div className="mt-2 w-14 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-purple-500 to-blue-500 transition-all duration-300"
-                    style={{ width: `${aiRecommendationProgress}%` }}
-                  ></div>
-                </div>
-              )}
-            </div>
-
-            {/* 气泡提示 */}
-            <div className="relative">
-              <div className="bg-white dark:bg-gray-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-xl border border-purple-100 dark:border-purple-800 max-w-[200px]">
-                <div className="flex items-center gap-2 mb-1">
-                  <Sparkles className="w-4 h-4 text-purple-500" />
-                  <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">AI智能推荐</span>
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {isAIRecommending ? '小云正在帮您生成中...' : '推荐完成！'}
-                </p>
-                {currentHighlightField && isAIRecommending && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    正在填充：{aiFields.find(f => f.id === currentHighlightField)?.label}
-                  </p>
-                )}
-              </div>
-              {/* 气泡小三角 */}
-              <div className="absolute left-[-6px] top-4 w-3 h-3 bg-white dark:bg-gray-800 border-l border-b border-purple-100 dark:border-purple-800 transform rotate-45"></div>
             </div>
           </div>
         </div>
