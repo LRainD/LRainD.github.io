@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-03T01:32:34.714Z",
+  "updatedAt": "2026-04-03T07:37:17.494Z",
   "prototypes": [
     {
       "id": "folder-1775037907912-7zoldr",
@@ -29,8 +29,14 @@
         {
           "id": "item-prototypes-procurement-list-copy2-copy2",
           "kind": "item",
-          "title": "编制采购公告 副本2",
+          "title": "编制采购公告 弹窗式推荐",
           "itemKey": "prototypes/procurement-list-copy2-copy2"
+        },
+        {
+          "id": "item-prototypes-procurement-list-copy2-copy3",
+          "kind": "item",
+          "title": "编制采购公告 副本3",
+          "itemKey": "prototypes/procurement-list-copy2-copy3"
         }
       ]
     },
