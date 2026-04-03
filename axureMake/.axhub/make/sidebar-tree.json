@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-02T05:53:30.712Z",
+  "updatedAt": "2026-04-03T01:32:34.714Z",
   "prototypes": [
     {
       "id": "folder-1775037907912-7zoldr",
@@ -25,6 +25,12 @@
           "kind": "item",
           "title": "编制采购公告",
           "itemKey": "prototypes/procurement-list-copy2"
+        },
+        {
+          "id": "item-prototypes-procurement-list-copy2-copy2",
+          "kind": "item",
+          "title": "编制采购公告 副本2",
+          "itemKey": "prototypes/procurement-list-copy2-copy2"
         }
       ]
     },
@@ -112,6 +118,12 @@
     }
   ],
   "docs": [
+    {
+      "id": "item-docs---------------md",
+      "kind": "item",
+      "title": "影响点.md",
+      "itemKey": "docs/迭代文档/调价变更/影响点.md"
+    },
     {
       "id": "item-docs-ai-recommendation-pattern-md",
       "kind": "item",
