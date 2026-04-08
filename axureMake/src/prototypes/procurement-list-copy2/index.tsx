@@ -77,6 +77,10 @@ const Component = () => {
   
   // 智能推荐字段标签状态 - 记录哪些字段被AI推荐填充
   const [aiRecommendedFields, setAiRecommendedFields] = useState<{ [key: string]: boolean }>({});
+  
+  // 智能推荐二次确认弹窗状态
+  const [showAIConfirmPopover, setShowAIConfirmPopover] = useState(false);
+  const aiRecommendButtonRef = useRef<HTMLButtonElement>(null);
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -191,8 +195,19 @@ const Component = () => {
     return { x, y };
   };
 
-  // 处理AI智能推荐
-  const handleAIRecommend = () => {
+  // 处理AI智能推荐按钮点击 - 显示二次确认
+  const handleAIRecommendClick = () => {
+    setShowAIConfirmPopover(true);
+  };
+
+  // 取消智能推荐
+  const handleCancelAIRecommend = () => {
+    setShowAIConfirmPopover(false);
+  };
+
+  // 确认并开始AI智能推荐
+  const handleConfirmAIRecommend = () => {
+    setShowAIConfirmPopover(false);
     setIsAIRecommending(true);
     setShowAIBubble(true);
     setAiRecommendationProgress(0);
@@ -565,9 +580,10 @@ const Component = () => {
                   <div className="w-1 h-4 bg-primary mr-2"></div>
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">编制采购(资格预审)公告</h2>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 relative">
                   <button
-                    onClick={handleAIRecommend}
+                    ref={aiRecommendButtonRef}
+                    onClick={handleAIRecommendClick}
                     disabled={isAIRecommending}
                     className={`text-xs flex items-center px-3 py-1.5 rounded transition-all duration-300 ${
                       isAIRecommending
@@ -587,6 +603,43 @@ const Component = () => {
                       </>
                     )}
                   </button>
+                  
+                  {/* 智能推荐二次确认弹窗 */}
+                  {showAIConfirmPopover && (
+                    <div className="absolute top-full right-0 mt-2 z-50">
+                      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-4 w-64">
+                        {/* 标题行 */}
+                        <div className="flex items-center mb-3">
+                          <AlertCircle className="w-4 h-4 text-amber-500 mr-2 flex-shrink-0" />
+                          <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">提示</span>
+                        </div>
+                        
+                        {/* 提示内容 */}
+                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                          是否确认使用智能推荐？
+                        </p>
+                        
+                        {/* 按钮组 */}
+                        <div className="flex justify-end space-x-2">
+                          <button
+                            onClick={handleCancelAIRecommend}
+                            className="px-3 py-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                          >
+                            取消
+                          </button>
+                          <button
+                            onClick={handleConfirmAIRecommend}
+                            className="px-3 py-1.5 text-xs bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded hover:from-purple-600 hover:to-blue-600 transition-all"
+                          >
+                            确认
+                          </button>
+                        </div>
+                      </div>
+                      {/* 小三角箭头 */}
+                      <div className="absolute -top-1 right-20 w-2 h-2 bg-white dark:bg-gray-800 border-l border-t border-gray-200 dark:border-gray-700 transform rotate-45"></div>
+                    </div>
+                  )}
+                  
                   <button className="text-gray-500 hover:text-gray-700 text-xs flex items-center">
                     加密设置 <HelpCircle className="w-[14px] h-[14px] ml-1" />
                   </button>
