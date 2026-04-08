@@ -78,6 +78,12 @@ const Component = () => {
   // 智能推荐字段标签状态 - 记录哪些字段被AI推荐填充
   const [aiRecommendedFields, setAiRecommendedFields] = useState<{ [key: string]: boolean }>({});
   
+  // 当前字段是否被跳过（已填写）
+  const [isCurrentFieldSkipped, setIsCurrentFieldSkipped] = useState(false);
+  
+  // 跳过的字段数量统计
+  const [skippedFieldsCount, setSkippedFieldsCount] = useState(0);
+  
   // 智能推荐二次确认弹窗状态
   const [showAIConfirmPopover, setShowAIConfirmPopover] = useState(false);
   const aiRecommendButtonRef = useRef<HTMLButtonElement>(null);
@@ -211,6 +217,8 @@ const Component = () => {
     setIsAIRecommending(true);
     setShowAIBubble(true);
     setAiRecommendationProgress(0);
+    setIsCurrentFieldSkipped(false);
+    setSkippedFieldsCount(0);
     // 清空之前的推荐标记
     setAiRecommendedFields({});
 
@@ -228,12 +236,35 @@ const Component = () => {
         clearInterval(interval);
         setIsAIRecommending(false);
         setCurrentHighlightField(null);
+        setIsCurrentFieldSkipped(false);
         // 推荐完成后不自动关闭，保持显示完成状态
         return;
       }
 
       const field = aiFields[currentIndex];
       setCurrentHighlightField(field.id);
+      
+      // 检查字段是否已填写（有值但没有"荐"标识）
+      let isSkipped = false;
+      
+      // 针对 hoursAfterApproval 字段的特殊处理
+      if (field.id === 'hoursAfterApproval') {
+        // 如果有值且不是AI推荐的（没有荐标识），则跳过
+        if (hoursAfterApproval && hoursAfterApproval.trim() !== '' && !aiRecommendedFields[field.id]) {
+          isSkipped = true;
+        } else {
+          // 填充随机值（24-72小时之间）
+          const randomHours = Math.floor(Math.random() * 49) + 24; // 24-72
+          setHoursAfterApproval(randomHours.toString());
+        }
+      }
+      
+      setIsCurrentFieldSkipped(isSkipped);
+      
+      // 如果跳过，增加跳过计数
+      if (isSkipped) {
+        setSkippedFieldsCount((prev) => prev + 1);
+      }
 
       // 更新AI小人位置到当前高亮字段
       const fieldElement = document.getElementById(`field-${field.id}`);
@@ -242,11 +273,13 @@ const Component = () => {
         setAiBubblePosition(position);
       }
 
-      // 模拟字段填充，并为该字段添加"荐"字标签
-      setAiRecommendedFields((prev) => ({
-        ...prev,
-        [field.id]: true,
-      }));
+      // 如果不是跳过的字段，添加"荐"字标签
+      if (!isSkipped) {
+        setAiRecommendedFields((prev) => ({
+          ...prev,
+          [field.id]: true,
+        }));
+      }
 
       setAiRecommendationProgress(((currentIndex + 1) / aiFields.length) * 100);
       currentIndex++;
@@ -1423,12 +1456,15 @@ const Component = () => {
                 <p className="text-sm text-gray-700 dark:text-gray-300">
                   {isAIRecommending
                     ? '小云正在帮您生成中...'
-                    : `小云已为您推荐 ${aiFields.length} 个字段，跳过 ${filledFieldsCount} 个已填写字段`
+                    : `小云已为您推荐 ${aiFields.length - skippedFieldsCount} 个字段，跳过 ${skippedFieldsCount} 个已填写字段`
                   }
                 </p>
                 {currentHighlightField && isAIRecommending && (
                   <p className="text-xs text-gray-500 mt-1">
-                    正在填充：{aiFields.find(f => f.id === currentHighlightField)?.label}
+                    {isCurrentFieldSkipped 
+                      ? `正在填充：${aiFields.find(f => f.id === currentHighlightField)?.label}，检测到已填写，跳过`
+                      : `正在填充：${aiFields.find(f => f.id === currentHighlightField)?.label}`
+                    }
                   </p>
                 )}
               </div>
