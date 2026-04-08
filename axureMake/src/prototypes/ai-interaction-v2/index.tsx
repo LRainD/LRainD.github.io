@@ -42,7 +42,10 @@ import {
   CheckCircle2,
   Info,
   Square,
-  CheckSquare
+  CheckSquare,
+  History,
+  MessageSquarePlus,
+  ArrowLeft
 } from 'lucide-react';
 import './style.css';
 
@@ -62,14 +65,47 @@ const Component = () => {
   const [isInterceptModalOpen, setIsInterceptModalOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
-  const [chatMessages, setChatMessages] = useState([
+  // 会话管理状态
+  const [chatSessions, setChatSessions] = useState([
     {
       id: 1,
-      sender: 'bot',
-      type: 'text',
-      text: '您好，我是您的数字合规官。今天是2026年02月04日，请问有什么可以帮您？您可以询问关于项目的“风险”情况。',
+      name: '新会话 1',
+      preview: '您好，我是您的数字合规官。今天是2026年02月04日，请问有什么可以帮您？',
+      messages: [
+        {
+          id: 1,
+          sender: 'bot',
+          type: 'text',
+          text: '您好，我是您的数字合规官。今天是2026年02月04日，请问有什么可以帮您？您可以询问关于项目的"风险"情况。',
+        },
+      ],
+      timestamp: Date.now(),
     },
   ]);
+  const [currentSessionId, setCurrentSessionId] = useState(1);
+  const [isHistoryView, setIsHistoryView] = useState(false);
+  const [isEditSessionModalOpen, setIsEditSessionModalOpen] = useState(false);
+  const [editingSessionId, setEditingSessionId] = useState<number | null>(null);
+  const [editingSessionName, setEditingSessionName] = useState('');
+  const [sessionSearchKeyword, setSessionSearchKeyword] = useState('');
+  const [sessionSearchQuery, setSessionSearchQuery] = useState('');
+
+  const currentSession = chatSessions.find(s => s.id === currentSessionId);
+  const chatMessages = currentSession?.messages || [];
+  const setChatMessages = (updater: any) => {
+    setChatSessions(prev => prev.map(s => {
+      if (s.id === currentSessionId) {
+        const newMessages = typeof updater === 'function' ? updater(s.messages) : updater;
+        // 更新预览文本（取最后一条用户消息或第一条机器人消息）
+        const lastUserMsg = newMessages.slice().reverse().find((m: any) => m.sender === 'user');
+        const firstBotMsg = newMessages.find((m: any) => m.sender === 'bot');
+        const preview = lastUserMsg?.text || firstBotMsg?.text || '新会话';
+        return { ...s, messages: newMessages, preview: preview.length > 30 ? preview.substring(0, 30) + '...' : preview };
+      }
+      return s;
+    }));
+  };
+
   const [chatInputValue, setChatInputValue] = useState('');
   const chatHistoryRef = useRef<HTMLDivElement>(null);
 
@@ -127,6 +163,97 @@ const Component = () => {
       [nodeId]: !prev[nodeId]
     }));
   };
+
+  // 新建会话
+  const handleNewSession = () => {
+    const newSessionId = Date.now();
+    const newSessionNum = chatSessions.length + 1;
+    const newSession = {
+      id: newSessionId,
+      name: `新会话 ${newSessionNum}`,
+      preview: '您好，我是您的数字合规官。今天是2026年02月04日，请问有什么可以帮您？',
+      messages: [
+        {
+          id: Date.now(),
+          sender: 'bot',
+          type: 'text',
+          text: '您好，我是您的数字合规官。今天是2026年02月04日，请问有什么可以帮您？您可以询问关于项目的"风险"情况。',
+        },
+      ],
+      timestamp: Date.now(),
+    };
+    setChatSessions(prev => [newSession, ...prev]);
+    setCurrentSessionId(newSessionId);
+    setIsHistoryView(false);
+    setExpandedNodes({});
+  };
+
+  // 切换到历史记录视图
+  const handleShowHistory = () => {
+    setIsHistoryView(true);
+  };
+
+  // 返回聊天视图
+  const handleBackToChat = () => {
+    setIsHistoryView(false);
+  };
+
+  // 切换到指定会话
+  const handleSwitchSession = (sessionId: number) => {
+    setCurrentSessionId(sessionId);
+    setIsHistoryView(false);
+    setExpandedNodes({});
+  };
+
+  // 打开编辑会话名称弹窗
+  const handleOpenEditModal = (e: React.MouseEvent, sessionId: number, currentName: string) => {
+    e.stopPropagation();
+    setEditingSessionId(sessionId);
+    setEditingSessionName(currentName);
+    setIsEditSessionModalOpen(true);
+  };
+
+  // 确认修改会话名称
+  const handleConfirmEditSession = () => {
+    if (editingSessionId && editingSessionName.trim()) {
+      setChatSessions(prev => prev.map(s => 
+        s.id === editingSessionId ? { ...s, name: editingSessionName.trim() } : s
+      ));
+    }
+    setIsEditSessionModalOpen(false);
+    setEditingSessionId(null);
+    setEditingSessionName('');
+  };
+
+  // 删除会话
+  const handleDeleteSession = (e: React.MouseEvent, sessionId: number) => {
+    e.stopPropagation();
+    if (chatSessions.length <= 1) {
+      // 至少保留一个会话
+      return;
+    }
+    setChatSessions(prev => {
+      const newSessions = prev.filter(s => s.id !== sessionId);
+      // 如果删除的是当前会话，切换到第一个会话
+      if (sessionId === currentSessionId) {
+        setCurrentSessionId(newSessions[0]?.id || 0);
+      }
+      return newSessions;
+    });
+  };
+
+  // 处理会话搜索
+  const handleSessionSearch = () => {
+    setSessionSearchQuery(sessionSearchKeyword.trim());
+  };
+
+  // 过滤后的会话列表
+  const filteredChatSessions = sessionSearchQuery
+    ? chatSessions.filter(s =>
+        s.name.toLowerCase().includes(sessionSearchQuery.toLowerCase()) ||
+        s.preview.toLowerCase().includes(sessionSearchQuery.toLowerCase())
+      )
+    : chatSessions;
 
   return (
     <div className="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-sans h-screen flex overflow-hidden">
@@ -675,121 +802,232 @@ const Component = () => {
           {/* 头部 */}
           <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white dark:from-slate-800 dark:to-slate-900">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-slate-800 dark:text-white">数字合规官</h2>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                  <span className="text-xs text-slate-400">在线</span>
+              {isHistoryView ? (
+                <button
+                  className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200"
+                  onClick={handleBackToChat}
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+              ) : (
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <ShieldCheck className="w-6 h-6 text-primary" />
                 </div>
-              </div>
-            </div>
-            <button 
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 shadow-sm border border-white/20" 
-              onClick={() => setIsChatOpen(false)}
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          
-          {/* 聊天内容区 */}
-          <div className="flex-1 overflow-y-auto p-5 chat-container" ref={chatHistoryRef}>
-            {chatMessages.map((msg) => (
-              <div key={msg.id} className={`flex gap-3 mb-6 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
-                {msg.sender === 'bot' && (
-                  <div className="flex-shrink-0">
-                    <img alt="Digital Officer Mascot" className="w-9 h-9 rounded-full ring-2 ring-primary/20" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=digital%20compliance%20officer%20mascot%20avatar&image_size=square" />
+              )}
+              <div>
+                <h2 className="text-lg font-bold text-slate-800 dark:text-white">
+                  {isHistoryView ? '历史记录' : '数字合规官'}
+                </h2>
+                {!isHistoryView && (
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                    <span className="text-xs text-slate-400">在线</span>
                   </div>
                 )}
-                {msg.sender === 'user' ? (
-                  <div className="bg-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-sm">
-                    {msg.text}
-                  </div>
-                ) : msg.type === 'text' ? (
-                  <div className="space-y-2">
-                    <div className="bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 dark:border-slate-700 max-w-[95%]">
-                      <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
-                        {msg.text}
-                      </p>
-                    </div>
-                  </div>
-                ) : msg.type === 'risk-nodes' ? (
-                  <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1">
-                    <div className="bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 dark:border-slate-700">
-                      <p className="font-semibold text-slate-800 dark:text-white mb-3 text-sm">为您检测到以下合规预警节点：</p>
-                      <div className="space-y-3">
-                        {/* Node 1 */}
-                        <div className="relative group bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between cursor-pointer" onClick={() => toggleNode('node1')}>
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
-                              <Edit className="w-5 h-5 text-orange-500" />
-                            </div>
-                            <div>
-                              <h3 className="text-slate-800 dark:text-white font-medium text-sm">采购发起</h3>
-                              <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-xs text-slate-400">已完成 3个子项</span>
-                                <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">预警</span>
-                              </div>
-                            </div>
-                          </div>
-                          {expandedNodes['node1'] ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                        </div>
-                        {expandedNodes['node1'] && (
-                          <div className="pl-8 space-y-2 relative animate-in slide-in-from-top-2">
-                            <div className="absolute left-3 top-0 bottom-4 w-px bg-slate-200 dark:bg-slate-700"></div>
-                            <div className="relative bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex items-center justify-between cursor-pointer" onClick={() => setIsInterceptModalOpen(true)}>
-                              <div className="absolute -left-5 top-1/2 w-5 h-px bg-slate-200 dark:bg-slate-700"></div>
-                              <span className="text-sm text-slate-700 dark:text-slate-200">编制采购清单</span>
-                              <CheckCircle className="w-4 h-4 text-emerald-500" />
-                            </div>
-                            <div className="relative bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 cursor-pointer" onClick={() => setIsInterceptModalOpen(true)}>
-                              <div className="absolute -left-5 top-1/2 w-5 h-px bg-slate-200 dark:bg-slate-700"></div>
-                              <div className="flex items-center justify-between">
-                                <span className="text-sm text-slate-700 dark:text-slate-200">发布采购公告</span>
-                              </div>
-                              <div className="mt-1.5 flex items-center gap-2">
-                                <span className="text-[11px] text-slate-400">检测到2项校验规则不通过</span>
-                                <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">预警</span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
               </div>
-            ))}
+            </div>
+            <div className="flex items-center gap-2">
+              {!isHistoryView && (
+                <>
+                  <button
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 text-xs"
+                    onClick={handleNewSession}
+                  >
+                    <MessageSquarePlus className="w-4 h-4" />
+                    <span>新建会话</span>
+                  </button>
+                  <button
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 text-xs"
+                    onClick={handleShowHistory}
+                  >
+                    <History className="w-4 h-4" />
+                    <span>历史记录</span>
+                  </button>
+                </>
+              )}
+              <button
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 transition-all duration-200 shadow-sm border border-white/20"
+                onClick={() => setIsChatOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
           
-          {/* 输入区 */}
-          <div className="px-5 pb-5 pt-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
-            <div className="relative flex items-center gap-3">
-              <div className="flex-1 relative">
-                <input
-                  className="w-full pl-4 pr-12 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm"
-                  placeholder="请输入您的问题，例如：查看当前风险"
-                  type="text"
-                  value={chatInputValue}
-                  onChange={(e: any) => setChatInputValue(e.target.value)}
-                  onKeyDown={(e: any) => {
-                    if (e.key === 'Enter') {
-                      handleSendMessage();
-                    }
-                  }}
-                />
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors" onClick={handleSendMessage}>
-                  <Send className="w-4 h-4" />
-                </button>
+          {/* 聊天内容区 / 历史记录区 */}
+          <div className="flex-1 overflow-y-auto p-5 chat-container" ref={chatHistoryRef}>
+            {isHistoryView ? (
+              // 历史记录视图
+              <div className="space-y-3">
+                {/* 搜索框 */}
+                <div className="relative mb-4">
+                  <input
+                    type="text"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm"
+                    placeholder="过滤会话..."
+                    value={sessionSearchKeyword}
+                    onChange={(e) => setSessionSearchKeyword(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSessionSearch();
+                      }
+                    }}
+                  />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                </div>
+                {/* 会话列表 */}
+                {filteredChatSessions.length > 0 ? (
+                  filteredChatSessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className={`relative bg-white dark:bg-slate-800 rounded-xl p-4 border cursor-pointer transition-all hover:shadow-md ${
+                        session.id === currentSessionId
+                          ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                          : 'border-slate-200 dark:border-slate-700 hover:border-primary/50'
+                      }`}
+                      onClick={() => handleSwitchSession(session.id)}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-medium text-slate-800 dark:text-white text-sm pr-16">
+                          {session.name}
+                        </h3>
+                        <span className="text-xs text-slate-400 absolute top-4 right-4">
+                          {new Date(session.timestamp).toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">
+                        {session.preview}
+                      </p>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors"
+                          onClick={(e) => handleOpenEditModal(e, session.id, session.name)}
+                          title="编辑会话名称"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          className={`p-1.5 rounded-lg transition-colors ${
+                            chatSessions.length <= 1
+                              ? 'text-slate-300 cursor-not-allowed'
+                              : 'text-slate-400 hover:text-red-500 hover:bg-red-50'
+                          }`}
+                          onClick={(e) => handleDeleteSession(e, session.id)}
+                          disabled={chatSessions.length <= 1}
+                          title={chatSessions.length <= 1 ? '至少保留一个会话' : '删除会话'}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-slate-400 text-sm">
+                    未找到匹配的会话
+                  </div>
+                )}
+              </div>
+            ) : (
+              // 聊天视图
+              <>
+                {chatMessages.map((msg: any) => (
+                  <div key={msg.id} className={`flex gap-3 mb-6 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
+                    {msg.sender === 'bot' && (
+                      <div className="flex-shrink-0">
+                        <img alt="Digital Officer Mascot" className="w-9 h-9 rounded-full ring-2 ring-primary/20" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=digital%20compliance%20officer%20mascot%20avatar&image_size=square" />
+                      </div>
+                    )}
+                    {msg.sender === 'user' ? (
+                      <div className="bg-primary text-white px-4 py-2.5 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-sm">
+                        {msg.text}
+                      </div>
+                    ) : msg.type === 'text' ? (
+                      <div className="space-y-2">
+                        <div className="bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 dark:border-slate-700 max-w-[95%]">
+                          <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                            {msg.text}
+                          </p>
+                        </div>
+                      </div>
+                    ) : msg.type === 'risk-nodes' ? (
+                      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 flex-1">
+                        <div className="bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-slate-100 dark:border-slate-700">
+                          <p className="font-semibold text-slate-800 dark:text-white mb-3 text-sm">为您检测到以下合规预警节点：</p>
+                          <div className="space-y-3">
+                            {/* Node 1 */}
+                            <div className="relative group bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between cursor-pointer" onClick={() => toggleNode('node1')}>
+                              <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center">
+                                  <Edit className="w-5 h-5 text-orange-500" />
+                                </div>
+                                <div>
+                                  <h3 className="text-slate-800 dark:text-white font-medium text-sm">采购发起</h3>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <span className="text-xs text-slate-400">已完成 3个子项</span>
+                                    <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">预警</span>
+                                  </div>
+                                </div>
+                              </div>
+                              {expandedNodes['node1'] ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                            </div>
+                            {expandedNodes['node1'] && (
+                              <div className="pl-8 space-y-2 relative animate-in slide-in-from-top-2">
+                                <div className="absolute left-3 top-0 bottom-4 w-px bg-slate-200 dark:bg-slate-700"></div>
+                                <div className="relative bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 flex items-center justify-between cursor-pointer" onClick={() => setIsInterceptModalOpen(true)}>
+                                  <div className="absolute -left-5 top-1/2 w-5 h-px bg-slate-200 dark:bg-slate-700"></div>
+                                  <span className="text-sm text-slate-700 dark:text-slate-200">编制采购清单</span>
+                                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                                </div>
+                                <div className="relative bg-white dark:bg-slate-800 rounded-xl p-3 border border-slate-100 dark:border-slate-700 cursor-pointer" onClick={() => setIsInterceptModalOpen(true)}>
+                                  <div className="absolute -left-5 top-1/2 w-5 h-px bg-slate-200 dark:bg-slate-700"></div>
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm text-slate-700 dark:text-slate-200">发布采购公告</span>
+                                  </div>
+                                  <div className="mt-1.5 flex items-center gap-2">
+                                    <span className="text-[11px] text-slate-400">检测到2项校验规则不通过</span>
+                                    <span className="bg-orange-500 text-white text-[10px] px-1.5 py-0.5 rounded">预警</span>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+
+          {/* 输入区 - 仅在聊天视图显示 */}
+          {!isHistoryView && (
+            <div className="px-5 pb-5 pt-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+              <div className="relative flex items-center gap-3">
+                <div className="flex-1 relative">
+                  <input
+                    className="w-full pl-4 pr-12 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm"
+                    placeholder="请输入您的问题，例如：查看当前风险"
+                    type="text"
+                    value={chatInputValue}
+                    onChange={(e: any) => setChatInputValue(e.target.value)}
+                    onKeyDown={(e: any) => {
+                      if (e.key === 'Enter') {
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                  <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors" onClick={handleSendMessage}>
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs text-slate-500 hover:border-primary hover:text-primary transition-colors bg-slate-50 dark:bg-slate-800" onClick={() => { setChatInputValue('查看合规风险'); setTimeout(handleSendMessage, 100); }}>查看合规风险</button>
+                <button className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs text-slate-500 hover:border-primary hover:text-primary transition-colors bg-slate-50 dark:bg-slate-800" onClick={() => { setChatInputValue('项目状态查询'); setTimeout(handleSendMessage, 100); }}>项目状态查询</button>
               </div>
             </div>
-            <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
-              <button className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs text-slate-500 hover:border-primary hover:text-primary transition-colors bg-slate-50 dark:bg-slate-800" onClick={() => { setChatInputValue('查看合规风险'); setTimeout(handleSendMessage, 100); }}>查看合规风险</button>
-              <button className="whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs text-slate-500 hover:border-primary hover:text-primary transition-colors bg-slate-50 dark:bg-slate-800" onClick={() => { setChatInputValue('项目状态查询'); setTimeout(handleSendMessage, 100); }}>项目状态查询</button>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       
@@ -1059,6 +1297,62 @@ const Component = () => {
             <div className="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex justify-end">
               <button className="bg-primary hover:bg-blue-600 text-white px-8 py-2 rounded font-medium shadow-md active:scale-95 transition-all" onClick={() => setIsInterceptModalOpen(false)}>
                 我知道了
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Session Name Modal */}
+      {isEditSessionModalOpen && (
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl max-w-md w-full">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">修改会话名称</h3>
+              <button
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+                onClick={() => {
+                  setIsEditSessionModalOpen(false);
+                  setEditingSessionId(null);
+                  setEditingSessionName('');
+                }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="mb-6">
+              <label className="block text-sm text-gray-600 dark:text-gray-400 mb-2">会话名称</label>
+              <input
+                type="text"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm"
+                placeholder="请输入会话名称"
+                value={editingSessionName}
+                onChange={(e) => setEditingSessionName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleConfirmEditSession();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200 px-6 py-2 rounded-md font-medium shadow-md transition-all"
+                onClick={() => {
+                  setIsEditSessionModalOpen(false);
+                  setEditingSessionId(null);
+                  setEditingSessionName('');
+                }}
+              >
+                取消
+              </button>
+              <button
+                className="bg-primary hover:bg-blue-600 text-white px-6 py-2 rounded-md font-medium shadow-md transition-all"
+                onClick={handleConfirmEditSession}
+                disabled={!editingSessionName.trim()}
+              >
+                确认
               </button>
             </div>
           </div>
