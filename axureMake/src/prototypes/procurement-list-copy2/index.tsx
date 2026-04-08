@@ -74,6 +74,9 @@ const Component = () => {
   const [aiRecommendationProgress, setAiRecommendationProgress] = useState(0);
   const [showAIBubble, setShowAIBubble] = useState(false);
   const [aiBubblePosition, setAiBubblePosition] = useState({ x: 0, y: 0 });
+  
+  // 智能推荐字段标签状态 - 记录哪些字段被AI推荐填充
+  const [aiRecommendedFields, setAiRecommendedFields] = useState<{ [key: string]: boolean }>({});
 
   const [chatMessages, setChatMessages] = useState([
     {
@@ -193,6 +196,8 @@ const Component = () => {
     setIsAIRecommending(true);
     setShowAIBubble(true);
     setAiRecommendationProgress(0);
+    // 清空之前的推荐标记
+    setAiRecommendedFields({});
 
     // 获取第一个字段的位置用于显示AI小人
     const firstField = document.getElementById('field-autoPublish');
@@ -222,9 +227,27 @@ const Component = () => {
         setAiBubblePosition(position);
       }
 
+      // 模拟字段填充，并为该字段添加"荐"字标签
+      setAiRecommendedFields((prev) => ({
+        ...prev,
+        [field.id]: true,
+      }));
+
       setAiRecommendationProgress(((currentIndex + 1) / aiFields.length) * 100);
       currentIndex++;
     }, 1500); // 每个字段停留1.5秒
+  };
+
+  // 处理字段值变化 - 移除"荐"字标签
+  const handleFieldChange = (fieldId: string, value: any, setter: (value: any) => void) => {
+    setter(value);
+    // 如果该字段有荐字标签，则移除
+    if (aiRecommendedFields[fieldId]) {
+      setAiRecommendedFields((prev) => ({
+        ...prev,
+        [fieldId]: false,
+      }));
+    }
   };
 
   // 关闭AI气泡
@@ -591,7 +614,7 @@ const Component = () => {
                           name="autoPublish"
                           className="mr-1"
                           checked={autoPublish}
-                          onChange={() => setAutoPublish(true)}
+                          onChange={() => handleFieldChange('autoPublish', true, setAutoPublish)}
                         />
                         <span className="text-sm">是</span>
                       </label>
@@ -601,11 +624,17 @@ const Component = () => {
                           name="autoPublish"
                           className="mr-1"
                           checked={!autoPublish}
-                          onChange={() => setAutoPublish(false)}
+                          onChange={() => handleFieldChange('autoPublish', false, setAutoPublish)}
                         />
                         <span className="text-sm">否</span>
                       </label>
                     </div>
+                    {/* AI推荐标签 */}
+                    {aiRecommendedFields['autoPublish'] && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">
+                        荐
+                      </span>
+                    )}
                   </div>
                   <div
                     id="field-hoursAfterApproval"
@@ -625,7 +654,7 @@ const Component = () => {
                           type="text"
                           placeholder="请输入"
                           value={hoursAfterApproval}
-                          onChange={(e) => setHoursAfterApproval(e.target.value)}
+                          onChange={(e) => handleFieldChange('hoursAfterApproval', e.target.value, setHoursAfterApproval)}
                         />
                         <span className="text-gray-700 dark:text-gray-300 text-sm">小时</span>
                       </>
@@ -635,7 +664,14 @@ const Component = () => {
                         format="YYYY-MM-DD HH:mm:ss"
                         placeholder="请选择日期"
                         style={{ width: 200 }}
+                        onChange={() => handleFieldChange('hoursAfterApproval', null, () => {})}
                       />
+                    )}
+                    {/* AI推荐标签 */}
+                    {aiRecommendedFields['hoursAfterApproval'] && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">
+                        荐
+                      </span>
                     )}
                   </div>
                 </div>
@@ -652,14 +688,31 @@ const Component = () => {
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">采购公告格式：</span>
                     <div className="flex items-center space-x-4">
                       <label className="flex items-center cursor-pointer">
-                        <input type="radio" name="noticeFormat" className="mr-1" defaultChecked />
+                        <input
+                          type="radio"
+                          name="noticeFormat"
+                          className="mr-1"
+                          defaultChecked
+                          onChange={() => handleFieldChange('noticeFormat', 'template', () => {})}
+                        />
                         <span className="text-sm">范本</span>
                       </label>
                       <label className="flex items-center cursor-pointer">
-                        <input type="radio" name="noticeFormat" className="mr-1" />
+                        <input
+                          type="radio"
+                          name="noticeFormat"
+                          className="mr-1"
+                          onChange={() => handleFieldChange('noticeFormat', 'richText', () => {})}
+                        />
                         <span className="text-sm">富文本</span>
                       </label>
                     </div>
+                    {/* AI推荐标签 */}
+                    {aiRecommendedFields['noticeFormat'] && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">
+                        荐
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div
@@ -673,9 +726,18 @@ const Component = () => {
                   <div className="flex items-center mb-2">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">公告内容：</span>
-                    <button className="bg-primary text-white text-xs px-3 py-1 rounded flex items-center">
+                    <button
+                      className="bg-primary text-white text-xs px-3 py-1 rounded flex items-center"
+                      onClick={() => handleFieldChange('noticeContent', 'generated', () => {})}
+                    >
                       去生成 &gt;&gt;
                     </button>
+                    {/* AI推荐标签 */}
+                    {aiRecommendedFields['noticeContent'] && (
+                      <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">
+                        荐
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div
