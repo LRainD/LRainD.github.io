@@ -89,6 +89,8 @@ const initialData = [
     modules: ['风控预警', '智能问答'],
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
+    biddingComplianceView: '是',
+    displayPath: '/procurement/bidding,/procurement/contract',
     alias: '合规小助手',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
     createTime: '2026-03-20 09:15:00',
@@ -105,6 +107,8 @@ const initialData = [
     modules: ['风控预警'],
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
+    biddingComplianceView: '否',
+    displayPath: '/procurement/bidding',
     alias: '华东风控助手',
     avatar: '',
     createTime: '2025-12-01 10:30:00',
@@ -121,6 +125,8 @@ const initialData = [
     modules: ['风控预警'],
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
+    biddingComplianceView: '是',
+    displayPath: '/procurement/contract',
     alias: '华南风控助手',
     avatar: '',
     createTime: '2025-11-25 14:45:00',
@@ -279,6 +285,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         modules: modules,
         systems: record.systems,
         personnel: record.personnel,
+        biddingComplianceView: record.biddingComplianceView || '否',
+        displayPath: record.displayPath || '',
         alias: record.alias,
       });
       setView('edit');
@@ -329,6 +337,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         modules: values.modules,
         systems: values.systems || [],
         personnel: values.personnel || [],
+        biddingComplianceView: values.biddingComplianceView,
+        displayPath: values.displayPath,
         alias: values.alias,
         avatar: '',
         createTime: currentTime,
@@ -354,6 +364,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             modules: values.modules,
             systems: values.systems || [],
             personnel: values.personnel || [],
+            biddingComplianceView: values.biddingComplianceView,
+            displayPath: values.displayPath,
             alias: values.alias,
             updateTime: new Date().toLocaleString('zh-CN', {
               year: 'numeric',
@@ -683,6 +695,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                       )}
                     </Form.Item>
 
+                    <Form.Item label="展示路径">
+                      <Input value={viewingRecord.displayPath} disabled style={{ width: '100%' }} />
+                    </Form.Item>
+
                     {viewingRecord.modules?.includes('风控预警') && (
                       <>
                         <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
@@ -708,6 +724,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                             disabled
                             style={{ width: '100%' }}
                           />
+                        </Form.Item>
+
+                        <Form.Item label="招标采购完成/已废标是否支持查看合规风险数据">
+                          <Radio.Group value={viewingRecord.biddingComplianceView} disabled>
+                            <Radio value="是">是</Radio>
+                            <Radio value="否">否</Radio>
+                          </Radio.Group>
                         </Form.Item>
                       </>
                     )}
@@ -807,6 +830,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   </Upload>
                 </Form.Item>
 
+                <Form.Item
+                  label="展示路径"
+                  name="displayPath"
+                  rules={[{ required: true, message: '请输入展示路径' }]}
+                >
+                  <Input placeholder="请输入展示路径" style={{ width: '100%' }} />
+                </Form.Item>
+                <div style={{ marginTop: -16, marginBottom: 16, color: '#999', fontSize: 12 }}>
+                  该配置控制在哪些页面展示，建议将需求给到前端，由前端给出配置
+                </div>
+
                 {selectedModules.includes('风控预警') && (
                   <>
                     <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
@@ -837,6 +871,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                         options={personnelOptions}
                         style={{ width: '100%' }}
                       />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="招标采购完成/已废标是否支持查看合规风险数据"
+                      name="biddingComplianceView"
+                      rules={[{ required: true, message: '请选择是否支持查看合规风险数据' }]}
+                    >
+                      <Radio.Group>
+                        <Radio value="是">是</Radio>
+                        <Radio value="否">否</Radio>
+                      </Radio.Group>
                     </Form.Item>
                   </>
                 )}
