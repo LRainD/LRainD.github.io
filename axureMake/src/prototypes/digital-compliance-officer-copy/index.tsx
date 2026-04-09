@@ -85,6 +85,7 @@ const initialData = [
     id: '1',
     orgName: '北京总部-采购中心',
     scope: '本下级',
+    childIndependentConfig: '允许',
     modules: ['风控预警', '智能问答'],
     systems: ['招投标', '合同'],
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
@@ -100,6 +101,7 @@ const initialData = [
     id: '2',
     orgName: '华东区分公司',
     scope: '本级',
+    childIndependentConfig: '不允许',
     modules: ['风控预警'],
     systems: ['招投标'],
     personnel: ['王小明(wangxiaoming)'],
@@ -115,6 +117,7 @@ const initialData = [
     id: '3',
     orgName: '华南区分公司',
     scope: '本级',
+    childIndependentConfig: '允许',
     modules: ['风控预警'],
     systems: ['合同'],
     personnel: ['赵法务(zhaofawu)'],
@@ -272,6 +275,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       form.setFieldsValue({
         orgName: getOrgValue(record.orgName),
         scope: record.scope,
+        childIndependentConfig: record.childIndependentConfig || '不允许',
         modules: modules,
         systems: record.systems,
         personnel: record.personnel,
@@ -282,7 +286,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       setEditingRecord(null);
       setSelectedModules([]);
       form.resetFields();
-      form.setFieldsValue({ scope: '本级' });
+      form.setFieldsValue({ scope: '本级', childIndependentConfig: '不允许' });
       setView('add');
     }
   }, [form]);
@@ -321,6 +325,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         id: Date.now().toString(),
         orgName: selectedOrgTitle,
         scope: values.scope,
+        childIndependentConfig: values.childIndependentConfig,
         modules: values.modules,
         systems: values.systems || [],
         personnel: values.personnel || [],
@@ -345,6 +350,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           return {
             ...item,
             scope: values.scope,
+            childIndependentConfig: values.childIndependentConfig,
             modules: values.modules,
             systems: values.systems || [],
             personnel: values.personnel || [],
@@ -645,6 +651,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                       </Radio.Group>
                     </Form.Item>
 
+                    <Form.Item label="下级独立配置">
+                      <Radio.Group value={viewingRecord.childIndependentConfig} disabled>
+                        <Radio value="允许">允许</Radio>
+                        <Radio value="不允许">不允许</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+
                     <Form.Item label="功能模块">
                       <Checkbox.Group
                         options={[
@@ -737,6 +750,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   <Radio.Group>
                     <Radio value="本级">本级</Radio>
                     <Radio value="本下级">本下级</Radio>
+                  </Radio.Group>
+                </Form.Item>
+
+                <Form.Item
+                  label="下级独立配置"
+                  name="childIndependentConfig"
+                  rules={[{ required: true, message: '请选择下级独立配置' }]}
+                >
+                  <Radio.Group>
+                    <Radio value="允许">允许</Radio>
+                    <Radio value="不允许">不允许</Radio>
                   </Radio.Group>
                 </Form.Item>
 
