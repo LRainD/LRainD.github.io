@@ -67,6 +67,7 @@ const Component = () => {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [autoPublish, setAutoPublish] = useState(false);
   const [hoursAfterApproval, setHoursAfterApproval] = useState('');
+  const [noticeContent, setNoticeContent] = useState('');
 
   // AI智能推荐相关状态
   const [isAIRecommending, setIsAIRecommending] = useState(false);
@@ -256,6 +257,17 @@ const Component = () => {
           // 填充随机值（24-72小时之间）
           const randomHours = Math.floor(Math.random() * 49) + 24; // 24-72
           setHoursAfterApproval(randomHours.toString());
+        }
+      }
+
+      // 针对 noticeContent 字段的特殊处理
+      if (field.id === 'noticeContent') {
+        // 如果有值且不是AI推荐的（没有荐标识），则跳过
+        if (noticeContent && noticeContent.trim() !== '' && !aiRecommendedFields[field.id]) {
+          isSkipped = true;
+        } else {
+          // 填充公告内容PDF文件名
+          setNoticeContent('lrd测试模版.pdf');
         }
       }
       
@@ -809,15 +821,24 @@ const Component = () => {
                       : ''
                   }`}
                 >
-                  <div className="flex items-center mb-2">
+                  <div className="flex items-center">
                     <span className="text-red-500 mr-1">*</span>
                     <span className="text-gray-700 dark:text-gray-300 text-sm mr-2">公告内容：</span>
-                    <button
-                      className="bg-primary text-white text-xs px-3 py-1 rounded flex items-center"
-                      onClick={() => handleFieldChange('noticeContent', 'generated', () => {})}
-                    >
-                      去生成 &gt;&gt;
-                    </button>
+                    {!noticeContent && (
+                      <button
+                        className="bg-primary text-white text-xs px-3 py-1 rounded flex items-center"
+                        onClick={() => handleFieldChange('noticeContent', 'lrd测试模版.pdf', setNoticeContent)}
+                      >
+                        去生成 &gt;&gt;
+                      </button>
+                    )}
+                    {/* PDF文件展示 */}
+                    {noticeContent && (
+                      <div className="inline-flex items-center border border-gray-200 dark:border-gray-600 rounded px-3 py-1.5 bg-white dark:bg-gray-700">
+                        <span className="text-red-500 font-bold text-xs mr-2">PDF</span>
+                        <span className="text-gray-700 dark:text-gray-300 text-sm">{noticeContent}</span>
+                      </div>
+                    )}
                     {/* AI推荐标签 */}
                     {aiRecommendedFields['noticeContent'] && (
                       <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">
