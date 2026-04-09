@@ -157,4 +157,4 @@ flowchart TD
 
 | 事件名 | 触发时机 | 参数 |
 |--------|---------|------|
-| ai_recommend_start | 点击智能推荐按钮 | draftId, fieldCount |
+| ai_recommend_start | 点击智能推荐按钮 | 场景：具体哪个场景 |
