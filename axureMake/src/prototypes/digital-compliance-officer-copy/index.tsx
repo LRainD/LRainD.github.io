@@ -87,7 +87,7 @@ const initialData = [
     scope: '本下级',
     childIndependentConfig: '允许',
     modules: ['风控预警', '智能问答'],
-    systems: ['招投标', '合同'],
+    systems: '招投标',
     personnel: ['张合规(zhanghegui)', '李风控(lifengkong)'],
     biddingComplianceView: '是',
     displayPath: '/procurement/bidding,/procurement/contract',
@@ -105,7 +105,7 @@ const initialData = [
     scope: '本级',
     childIndependentConfig: '不允许',
     modules: ['风控预警'],
-    systems: ['招投标'],
+    systems: '招投标',
     personnel: ['王小明(wangxiaoming)'],
     biddingComplianceView: '否',
     displayPath: '/procurement/bidding',
@@ -123,7 +123,7 @@ const initialData = [
     scope: '本级',
     childIndependentConfig: '允许',
     modules: ['风控预警'],
-    systems: ['合同'],
+    systems: '合同',
     personnel: ['赵法务(zhaofawu)'],
     biddingComplianceView: '是',
     displayPath: '/procurement/contract',
@@ -335,7 +335,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         scope: values.scope,
         childIndependentConfig: values.childIndependentConfig,
         modules: values.modules,
-        systems: values.systems || [],
+        systems: values.systems,
         personnel: values.personnel || [],
         biddingComplianceView: values.biddingComplianceView,
         displayPath: values.displayPath,
@@ -362,7 +362,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             scope: values.scope,
             childIndependentConfig: values.childIndependentConfig,
             modules: values.modules,
-            systems: values.systems || [],
+            systems: values.systems,
             personnel: values.personnel || [],
             biddingComplianceView: values.biddingComplianceView,
             displayPath: values.displayPath,
@@ -442,6 +442,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       key: 'scope',
       width: 120,
       render: (text: string) => <Tag color={text === '本级' ? 'blue' : 'cyan'}>{text}</Tag>
+    },
+    {
+      title: '业务系统',
+      dataIndex: 'systems',
+      key: 'systems',
+      width: 120,
+      render: (systems: string) => systems || '-'
     },
     {
       title: '功能模块',
@@ -670,6 +677,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                       </Radio.Group>
                     </Form.Item>
 
+                    <Form.Item label="业务系统">
+                      <Radio.Group value={viewingRecord.systems} disabled>
+                        <Radio value="招投标">招投标</Radio>
+                        <Radio value="合同">合同</Radio>
+                      </Radio.Group>
+                    </Form.Item>
+
                     <Form.Item label="功能模块">
                       <Checkbox.Group
                         options={[
@@ -704,17 +718,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                         <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
 
                         <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>风控预警</div>
-
-                        <Form.Item label="风控预警开启业务系统">
-                          <Checkbox.Group
-                            options={[
-                              { label: '招投标', value: '招投标' },
-                              { label: '合同', value: '合同' }
-                            ]}
-                            value={viewingRecord.systems}
-                            disabled
-                          />
-                        </Form.Item>
 
                         <Form.Item label="关联人员">
                           <Select
@@ -788,6 +791,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 </Form.Item>
 
                 <Form.Item
+                  label="业务系统"
+                  name="systems"
+                  rules={[{ required: true, message: '请选择业务系统' }]}
+                >
+                  <Radio.Group>
+                    <Radio value="招投标">招投标</Radio>
+                    <Radio value="合同">合同</Radio>
+                  </Radio.Group>
+                </Form.Item>
+
+                <Form.Item
                   label="功能模块"
                   name="modules"
                   rules={[{ required: true, message: '请至少选择一个功能模块' }]}
@@ -846,19 +860,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                     <div style={{ fontWeight: 'bold', marginBottom: 16, marginTop: 24, borderBottom: '1px solid #eee', paddingBottom: 8 }}>定制配置</div>
 
                     <div style={{ fontWeight: 'bold', marginBottom: 12, color: '#666' }}>风控预警</div>
-
-                    <Form.Item
-                      label="风控预警开启业务系统"
-                      name="systems"
-                      rules={[{ required: true, message: '请至少选择一个业务系统' }]}
-                    >
-                      <Checkbox.Group
-                        options={[
-                          { label: '招投标', value: '招投标' },
-                          { label: '合同', value: '合同' }
-                        ]}
-                      />
-                    </Form.Item>
 
                     <Form.Item
                       label="关联人员"
