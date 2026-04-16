@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-03T07:37:17.494Z",
+  "updatedAt": "2026-04-16T02:38:48.365Z",
   "prototypes": [
+    {
+      "id": "folder-1776307124112-38pene",
+      "kind": "folder",
+      "title": "AI工坊",
+      "children": [
+        {
+          "id": "item-prototypes-enterprise-relation-detection",
+          "kind": "item",
+          "title": "企业关联-历史记录页",
+          "itemKey": "prototypes/enterprise-relation-detection"
+        }
+      ]
+    },
     {
       "id": "folder-1775037907912-7zoldr",
       "kind": "folder",
@@ -35,7 +48,7 @@
         {
           "id": "item-prototypes-procurement-list-copy2-copy3",
           "kind": "item",
-          "title": "编制采购公告 副本3",
+          "title": "编制采购公告 时间线进度条式推荐",
           "itemKey": "prototypes/procurement-list-copy2-copy3"
         }
       ]
