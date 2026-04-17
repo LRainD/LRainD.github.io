@@ -126,7 +126,14 @@
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
       "title": "演示原型",
-      "children": []
+      "children": [
+        {
+          "id": "item-prototypes-plan-detail",
+          "kind": "item",
+          "title": "计划详情",
+          "itemKey": "prototypes/plan-detail"
+        }
+      ]
     }
   ],
   "components": [
