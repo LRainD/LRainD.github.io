@@ -16,7 +16,7 @@ import {
   HelpCircle,
   Info,
 } from 'lucide-react';
-import { DatePicker, ConfigProvider } from 'antd';
+import { DatePicker, ConfigProvider, Select } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -30,14 +30,14 @@ const mockTableData = [
   {
     id: '1',
     seq: 1,
-    warningRule: '采购-最短报价时间',
+    warningRule: '核心分供商信息重叠风险',
     ruleLevel: '股份级',
-    ruleType: '管理要求',
+    ruleType: '合规风险',
     warningLevel: '中风险',
     warningType: '预警',
     warningCount: 1,
-    ruleConfig: '最短报价天数2天且 应急采购【需要】管控',
-    currentData: '报价天数0天',
+    ruleConfig: '核心分供商存在信息重叠风险',
+    currentData: '核心分供商: XXX有限公司 邮箱: 123456@qq.c...',
     releaseStatus: '未解除',
     releaseMethod: '-',
     orgName: '测试组织-股份公司-简称',
@@ -56,14 +56,14 @@ const mockTableData = [
   {
     id: '2',
     seq: 2,
-    warningRule: '采购-最短报价时间',
+    warningRule: '最少有效投标/报价供应商数量',
     ruleLevel: '股份级',
-    ruleType: '管理要求',
+    ruleType: '合规风险',
     warningLevel: '中风险',
     warningType: '预警',
-    warningCount: 2,
-    ruleConfig: '最短报价天数2天且 应急采购【需要】管控',
-    currentData: '报价天数0天',
+    warningCount: 1,
+    ruleConfig: '有效报价/投标供应商数量≥3家',
+    currentData: '有效报价/投标供应商数量2家',
     releaseStatus: '未解除',
     releaseMethod: '-',
     orgName: '测试组织-股份公司-简称',
@@ -89,9 +89,9 @@ const mockTableData = [
     warningType: '预警',
     warningCount: 2,
     ruleConfig: '最短报价天数2天且 应急采购【需要】管控',
-    currentData: '报价天数257天',
-    releaseStatus: '已解除',
-    releaseMethod: '预警解除',
+    currentData: '报价天数0天',
+    releaseStatus: '未解除',
+    releaseMethod: '-',
     orgName: '测试组织-股份公司-简称',
     businessNo: 'BBI202604170000716624',
     businessName: '课程演示',
@@ -630,6 +630,31 @@ const Component: React.FC = () => {
                   </div>
                 </div>
 
+                <div className="query-row">
+                  <div className="query-item">
+                    <label className="label-wide">核心分供商等级</label>
+                    <div className="query-input-wrapper">
+                      <Select
+                        placeholder="请选择"
+                        style={{ width: '100%' }}
+                        options={[
+                          { value: '1', label: '一级核心分供商' },
+                          { value: '2', label: '二级核心分供商' },
+                          { value: '3', label: '三级核心分供商' },
+                        ]}
+                      />
+                    </div>
+                  </div>
+                  <div className="query-item">
+                    <label>分供商名称</label>
+                    <div className="query-input-wrapper">
+                      <input type="text" placeholder="请输入分供商名称" />
+                    </div>
+                  </div>
+                  <div className="query-item">
+                  </div>
+                </div>
+
                 <div className="last-row">
                   <div className="checkbox-wrapper">
                     <input type="checkbox" />
@@ -717,23 +742,21 @@ const Component: React.FC = () => {
             </div>
           </div>
 
-          {/* 操作栏 */}
-          <div className="toolbar">
-            <div className="toolbar-left">
-              <button className="btn btn-text">
-                <Download className="icon-small" />
-                导出
-              </button>
-              <button className="btn btn-text">
+          {/* 操作栏与提示信息 */}
+          <div className="toolbar-row">
+            <div className="toolbar-left-group">
+              <button className="export-button">导出</button>
+              <button className="settings-button">
                 <Settings className="icon-small" />
               </button>
             </div>
-          </div>
-
-          {/* 提示信息 */}
-          <div className="notice-bar">
-            <Info className="notice-icon" />
-            <span>注：同一个业务订单可能多次触发某个预警规则，业务单据创建过程中仅记录触发预警的预警规则且预警次数为1</span>
+            <div className="notice-bar-inline">
+              <Info className="notice-icon-orange" />
+              <div className="notice-text">
+                <span className="notice-prefix">注：</span>
+                同一个业务订单可能多次触发某个预警规则，业务单据创建过程中仅记录触发预警的预警规则且预警次数为1
+              </div>
+            </div>
           </div>
 
           {/* 数据表格 */}
