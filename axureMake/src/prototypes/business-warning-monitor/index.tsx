@@ -502,19 +502,12 @@ const Component: React.FC = () => {
           {/* 查询区域 */}
           <div className="query-section">
             <div className="query-header">
-              <span className="query-title">查询</span>
-              <div className="query-toggle" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
-                {isQueryExpanded ? (
-                  <>
-                    <span>收起</span>
-                    <ArrowUp className="icon-small" />
-                  </>
-                ) : (
-                  <>
-                    <span>展开</span>
-                    <ArrowDown className="icon-small" />
-                  </>
-                )}
+              <div className="query-title-wrapper">
+                <div className="query-title-bar"></div>
+                <span className="query-title">查询</span>
+              </div>
+              <div className="query-header-toggle" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
+                <ChevronDown className={`icon-small transition-transform ${isQueryExpanded ? 'rotate-180' : ''}`} />
               </div>
             </div>
             
@@ -523,27 +516,29 @@ const Component: React.FC = () => {
                 <div className="query-row">
                   <div className="query-item">
                     <label>组织机构</label>
-                    <div className="select-box with-checkbox">
-                      <span>测试组织-股份公司</span>
+                    <div className="query-input-wrapper">
+                      <div className="select-box" style={{ width: '65%' }}>
+                        <span>测试组织-股份公司</span>
+                        <ChevronDown className="icon-small text-gray-400" />
+                      </div>
                       <div className="checkbox-wrapper">
                         <input type="checkbox" checked readOnly />
                         <span className="checkbox-label">包含下级</span>
                       </div>
-                      <ChevronDown className="icon-small" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警规则</label>
                     <div className="select-box placeholder">
                       <span>请选择预警规则</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>业务域</label>
                     <div className="select-box">
                       <span>云筑集采</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -553,16 +548,20 @@ const Component: React.FC = () => {
                     <label>业务类型</label>
                     <div className="select-box placeholder">
                       <span>请选择</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>业务编号</label>
-                    <input type="text" placeholder="请输入业务编号" />
+                    <div className="query-input-wrapper">
+                      <input type="text" placeholder="请输入业务编号" />
+                    </div>
                   </div>
                   <div className="query-item">
                     <label>业务名称</label>
-                    <input type="text" placeholder="请输入业务名称" />
+                    <div className="query-input-wrapper">
+                      <input type="text" placeholder="请输入业务名称" />
+                    </div>
                   </div>
                 </div>
                 
@@ -571,20 +570,22 @@ const Component: React.FC = () => {
                     <label>业务环节</label>
                     <div className="select-box placeholder">
                       <span>请选择环节</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>业务状态</label>
-                    <input type="text" placeholder="请输入业务状态" />
+                    <div className="query-input-wrapper">
+                      <input type="text" placeholder="请输入业务状态" />
+                    </div>
                   </div>
                   <div className="query-item">
                     <label>业务创建时间</label>
                     <div className="date-range">
                       <input type="text" placeholder="开始日期" />
-                      <span>—</span>
+                      <span>→</span>
                       <input type="text" placeholder="结束日期" />
-                      <Calendar className="icon-small" />
+                      <Calendar className="icon-small text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -594,20 +595,22 @@ const Component: React.FC = () => {
                     <label>业务完成时间</label>
                     <div className="date-range">
                       <input type="text" placeholder="开始日期" />
-                      <span>—</span>
+                      <span>→</span>
                       <input type="text" placeholder="结束日期" />
-                      <Calendar className="icon-small" />
+                      <Calendar className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>经办人</label>
-                    <input type="text" placeholder="请输入经办人名称" />
+                    <div className="query-input-wrapper">
+                      <input type="text" placeholder="请输入经办人名称" />
+                    </div>
                   </div>
                   <div className="query-item">
                     <label>规则等级</label>
                     <div className="select-box placeholder">
                       <span>请选择规则等级</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -617,21 +620,21 @@ const Component: React.FC = () => {
                     <label>规则类型</label>
                     <div className="select-box placeholder">
                       <span>请选择规则类型</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警级别</label>
                     <div className="select-box placeholder">
                       <span>请选择预警级别</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警类型</label>
                     <div className="select-box placeholder">
                       <span>请选择预警类型</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                 </div>
@@ -641,37 +644,39 @@ const Component: React.FC = () => {
                     <label>预警解除状态</label>
                     <div className="select-box">
                       <span>全部</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>解除方式</label>
                     <div className="select-box placeholder">
                       <span>请选择解除方式</span>
-                      <ChevronDown className="icon-small" />
+                      <ChevronDown className="icon-small text-gray-400" />
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警时间</label>
                     <div className="date-range">
                       <input type="text" value="2026-01-17" readOnly />
-                      <span>—</span>
+                      <span>→</span>
                       <input type="text" value="2026-04-17" readOnly />
-                      <Calendar className="icon-small" />
+                      <Calendar className="icon-small text-gray-400" />
                     </div>
                   </div>
                 </div>
                 
-                <div className="query-row last-row">
-                  <div className="query-item checkbox-item">
-                    <input type="checkbox" />
-                    <label>包含已废标/已废除数据</label>
+                <div className="last-row">
+                  <div className="checkbox-wrapper">
+                    <input type="checkbox" id="archive-data" />
+                    <label htmlFor="archive-data" className="checkbox-label">包含已废标/已废除数据</label>
                   </div>
-                </div>
-                
-                <div className="query-actions">
-                  <button className="btn btn-primary">查询</button>
-                  <button className="btn btn-default">重置</button>
+                  <div className="query-actions">
+                    <button className="btn btn-primary">查询</button>
+                    <button className="btn btn-default">重置</button>
+                    <button className="btn-link" onClick={() => setIsQueryExpanded(false)}>
+                      收起 <ChevronDown className="icon-small rotate-180" />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -679,60 +684,68 @@ const Component: React.FC = () => {
 
           {/* 统计卡片区域 */}
           <div className="statistics-section">
-            <div className="stat-card green">
+            <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-title">预警次数统计</span>
-                <span className="stat-subtitle">(1,721次)</span>
+                <span className="stat-subtitle">(1,725次)</span>
                 <Info className="info-icon" />
               </div>
               <div className="stat-content">
                 <div className="stat-row">
-                  <span className="stat-label">拦截</span>
-                  <span className="stat-value">37次, {statisticsData.warningCount.interceptRate}</span>
+                  <span className="stat-label">拦截：</span>
+                  <span className="stat-value">37次，2.14%</span>
                 </div>
                 <div className="stat-row">
-                  <span className="stat-label">预警</span>
-                  <span className="stat-value">1,684次, {statisticsData.warningCount.warnRate}</span>
+                  <span className="stat-label">预警：</span>
+                  <span className="stat-value">1,688次，97.86%</span>
                 </div>
               </div>
             </div>
             
-            <div className="stat-card orange">
+            <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-title">业务预警统计</span>
-                <span className="stat-subtitle">(1,046次)</span>
+                <span className="stat-subtitle">(1,048次)</span>
                 <Info className="info-icon" />
               </div>
               <div className="stat-content">
-                <div className="stat-row">
-                  <span className="stat-label">招投标</span>
-                  <span className="stat-value">877次（预警：1,480次，拦截：37次）, {statisticsData.businessWarning.bidding.rate}</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">合同</span>
-                  <span className="stat-value">161次（预警：192次，拦截：0次）, {statisticsData.businessWarning.contract.rate}</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">履约</span>
-                  <span className="stat-value">8次（预警：12次，拦截：0次）, {statisticsData.businessWarning.performance.rate}</span>
+                <div className="stat-row-container">
+                  <div className="stat-row-line">
+                    <div className="stat-row flex-1">
+                      <span className="stat-label">招投标：</span>
+                      <span className="stat-value">879次 (预警：1,484次, 拦截：37次) , 83.87%</span>
+                    </div>
+                    <div className="stat-row flex-1">
+                      <span className="stat-label">供应商：</span>
+                      <span className="stat-value">0次 (预警：0次, 拦截：0次) , 0.00%</span>
+                    </div>
+                  </div>
+                  <div className="stat-row">
+                    <span className="stat-label">合同：</span>
+                    <span className="stat-value">161次 (预警：192次, 拦截：0次) , 15.36%</span>
+                  </div>
+                  <div className="stat-row">
+                    <span className="stat-label">履约：</span>
+                    <span className="stat-value">8次 (预警：12次, 拦截：0次) , 0.76%</span>
+                  </div>
                 </div>
               </div>
             </div>
             
-            <div className="stat-card blue">
+            <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-title">预警解除统计</span>
-                <span className="stat-subtitle">(预警解除率：4.59%)</span>
+                <span className="stat-subtitle">(预警解除率：4.58%)</span>
                 <Info className="info-icon" />
               </div>
               <div className="stat-content">
                 <div className="stat-row">
-                  <span className="stat-label">已解除</span>
-                  <span className="stat-value">48次, 4.59%</span>
+                  <span className="stat-label">已解除：</span>
+                  <span className="stat-value">48次，4.58%</span>
                 </div>
                 <div className="stat-row">
-                  <span className="stat-label">未解除</span>
-                  <span className="stat-value">998次, 95.41%</span>
+                  <span className="stat-label">未解除：</span>
+                  <span className="stat-value">1,000次，95.42%</span>
                 </div>
               </div>
             </div>

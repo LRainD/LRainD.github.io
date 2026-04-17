@@ -142,12 +142,12 @@
 
 **色彩系统：**
 - 主色调：#1890ff（Ant Design 蓝）
-- 侧边栏背景：#001529（深蓝）
-- 侧边栏选中：#1890ff
-- 统计卡片背景：#f6ffed（绿色）、#fff7e6（橙色）、#f0f5ff（蓝色）
+- 侧边栏背景：#3a7fc3（业务特定蓝）
+- 侧边栏选中：rgba(255, 255, 255, 0.25)
+- 统计卡片背景：#ffffff（白色），带有 #1890ff 或 #36cfc9 的左侧装饰条
 - 表格行悬停：#fafafa
-- 警告提示背景：#fffbe6
-- 警告提示边框：#ffe58f
+- 警告提示背景：#fff7e6
+- 警告提示边框：#ffd591
 
 **字体规范：**
 - 主字体：-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue'
