@@ -297,18 +297,22 @@
   justify-content: space-between;
   padding: 14px 20px;
   border-bottom: 1px solid #f0f2f5;
+  position: relative;
 }
 
 .query-title-wrapper {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .query-title-bar {
   width: 3px;
-  height: 14px;
+  height: 16px;
   background: #3a7fc3;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .query-title {
@@ -477,11 +481,52 @@
   color: #bfbfbf;
 }
 
+/* Ant Design Picker Overrides */
+.ant-picker {
+  height: 32px !important;
+  border-color: #d9d9d9 !important;
+  border-radius: 4px !important;
+  padding: 0 12px !important;
+}
+
+.ant-picker:hover, .ant-picker-focused {
+  border-color: #3a7fc3 !important;
+  box-shadow: 0 0 0 2px rgba(58, 127, 195, 0.1) !important;
+}
+
+.ant-picker-input > input {
+  font-size: 14px !important;
+  color: #333 !important;
+  text-align: center !important;
+}
+
+.ant-picker-input > input::placeholder {
+  color: #bfbfbf !important;
+}
+
+.ant-picker-range-separator {
+  padding: 0 4px !important;
+}
+
+.picker-separator {
+  color: #bfbfbf;
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.ant-picker-suffix {
+  color: #bfbfbf !important;
+}
+
 .last-row {
-  margin-top: 4px;
+  margin-top: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.last-row .checkbox-wrapper {
+  margin-left: 92px; /* 80px label + 12px gap */
 }
 
 .query-actions {

@@ -5,7 +5,6 @@ import {
   ChevronDown,
   Download,
   Settings,
-  Calendar,
   Home,
   ShoppingCart,
   FileText,
@@ -17,6 +16,12 @@ import {
   HelpCircle,
   Info,
 } from 'lucide-react';
+import { DatePicker, ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+
+const { RangePicker } = DatePicker;
 import logoImage from '../../../assets/media/集采工作台logo图标.png';
 import './style.css';
 
@@ -288,6 +293,9 @@ const Component: React.FC = () => {
   const [isQueryExpanded, setIsQueryExpanded] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  // 设置 dayjs 语言
+  dayjs.locale('zh-cn');
+
   // 预警级别标签颜色
   const getWarningLevelColor = (level: string) => {
     switch (level) {
@@ -303,6 +311,7 @@ const Component: React.FC = () => {
   };
 
   return (
+    <ConfigProvider locale={zhCN}>
     <div className="business-warning-monitor">
       {/* 顶部导航栏 */}
       <header className="top-header">
@@ -523,12 +532,11 @@ const Component: React.FC = () => {
                   <div className="query-item">
                     <label>业务创建时间</label>
                     <div className="query-input-wrapper">
-                      <div className="date-range">
-                        <input type="text" placeholder="开始日期" />
-                        <span>→</span>
-                        <input type="text" placeholder="结束日期" />
-                        <Calendar className="icon-small" />
-                      </div>
+                      <RangePicker 
+                        placeholder={['开始日期', '结束日期']} 
+                        style={{ width: '100%' }}
+                        separator={<span className="picker-separator">~</span>}
+                      />
                     </div>
                   </div>
                 </div>
@@ -537,12 +545,11 @@ const Component: React.FC = () => {
                   <div className="query-item">
                     <label>业务完成时间</label>
                     <div className="query-input-wrapper">
-                      <div className="date-range">
-                        <input type="text" placeholder="开始日期" />
-                        <span>→</span>
-                        <input type="text" placeholder="结束日期" />
-                        <Calendar className="icon-small" />
-                      </div>
+                      <RangePicker 
+                        placeholder={['开始日期', '结束日期']} 
+                        style={{ width: '100%' }}
+                        separator={<span className="picker-separator">~</span>}
+                      />
                     </div>
                   </div>
                   <div className="query-item">
@@ -614,12 +621,11 @@ const Component: React.FC = () => {
                   <div className="query-item">
                     <label>预警时间</label>
                     <div className="query-input-wrapper">
-                      <div className="date-range">
-                        <input type="text" value="2026-01-17" readOnly />
-                        <span>→</span>
-                        <input type="text" value="2026-04-17" readOnly />
-                        <Calendar className="icon-small" />
-                      </div>
+                      <RangePicker 
+                        defaultValue={[dayjs('2026-01-17'), dayjs('2026-04-17')]}
+                        style={{ width: '100%' }}
+                        separator={<span className="picker-separator">~</span>}
+                      />
                     </div>
                   </div>
                 </div>
@@ -822,6 +828,7 @@ const Component: React.FC = () => {
         </main>
       </div>
     </div>
+    </ConfigProvider>
   );
 };
 
