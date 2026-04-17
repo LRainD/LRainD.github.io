@@ -364,71 +364,77 @@ const Component: React.FC = () => {
           <div className="sidebar-menu">
             <div className="menu-item">
               <Home className="menu-icon" />
-              {!sidebarCollapsed && <span>首页</span>}
+              <span className="menu-text">首页</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">首页</span>}
             </div>
             <div className="menu-item">
               <ShoppingCart className="menu-icon" />
-              {!sidebarCollapsed && <span>验收货</span>}
+              <span className="menu-text">验收货</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">收验</span>}
             </div>
             <div className="menu-item">
               <BarChart3 className="menu-icon" />
-              {!sidebarCollapsed && <span>数据服务</span>}
+              <span className="menu-text">数据服务</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">数据</span>}
             </div>
             <div className="menu-item">
               <Users className="menu-icon" />
-              {!sidebarCollapsed && <span>互助宝</span>}
+              <span className="menu-text">互助宝</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">互助</span>}
             </div>
             <div className="menu-item">
               <FileText className="menu-icon" />
-              {!sidebarCollapsed && <span>资产管理</span>}
+              <span className="menu-text">资产管理</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">资产</span>}
             </div>
             <div className="menu-item">
               <ShoppingCart className="menu-icon" />
-              {!sidebarCollapsed && <span>物资管理</span>}
+              <span className="menu-text">物资管理</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">物资</span>}
             </div>
             <div className="menu-item">
               <FileText className="menu-icon" />
-              {!sidebarCollapsed && <span>物资设备管理系统</span>}
+              <span className="menu-text">物资设备管理系统</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">物资</span>}
             </div>
             <div className="menu-item">
               <FileText className="menu-icon" />
-              {!sidebarCollapsed && <span>工程局发券</span>}
+              <span className="menu-text">工程局发券</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">工程</span>}
             </div>
             <div className="menu-item">
               <Home className="menu-icon" />
-              {!sidebarCollapsed && <span>云筑学苑</span>}
+              <span className="menu-text">云筑学苑</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">云筑</span>}
             </div>
             <div className="menu-item">
               <Users className="menu-icon" />
-              {!sidebarCollapsed && <span>云筑峰会</span>}
+              <span className="menu-text">云筑峰会</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">云筑</span>}
             </div>
             <div className="menu-item">
               <BarChart3 className="menu-icon" />
-              {!sidebarCollapsed && <span>价格库</span>}
+              <span className="menu-text">价格库</span>
+              {sidebarCollapsed && <span className="menu-text-collapsed">价格</span>}
             </div>
-            <div className="menu-group active">
+            <div className={`menu-group active ${sidebarCollapsed ? 'collapsed' : ''}`}>
               <div className="menu-group-title">
                 <Shield className="menu-icon" />
-                {!sidebarCollapsed && (
-                  <>
-                    <span>风控预警中心</span>
-                    <ChevronDown className="arrow-icon" />
-                  </>
-                )}
+                <span className="menu-text">风控预警中心</span>
+                <ChevronDown className="arrow-icon" />
+                {sidebarCollapsed && <span className="menu-text-collapsed">风控</span>}
               </div>
-              {!sidebarCollapsed && (
-                <div className="sub-menu">
-                  <div className="sub-menu-item active">业务预警监控</div>
-                  <div className="sub-menu-item">风控预警明细</div>
-                  <div className="sub-menu-item">风控预警汇总</div>
-                  <div className="sub-menu-item">风控预警看板</div>
-                </div>
-              )}
+              <div className="sub-menu">
+                <div className="sub-menu-item active">业务预警监控</div>
+                <div className="sub-menu-item">风控预警明细</div>
+                <div className="sub-menu-item">风控预警汇总</div>
+                <div className="sub-menu-item">风控预警看板</div>
+              </div>
             </div>
           </div>
           <div className="sidebar-collapse" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
             {sidebarCollapsed ? <PanelLeft className="icon" /> : <PanelLeftClose className="icon" />}
-            {!sidebarCollapsed && <span>收起菜单</span>}
+            <span className="menu-text">收起菜单</span>
           </div>
         </aside>
 
