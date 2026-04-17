@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   Search,
   Bell,
@@ -15,16 +15,7 @@ import {
   PanelLeftClose,
   PanelLeft,
   HelpCircle,
-  Globe,
-  Plus,
-  ArrowUp,
-  ArrowDown,
-  RefreshCw,
   Info,
-  CheckCircle,
-  AlertCircle,
-  XCircle,
-  AlertTriangle,
 } from 'lucide-react';
 import logoImage from '../../../assets/media/集采工作台logo图标.png';
 import './style.css';
@@ -250,8 +241,8 @@ const mockTableData = [
     warningCount: 2,
     ruleConfig: '开启信息重叠校验',
     currentData: '彭才林,sup312,sup205mq监听测试11111 存在信...',
-    releaseStatus: '存在信...',
-    releaseMethod: '未解除',
+    releaseStatus: '未解除',
+    releaseMethod: '-',
     orgName: '测试组织-股份公司-简称',
     businessNo: 'BBI2026041600001714493',
     businessName: '回归1111',
@@ -293,67 +284,9 @@ const mockTableData = [
   },
 ];
 
-// 统计数据
-const statisticsData = {
-  warningCount: {
-    total: 1721,
-    intercepted: 37,
-    warned: 1684,
-    interceptRate: '2.16%',
-    warnRate: '97.85%',
-  },
-  businessWarning: {
-    total: 1046,
-    bidding: { count: 877, warning: 1480, intercept: 37, rate: '83.84%' },
-    contract: { count: 161, warning: 192, intercept: 0, rate: '15.39%' },
-    performance: { count: 8, warning: 12, intercept: 0, rate: '0.76%' },
-  },
-  warningRelease: {
-    releaseRate: '4.59%',
-    released: 48,
-    unreleased: 998,
-  },
-};
-
 const Component: React.FC = () => {
   const [isQueryExpanded, setIsQueryExpanded] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  // 表格列定义
-  const columns = [
-    { title: '序号', dataIndex: 'seq', width: 60, fixed: 'left' },
-    { title: '预警规则', dataIndex: 'warningRule', width: 180, fixed: 'left' },
-    { title: '规则等级', dataIndex: 'ruleLevel', width: 100 },
-    { title: '规则类型', dataIndex: 'ruleType', width: 100 },
-    { title: '预警级别', dataIndex: 'warningLevel', width: 100 },
-    { title: '预警类型', dataIndex: 'warningType', width: 80 },
-    { title: '预警次数', dataIndex: 'warningCount', width: 80 },
-    { title: '规则配置', dataIndex: 'ruleConfig', width: 280 },
-    { title: '当前数据', dataIndex: 'currentData', width: 200 },
-    { title: '预警解除状态', dataIndex: 'releaseStatus', width: 120 },
-    { title: '解除方式', dataIndex: 'releaseMethod', width: 100 },
-    { title: '组织机构', dataIndex: 'orgName', width: 180 },
-    {
-      title: '业务编号',
-      dataIndex: 'businessNo',
-      width: 200,
-      render: (text: string) => (
-        <a className="text-blue-600 hover:text-blue-800 cursor-pointer">{text}</a>
-      ),
-    },
-    { title: '业务名称', dataIndex: 'businessName', width: 120 },
-    { title: '业务状态', dataIndex: 'businessStatus', width: 120 },
-    { title: '业务域', dataIndex: 'businessDomain', width: 100 },
-    { title: '品类', dataIndex: 'category', width: 100 },
-    { title: '业务类型', dataIndex: 'businessType', width: 140 },
-    { title: '业务环节', dataIndex: 'businessLink', width: 80 },
-    { title: '经办人', dataIndex: 'operator', width: 100 },
-    { title: '业务创建时间', dataIndex: 'createTime', width: 160 },
-    { title: '业务完成时间', dataIndex: 'completeTime', width: 160 },
-    { title: '最新预警时间', dataIndex: 'latestWarningTime', width: 160 },
-  ];
 
   // 预警级别标签颜色
   const getWarningLevelColor = (level: string) => {
@@ -495,7 +428,7 @@ const Component: React.FC = () => {
           {/* 面包屑 */}
           <div className="breadcrumb">
             <span>风控预警中心</span>
-            <span className="separator">&gt;</span>
+            <span className="separator"></span>
             <span className="current">业务预警监控</span>
           </div>
 
@@ -507,7 +440,7 @@ const Component: React.FC = () => {
                 <span className="query-title">查询</span>
               </div>
               <div className="query-header-toggle" onClick={() => setIsQueryExpanded(!isQueryExpanded)}>
-                <ChevronDown className={`icon-small transition-transform ${isQueryExpanded ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`icon-small transition-transform ${isQueryExpanded ? '' : 'rotate-180'}`} />
               </div>
             </div>
             
@@ -517,9 +450,9 @@ const Component: React.FC = () => {
                   <div className="query-item">
                     <label>组织机构</label>
                     <div className="query-input-wrapper">
-                      <div className="select-box" style={{ width: '65%' }}>
+                      <div className="select-box">
                         <span>测试组织-股份公司</span>
-                        <ChevronDown className="icon-small text-gray-400" />
+                        <ChevronDown className="icon-small" />
                       </div>
                       <div className="checkbox-wrapper">
                         <input type="checkbox" checked readOnly />
@@ -529,26 +462,32 @@ const Component: React.FC = () => {
                   </div>
                   <div className="query-item">
                     <label>预警规则</label>
-                    <div className="select-box placeholder">
-                      <span>请选择预警规则</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择预警规则</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
                     <label>业务域</label>
-                    <div className="select-box">
-                      <span>云筑集采</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box">
+                        <span>云筑集采</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="query-row">
                   <div className="query-item">
                     <label>业务类型</label>
-                    <div className="select-box placeholder">
-                      <span>请选择</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
@@ -564,13 +503,15 @@ const Component: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="query-row">
                   <div className="query-item">
                     <label>业务环节</label>
-                    <div className="select-box placeholder">
-                      <span>请选择环节</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择环节</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
@@ -581,23 +522,27 @@ const Component: React.FC = () => {
                   </div>
                   <div className="query-item">
                     <label>业务创建时间</label>
-                    <div className="date-range">
-                      <input type="text" placeholder="开始日期" />
-                      <span>→</span>
-                      <input type="text" placeholder="结束日期" />
-                      <Calendar className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="date-range">
+                        <input type="text" placeholder="开始日期" />
+                        <span>→</span>
+                        <input type="text" placeholder="结束日期" />
+                        <Calendar className="icon-small" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="query-row">
                   <div className="query-item">
                     <label>业务完成时间</label>
-                    <div className="date-range">
-                      <input type="text" placeholder="开始日期" />
-                      <span>→</span>
-                      <input type="text" placeholder="结束日期" />
-                      <Calendar className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="date-range">
+                        <input type="text" placeholder="开始日期" />
+                        <span>→</span>
+                        <input type="text" placeholder="结束日期" />
+                        <Calendar className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
@@ -608,73 +553,88 @@ const Component: React.FC = () => {
                   </div>
                   <div className="query-item">
                     <label>规则等级</label>
-                    <div className="select-box placeholder">
-                      <span>请选择规则等级</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择规则等级</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="query-row">
                   <div className="query-item">
                     <label>规则类型</label>
-                    <div className="select-box placeholder">
-                      <span>请选择规则类型</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择规则类型</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警级别</label>
-                    <div className="select-box placeholder">
-                      <span>请选择预警级别</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择预警级别</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警类型</label>
-                    <div className="select-box placeholder">
-                      <span>请选择预警类型</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择预警类型</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="query-row">
                   <div className="query-item">
                     <label>预警解除状态</label>
-                    <div className="select-box">
-                      <span>全部</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box">
+                        <span>全部</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
                     <label>解除方式</label>
-                    <div className="select-box placeholder">
-                      <span>请选择解除方式</span>
-                      <ChevronDown className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="select-box placeholder">
+                        <span>请选择解除方式</span>
+                        <ChevronDown className="icon-small" />
+                      </div>
                     </div>
                   </div>
                   <div className="query-item">
                     <label>预警时间</label>
-                    <div className="date-range">
-                      <input type="text" value="2026-01-17" readOnly />
-                      <span>→</span>
-                      <input type="text" value="2026-04-17" readOnly />
-                      <Calendar className="icon-small text-gray-400" />
+                    <div className="query-input-wrapper">
+                      <div className="date-range">
+                        <input type="text" value="2026-01-17" readOnly />
+                        <span>→</span>
+                        <input type="text" value="2026-04-17" readOnly />
+                        <Calendar className="icon-small" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="last-row">
                   <div className="checkbox-wrapper">
-                    <input type="checkbox" id="archive-data" />
-                    <label htmlFor="archive-data" className="checkbox-label">包含已废标/已废除数据</label>
+                    <input type="checkbox" />
+                    <span className="checkbox-label">包含已废标/已废除数据</span>
                   </div>
                   <div className="query-actions">
                     <button className="btn btn-primary">查询</button>
                     <button className="btn btn-default">重置</button>
-                    <button className="btn-link" onClick={() => setIsQueryExpanded(false)}>
-                      收起 <ChevronDown className="icon-small rotate-180" />
+                    <button className="btn btn-link" onClick={() => setIsQueryExpanded(false)}>
+                      <span>收起</span>
+                      <ChevronDown className="icon-small rotate-180" />
                     </button>
                   </div>
                 </div>
@@ -842,7 +802,7 @@ const Component: React.FC = () => {
               <span>第 1-10 条/总共 1046 条</span>
             </div>
             <div className="pagination-center">
-              <button className="page-btn" disabled>&lt;</button>
+              <button className="page-btn" disabled></button>
               <button className="page-btn active">1</button>
               <button className="page-btn">2</button>
               <button className="page-btn">3</button>
@@ -850,7 +810,7 @@ const Component: React.FC = () => {
               <button className="page-btn">5</button>
               <span className="page-ellipsis">...</span>
               <button className="page-btn">105</button>
-              <button className="page-btn">&gt;</button>
+              <button className="page-btn"></button>
             </div>
             <div className="pagination-right">
               <span>10 条/页</span>

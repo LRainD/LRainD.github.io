@@ -285,8 +285,9 @@
 /* 查询区域 */
 .query-section {
   background: #fff;
-  border-radius: 2px;
-  margin-bottom: 16px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  border: 1px solid #f0f0f0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
@@ -294,8 +295,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f0f2f5;
 }
 
 .query-title-wrapper {
@@ -305,47 +306,47 @@
 }
 
 .query-title-bar {
-  width: 4px;
+  width: 3px;
   height: 14px;
-  background: #1890ff;
-  border-radius: 1px;
+  background: #3a7fc3;
 }
 
 .query-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
 }
 
 .query-header-toggle {
-  color: #666;
+  color: #999;
   cursor: pointer;
 }
 
 .query-form {
-  padding: 20px 24px 16px;
+  padding: 16px 20px 12px;
 }
 
 .query-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px 48px;
-  margin-bottom: 24px;
+  gap: 12px 48px;
+  margin-bottom: 12px;
 }
 
 .query-item {
   display: flex;
   align-items: center;
   gap: 12px;
+  height: 32px;
 }
 
 .query-item label {
-  font-size: 13px;
+  font-size: 14px;
   color: #333;
-  white-space: nowrap;
-  width: 84px;
+  width: 80px;
   text-align: right;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .query-input-wrapper {
@@ -358,16 +359,24 @@
 
 .query-input-wrapper input[type="text"] {
   flex: 1;
-  padding: 6px 12px;
+  padding: 0 12px;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
-  font-size: 13px;
+  border-radius: 4px;
+  font-size: 14px;
   outline: none;
   min-width: 0;
+  height: 32px;
+  color: #333;
+  transition: all 0.3s;
+}
+
+.query-input-wrapper input[type="text"]::placeholder {
+  color: #bfbfbf;
 }
 
 .query-input-wrapper input[type="text"]:focus {
-  border-color: #1890ff;
+  border-color: #3a7fc3;
+  box-shadow: 0 0 0 2px rgba(58, 127, 195, 0.1);
 }
 
 .select-box {
@@ -375,14 +384,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px;
+  padding: 0 12px;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
   background: #fff;
   min-width: 0;
   height: 32px;
+  color: #333;
+  transition: all 0.3s;
+}
+
+.select-box:hover {
+  border-color: #3a7fc3;
 }
 
 .select-box span {
@@ -406,6 +421,13 @@
   width: 14px;
   height: 14px;
   cursor: pointer;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  margin: 0;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+  accent-color: #3a7fc3;
 }
 
 .checkbox-label {
@@ -419,28 +441,44 @@
   display: flex;
   align-items: center;
   border: 1px solid #d9d9d9;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 0 12px;
   height: 32px;
   background: #fff;
+  gap: 8px;
+  transition: all 0.3s;
+}
+
+.date-range:hover {
+  border-color: #3a7fc3;
 }
 
 .date-range input {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 13px;
+  font-size: 14px;
   padding: 0;
   width: 100%;
+  color: #333;
+  text-align: center;
+}
+
+.date-range input::placeholder {
+  color: #bfbfbf;
 }
 
 .date-range span {
-  margin: 0 8px;
+  color: #d9d9d9;
+  font-size: 14px;
+}
+
+.date-range .icon-small {
   color: #bfbfbf;
 }
 
 .last-row {
-  margin-bottom: 0;
+  margin-top: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -462,16 +500,20 @@
   align-items: center;
   justify-content: center;
   height: 32px;
-  min-width: 64px;
+  min-width: 72px;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .btn-primary {
-  background: #1890ff;
+  background: #3a7fc3;
   color: #fff;
+  border-color: #3a7fc3;
+  font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: #40a9ff;
+  background: #4a8fd3;
+  border-color: #4a8fd3;
 }
 
 .btn-default {
@@ -481,20 +523,26 @@
 }
 
 .btn-default:hover {
-  border-color: #1890ff;
-  color: #1890ff;
+  border-color: #3a7fc3;
+  color: #3a7fc3;
 }
 
 .btn-link {
-  color: #1890ff;
+  color: #3a7fc3;
   background: transparent;
   border: none;
-  padding: 0;
-  height: auto;
+  padding: 0 8px;
+  height: 32px;
   min-width: auto;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  color: #4a8fd3;
 }
 
 /* 统计卡片区域 */
