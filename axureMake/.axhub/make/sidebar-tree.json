@@ -86,7 +86,14 @@
           "id": "folder-1774707123009-80pi9r",
           "kind": "folder",
           "title": "风控规则",
-          "children": []
+          "children": [
+            {
+              "id": "item-prototypes-business-warning-monitor",
+              "kind": "item",
+              "title": "业务预警监控",
+              "itemKey": "prototypes/business-warning-monitor"
+            }
+          ]
         },
         {
           "id": "folder-1774863249957-vszss3",
