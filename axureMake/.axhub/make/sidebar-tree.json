@@ -92,6 +92,12 @@
               "kind": "item",
               "title": "业务预警监控",
               "itemKey": "prototypes/business-warning-monitor"
+            },
+            {
+              "id": "item-prototypes-supplier-risk-detail",
+              "kind": "item",
+              "title": "供应商风控详情",
+              "itemKey": "prototypes/supplier-risk-detail"
             }
           ]
         },
