@@ -138,6 +138,12 @@
           "kind": "item",
           "title": "计划详情",
           "itemKey": "prototypes/plan-detail"
+        },
+        {
+          "id": "item-prototypes-bidding-list",
+          "kind": "item",
+          "title": "招标列表",
+          "itemKey": "prototypes/bidding-list"
         }
       ]
     }
