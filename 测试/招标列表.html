@@ -1,0 +1,443 @@
+<![CDATA[<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>集采工作台 - 招标列表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            background-color: #f0f2f5;
+        }
+        .sidebar {
+            background-color: #2b579a; /* Deep blue from image */
+            width: 64px;
+        }
+        .sidebar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #a3c2ea;
+            font-size: 12px;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sidebar-item:hover, .sidebar-item.active {
+            color: #fff;
+        }
+        .sidebar-item.active {
+            background-color: #1a73e8; /* Active blue */
+        }
+        .sidebar-item i {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        
+        .header {
+            height: 48px;
+            background-color: #fff;
+            box-shadow: 0 1px 4px rgba(0,21,41,0.08);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+        }
+        .header-logo {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1a73e8;
+            display: flex;
+            align-items: center;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+        .header-logo img {
+            height: 24px;
+            margin-right: 8px;
+        }
+        .custom-input {
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            padding: 4px 11px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .custom-input:focus {
+            border-color: #4096ff;
+            box-shadow: 0 0 0 2px rgba(5,145,255,0.1);
+            outline: none;
+        }
+        .custom-select {
+            border: 1px solid #d9d9d9;
+            border-radius: 2px;
+            padding: 4px 24px 4px 11px;
+            font-size: 14px;
+            appearance: none;
+            background: #fff url('data:image/svg+xml;utf8,<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.5 4.5L6 7.5L8.5 4.5" stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat right 8px center;
+        }
+        
+        .form-label {
+            width: 70px;
+            text-align: right;
+            margin-right: 12px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .table-header {
+            background-color: #fafafa;
+            color: #333;
+            font-weight: 600;
+        }
+        .table-row {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.3s;
+            background-color: #fff;
+        }
+        .table-row:hover {
+            background-color: #fafafa;
+        }
+        .tag-blue {
+            background: #1a73e8;
+            color: white;
+            font-size: 12px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 2px;
+        }
+        
+        .td-bid-no {
+            word-break: break-all;
+            white-space: normal;
+            width: 150px;
+            line-height: 1.4;
+            display: inline-block;
+        }
+        
+        /* Custom scrollbar for table */
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+        .table-container::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="sidebar flex-shrink-0 flex flex-col h-full overflow-y-auto overflow-x-hidden pt-2">
+        <div class="sidebar-item">
+            <i class="fa-solid fa-house"></i>
+            <span>首页</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>权限</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>采购</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-users"></i>
+            <span>分供</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-truck"></i>
+            <span>采购</span>
+        </div>
+        <div class="sidebar-item active">
+            <i class="fa-solid fa-gavel"></i>
+            <span>招标</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-building"></i>
+            <span>工程</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-comments"></i>
+            <span>联系</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-file-contract"></i>
+            <span>合同</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>投诉</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>清欠</span>
+        </div>
+        <div class="sidebar-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>履约</span>
+        </div>
+        <div class="sidebar-item mt-auto mb-4">
+            <i class="fa-solid fa-list-check"></i>
+            <span>收验</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 bg-white">
+        <!-- Header -->
+        <div class="header justify-between flex-shrink-0 border-b border-gray-200">
+            <div class="flex items-center">
+                <div class="header-logo mr-6">
+                    <i class="fa-brands fa-envira text-2xl mr-2"></i> 集采工作台
+                </div>
+                <div class="flex items-center ml-4 space-x-2">
+                    <select class="custom-select bg-gray-50 border-gray-300 rounded text-sm py-1.5 px-3 w-40 text-gray-700">
+                        <option>中国建筑股份...</option>
+                    </select>
+                    <div class="relative">
+                        <input type="text" class="custom-input w-64 bg-gray-50 border-gray-300 text-sm py-1.5 px-3 pl-3 pr-8 rounded" placeholder="支持通过关键字搜索菜单">
+                        <i class="fa-solid fa-search absolute right-3 top-2.5 text-gray-400 text-sm"></i>
+                    </div>
+                    <div class="flex items-center border border-gray-300 rounded px-2 py-1.5 bg-gray-50 cursor-pointer ml-2">
+                        <img src="https://flagcdn.com/w20/cn.png" class="w-4 h-3 mr-1" alt="CN">
+                        <span class="text-sm text-gray-700">简体中文</span>
+                        <i class="fa-solid fa-angle-down text-gray-400 text-xs ml-2"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center text-gray-700 text-sm space-x-5">
+                <a href="#" class="hover:text-blue-600 flex items-center"><i class="fa-solid fa-house mr-1.5"></i> 云端首页</a>
+                <a href="#" class="hover:text-blue-600 flex items-center"><i class="fa-solid fa-desktop mr-1.5"></i> 寻源工作台</a>
+                <a href="#" class="hover:text-blue-600 flex items-center"><i class="fa-regular fa-paper-plane mr-1.5"></i> 发布招募需求</a>
+                <a href="#" class="hover:text-blue-600 flex items-center"><i class="fa-solid fa-arrow-right-arrow-left mr-1.5"></i> 切换新版</a>
+                
+                <div class="flex space-x-4 items-center text-gray-500 border-l border-gray-200 pl-5">
+                    <i class="fa-regular fa-star cursor-pointer hover:text-blue-600 text-lg"></i>
+                    <i class="fa-solid fa-cloud-arrow-down cursor-pointer hover:text-blue-600 text-lg"></i>
+                    <i class="fa-regular fa-circle-question cursor-pointer hover:text-blue-600 text-lg"></i>
+                    <div class="relative cursor-pointer hover:text-blue-600">
+                        <i class="fa-regular fa-bell text-lg"></i>
+                        <span class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] px-1 rounded-full border border-white">71</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center cursor-pointer hover:text-blue-600 ml-2">
+                    <img src="https://ui-avatars.com/api/?name=奥巴马&background=e1f0ff&color=1a73e8&rounded=true" class="w-7 h-7 rounded-full mr-2" alt="avatar">
+                    <span class="font-medium">奥巴马</span>
+                    <i class="fa-solid fa-angle-down text-gray-400 text-xs ml-1.5"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-auto bg-[#f0f2f5] p-4 flex flex-col">
+            <!-- Breadcrumb -->
+            <div class="text-xs text-gray-400 mb-3">
+                招标采购 > <span class="text-gray-700">招标列表</span>
+            </div>
+            
+            <!-- Main Card -->
+            <div class="bg-white rounded shadow-sm flex flex-col flex-1 border border-gray-200 min-h-[600px]">
+                <!-- Filters -->
+                <div class="p-6 border-b border-gray-100">
+                    <div class="grid grid-cols-3 gap-y-5 gap-x-10">
+                        <div class="flex items-center">
+                            <span class="form-label">组织机构</span>
+                            <select class="custom-select flex-1 bg-white text-gray-400"><option>全部</option></select>
+                            <label class="flex items-center ml-3 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" checked class="mr-1.5 text-blue-600 w-4 h-4 border-gray-300 rounded focus:ring-blue-500"> 包含下级
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="form-label">招标编号</span>
+                            <input type="text" class="custom-input flex-1 placeholder-gray-300" placeholder="请输入">
+                            <label class="flex items-center ml-3 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" class="mr-1.5 text-blue-600 w-4 h-4 border-gray-300 rounded focus:ring-blue-500"> 精确搜索
+                            </label>
+                        </div>
+                        <div class="flex items-center pl-4">
+                            <span class="form-label w-auto min-w-[70px]">招标名称</span>
+                            <input type="text" class="custom-input flex-1 placeholder-gray-300" placeholder="请输入">
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <span class="form-label">招标状态</span>
+                            <select class="custom-select flex-1 bg-white text-gray-400"><option>全部</option></select>
+                            <label class="flex items-center ml-3 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" checked class="mr-1.5 text-blue-600 w-4 h-4 border-gray-300 rounded focus:ring-blue-500"> 包含已废标
+                            </label>
+                        </div>
+                        <div class="flex items-center pr-[82px]">
+                            <span class="form-label">招标方式</span>
+                            <select class="custom-select flex-1 bg-white text-gray-400"><option>全部</option></select>
+                        </div>
+                        <div class="flex items-center pl-4">
+                            <span class="form-label w-auto min-w-[70px]">合作品类</span>
+                            <select class="custom-select flex-1 bg-white text-gray-400"><option>全部</option></select>
+                        </div>
+
+                        <div class="flex items-center">
+                            <span class="form-label">招标品类</span>
+                            <select class="custom-select flex-1 bg-white text-gray-400"><option>全部</option></select>
+                            <div class="w-[94px] ml-3"></div> <!-- Alignment spacer -->
+                        </div>
+                        <div class="flex items-center">
+                            <span class="form-label">经办人</span>
+                            <input type="text" class="custom-input flex-1 placeholder-gray-300 bg-gray-50" placeholder="请输入">
+                            <label class="flex items-center ml-3 whitespace-nowrap text-sm text-gray-700 cursor-pointer">
+                                <input type="checkbox" checked class="mr-1.5 text-blue-600 w-4 h-4 border-gray-300 rounded focus:ring-blue-500"> 本人经办
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center justify-end pl-4">
+                            <button class="bg-[#1890ff] hover:bg-blue-500 text-white px-5 py-1.5 rounded text-sm transition-colors border border-[#1890ff]">查询</button>
+                            <button class="bg-white hover:bg-gray-50 text-gray-700 px-5 py-1.5 rounded text-sm transition-colors ml-3 border border-gray-300">重置</button>
+                            <a href="#" class="text-[#1890ff] text-sm ml-5 hover:underline flex items-center">展开 <i class="fa-solid fa-angle-down ml-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions & Table -->
+                <div class="p-4 flex-1 flex flex-col h-full">
+                    <!-- Actions -->
+                    <div class="flex justify-between items-center mb-4 mt-2">
+                        <div class="flex space-x-3">
+                            <button class="bg-[#1890ff] hover:bg-blue-500 text-white px-4 py-1.5 rounded text-sm transition-colors shadow-sm">开启招标</button>
+                            <button class="bg-white hover:bg-gray-50 text-[#1890ff] px-4 py-1.5 rounded text-sm transition-colors border border-[#1890ff]">从废旧物资申请发起招标</button>
+                            <button class="bg-white hover:bg-gray-50 text-[#1890ff] px-4 py-1.5 rounded text-sm transition-colors border border-[#1890ff]">废旧物资从投标方推荐发起招标</button>
+                            <button class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-1.5 rounded text-sm transition-colors border border-gray-300">导出</button>
+                            <button class="bg-white hover:bg-gray-50 text-gray-600 px-3 py-1.5 rounded text-sm transition-colors border border-gray-300"><i class="fa-solid fa-gear"></i></button>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            本页：10条 总计：1408条
+                        </div>
+                    </div>
+
+                    <!-- Table Container -->
+                    <div class="border-t border-gray-200 flex-1 overflow-auto table-container relative">
+                        <table class="w-full text-left text-sm whitespace-nowrap" style="min-width: 1200px;">
+                            <thead class="table-header sticky top-0 z-10">
+                                <tr>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 w-32 border-b border-gray-200">状态</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 w-56 border-b border-gray-200">招标编号</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200">招标名称</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-48">组织机构</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-36">使用项目</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-36">区域</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-24">招标方式</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-24">招标品类</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-20">经办人</th>
+                                    <th class="px-4 py-3.5 font-medium text-gray-700 border-b border-gray-200 w-28 sticky right-0 bg-[#fafafa] z-20 shadow-[-2px_0_4px_rgba(0,0,0,0.02)]">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+                                <tr class="table-row">
+                                    <td class="px-4 py-4 border-b border-gray-100">
+                                        <span class="text-gray-800">招标文件编制中</span>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">
+                                        <div class="flex items-start text-[#1890ff] cursor-pointer hover:underline">
+                                            <span class="tag-blue mr-1.5 flex-shrink-0">136</span>
+                                            <span class="td-bid-no">cscec202<br>60416000004<br>0546</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">11111</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top"><div class="w-40 whitespace-normal line-clamp-2">中建四局华南建设有限公司</div></td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">培训实操项目10</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top"><div class="w-24 whitespace-normal line-clamp-2">广东省广州市白云区</div></td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">公开招标</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">物资</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">奥巴马</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 sticky right-0 bg-white shadow-[-2px_0_4px_rgba(0,0,0,0.02)] z-10 group-hover:bg-[#fafafa] align-top">
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700 mr-2 flex items-center inline-flex"><i class="fa-regular fa-file-lines text-gray-400 mr-1"></i>查看</a>
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700">更多</a>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-4 py-4 border-b border-gray-100">
+                                        <span class="text-gray-800">招标文件编制中</span>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">
+                                        <div class="flex items-start text-[#1890ff] cursor-pointer hover:underline">
+                                            <span class="td-bid-no">cscec202604<br>16000002028<br>4</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">私有库工程量</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top"><div class="w-40 whitespace-normal line-clamp-2">中国建筑第一工程局有限公司</div></td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">区域联采</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">西南大区</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">公开招标</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">劳务分包</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">奥巴马</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 sticky right-0 bg-white shadow-[-2px_0_4px_rgba(0,0,0,0.02)] z-10 group-hover:bg-[#fafafa] align-top">
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700 mr-2 flex items-center inline-flex"><i class="fa-regular fa-file-lines text-gray-400 mr-1"></i>查看</a>
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700">更多</a>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-4 py-4 border-b border-gray-100">
+                                        <span class="text-gray-800">投标中</span>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">
+                                        <div class="flex items-start text-[#1890ff] cursor-pointer hover:underline">
+                                            <span class="tag-blue mr-1.5 flex-shrink-0">136</span>
+                                            <span class="td-bid-no">cscec202<br>60416000002<br>0159</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">136工程量回归</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top"><div class="w-40 whitespace-normal line-clamp-2">中建四局华南建设有限公司</div></td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">区域联采</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">西南大区</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">公开招标</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">劳务分包</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">奥巴马</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 sticky right-0 bg-white shadow-[-2px_0_4px_rgba(0,0,0,0.02)] z-10 group-hover:bg-[#fafafa] align-top">
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700 mr-2 flex items-center inline-flex"><i class="fa-regular fa-file-lines text-gray-400 mr-1"></i>查看</a>
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700">更多</a>
+                                    </td>
+                                </tr>
+
+                                <tr class="table-row">
+                                    <td class="px-4 py-4 border-b border-gray-100">
+                                        <span class="text-gray-800">招标完成</span>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">
+                                        <div class="flex items-start text-[#1890ff] cursor-pointer hover:underline">
+                                            <div class="bg-orange-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-[10px] font-bold mr-1.5 flex-shrink-0 mt-0.5">!</div>
+                                            <span class="tag-blue mr-1.5 flex-shrink-0">136</span>
+                                            <span class="td-bid-no">cscec2<br>02604150000<br>00555</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">136回归</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top"><div class="w-40 whitespace-normal line-clamp-2">中建四局华南建设有限公司</div></td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">区域联采</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">西南大区</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">公开招标</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">物资</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 align-top">奥巴马</td>
+                                    <td class="px-4 py-4 border-b border-gray-100 sticky right-0 bg-white shadow-[-2px_0_4px_rgba(0,0,0,0.02)] z-10 group-hover:bg-[#fafafa] align-top">
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700 mr-2 flex items-center inline-flex"><i class="fa-regular fa-file-lines text-gray-400 mr-1"></i>查看</a>
+                                        <a href="#" class="text-[#1890ff] hover:text-blue-700">更多</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>]]>

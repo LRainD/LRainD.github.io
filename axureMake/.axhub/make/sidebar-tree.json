@@ -3,6 +3,12 @@
   "updatedAt": "2026-04-16T02:38:48.365Z",
   "prototypes": [
     {
+      "id": "item-prototypes-bidding-list",
+      "kind": "item",
+      "title": "招标列表",
+      "itemKey": "prototypes/bidding-list"
+    },
+    {
       "id": "folder-1776307124112-38pene",
       "kind": "folder",
       "title": "AI工坊",
@@ -138,12 +144,6 @@
           "kind": "item",
           "title": "计划详情",
           "itemKey": "prototypes/plan-detail"
-        },
-        {
-          "id": "item-prototypes-bidding-list",
-          "kind": "item",
-          "title": "招标列表",
-          "itemKey": "prototypes/bidding-list"
         }
       ]
     }
