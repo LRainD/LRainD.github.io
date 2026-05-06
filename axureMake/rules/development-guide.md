@@ -42,6 +42,7 @@ src/
 - React 与 Hooks 直接从 `react` 导入
 - 第三方库按需导入，新增依赖需同步安装
 - 使用 Tailwind 时必须导入 `style.css`，且样式文件需包含：
+- 尽量使用antdesign中的组件，如 `Table`、`Button` 等
 
 ```css
 @import "tailwindcss";
