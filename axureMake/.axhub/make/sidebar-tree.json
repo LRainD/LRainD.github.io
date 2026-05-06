@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-16T02:38:48.365Z",
+  "updatedAt": "2026-05-06T09:43:06.067Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-test",
+      "kind": "item",
+      "title": "test",
+      "itemKey": "prototypes/test"
+    },
+    {
+      "id": "item-prototypes-bid-opening-setting",
+      "kind": "item",
+      "title": "bid opening setting",
+      "itemKey": "prototypes/bid-opening-setting"
+    },
     {
       "id": "item-prototypes-bidding-list",
       "kind": "item",
