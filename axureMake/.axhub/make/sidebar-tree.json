@@ -38,6 +38,12 @@
           "itemKey": "prototypes/enterprise-relation-detection"
         },
         {
+          "id": "item-prototypes-enterprise-relation-config",
+          "kind": "item",
+          "title": "企业关联-配置页面",
+          "itemKey": "prototypes/enterprise-relation-config"
+        },
+        {
           "id": "item-prototypes-qualification-detection",
           "kind": "item",
           "title": "资质检测-历史记录页",
