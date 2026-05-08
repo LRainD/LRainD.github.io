@@ -1,0 +1,455 @@
+@import "tailwindcss";
+
+/* 付款条款页面样式 */
+
+.payment-terms-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 顶部导航栏 */
+.top-header {
+  height: 56px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.org-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  flex: 1;
+  max-width: 300px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.lang-flag {
+  font-size: 16px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+
+.nav-link.highlight {
+  color: #1890ff;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.action-icon .icon {
+  width: 20px;
+  height: 20px;
+  color: #666;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 8px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 14px;
+  color: #666;
+}
+
+.icon-small {
+  width: 16px;
+  height: 16px;
+}
+
+/* 主容器 */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 侧边栏 */
+.sidebar {
+  width: 200px;
+  background: #3a7fc3;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 64px;
+}
+
+.sidebar-menu {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.sidebar.collapsed .menu-item {
+  flex-direction: column;
+  padding: 8px 4px;
+  gap: 4px;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .menu-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.menu-text {
+  display: inline;
+}
+
+.sidebar.collapsed .menu-text {
+  display: none;
+}
+
+.menu-text-collapsed {
+  display: none;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sidebar.collapsed .menu-text-collapsed {
+  display: block;
+}
+
+.sidebar-collapse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.sidebar-collapse:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.collapsed .sidebar-collapse .menu-text {
+  display: none;
+}
+
+/* 主内容区 */
+.main-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 24px;
+  background: #f5f7fa;
+}
+
+/* 面包屑 */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #999;
+}
+
+.breadcrumb span:not(.current) {
+  cursor: pointer;
+}
+
+.breadcrumb span:not(.current):hover {
+  color: #3a7fc3;
+}
+
+.breadcrumb .current {
+  color: #333;
+}
+
+.breadcrumb-separator {
+  color: #ccc;
+  margin: 0 6px;
+  font-size: 12px;
+}
+
+/* 页面标题 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+/* 付款条款内容 */
+.payment-terms-content {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  padding: 24px;
+}
+
+.section-block {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.section-block.last {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.radio-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.required-star {
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+.radio-label {
+  font-size: 14px;
+  color: #333;
+  margin-right: 16px;
+}
+
+/* 表格区域 */
+.table-section {
+  margin-top: 16px;
+}
+
+.add-row-btn {
+  text-align: center;
+  padding: 12px 0;
+  border: 1px solid #e8e8e8;
+  border-top: none;
+}
+
+.delete-link {
+  color: #ff4d4f;
+  cursor: pointer;
+}
+
+.delete-link:hover {
+  color: #ff7875;
+}
+
+.ratio-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ratio-suffix {
+  color: #999;
+  font-size: 14px;
+}
+
+/* Ant Design Table Overrides */
+.ant-table {
+  font-size: 14px !important;
+}
+
+.ant-table-thead > tr > th {
+  background: #fafafa !important;
+  font-weight: 500 !important;
+  color: #333 !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: #f0f7ff !important;
+}
+
+.ant-table-bordered .ant-table-container {
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 2px !important;
+}
+
+.ant-table-bordered .ant-table-thead > tr > th {
+  border-right: 1px solid #e8e8e8 !important;
+}
+
+.ant-table-bordered .ant-table-tbody > tr > td {
+  border-right: 1px solid #e8e8e8 !important;
+}
+
+/* Ant Design Radio Overrides */
+.ant-radio-wrapper {
+  font-size: 14px !important;
+}
+
+.ant-radio-checked .ant-radio-inner {
+  border-color: #3a7fc3 !important;
+  background-color: #3a7fc3 !important;
+}
+
+.ant-radio:hover .ant-radio-inner {
+  border-color: #3a7fc3 !important;
+}
+
+/* Ant Design Select Overrides */
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+  border-color: #3a7fc3 !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #3a7fc3 !important;
+  box-shadow: 0 0 0 2px rgba(58, 127, 195, 0.2) !important;
+}
+
+/* Ant Design Input Overrides */
+.ant-input:hover {
+  border-color: #3a7fc3 !important;
+}
+
+.ant-input:focus {
+  border-color: #3a7fc3 !important;
+  box-shadow: 0 0 0 2px rgba(58, 127, 195, 0.2) !important;
+}
+
+/* Ant Design Button Overrides */
+.ant-btn-link {
+  color: #3a7fc3 !important;
+}
+
+.ant-btn-link:hover {
+  color: #2d6da8 !important;
+}

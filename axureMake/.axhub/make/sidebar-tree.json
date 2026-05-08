@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-06T09:43:06.067Z",
+  "updatedAt": "2026-05-08T12:00:11.962Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-payment-terms",
+      "kind": "item",
+      "title": "payment terms",
+      "itemKey": "prototypes/payment-terms"
+    },
     {
       "id": "item-prototypes-test",
       "kind": "item",
