@@ -3,6 +3,12 @@
   "updatedAt": "2026-05-18T11:10:19.723Z",
   "prototypes": [
     {
+      "id": "item-prototypes-payment-terms",
+      "kind": "item",
+      "title": "payment terms",
+      "itemKey": "prototypes/payment-terms"
+    },
+    {
       "id": "folder-1779085649221-19vp4u",
       "kind": "folder",
       "title": "新建文件夹-3",
@@ -48,6 +54,12 @@
           "kind": "item",
           "title": "企业关联-历史记录页",
           "itemKey": "prototypes/enterprise-relation-detection"
+        },
+        {
+          "id": "item-prototypes-enterprise-relation-config",
+          "kind": "item",
+          "title": "企业关联-配置页面",
+          "itemKey": "prototypes/enterprise-relation-config"
         },
         {
           "id": "item-prototypes-qualification-detection",
