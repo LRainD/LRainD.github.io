@@ -1,7 +1,7 @@
 /**
  * @name 企业关联-配置页面
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Home,
   Building2,
@@ -30,6 +30,11 @@ interface EnterpriseItem {
   creditCode: string;
 }
 
+interface SearchSuggestion {
+  name: string;
+  creditCode: string;
+}
+
 const menuItems = [
   { icon: Home, label: '主页', key: 'home' },
   { icon: Building2, label: '企业检测', key: 'enterprise' },
@@ -43,6 +48,191 @@ const serviceItems = [
   { icon: LayoutGrid, label: '应用市场', key: 'market' },
   { icon: HelpCircle, label: '帮助中心', key: 'help' }
 ];
+
+// 生成模拟企业数据
+const generateMockEnterprises = (keyword: string): SearchSuggestion[] => {
+  const suffixes = ['科技有限公司', '股份有限公司', '集团有限公司', '实业有限公司', '贸易有限公司', '网络科技', '信息技术', '智能科技', '建筑工程', '物流运输'];
+  const cities = ['北京', '上海', '深圳', '广州', '杭州', '苏州', '成都', '武汉', '南京', '西安'];
+  
+  return Array.from({ length: 10 }, (_, i) => {
+    const city = cities[i % cities.length];
+    const suffix = suffixes[i % suffixes.length];
+    const randomNum = Math.floor(Math.random() * 9000) + 1000;
+    
+    return {
+      name: `${city}${keyword}${suffix}${randomNum}`,
+      creditCode: `${Math.floor(Math.random() * 9) + 1}${Array.from({length: 17}, () => Math.floor(Math.random() * 10)).join('')}`
+    };
+  });
+};
+
+// 高亮匹配文本
+const HighlightText = ({ text, keyword }: { text: string; keyword: string }) => {
+  if (!keyword) return <span>{text}</span>;
+  
+  const parts = text.split(new RegExp(`(${keyword})`, 'gi'));
+  return (
+    <span>
+      {parts.map((part, i) => 
+        part.toLowerCase() === keyword.toLowerCase() ? (
+          <span key={i} className="text-[#FF4D4F]">{part}</span>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </span>
+  );
+};
+
+// 企业名称搜索输入组件
+const EnterpriseSearchInput = ({
+  value,
+  onChange,
+  onSelect
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onSelect: (name: string, creditCode: string) => void;
+}) => {
+  const [inputValue, setInputValue] = useState(value);
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
+  // 点击外部关闭下拉
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node) &&
+          inputRef.current && !inputRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // 滚动时更新下拉框位置
+  useEffect(() => {
+    if (!showDropdown) return;
+    
+    const updatePosition = () => {
+      // 强制重新渲染以更新位置
+      setHoveredIndex(prev => prev);
+    };
+    
+    window.addEventListener('scroll', updatePosition, true);
+    window.addEventListener('resize', updatePosition);
+    
+    return () => {
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
+    };
+  }, [showDropdown]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    onChange(newValue);
+    setHoveredIndex(-1);
+
+    // 清除之前的定时器
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    const trimmedValue = newValue.trim();
+    
+    // 不触发搜索的条件：
+    // 1. 为空
+    // 2. 只有一个字符
+    // 3. 包含"公司"或"有限公司"
+    if (!trimmedValue || 
+        trimmedValue.length < 2 || 
+        trimmedValue.includes('公司')) {
+      setShowDropdown(false);
+      setSuggestions([]);
+      setLoading(false);
+      return;
+    }
+
+    // 满足条件，触发搜索
+    setLoading(true);
+    // 0.5秒防抖
+    debounceTimerRef.current = setTimeout(() => {
+      const mockData = generateMockEnterprises(trimmedValue);
+      setSuggestions(mockData);
+      setShowDropdown(true);
+      setLoading(false);
+    }, 500);
+  };
+
+  const handleSelect = (suggestion: SearchSuggestion) => {
+    setInputValue(suggestion.name);
+    onChange(suggestion.name);
+    onSelect(suggestion.name, suggestion.creditCode);
+    setShowDropdown(false);
+  };
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <input
+        ref={inputRef}
+        type="text"
+        className="w-full px-3 py-1.5 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF] pr-8"
+        placeholder="请输入企业名称"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BFBFBF]" />
+      
+      {/* 搜索建议下拉框 - 使用fixed定位突破表格限制 */}
+      {showDropdown && (
+        <div 
+          className="fixed bg-white border border-[#D9D9D9] rounded shadow-lg z-[9999] max-h-[320px] overflow-hidden"
+          style={{
+            left: inputRef.current?.getBoundingClientRect().left,
+            top: (inputRef.current?.getBoundingClientRect().bottom || 0) + 4,
+            width: inputRef.current?.getBoundingClientRect().width,
+          }}
+        >
+          {loading ? (
+            <div className="px-3 py-2 text-sm text-[#8C8C8C]">搜索中...</div>
+          ) : suggestions.length > 0 ? (
+            <div className="overflow-x-auto">
+              <div className="min-w-[400px]">
+                {suggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className={`px-3 py-2 cursor-pointer whitespace-nowrap ${
+                      hoveredIndex === index ? 'bg-[#E6F4FF]' : 'hover:bg-[#E6F4FF]'
+                    }`}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(-1)}
+                    onClick={() => handleSelect(suggestion)}
+                  >
+                    <div className="text-sm text-[#262626]">
+                      <HighlightText text={suggestion.name} keyword={inputValue.trim()} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="px-3 py-2 text-sm text-[#8C8C8C]">暂无数据</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function EnterpriseRelationConfig() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -88,6 +278,20 @@ export default function EnterpriseRelationConfig() {
     const newList = enterpriseList.filter(item => !selectedRows.includes(item.id));
     setEnterpriseList(newList.map((item, index) => ({ ...item, seq: index + 1 })));
     setSelectedRows([]);
+  };
+
+  const handleEnterpriseNameChange = (id: string, name: string) => {
+    const newList = enterpriseList.map(enterprise =>
+      enterprise.id === id ? { ...enterprise, name } : enterprise
+    );
+    setEnterpriseList(newList);
+  };
+
+  const handleEnterpriseSelect = (id: string, name: string, creditCode: string) => {
+    const newList = enterpriseList.map(enterprise =>
+      enterprise.id === id ? { ...enterprise, name, creditCode } : enterprise
+    );
+    setEnterpriseList(newList);
   };
 
   return (
@@ -334,22 +538,12 @@ export default function EnterpriseRelationConfig() {
                               />
                             </td>
                             <td className="px-3 py-3 text-center text-sm text-[#595959]">{item.seq}</td>
-                            <td className="px-3 py-3">
-                              <div className="relative">
-                                <input
-                                  type="text"
-                                  className="w-full px-3 py-1.5 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF] pr-8"
-                                  placeholder="请输入企业名称"
-                                  value={item.name}
-                                  onChange={(e) => {
-                                    const newList = enterpriseList.map(enterprise =>
-                                      enterprise.id === item.id ? { ...enterprise, name: e.target.value } : enterprise
-                                    );
-                                    setEnterpriseList(newList);
-                                  }}
-                                />
-                                <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BFBFBF]" />
-                              </div>
+                            <td className="px-3 py-3 relative">
+                              <EnterpriseSearchInput
+                                value={item.name}
+                                onChange={(name) => handleEnterpriseNameChange(item.id, name)}
+                                onSelect={(name, creditCode) => handleEnterpriseSelect(item.id, name, creditCode)}
+                              />
                             </td>
                             <td className="px-3 py-3">
                               <div className="relative">
@@ -358,12 +552,7 @@ export default function EnterpriseRelationConfig() {
                                   className="w-full px-3 py-1.5 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF] pr-8"
                                   placeholder=""
                                   value={item.creditCode}
-                                  onChange={(e) => {
-                                    const newList = enterpriseList.map(enterprise =>
-                                      enterprise.id === item.id ? { ...enterprise, creditCode: e.target.value } : enterprise
-                                    );
-                                    setEnterpriseList(newList);
-                                  }}
+                                  readOnly
                                 />
                                 <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BFBFBF]" />
                               </div>
