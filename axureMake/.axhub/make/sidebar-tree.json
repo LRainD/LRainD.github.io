@@ -1,17 +1,35 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-06T09:43:06.067Z",
+  "updatedAt": "2026-05-18T11:10:19.723Z",
   "prototypes": [
+    {
+      "id": "folder-1779085649221-19vp4u",
+      "kind": "folder",
+      "title": "新建文件夹-3",
+      "children": []
+    },
+    {
+      "id": "folder-1779085585738-oeim8r",
+      "kind": "folder",
+      "title": "新建文件夹-2",
+      "children": []
+    },
+    {
+      "id": "folder-1779085523001-zogsnk",
+      "kind": "folder",
+      "title": "新建文件夹",
+      "children": []
+    },
     {
       "id": "item-prototypes-test",
       "kind": "item",
-      "title": "test",
+      "title": "招标工作台 - 报名与资审汇总",
       "itemKey": "prototypes/test"
     },
     {
       "id": "item-prototypes-bid-opening-setting",
       "kind": "item",
-      "title": "bid opening setting",
+      "title": "开标设置",
       "itemKey": "prototypes/bid-opening-setting"
     },
     {
@@ -74,6 +92,18 @@
           "kind": "item",
           "title": "编制采购公告 时间线进度条式推荐",
           "itemKey": "prototypes/procurement-list-copy2-copy3"
+        },
+        {
+          "id": "item-prototypes-procurement-list-copy2-copy4",
+          "kind": "item",
+          "title": "编制采购公告 智能推荐 漫游式",
+          "itemKey": "prototypes/procurement-list-copy2-copy4"
+        },
+        {
+          "id": "item-prototypes-procurement-list-copy2-copy5",
+          "kind": "item",
+          "title": "编制采购公告 副本5",
+          "itemKey": "prototypes/procurement-list-copy2-copy5"
         }
       ]
     },
@@ -108,13 +138,13 @@
             {
               "id": "item-prototypes-business-warning-monitor",
               "kind": "item",
-              "title": "业务预警监控",
+              "title": "business-warning-monitor",
               "itemKey": "prototypes/business-warning-monitor"
             },
             {
               "id": "item-prototypes-supplier-risk-detail",
               "kind": "item",
-              "title": "供应商风控详情",
+              "title": "supplier-risk-detail",
               "itemKey": "prototypes/supplier-risk-detail"
             }
           ]
@@ -154,7 +184,7 @@
         {
           "id": "item-prototypes-plan-detail",
           "kind": "item",
-          "title": "计划详情",
+          "title": "plan-detail",
           "itemKey": "prototypes/plan-detail"
         }
       ]
