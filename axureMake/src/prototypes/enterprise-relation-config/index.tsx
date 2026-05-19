@@ -234,7 +234,7 @@ const EnterpriseSearchInput = ({
   );
 };
 
-export default function EnterpriseRelationConfig() {
+const Component = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentStep] = useState(1);
   const [isPanelExpanded, setIsPanelExpanded] = useState(true);
@@ -627,4 +627,6 @@ export default function EnterpriseRelationConfig() {
       </main>
     </div>
   );
-}
+};
+
+export default Component;

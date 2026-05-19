@@ -51,7 +51,7 @@ import dayjs from 'dayjs';
 import './style.css';
 
 /**
- * @name 编制采购公告 副本5
+ * @name 编制采购公告 引导提示1
  * @mode axure
  *
  * 参考资料：
