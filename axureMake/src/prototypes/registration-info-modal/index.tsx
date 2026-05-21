@@ -5,9 +5,20 @@ import {
   FileText,
   Edit3,
   Info,
-  Plus
+  Plus,
+  AlertCircle,
+  CheckSquare,
+  Square
 } from 'lucide-react';
 import './style.css';
+
+interface Attachment {
+  id: number;
+  name: string;
+  signingStatus?: 'signing' | 'signed' | 'failed';
+}
+
+type UploadMethod = 'scan' | 'esign' | null;
 
 /**
  * @name 报名信息弹窗
@@ -21,9 +32,16 @@ const Component = () => {
   const [contactName, setContactName] = useState('sup200');
   const [phone, setPhone] = useState('18716574377');
   const [email, setEmail] = useState('15623615623@139.com');
-  const [attachments, setAttachments] = useState([
+  const [attachments, setAttachments] = useState<Attachment[]>([
     { id: 1, name: '项目采购文件评审.pdf' }
   ]);
+
+  // 附件上传方式
+  const [uploadMethod, setUploadMethod] = useState<UploadMethod>(null);
+
+  // 选择文件弹窗状态
+  const [isFileSelectOpen, setIsFileSelectOpen] = useState(false);
+  const [selectedFileIds, setSelectedFileIds] = useState<number[]>([]);
 
   const handleRemoveAttachment = (id: number) => {
     setAttachments(prev => prev.filter(item => item.id !== id));
@@ -32,6 +50,31 @@ const Component = () => {
   const handleAddAttachment = () => {
     const newId = attachments.length > 0 ? Math.max(...attachments.map(a => a.id)) + 1 : 1;
     setAttachments(prev => [...prev, { id: newId, name: `新附件${newId}.pdf` }]);
+  };
+
+  // 打开选择文件弹窗
+  const handleOpenFileSelect = () => {
+    setSelectedFileIds(attachments.map(a => a.id));
+    setIsFileSelectOpen(true);
+  };
+
+  // 切换文件选中状态
+  const toggleFileSelection = (id: number) => {
+    setSelectedFileIds(prev =>
+      prev.includes(id) ? prev.filter(fid => fid !== id) : [...prev, id]
+    );
+  };
+
+  // 确认选择文件 - 将选中的文件标记为签署中
+  const handleConfirmFileSelect = () => {
+    setAttachments(prev =>
+      prev.map(att =>
+        selectedFileIds.includes(att.id)
+          ? { ...att, signingStatus: 'signing' as const }
+          : att
+      )
+    );
+    setIsFileSelectOpen(false);
   };
 
   return (
@@ -89,7 +132,7 @@ const Component = () => {
                 <div className="space-y-4 pl-1">
                   {/* 联系人 */}
                   <div className="flex items-center">
-                    <div className="w-16 flex-shrink-0 text-right pr-1">
+                    <div className="w-24 flex-shrink-0 text-right pr-1">
                       <span className="text-red-500 mr-0.5">*</span>
                       <span className="text-sm text-gray-700">联系人</span>
                     </div>
@@ -104,7 +147,7 @@ const Component = () => {
 
                   {/* 手机号 */}
                   <div className="flex items-center">
-                    <div className="w-16 flex-shrink-0 text-right pr-1">
+                    <div className="w-24 flex-shrink-0 text-right pr-1">
                       <span className="text-red-500 mr-0.5">*</span>
                       <span className="text-sm text-gray-700">手机号</span>
                     </div>
@@ -119,7 +162,7 @@ const Component = () => {
 
                   {/* 邮箱 */}
                   <div className="flex items-center">
-                    <div className="w-16 flex-shrink-0 text-right pr-1">
+                    <div className="w-24 flex-shrink-0 text-right pr-1">
                       <span className="text-red-500 mr-0.5">*</span>
                       <span className="text-sm text-gray-700">邮　箱</span>
                     </div>
@@ -160,76 +203,130 @@ const Component = () => {
               </div>
 
               {isAttachmentExpanded && (
-                <div className="pl-1">
-                  {/* 附件说明 */}
-                  <div className="flex items-start mb-3">
-                    <div className="w-16 flex-shrink-0 text-right pr-1">
+                <div className="pl-1 space-y-4">
+                  {/* 附件上传方式 */}
+                  <div className="flex items-center">
+                    <div className="w-24 flex-shrink-0 text-right pr-1">
                       <span className="text-red-500 mr-0.5">*</span>
-                      <span className="text-sm text-gray-700">附件</span>
+                      <span className="text-sm text-gray-700">附件上传方式</span>
                     </div>
-                    <span className="text-gray-700 mr-1 mt-0.5">:</span>
-                    <div className="flex-1">
-                      <p className="text-xs text-gray-400 leading-relaxed">
-                        大小限制：500M　支持格式：.jpeg、.jpg、.gif、.png、.doc、.doc_、.docx、.xl...
-                      </p>
-                      <p className="text-xs text-gray-400 leading-relaxed">
-                        （如需使用电子签功能，请上传100M以内的pdf文件）
-                      </p>
+                    <span className="text-gray-700 mr-1">:</span>
+                    <div className="flex items-center gap-6">
+                      <label className="flex items-center cursor-pointer">
+                        <div
+                          className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center transition-colors ${
+                            uploadMethod === 'scan'
+                              ? 'border-[#f5a623]'
+                              : 'border-gray-300'
+                          }`}
+                          onClick={() => setUploadMethod('scan')}
+                        >
+                          {uploadMethod === 'scan' && (
+                            <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
+                          )}
+                        </div>
+                        <span className="text-sm text-gray-700">扫描件上传</span>
+                      </label>
+                      <label className="flex items-center cursor-pointer">
+                        <div
+                          className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center transition-colors ${
+                            uploadMethod === 'esign'
+                              ? 'border-[#f5a623]'
+                              : 'border-gray-300'
+                          }`}
+                          onClick={() => setUploadMethod('esign')}
+                        >
+                          {uploadMethod === 'esign' && (
+                            <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
+                          )}
+                        </div>
+                        <span className="text-sm text-gray-700">电子签章上传</span>
+                      </label>
                     </div>
                   </div>
 
-                  {/* 附件列表 */}
-                  <div className="ml-[72px] space-y-2 mb-3">
-                    {attachments.map((file) => (
-                      <div
-                        key={file.id}
-                        className="inline-flex items-center border border-[#e8e8e8] rounded px-3 py-2 bg-white"
-                      >
-                        <div className="flex-shrink-0 w-[34px] h-[34px] bg-red-50 rounded flex flex-col items-center justify-center mr-2">
-                          <span className="text-[9px] font-bold text-red-500 leading-none">PDF</span>
+                  {/* 附件字段 - 仅在选择了上传方式后显示 */}
+                  {uploadMethod && (
+                    <>
+                      {/* 附件说明 */}
+                      <div className="flex items-start">
+                        <div className="w-24 flex-shrink-0 text-right pr-1">
+                          <span className="text-red-500 mr-0.5">*</span>
+                          <span className="text-sm text-gray-700">附件</span>
                         </div>
-                        <span className="text-sm text-gray-700 mr-3">{file.name}</span>
-                        <button className="text-gray-400 hover:text-gray-600 mr-2 transition-colors">
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
+                        <span className="text-gray-700 mr-1 mt-0.5">:</span>
+                        <div className="flex-1">
+                          <p className="text-xs text-gray-400 leading-relaxed">
+                            大小限制：500M　支持格式：.jpeg、.jpg、.gif、.png、.doc、.doc_、.docx、.xl...
+                          </p>
+                          <p className="text-xs text-gray-400 leading-relaxed">
+                            （如需使用电子签功能，请上传100M以内的pdf文件）
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* 附件列表 */}
+                      <div className="ml-[100px] space-y-2">
+                        {attachments.map((file) => (
+                          <div
+                            key={file.id}
+                            className="inline-flex items-center border border-[#e8e8e8] rounded px-3 py-2 bg-white relative"
+                          >
+                            {/* 签署中标签 */}
+                            {file.signingStatus === 'signing' && (
+                              <div className="absolute -top-2 left-2 bg-[#f5a623] text-white text-[10px] px-1.5 py-0.5 rounded-sm leading-none">
+                                签署中
+                              </div>
+                            )}
+                            <div className="flex-shrink-0 w-[34px] h-[34px] bg-red-50 rounded flex flex-col items-center justify-center mr-2">
+                              <span className="text-[9px] font-bold text-red-500 leading-none">PDF</span>
+                            </div>
+                            <span className="text-sm text-gray-700 mr-3">{file.name}</span>
+                            <button className="text-gray-400 hover:text-gray-600 mr-2 transition-colors">
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              className="text-gray-400 hover:text-red-500 transition-colors"
+                              onClick={() => handleRemoveAttachment(file.id)}
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* 添加附件按钮 */}
+                      <div className="ml-[100px]">
                         <button
-                          className="text-gray-400 hover:text-red-500 transition-colors"
-                          onClick={() => handleRemoveAttachment(file.id)}
+                          className="inline-flex items-center border border-[#d9d9d9] rounded px-4 py-2 text-sm text-gray-700 hover:border-[#f5a623] hover:text-[#f5a623] transition-colors"
+                          onClick={handleAddAttachment}
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <Plus className="w-4 h-4 mr-1" />
+                          添加附件
                         </button>
                       </div>
-                    ))}
-                  </div>
 
-                  {/* 添加附件按钮 */}
-                  <div className="ml-[72px] mb-3">
-                    <button
-                      className="inline-flex items-center border border-[#d9d9d9] rounded px-4 py-2 text-sm text-gray-700 hover:border-[#f5a623] hover:text-[#f5a623] transition-colors"
-                      onClick={handleAddAttachment}
-                    >
-                      <Plus className="w-4 h-4 mr-1" />
-                      添加附件
-                    </button>
-                  </div>
-
-                  {/* 建议提示 */}
-                  <div className="ml-[72px] mb-2">
-                    <p className="text-xs">
-                      <span className="text-[#f5a623]">建议：</span>
-                      <span className="text-[#f5a623]">请先检测报名文件完善性，再提交报名</span>
-                    </p>
-                  </div>
+                      {/* 建议提示 */}
+                      <div className="ml-[100px]">
+                        <p className="text-xs">
+                          <span className="text-[#f5a623]">建议：</span>
+                          <span className="text-[#f5a623]">请先检测报名文件完善性，再提交报名</span>
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
 
-            {/* 底部提示 */}
-            <div className="mt-6 mb-2">
-              <p className="text-sm text-gray-600 text-center">
-                存在 <span className="font-medium text-gray-800">签章中/签章失败</span> 的文件时，请先点击"发起电子签后报名"完成电子签章。
-              </p>
-            </div>
+            {/* 底部提示 - 仅在电子签章上传时显示 */}
+            {uploadMethod === 'esign' && (
+              <div className="mt-6 mb-2">
+                <p className="text-sm text-gray-600 text-center">
+                  存在 <span className="font-medium text-gray-800">签章中/签章失败</span> 的文件时，请先点击"发起电子签后报名"完成电子签章。
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Footer */}
@@ -240,16 +337,84 @@ const Component = () => {
             >
               取 消
             </button>
-            <button className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors">
-              直接报名
-            </button>
-            <button className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors flex items-center">
-              发起电子签后报名
-              <Info className="w-4 h-4 ml-1.5" />
-            </button>
+            {uploadMethod === 'scan' && (
+              <button className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors">
+                提交报名
+              </button>
+            )}
+            {uploadMethod === 'esign' && (
+              <button
+                className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors flex items-center"
+                onClick={handleOpenFileSelect}
+              >
+                发起电子签后报名
+                <Info className="w-4 h-4 ml-1.5" />
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* 选择文件弹窗 */}
+      {isFileSelectOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[60]">
+          <div className="bg-white w-full max-w-[480px] rounded shadow-xl">
+            {/* 弹窗头部 */}
+            <div className="flex items-center px-5 py-4">
+              <div className="w-8 h-8 bg-[#f5a623] rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <AlertCircle className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="text-base font-bold text-gray-800">选择文件</h3>
+            </div>
+
+            {/* 弹窗内容 */}
+            <div className="px-5 pb-4">
+              <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                请勾选您需进行电子签章的文件名称，支持单次最多勾选20个附件。单个附件需满足pdf格式且小于100M。
+              </p>
+
+              {/* 文件列表 */}
+              <div className="space-y-2 mb-4">
+                {attachments.map((file) => (
+                  <div
+                    key={file.id}
+                    className="flex items-center cursor-pointer"
+                    onClick={() => toggleFileSelection(file.id)}
+                  >
+                    {selectedFileIds.includes(file.id) ? (
+                      <CheckSquare className="w-4 h-4 text-[#f5a623] mr-2 flex-shrink-0" />
+                    ) : (
+                      <Square className="w-4 h-4 text-gray-300 mr-2 flex-shrink-0" />
+                    )}
+                    <span className="text-sm text-gray-700">{file.name}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* 已选数量 */}
+              <p className="text-sm text-gray-600">
+                已选{selectedFileIds.length}条（最多20条）
+              </p>
+            </div>
+
+            {/* 弹窗底部 */}
+            <div className="flex items-center justify-end px-5 py-4 border-t border-gray-100 gap-3">
+              <button
+                className="px-6 py-2 border border-[#d9d9d9] rounded text-sm text-gray-700 hover:border-gray-400 transition-colors"
+                onClick={() => setIsFileSelectOpen(false)}
+              >
+                取 消
+              </button>
+              <button
+                className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors"
+                onClick={handleConfirmFileSelect}
+              >
+                确 定
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
