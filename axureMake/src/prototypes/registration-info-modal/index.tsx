@@ -8,7 +8,8 @@ import {
   Plus,
   AlertCircle,
   CheckSquare,
-  Square
+  Square,
+  CheckCircle
 } from 'lucide-react';
 import './style.css';
 
@@ -43,6 +44,12 @@ const Component = () => {
   const [isFileSelectOpen, setIsFileSelectOpen] = useState(false);
   const [selectedFileIds, setSelectedFileIds] = useState<number[]>([]);
 
+  // 提交失败弹窗状态
+  const [isSubmitFailOpen, setIsSubmitFailOpen] = useState(false);
+
+  // 报名成功提示状态
+  const [isSuccessToastOpen, setIsSuccessToastOpen] = useState(false);
+
   const handleRemoveAttachment = (id: number) => {
     setAttachments(prev => prev.filter(item => item.id !== id));
   };
@@ -75,6 +82,22 @@ const Component = () => {
       )
     );
     setIsFileSelectOpen(false);
+  };
+
+  // 检查是否有签署中的附件
+  const hasSigningAttachments = attachments.some(att => att.signingStatus === 'signing');
+
+  // 处理提交报名
+  const handleSubmit = () => {
+    if (hasSigningAttachments) {
+      setIsSubmitFailOpen(true);
+    } else {
+      setIsSuccessToastOpen(true);
+      // 3秒后自动关闭成功提示
+      setTimeout(() => {
+        setIsSuccessToastOpen(false);
+      }, 3000);
+    }
   };
 
   return (
@@ -205,13 +228,13 @@ const Component = () => {
               {isAttachmentExpanded && (
                 <div className="pl-1 space-y-4">
                   {/* 附件上传方式 */}
-                  <div className="flex items-center">
+                  <div className="flex items-start">
                     <div className="w-24 flex-shrink-0 text-right pr-1">
-                      <span className="text-red-500 mr-0.5">*</span>
-                      <span className="text-sm text-gray-700">附件上传方式</span>
+                      <span className="text-red-500 align-top text-xs">*</span>
+                      <span className="text-sm text-gray-700 whitespace-nowrap">附件上传方式</span>
                     </div>
-                    <span className="text-gray-700 mr-1">:</span>
-                    <div className="flex items-center gap-6">
+                    <span className="text-gray-700 mr-1 mt-0.5">:</span>
+                    <div className="flex items-center gap-6 flex-shrink-0 mt-0.5">
                       <label className="flex items-center cursor-pointer">
                         <div
                           className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center transition-colors ${
@@ -338,7 +361,10 @@ const Component = () => {
               取 消
             </button>
             {uploadMethod === 'scan' && (
-              <button className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors">
+              <button
+                className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors"
+                onClick={handleSubmit}
+              >
                 提交报名
               </button>
             )}
@@ -412,6 +438,56 @@ const Component = () => {
                 确 定
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* 提交失败弹窗 */}
+      {isSubmitFailOpen && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[60]">
+          <div className="bg-white w-full max-w-[520px] rounded shadow-xl">
+            {/* 弹窗头部 */}
+            <div className="flex items-center px-5 pt-5 pb-3">
+              <div className="w-8 h-8 bg-[#f5a623] rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                <AlertCircle className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="text-base font-bold text-gray-800">提交失败</h3>
+            </div>
+
+            {/* 弹窗内容 */}
+            <div className="px-5 pb-4">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                存在附件为签章失败/签章中状态，已为您暂存页面信息。签章中文件均签章成功时会自动为您完成报名（如果您已报名则会为您更新联系方式，但注意及时完成签章，否则报名截止时文件签章中/签章失败可能影响您的参与。如需撤销签章或签章附件错误您可删除文件后重新上传）
+              </p>
+            </div>
+
+            {/* 弹窗底部 */}
+            <div className="flex items-center justify-end px-5 py-4">
+              <button
+                className="px-6 py-2 bg-[#f5a623] rounded text-sm text-white hover:bg-[#e09513] transition-colors"
+                onClick={() => setIsSubmitFailOpen(false)}
+              >
+                知道了
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 报名成功提示 */}
+      {isSuccessToastOpen && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[70] animate-fade-in-down">
+          <div className="bg-white rounded shadow-lg flex items-center px-4 py-3 min-w-[200px]">
+            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+              <CheckCircle className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-sm text-gray-800 font-medium">报名成功</span>
+            <button
+              className="ml-auto text-gray-400 hover:text-gray-600 transition-colors"
+              onClick={() => setIsSuccessToastOpen(false)}
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
