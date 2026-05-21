@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-18T11:10:19.723Z",
+  "updatedAt": "2026-05-21T11:10:35.278Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-registration-info-modal",
+      "kind": "item",
+      "title": "registration info modal",
+      "itemKey": "prototypes/registration-info-modal"
+    },
     {
       "id": "item-prototypes-payment-terms",
       "kind": "item",
