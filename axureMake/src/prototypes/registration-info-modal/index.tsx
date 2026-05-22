@@ -248,7 +248,7 @@ const Component = () => {
                             <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
                           )}
                         </div>
-                        <span className="text-sm text-gray-700">扫描件上传</span>
+                        <span className="text-sm text-gray-700">直接上传</span>
                       </label>
                       <label className="flex items-center cursor-pointer">
                         <div
@@ -263,7 +263,7 @@ const Component = () => {
                             <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
                           )}
                         </div>
-                        <span className="text-sm text-gray-700">电子签章上传</span>
+                        <span className="text-sm text-gray-700">使用电子签章</span>
                       </label>
                     </div>
                   </div>
