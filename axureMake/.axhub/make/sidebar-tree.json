@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-27T05:40:22.334Z",
+  "updatedAt": "2026-05-27T06:25:48.491Z",
   "prototypes": [
     {
       "id": "item-prototypes-registration-info-modal",
@@ -131,9 +131,15 @@
       "title": "数字合规官",
       "children": [
         {
+          "id": "item-prototypes-digital-compliance-settings",
+          "kind": "item",
+          "title": "数字合规官设置",
+          "itemKey": "prototypes/digital-compliance-settings"
+        },
+        {
           "id": "item-prototypes-digital-compliance-officer-copy-copy",
           "kind": "item",
-          "title": "集采AI配置第二版 副本",
+          "title": "集采AI配置迭代-管理员配置",
           "itemKey": "prototypes/digital-compliance-officer-copy-copy"
         },
         {
