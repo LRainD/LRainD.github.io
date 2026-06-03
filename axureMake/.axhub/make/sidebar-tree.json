@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-01T06:29:44.180Z",
+  "updatedAt": "2026-06-03T08:03:49.474Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -21,7 +21,7 @@
             {
               "id": "item-prototypes-registration-info-modal-copy",
               "kind": "item",
-              "title": "报名信息弹窗 副本",
+              "title": "报名信息弹窗 第二版",
               "itemKey": "prototypes/registration-info-modal-copy"
             }
           ]
@@ -92,6 +92,12 @@
           "kind": "item",
           "title": "资质检测-历史记录页",
           "itemKey": "prototypes/qualification-detection"
+        },
+        {
+          "id": "item-prototypes-enterprise-relation-result",
+          "kind": "item",
+          "title": "企业关联-检测结果页",
+          "itemKey": "prototypes/enterprise-relation-result"
         }
       ]
     },
