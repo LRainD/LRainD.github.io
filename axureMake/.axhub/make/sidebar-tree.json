@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-03T08:03:49.474Z",
+  "updatedAt": "2026-06-04T07:49:13.904Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -23,6 +23,19 @@
               "kind": "item",
               "title": "报名信息弹窗 第二版",
               "itemKey": "prototypes/registration-info-modal-copy"
+            }
+          ]
+        },
+        {
+          "id": "folder-1780559066636-5aqpil",
+          "kind": "folder",
+          "title": "报名附件检测",
+          "children": [
+            {
+              "id": "item-prototypes-procurement-announcement",
+              "kind": "item",
+              "title": "procurement-announcement",
+              "itemKey": "prototypes/procurement-announcement"
             }
           ]
         }
@@ -98,6 +111,12 @@
           "kind": "item",
           "title": "企业关联-检测结果页",
           "itemKey": "prototypes/enterprise-relation-result"
+        },
+        {
+          "id": "item-prototypes-enterprise-relation-config-copy",
+          "kind": "item",
+          "title": "企业关联-配置页面 迭代-增加配置",
+          "itemKey": "prototypes/enterprise-relation-config-copy"
         }
       ]
     },
