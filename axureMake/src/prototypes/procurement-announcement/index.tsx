@@ -615,7 +615,6 @@ const Component = () => {
                 <div className="flex items-center">
                   <div className="w-1 h-4 bg-primary mr-2"></div>
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查条件</h2>
-                  <span className="ml-2 text-xs text-primary cursor-pointer hover:underline">智能资审条件推荐，点击查看！</span>
                 </div>
                 <button className="text-gray-400 hover:text-gray-600">
                   <ChevronUp className="w-5 h-5" />
@@ -624,9 +623,9 @@ const Component = () => {
 
               <div className="p-4">
                 {/* 提示信息 */}
-                <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/30 rounded p-3 mb-4">
-                  <p className="text-xs text-orange-700 dark:text-orange-300">
-                    <span className="font-bold">设置"是否存在有效集中资格预审标签"资审条件通过的分供商，在报名与资审汇总列表中展示"有效集中资审"标签，便于快速识别分供商。</span>
+                <div className="mb-4">
+                  <p className="text-sm text-orange-500 dark:text-orange-400 leading-relaxed">
+                    设置"是否存在有效集中资格预审标签"资审条件通过的分供商，在报名与资审汇总列表中展示"有效集中资审"标签，便于快速识别分供商。
                   </p>
                 </div>
 
@@ -656,6 +655,7 @@ const Component = () => {
                   <button className="bg-primary hover:bg-primary-dark text-white text-xs px-3 py-1.5 rounded flex items-center">
                     <Plus className="w-[14px] h-[14px] mr-1" /> 批量添加资审项
                   </button>
+                  <span className="ml-3 text-xs text-primary cursor-pointer hover:underline">智能资审条件推荐，点击查看！</span>
                 </div>
 
                 {/* 资格审查条件表格 */}

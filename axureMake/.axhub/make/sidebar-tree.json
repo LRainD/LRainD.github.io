@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-04T07:49:13.904Z",
+  "updatedAt": "2026-06-04T08:05:01.960Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -34,36 +34,25 @@
             {
               "id": "item-prototypes-procurement-announcement",
               "kind": "item",
-              "title": "procurement-announcement",
+              "title": "编制公告页-设置报名附件检测",
               "itemKey": "prototypes/procurement-announcement"
+            }
+          ]
+        },
+        {
+          "id": "folder-1780560285828-cr254u",
+          "kind": "folder",
+          "title": "付款条款多选需求",
+          "children": [
+            {
+              "id": "item-prototypes-payment-terms",
+              "kind": "item",
+              "title": "付款条款",
+              "itemKey": "prototypes/payment-terms"
             }
           ]
         }
       ]
-    },
-    {
-      "id": "item-prototypes-payment-terms",
-      "kind": "item",
-      "title": "付款条款",
-      "itemKey": "prototypes/payment-terms"
-    },
-    {
-      "id": "folder-1779085649221-19vp4u",
-      "kind": "folder",
-      "title": "新建文件夹-3",
-      "children": []
-    },
-    {
-      "id": "folder-1779085585738-oeim8r",
-      "kind": "folder",
-      "title": "新建文件夹-2",
-      "children": []
-    },
-    {
-      "id": "folder-1779085523001-zogsnk",
-      "kind": "folder",
-      "title": "新建文件夹",
-      "children": []
     },
     {
       "id": "item-prototypes-test",
