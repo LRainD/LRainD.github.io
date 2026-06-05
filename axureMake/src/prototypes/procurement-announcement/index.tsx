@@ -1,7 +1,7 @@
 /**
  * @name 编制公告页-设置报名附件检测
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logoImage from '../../../assets/media/集采工作台logo图标.png';
 import {
   Home,
@@ -94,6 +94,78 @@ const Component = () => {
 
   const [isQualAttachmentSet, setIsQualAttachmentSet] = useState(true);
   const [isQualConditionSet, setIsQualConditionSet] = useState(true);
+
+  // 辅助报名文件检测
+  const [isAuxFileDetectSet, setIsAuxFileDetectSet] = useState(true);
+  const [auxFileDetections, setAuxFileDetections] = useState([
+    { id: 1, fileItem: '营业执照附件', strength: '强制' }
+  ]);
+  const [fileItemSearchText, setFileItemSearchText] = useState('');
+  const [activeFileItemRowId, setActiveFileItemRowId] = useState<number | null>(null);
+  const fileItemDropdownRef = useRef<HTMLDivElement>(null);
+
+  const FILE_ITEM_OPTIONS = [
+    '资料清单', '企业基础信息表', '营业执照附件', '组织机构代码证', '税务登记证附件',
+    '一般纳税人资质证明附件', '法人身份证附件', '法人授权委托书附件', '公司介绍资料附件',
+    '业绩证明资料附件', '企业体系认证证明材料', '资质证书材料附件', '安全生产许可证材料附件',
+    '资信等级证书附件', '质量管理体系认证资格证书附件', '环境管理体系认证资格证书附件',
+    '职业健康安全管理体系认证资格证书附件', '安全生产许可资格证书附件', '银行开户许可证附件',
+    '具备建筑业资质证书', '社保缴纳登记证明材料', '是否在涉诉限用名单', '产权证明/购置合同证明',
+    '纳税信用评价证明材料', '完税证明', '无欠税证明', '信用中国自查证明', '投标保证金纳税承诺函',
+    '检测报告', '代理商厂家授权书', '分供合同/发票证明材料', '被委托人身份证附件',
+    '建筑业管理手册附件', '考察登记表', '企业信用报告', '规模情况说明附件', '基本存款账户信息',
+    '防静电装备企业生产资格认定证书', '投标保证金缴纳证明', '具备工业产品生产许可证资格证书',
+    '投标承诺函', '产品检验报告', '绿色认证证明材料', '养老保险证明', '保安服务许可证',
+    '特种设备制造许可证', '法人直营承诺书', '测绘资质证书乙级', '专利证明材料', '工资单证明材料',
+    '四库一平台自查证明', '投标报价表', '许可经销证明', '分供方投标资格审查表', '劳动合同',
+    '预付款保函', '财务审计报告', '考察报告', '设备安装改造维修许可证'
+  ];
+
+  const handleAddAuxFileDetection = () => {
+    setAuxFileDetections((prev: typeof auxFileDetections) => [
+      ...prev,
+      { id: Date.now(), fileItem: '', strength: '' }
+    ]);
+  };
+
+  const handleDeleteAuxFileDetection = (id: number) => {
+    setAuxFileDetections((prev: typeof auxFileDetections) => prev.filter((item: typeof prev[0]) => item.id !== id));
+  };
+
+  const handleUpdateAuxFileDetection = (id: number, field: string, value: string) => {
+    setAuxFileDetections((prev: typeof auxFileDetections) => prev.map((item: typeof prev[0]) =>
+      item.id === id ? { ...item, [field]: value } : item
+    ));
+  };
+
+  const handleToggleFileItemDropdown = (rowId: number) => {
+    if (activeFileItemRowId === rowId) {
+      setActiveFileItemRowId(null);
+      setFileItemSearchText('');
+    } else {
+      setActiveFileItemRowId(rowId);
+      setFileItemSearchText('');
+    }
+  };
+
+  const handleSelectFileItem = (rowId: number, item: string) => {
+    handleUpdateAuxFileDetection(rowId, 'fileItem', item);
+    setActiveFileItemRowId(null);
+    setFileItemSearchText('');
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (fileItemDropdownRef.current && !fileItemDropdownRef.current.contains(event.target as Node)) {
+        setActiveFileItemRowId(null);
+        setFileItemSearchText('');
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-sans h-screen flex overflow-hidden">
@@ -659,67 +731,210 @@ const Component = () => {
                 </div>
 
                 {/* 资格审查条件表格 */}
-                <Table
-                  dataSource={qualConditions}
-                  rowKey="id"
-                  size="small"
-                  pagination={false}
-                  columns={[
-                    {
-                      title: '序号',
-                      width: 60,
-                      align: 'center',
-                      render: (_: any, __: any, index: number) => index + 1,
-                    },
-                    {
-                      title: <><span className="text-red-500">*</span> 资格审查条件项</>,
-                      dataIndex: 'name',
-                      render: (text: string) => (
-                        <div className="relative">
-                          <select className="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-1 pl-2 pr-6 rounded text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary">
-                            <option>{text}</option>
-                          </select>
-                          <ChevronDown className="absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none" />
-                        </div>
-                      ),
-                    },
-                    {
-                      title: <><span className="text-red-500">*</span> 资审条件强度</>,
-                      dataIndex: 'strength',
-                      render: (text: string) => (
-                        <div className="relative">
-                          <select className="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-1 pl-2 pr-6 rounded text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary">
-                            <option>{text}</option>
-                          </select>
-                          <ChevronDown className="absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none" />
-                        </div>
-                      ),
-                    },
-                    {
-                      title: <><span className="text-red-500">*</span> 资格审查条件名称</>,
-                      dataIndex: 'category',
-                    },
-                    {
-                      title: '资格审查条件分类',
-                      dataIndex: 'reviewMethod',
-                    },
-                    {
-                      title: '审查方式',
-                      dataIndex: 'reviewType',
-                    },
-                    {
-                      title: '操作',
-                      align: 'center',
-                      render: () => (
-                        <span className="text-red-500 cursor-pointer hover:underline">删除</span>
-                      ),
-                    },
-                  ]}
-                />
+                {isQualConditionSet && (
+                  <>
+                    <Table
+                      dataSource={qualConditions}
+                      rowKey="id"
+                      size="small"
+                      pagination={false}
+                      columns={[
+                        {
+                          title: '序号',
+                          width: 60,
+                          align: 'center',
+                          render: (_: any, __: any, index: number) => index + 1,
+                        },
+                        {
+                          title: <><span className="text-red-500">*</span> 资格审查条件项</>,
+                          dataIndex: 'name',
+                          render: (text: string) => (
+                            <div className="relative">
+                              <select className="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-1 pl-2 pr-6 rounded text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option>{text}</option>
+                              </select>
+                              <ChevronDown className="absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none" />
+                            </div>
+                          ),
+                        },
+                        {
+                          title: <><span className="text-red-500">*</span> 资审条件强度</>,
+                          dataIndex: 'strength',
+                          render: (text: string) => (
+                            <div className="relative">
+                              <select className="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-1 pl-2 pr-6 rounded text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary">
+                                <option>{text}</option>
+                              </select>
+                              <ChevronDown className="absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none" />
+                            </div>
+                          ),
+                        },
+                        {
+                          title: <><span className="text-red-500">*</span> 资格审查条件名称</>,
+                          dataIndex: 'category',
+                        },
+                        {
+                          title: '资格审查条件分类',
+                          dataIndex: 'reviewMethod',
+                        },
+                        {
+                          title: '审查方式',
+                          dataIndex: 'reviewType',
+                        },
+                        {
+                          title: '操作',
+                          align: 'center',
+                          render: () => (
+                            <span className="text-red-500 cursor-pointer hover:underline">删除</span>
+                          ),
+                        },
+                      ]}
+                    />
 
-                {/* 添加按钮 */}
-                <div className="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <span className="text-gray-500 text-sm">添加</span>
+                    {/* 添加按钮 */}
+                    <div className="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <span className="text-gray-500 text-sm">添加</span>
+                    </div>
+                  </>
+                )}
+
+                {/* 辅助报名文件检测 */}
+                <div className="mt-6">
+                  {/* 是否设定辅助报名文件检测 */}
+                  <div className="flex items-center mb-4">
+                    <span className="text-gray-700 dark:text-gray-300 text-sm mr-4">是否设定辅助报名文件检测：</span>
+                    <label className="inline-flex items-center mr-4 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="auxFileDetect"
+                        checked={isAuxFileDetectSet}
+                        onChange={() => setIsAuxFileDetectSet(true)}
+                        className="text-primary focus:ring-primary h-4 w-4 border-gray-300"
+                      />
+                      <span className="ml-2 text-gray-700 dark:text-gray-300 text-sm">是</span>
+                    </label>
+                    <label className="inline-flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="auxFileDetect"
+                        checked={!isAuxFileDetectSet}
+                        onChange={() => setIsAuxFileDetectSet(false)}
+                        className="text-primary focus:ring-primary h-4 w-4 border-gray-300"
+                      />
+                      <span className="ml-2 text-gray-700 dark:text-gray-300 text-sm">否</span>
+                    </label>
+                  </div>
+
+                  {/* 辅助报名文件检测表格 */}
+                  {isAuxFileDetectSet && (
+                    <>
+                      <Table
+                        dataSource={auxFileDetections}
+                        rowKey="id"
+                        size="small"
+                        pagination={false}
+                        columns={[
+                          {
+                            title: '序号',
+                            width: 60,
+                            align: 'center',
+                            render: (_: any, __: any, index: number) => index + 1,
+                          },
+                          {
+                            title: <><span className="text-red-500">*</span> 报名文件识别项</>,
+                            dataIndex: 'fileItem',
+                            render: (text: string, record: any) => (
+                              <div className="relative" ref={activeFileItemRowId === record.id ? fileItemDropdownRef : undefined}>
+                                <div
+                                  onClick={() => handleToggleFileItemDropdown(record.id)}
+                                  className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded px-2 py-1 text-xs cursor-pointer flex justify-between items-center w-full"
+                                >
+                                  <span className={text ? 'text-gray-700 dark:text-gray-200' : 'text-gray-400'}>
+                                    {text || '请选择'}
+                                  </span>
+                                  <ChevronDown className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                                </div>
+                                {activeFileItemRowId === record.id && (
+                                  <div className="absolute z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded shadow-lg w-full max-h-64 overflow-y-auto bottom-full mb-1">
+                                    {/* 搜索框 */}
+                                    <div className="p-2 border-b border-gray-100 dark:border-gray-700">
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="请输入关键字"
+                                          value={fileItemSearchText}
+                                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFileItemSearchText(e.target.value)}
+                                          className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 pl-7 text-xs focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                                          onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
+                                        />
+                                        <Search className="absolute left-2 top-1.5 w-3 h-3 text-gray-400" />
+                                      </div>
+                                    </div>
+                                    {/* 文件项列表 */}
+                                    <div className="py-1">
+                                      {FILE_ITEM_OPTIONS.filter((item: string) =>
+                                        item.toLowerCase().includes(fileItemSearchText.toLowerCase())
+                                      ).map((item: string) => (
+                                        <div
+                                          key={item}
+                                          onClick={() => handleSelectFileItem(record.id, item)}
+                                          className="px-3 py-1.5 text-xs hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer text-gray-700 dark:text-gray-200"
+                                        >
+                                          {item}
+                                        </div>
+                                      ))}
+                                      {FILE_ITEM_OPTIONS.filter((item: string) =>
+                                        item.toLowerCase().includes(fileItemSearchText.toLowerCase())
+                                      ).length === 0 && (
+                                        <div className="px-3 py-2 text-xs text-gray-400 text-center">无匹配结果</div>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ),
+                          },
+                          {
+                            title: <><span className="text-red-500">*</span> 文件要求强度</>,
+                            dataIndex: 'strength',
+                            render: (text: string, record: any) => (
+                              <div className="relative">
+                                <select
+                                  value={text}
+                                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleUpdateAuxFileDetection(record.id, 'strength', e.target.value)}
+                                  className="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-1 pl-2 pr-6 rounded text-xs w-full focus:outline-none focus:ring-1 focus:ring-primary"
+                                >
+                                  <option value="">请选择</option>
+                                  <option value="强制">强制</option>
+                                  <option value="建议">建议</option>
+                                </select>
+                                <ChevronDown className="absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none" />
+                              </div>
+                            ),
+                          },
+                          {
+                            title: '操作',
+                            align: 'center',
+                            render: (_: any, record: any) => (
+                              <span
+                                className="text-red-500 cursor-pointer hover:underline"
+                                onClick={() => handleDeleteAuxFileDetection(record.id)}
+                              >
+                                删除
+                              </span>
+                            ),
+                          },
+                        ]}
+                      />
+                      {/* 添加按钮 */}
+                      <div
+                        className="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                        onClick={handleAddAuxFileDetection}
+                      >
+                        <span className="text-gray-500 text-sm">添加</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
