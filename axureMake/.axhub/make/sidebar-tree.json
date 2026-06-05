@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-04T08:05:01.960Z",
+  "updatedAt": "2026-06-05T06:39:31.836Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -36,6 +36,12 @@
               "kind": "item",
               "title": "编制公告页-设置报名附件检测",
               "itemKey": "prototypes/procurement-announcement"
+            },
+            {
+              "id": "item-prototypes-procurement-announcement-copy",
+              "kind": "item",
+              "title": "编制公告页-设置报名附件检测 副本",
+              "itemKey": "prototypes/procurement-announcement-copy"
             }
           ]
         },
