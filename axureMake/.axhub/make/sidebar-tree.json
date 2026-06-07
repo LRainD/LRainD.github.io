@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-05T06:39:31.836Z",
+  "updatedAt": "2026-06-05T09:40:17.607Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -40,8 +40,14 @@
             {
               "id": "item-prototypes-procurement-announcement-copy",
               "kind": "item",
-              "title": "编制公告页-设置报名附件检测 副本",
+              "title": "第二版编制公告页-设置报名附件检测 副本",
               "itemKey": "prototypes/procurement-announcement-copy"
+            },
+            {
+              "id": "item-prototypes-registration-review",
+              "kind": "item",
+              "title": "报名与资审汇总",
+              "itemKey": "prototypes/registration-review"
             }
           ]
         },
