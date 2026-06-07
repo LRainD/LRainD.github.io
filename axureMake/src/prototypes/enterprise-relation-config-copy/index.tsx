@@ -20,6 +20,7 @@ import {
   Plus,
   Trash2
 } from 'lucide-react';
+import { Select } from 'antd';
 import logoImage from '../../../assets/media/image.png';
 import './style.css';
 
@@ -238,9 +239,12 @@ const Component = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentStep] = useState(1);
   const [isPanelExpanded, setIsPanelExpanded] = useState(true);
+  const [isRelationPanelExpanded, setIsRelationPanelExpanded] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [enterpriseList, setEnterpriseList] = useState<EnterpriseItem[]>([]);
+  const [relationLevel, setRelationLevel] = useState<number>(5);
+  const [relationTypes, setRelationTypes] = useState<string[]>(['董监高', '分支机构']);
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -477,6 +481,7 @@ const Component = () => {
               onClick={() => setIsPanelExpanded(!isPanelExpanded)}
             >
               <div className="flex items-center gap-2">
+                <div className="w-1 h-4 bg-[#1677FF] rounded-sm"></div>
                 <span className="text-sm font-medium text-[#262626]">设置检测企业</span>
                 <span className="text-xs text-[#8C8C8C]">检测对象可选全国全量工商注册企业；工商关系包含：1. 投资关系-股东和分支机构 2. 任职关系：法定代表人和董监高</span>
               </div>
@@ -594,6 +599,177 @@ const Component = () => {
                     <Plus className="w-4 h-4" />
                     添加
                   </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 企业关联设置面板 */}
+          <div className="bg-white rounded-lg border border-[#F0F0F0] mt-4">
+            {/* 面板头部 */}
+            <div 
+              className="flex items-center justify-between px-4 py-3 bg-[#FAFAFA] border-b border-[#F0F0F0] cursor-pointer"
+              onClick={() => setIsRelationPanelExpanded(!isRelationPanelExpanded)}
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-1 h-4 bg-[#1677FF] rounded-sm"></div>
+                <span className="text-sm font-medium text-[#262626]">企业关联设置</span>
+                <span className="text-xs text-[#8C8C8C]">配置企业关联检测规则参数</span>
+              </div>
+              {isRelationPanelExpanded ? (
+                <ChevronUp className="w-4 h-4 text-[#8C8C8C]" />
+              ) : (
+                <ChevronDown className="w-4 h-4 text-[#8C8C8C]" />
+              )}
+            </div>
+
+            {/* 面板内容 */}
+            {isRelationPanelExpanded && (
+              <div className="p-4 space-y-8">
+                {/* 关联层级 */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-2">
+                    <label className="text-sm text-[#262626] font-medium">关联层级</label>
+                    <div className="relative group">
+                      <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                      <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 w-48 leading-relaxed">
+                        层级说明：<br/>
+                        A-B ：1层级；<br/>
+                        A-B-C：2层级；<br/>
+                        A-B-C-D：3层级
+                        <div className="absolute top-full left-2 border-4 border-transparent border-t-[#262626]"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <Select
+                      className="w-48"
+                      value={relationLevel}
+                      onChange={(value) => setRelationLevel(value)}
+                      options={[
+                        { value: 1, label: '1层' },
+                        { value: 2, label: '2层' },
+                        { value: 3, label: '3层' },
+                        { value: 4, label: '4层' },
+                        { value: 5, label: '5层（默认）' },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                {/* 关系类型 */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <label className="text-sm text-[#262626] font-medium w-24">关系类型</label>
+                  </div>
+
+                  {/* 人员关系 */}
+                  <div className="flex items-start gap-4">
+                    <span className="text-sm text-[#8C8C8C] w-24 text-right">人员关系：</span>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-not-allowed opacity-60">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9] cursor-not-allowed"
+                          checked={true}
+                          disabled
+                          readOnly
+                        />
+                        <span className="text-sm text-[#595959]">董监高、股东、法人</span>
+                        <div className="relative group">
+                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed max-h-60 overflow-y-auto break-words">
+                            不可取消勾选，董监高包含：董监高,董事长,董事会秘书,董事,股东监事,联席公司秘书,职工监事,职工代表董事,职工代表监事,监事会主席,监事,独立董事,执行董事,执行事务合伙人,副董事长，股东,投资人,工商股东，法定代表人，联席总裁,高级副总裁,联席董事长,代理总经理,总裁,总经理,常务副总经理,副总裁,副总经理，总会计师,理事长,执行监事,财务负责人,财务总监,负责人,经营者,经理,内审负责人
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* 机构隶属 */}
+                  <div className="flex items-start gap-4">
+                    <span className="text-sm text-[#8C8C8C] w-24 text-right">机构隶属：</span>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('分支机构')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '分支机构']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '分支机构'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">分支机构</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* 其他 */}
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center gap-1 w-24 justify-end">
+                      <span className="text-sm text-[#8C8C8C]">其他</span>
+                      <div className="relative group">
+                        <span className="w-4 h-4 flex items-center justify-center text-[10px] text-[#8C8C8C] border border-[#8C8C8C] rounded-full cursor-help leading-none">!</span>
+                        <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed break-words">
+                          注意：系统关联路径计算有上限，勾选相同手机号、邮箱或地址后，可能由于过多的手机号、邮箱或地址关联，导致影响董监高关联路径的完整展示。
+                          <div className="absolute top-full left-2 border-4 border-transparent border-t-[#262626]"></div>
+                        </div>
+                      </div>
+                      <span className="text-sm text-[#8C8C8C]">：</span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('相同手机号')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '相同手机号']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '相同手机号'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">相同手机号</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('相同邮箱')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '相同邮箱']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '相同邮箱'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">相同邮箱</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('相同地址')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '相同地址']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '相同地址'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">相同地址</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
