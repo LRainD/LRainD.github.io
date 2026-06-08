@@ -285,7 +285,7 @@ const Component = () => {
                                 大小限制：100M　支持格式：.pdf
                               </p>
                               <p className="text-xs text-gray-400 leading-relaxed">
-                                （电子签功能仅支持最多20个100M以内的pdf文件）
+                                （电子签功能仅支持最多20个100M以内的pdf文件，若不满足需求，请选择纸质扫描件方式上传附件报名）
                               </p>
                             </>
                           ) : (
