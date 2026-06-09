@@ -623,13 +623,14 @@ const Component = function SolutionConfig() {
   const [qualReviewData, setQualReviewData] = useState([
     {
       id: 1,
-      purchaseCategory: '物资',
-      purchaseType: '区域联采',
-      biddingMethod: '公开招标',
+      purchaseCategory: ['物资'],
+      purchaseType: ['区域联采'],
+      biddingMethod: ['公开招标'],
       defaultUse: true,
       forceUse: true,
       fileItems: [
-        { id: 101, name: '法人身份证', customContent: '', required: '是', defaultSample: '' }
+        { id: 101, name: '法人身份证', customContent: '', required: '是', defaultSample: '' },
+        { id: 102, name: '自定义', customContent: '请输入自定义内容', required: '是', defaultSample: '' }
       ]
     }
   ]);
@@ -750,19 +751,20 @@ const Component = function SolutionConfig() {
     { key: 'operation-log', label: '操作日志' },
   ];
 
-  const purchaseCategories = ['物资', '工程', '服务'];
-  const purchaseTypes = ['区域联采', '战略采购', '零星采购'];
-  const biddingMethods = ['公开招标', '邀请招标', '竞争性谈判', '询价采购', '单一来源'];
+  const purchaseCategories = ['物资', '设备', '劳务分包', '专业分包', '专业服务', '租赁'];
+  const purchaseTypes = ['招标采购', '区域联采', '战略采购', '集中采购', '分散采购', '电子商城采购'];
+  const biddingMethods = ['公开招标', '邀请招标', '询比采购', '竞价采购', '谈判采购'];
   const requiredOptions = ['是', '否'];
+  const fileItemOptions = ['营业执照', '法人身份证', '银行信用等级', '工商企业信用等级', '纳税信用等级', '财务会计信用等级', '资质证书', '安全施工许可证', '自定义'];
 
   const handleAddRow = () => {
     setQualReviewData(prev => [
       ...prev,
       {
         id: Date.now(),
-        purchaseCategory: '物资',
-        purchaseType: '区域联采',
-        biddingMethod: '公开招标',
+        purchaseCategory: ['物资'],
+        purchaseType: ['区域联采'],
+        biddingMethod: ['公开招标'],
         defaultUse: false,
         forceUse: false,
         fileItems: []
@@ -991,12 +993,14 @@ const Component = function SolutionConfig() {
                                   title: '采购品类',
                                   dataIndex: 'purchaseCategory',
                                   key: 'purchaseCategory',
-                                  render: (value: string, record: any) => (
+                                  render: (value: string[], record: any) => (
                                     <Select
+                                      mode="multiple"
                                       value={value}
                                       onChange={(val) => handleUpdateRow(record.id, 'purchaseCategory', val)}
                                       options={purchaseCategories.map(c => ({ label: c, value: c }))}
                                       style={{ width: '100%' }}
+                                      placeholder="请选择"
                                     />
                                   )
                                 },
@@ -1004,12 +1008,14 @@ const Component = function SolutionConfig() {
                                   title: '采购类型&组织形式',
                                   dataIndex: 'purchaseType',
                                   key: 'purchaseType',
-                                  render: (value: string, record: any) => (
+                                  render: (value: string[], record: any) => (
                                     <Select
+                                      mode="multiple"
                                       value={value}
                                       onChange={(val) => handleUpdateRow(record.id, 'purchaseType', val)}
                                       options={purchaseTypes.map(t => ({ label: t, value: t }))}
                                       style={{ width: '100%' }}
+                                      placeholder="请选择"
                                     />
                                   )
                                 },
@@ -1017,12 +1023,14 @@ const Component = function SolutionConfig() {
                                   title: '招标方式&采购方式',
                                   dataIndex: 'biddingMethod',
                                   key: 'biddingMethod',
-                                  render: (value: string, record: any) => (
+                                  render: (value: string[], record: any) => (
                                     <Select
+                                      mode="multiple"
                                       value={value}
                                       onChange={(val) => handleUpdateRow(record.id, 'biddingMethod', val)}
                                       options={biddingMethods.map(m => ({ label: m, value: m }))}
                                       style={{ width: '100%' }}
+                                      placeholder="请选择"
                                     />
                                   )
                                 },
@@ -1089,10 +1097,12 @@ const Component = function SolutionConfig() {
                                         dataIndex: 'name',
                                         key: 'name',
                                         render: (value: string, record: any) => (
-                                          <Input
+                                          <Select
                                             value={value}
-                                            onChange={(e) => handleUpdateFileItem(row.id, record.id, 'name', e.target.value)}
-                                            placeholder="请输入文件项名称"
+                                            onChange={(val) => handleUpdateFileItem(row.id, record.id, 'name', val)}
+                                            options={fileItemOptions.map(o => ({ label: o, value: o }))}
+                                            style={{ width: '100%' }}
+                                            placeholder="请选择文件项"
                                           />
                                         )
                                       },
@@ -1101,10 +1111,15 @@ const Component = function SolutionConfig() {
                                         dataIndex: 'customContent',
                                         key: 'customContent',
                                         render: (value: string, record: any) => (
-                                          <Input
-                                            value={value}
-                                            onChange={(e) => handleUpdateFileItem(row.id, record.id, 'customContent', e.target.value)}
-                                          />
+                                          record.name === '自定义' ? (
+                                            <Input
+                                              value={value}
+                                              onChange={(e) => handleUpdateFileItem(row.id, record.id, 'customContent', e.target.value)}
+                                              placeholder="请输入自定义内容"
+                                            />
+                                          ) : (
+                                            <span style={{ color: '#999' }}>-</span>
+                                          )
                                         )
                                       },
                                       {
