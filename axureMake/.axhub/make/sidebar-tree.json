@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-09T13:45:44.059Z",
+  "updatedAt": "2026-06-09T14:37:31.429Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -23,6 +23,19 @@
               "kind": "item",
               "title": "报名信息弹窗 第二版",
               "itemKey": "prototypes/registration-info-modal-copy"
+            }
+          ]
+        },
+        {
+          "id": "folder-1781012710216-solution",
+          "kind": "folder",
+          "title": "解决方案",
+          "children": [
+            {
+              "id": "item-prototypes-solution-config",
+              "kind": "item",
+              "title": "运营解决方案配置",
+              "itemKey": "prototypes/solution-config"
             }
           ]
         },
