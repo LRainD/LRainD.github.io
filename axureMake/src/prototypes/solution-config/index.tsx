@@ -628,12 +628,38 @@ const Component = function SolutionConfig() {
       biddingMethod: ['公开招标'],
       defaultUse: true,
       forceUse: true,
+      aiFileDetectEnabled: false,
+      aiFileDetectConfig: '自由选择',
       fileItems: [
         { id: 101, name: '法人身份证', customContent: '', required: '是', defaultSample: '' },
         { id: 102, name: '自定义', customContent: '请输入自定义内容', required: '是', defaultSample: '' }
       ]
     }
   ]);
+
+  // AI检测项分类数据
+  const AI_CHECK_CATEGORIES = [
+    { name: '签章类', items: ['是否盖章', '法人签字', '骑缝章'] },
+    { name: '时效类', items: ['有效期校验', '年检状态'] },
+    { name: '资质类', items: ['颁发机构核验', '资质等级匹配'] },
+  ];
+
+  // 每行文件项的AI检测项设置
+  const [attachmentCheckSettings, setAttachmentCheckSettings] = useState<Record<number, string[]>>({});
+  const [checkModalFileItemId, setCheckModalFileItemId] = useState<number | null>(null);
+  const [checkModalRowId, setCheckModalRowId] = useState<number | null>(null);
+
+  const aiDetectConfigOptions = ['自由选择', '默认是', '默认否', '强制是'];
+
+  const toggleAttachmentCheck = (fileItemId: number, checkItem: string) => {
+    setAttachmentCheckSettings((prev) => {
+      const current = prev[fileItemId] || [];
+      if (current.includes(checkItem)) {
+        return { ...prev, [fileItemId]: current.filter((c) => c !== checkItem) };
+      }
+      return { ...prev, [fileItemId]: [...current, checkItem] };
+    });
+  };
 
   // 左侧菜单项 - 运营后台风格
   const menuItems = [
@@ -767,6 +793,8 @@ const Component = function SolutionConfig() {
         biddingMethod: ['公开招标'],
         defaultUse: false,
         forceUse: false,
+        aiFileDetectEnabled: false,
+        aiFileDetectConfig: '自由选择',
         fileItems: []
       }
     ]);
@@ -1063,6 +1091,36 @@ const Component = function SolutionConfig() {
                                   )
                                 },
                                 {
+                                  title: 'AI辅助报名文件检测是否开启',
+                                  dataIndex: 'aiFileDetectEnabled',
+                                  key: 'aiFileDetectEnabled',
+                                  width: 180,
+                                  align: 'center',
+                                  render: (value: boolean, record: any) => (
+                                    <Switch
+                                      size="small"
+                                      checked={value}
+                                      onChange={(checked) => handleUpdateRow(record.id, 'aiFileDetectEnabled', checked)}
+                                    />
+                                  )
+                                },
+                                {
+                                  title: 'AI辅助报名文件检测配置',
+                                  dataIndex: 'aiFileDetectConfig',
+                                  key: 'aiFileDetectConfig',
+                                  width: 180,
+                                  align: 'center',
+                                  render: (value: string, record: any) => (
+                                    <Select
+                                      value={value}
+                                      onChange={(val) => handleUpdateRow(record.id, 'aiFileDetectConfig', val)}
+                                      options={aiDetectConfigOptions.map(o => ({ label: o, value: o }))}
+                                      style={{ width: '100%' }}
+                                      placeholder="请选择"
+                                    />
+                                  )
+                                },
+                                {
                                   title: '操作',
                                   key: 'action',
                                   width: 120,
@@ -1147,6 +1205,31 @@ const Component = function SolutionConfig() {
                                           </Button>
                                         )
                                       },
+                                      ...(row.aiFileDetectEnabled ? [
+                                        {
+                                          title: 'AI检测项设置',
+                                          key: 'aiCheckSetting',
+                                          width: 140,
+                                          align: 'center',
+                                          render: (_: any, record: any) => {
+                                            const selected = attachmentCheckSettings[record.id] || [];
+                                            return (
+                                              <Button
+                                                type="primary"
+                                                ghost
+                                                size="small"
+                                                icon={<SettingOutlined />}
+                                                onClick={() => {
+                                                  setCheckModalRowId(row.id);
+                                                  setCheckModalFileItemId(record.id);
+                                                }}
+                                              >
+                                                {selected.length > 0 ? `已选${selected.length}项` : '设置检测项'}
+                                              </Button>
+                                            );
+                                          }
+                                        }
+                                      ] : []),
                                       {
                                         title: '操作',
                                         key: 'action',
@@ -1205,6 +1288,57 @@ const Component = function SolutionConfig() {
           </div>
         </Content>
       </Layout>
+
+      {/* AI检测项设置弹窗 */}
+      {checkModalFileItemId !== null && checkModalRowId !== null && (
+        <div className="ai-check-modal-overlay" onClick={() => { setCheckModalFileItemId(null); setCheckModalRowId(null); }}>
+          <div className="ai-check-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="ai-check-modal-header">
+              <SettingOutlined className="ai-check-modal-icon" />
+              <span className="ai-check-modal-title">
+                检测项设置 - {qualReviewData.find(r => r.id === checkModalRowId)?.fileItems.find(f => f.id === checkModalFileItemId)?.name || ''}
+              </span>
+              <Button type="text" size="small" onClick={() => { setCheckModalFileItemId(null); setCheckModalRowId(null); }}>
+                <CloseOutlined />
+              </Button>
+            </div>
+            <div className="ai-check-modal-body">
+              {(() => {
+                const selected = attachmentCheckSettings[checkModalFileItemId] || [];
+                return (
+                  <div className="ai-check-categories">
+                    {AI_CHECK_CATEGORIES.map((category) => (
+                      <div key={category.name} className="ai-check-category">
+                        <h4 className="ai-check-category-title">{category.name}</h4>
+                        <div className="ai-check-items">
+                          {category.items.map((item) => (
+                            <label key={item} className="ai-check-item">
+                              <input
+                                type="checkbox"
+                                checked={selected.includes(item)}
+                                onChange={() => toggleAttachmentCheck(checkModalFileItemId, item)}
+                              />
+                              <span>{item}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="ai-check-modal-footer">
+              <span className="ai-check-selected-count">
+                已选 {(attachmentCheckSettings[checkModalFileItemId] || []).length} 项
+              </span>
+              <Button type="primary" onClick={() => { setCheckModalFileItemId(null); setCheckModalRowId(null); }}>
+                确定
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 };
