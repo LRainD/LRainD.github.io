@@ -244,7 +244,9 @@ const Component = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [enterpriseList, setEnterpriseList] = useState<EnterpriseItem[]>([]);
   const [relationLevel, setRelationLevel] = useState<number>(5);
-  const [relationTypes, setRelationTypes] = useState<string[]>(['董监高', '分支机构']);
+  const [relationTypes, setRelationTypes] = useState<string[]>(['董监高', '法定代表人', '股东', '分支机构']);
+  const [shareholderRange, setShareholderRange] = useState<{ start: number | ''; end: number | '' }>({ start: '', end: '' });
+  const [shareholderRangeError, setShareholderRangeError] = useState('');
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -667,23 +669,105 @@ const Component = () => {
                   <div className="flex items-start gap-4">
                     <span className="text-sm text-[#8C8C8C] w-24 text-right">人员关系：</span>
                     <div className="flex flex-wrap items-center gap-4">
-                      <label className="flex items-center gap-2 cursor-not-allowed opacity-60">
+                      <label className="flex items-center gap-2 cursor-pointer">
                         <input
                           type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9] cursor-not-allowed"
-                          checked={true}
-                          disabled
-                          readOnly
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('董监高')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '董监高']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '董监高'));
+                            }
+                          }}
                         />
-                        <span className="text-sm text-[#595959]">董监高、股东、法人</span>
+                        <span className="text-sm text-[#595959]">董监高</span>
                         <div className="relative group">
                           <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed max-h-60 overflow-y-auto break-words">
-                            不可取消勾选，董监高包含：董监高,董事长,董事会秘书,董事,股东监事,联席公司秘书,职工监事,职工代表董事,职工代表监事,监事会主席,监事,独立董事,执行董事,执行事务合伙人,副董事长，股东,投资人,工商股东，法定代表人，联席总裁,高级副总裁,联席董事长,代理总经理,总裁,总经理,常务副总经理,副总裁,副总经理，总会计师,理事长,执行监事,财务负责人,财务总监,负责人,经营者,经理,内审负责人
+                            董监高包含：董监高,董事长,董事会秘书,董事,股东监事,联席公司秘书,职工监事,职工代表董事,职工代表监事,监事会主席,监事,独立董事,执行董事,执行事务合伙人,副董事长，联席总裁,高级副总裁,联席董事长,代理总经理,总裁,总经理,常务副总经理,副总裁,副总经理，总会计师,理事长,执行监事,财务负责人,财务总监,负责人,经营者,经理,内审负责人
                             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
                           </div>
                         </div>
                       </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('法定代表人')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '法定代表人']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '法定代表人'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">法定代表人</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('股东')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '股东']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '股东'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">股东</span>
+                      </label>
+                      {relationTypes.includes('股东') && (
+                        <div className="flex items-center gap-2 ml-2">
+                          <span className="text-sm text-[#595959]">占比</span>
+                          <input
+                            type="number"
+                            min={0}
+                            max={100}
+                            className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
+                            placeholder="起始值"
+                            value={shareholderRange.start}
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? '' : Number(e.target.value);
+                              const newRange = { ...shareholderRange, start: val };
+                              setShareholderRange(newRange);
+                              if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
+                                setShareholderRangeError('结束值必须大于起始值');
+                              } else {
+                                setShareholderRangeError('');
+                              }
+                            }}
+                          />
+                          <span className="text-sm text-[#595959]">%</span>
+                          <span className="text-sm text-[#595959]">-</span>
+                          <input
+                            type="number"
+                            min={0}
+                            max={100}
+                            className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
+                            placeholder="结束值"
+                            value={shareholderRange.end}
+                            onChange={(e) => {
+                              const val = e.target.value === '' ? '' : Number(e.target.value);
+                              const newRange = { ...shareholderRange, end: val };
+                              setShareholderRange(newRange);
+                              if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
+                                setShareholderRangeError('结束值必须大于起始值');
+                              } else {
+                                setShareholderRangeError('');
+                              }
+                            }}
+                          />
+                          <span className="text-sm text-[#595959]">%</span>
+                          {shareholderRangeError && (
+                            <span className="text-sm text-[#FF4D4F]">{shareholderRangeError}</span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -716,7 +800,7 @@ const Component = () => {
                       <div className="relative group">
                         <span className="w-4 h-4 flex items-center justify-center text-[10px] text-[#8C8C8C] border border-[#8C8C8C] rounded-full cursor-help leading-none">!</span>
                         <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed break-words">
-                          注意：系统关联路径计算有上限，勾选相同手机号、邮箱或地址后，可能由于过多的手机号、邮箱或地址关联，导致影响董监高关联路径的完整展示。
+                          注意：系统关联路径计算消耗过大，最大计算关联路径数为10，若勾选较多其他关联类型，可能由于过多的其他类型关联，可能导致影响董监高、法定代表人、股东、分支机构的关联路径的展示。
                           <div className="absolute top-full left-2 border-4 border-transparent border-t-[#262626]"></div>
                         </div>
                       </div>
@@ -767,6 +851,50 @@ const Component = () => {
                           }}
                         />
                         <span className="text-sm text-[#595959]">相同地址</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('涉诉关联')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '涉诉关联']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '涉诉关联'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">涉诉关联</span>
+                        <div className="relative group">
+                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
+                            在X份裁判文书中为同一方
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                          </div>
+                        </div>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 rounded border-[#D9D9D9]"
+                          checked={relationTypes.includes('知识产权公有')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setRelationTypes([...relationTypes, '知识产权公有']);
+                            } else {
+                              setRelationTypes(relationTypes.filter(t => t !== '知识产权公有'));
+                            }
+                          }}
+                        />
+                        <span className="text-sm text-[#595959]">知识产权公有</span>
+                        <div className="relative group">
+                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
+                            共同拥有X份软件著作权,共同拥有X份专利
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                          </div>
+                        </div>
                       </label>
                     </div>
                   </div>
