@@ -20,7 +20,7 @@ import {
   Plus,
   Trash2
 } from 'lucide-react';
-import { Select } from 'antd';
+import { Select, InputNumber } from 'antd';
 import logoImage from '../../../assets/media/image.png';
 import './style.css';
 
@@ -245,8 +245,11 @@ const Component = () => {
   const [enterpriseList, setEnterpriseList] = useState<EnterpriseItem[]>([]);
   const [relationLevel, setRelationLevel] = useState<number>(5);
   const [relationTypes, setRelationTypes] = useState<string[]>(['董监高', '法定代表人', '股东', '分支机构']);
-  const [shareholderRange, setShareholderRange] = useState<{ start: number | ''; end: number | '' }>({ start: '', end: '' });
+  const [shareholderRange, setShareholderRange] = useState<{ start: number | ''; end: number | '' }>({ start: 0, end: 100 });
   const [shareholderRangeError, setShareholderRangeError] = useState('');
+  const [litigationCount, setLitigationCount] = useState<number>(1);
+  const [softwareCopyrightCount, setSoftwareCopyrightCount] = useState<number>(1);
+  const [patentCount, setPatentCount] = useState<number>(1);
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -706,68 +709,72 @@ const Component = () => {
                         />
                         <span className="text-sm text-[#595959]">法定代表人</span>
                       </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('股东')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '股东']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '股东'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">股东</span>
-                      </label>
-                      {relationTypes.includes('股东') && (
-                        <div className="flex items-center gap-2 ml-2">
-                          <span className="text-sm text-[#595959]">占比</span>
+                      <div className="flex flex-col">
+                        <label className="flex items-center gap-2 cursor-pointer">
                           <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
-                            placeholder="起始值"
-                            value={shareholderRange.start}
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-[#D9D9D9]"
+                            checked={relationTypes.includes('股东')}
                             onChange={(e) => {
-                              const val = e.target.value === '' ? '' : Number(e.target.value);
-                              const newRange = { ...shareholderRange, start: val };
-                              setShareholderRange(newRange);
-                              if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
-                                setShareholderRangeError('结束值必须大于起始值');
+                              if (e.target.checked) {
+                                setRelationTypes([...relationTypes, '股东']);
                               } else {
-                                setShareholderRangeError('');
+                                setRelationTypes(relationTypes.filter(t => t !== '股东'));
                               }
                             }}
                           />
-                          <span className="text-sm text-[#595959]">%</span>
-                          <span className="text-sm text-[#595959]">-</span>
-                          <input
-                            type="number"
-                            min={0}
-                            max={100}
-                            className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
-                            placeholder="结束值"
-                            value={shareholderRange.end}
-                            onChange={(e) => {
-                              const val = e.target.value === '' ? '' : Number(e.target.value);
-                              const newRange = { ...shareholderRange, end: val };
-                              setShareholderRange(newRange);
-                              if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
-                                setShareholderRangeError('结束值必须大于起始值');
-                              } else {
-                                setShareholderRangeError('');
-                              }
-                            }}
-                          />
-                          <span className="text-sm text-[#595959]">%</span>
-                          {shareholderRangeError && (
-                            <span className="text-sm text-[#FF4D4F]">{shareholderRangeError}</span>
-                          )}
-                        </div>
-                      )}
+                          <span className="text-sm text-[#595959]">股东</span>
+                        </label>
+                        {relationTypes.includes('股东') && (
+                          <div className="mt-2 ml-6 p-3 bg-[#F5F5F5] rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-[#595959]">占比</span>
+                              <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
+                                placeholder="起始值"
+                                value={shareholderRange.start}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? '' : Number(e.target.value);
+                                  const newRange = { ...shareholderRange, start: val };
+                                  setShareholderRange(newRange);
+                                  if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
+                                    setShareholderRangeError('结束值必须大于起始值');
+                                  } else {
+                                    setShareholderRangeError('');
+                                  }
+                                }}
+                              />
+                              <span className="text-sm text-[#595959]">%</span>
+                              <span className="text-sm text-[#595959]">-</span>
+                              <input
+                                type="number"
+                                min={0}
+                                max={100}
+                                className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
+                                placeholder="结束值"
+                                value={shareholderRange.end}
+                                onChange={(e) => {
+                                  const val = e.target.value === '' ? '' : Number(e.target.value);
+                                  const newRange = { ...shareholderRange, end: val };
+                                  setShareholderRange(newRange);
+                                  if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
+                                    setShareholderRangeError('结束值必须大于起始值');
+                                  } else {
+                                    setShareholderRangeError('');
+                                  }
+                                }}
+                              />
+                              <span className="text-sm text-[#595959]">%</span>
+                              {shareholderRangeError && (
+                                <span className="text-sm text-[#FF4D4F]">{shareholderRangeError}</span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -852,50 +859,92 @@ const Component = () => {
                         />
                         <span className="text-sm text-[#595959]">相同地址</span>
                       </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('涉诉关联')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '涉诉关联']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '涉诉关联'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">涉诉关联</span>
-                        <div className="relative group">
-                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
-                            在X份裁判文书中为同一方
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                      <div className="flex flex-col">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-[#D9D9D9]"
+                            checked={relationTypes.includes('涉诉关联')}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setRelationTypes([...relationTypes, '涉诉关联']);
+                              } else {
+                                setRelationTypes(relationTypes.filter(t => t !== '涉诉关联'));
+                              }
+                            }}
+                          />
+                          <span className="text-sm text-[#595959]">涉诉关联</span>
+                          <div className="relative group">
+                            <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
+                              在X份裁判文书中为同一方
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                            </div>
                           </div>
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('知识产权公有')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '知识产权公有']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '知识产权公有'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">知识产权公有</span>
-                        <div className="relative group">
-                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
-                            共同拥有X份软件著作权,共同拥有X份专利
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                        </label>
+                        {relationTypes.includes('涉诉关联') && (
+                          <div className="mt-2 ml-6 p-3 bg-[#F5F5F5] rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-[#595959]">在</span>
+                              <InputNumber
+                                min={1}
+                                className="w-16"
+                                value={litigationCount}
+                                onChange={(val) => setLitigationCount(val || 1)}
+                              />
+                              <span className="text-sm text-[#595959]">份裁判文书中为同一方</span>
+                            </div>
                           </div>
-                        </div>
-                      </label>
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-[#D9D9D9]"
+                            checked={relationTypes.includes('知识产权公有')}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setRelationTypes([...relationTypes, '知识产权公有']);
+                              } else {
+                                setRelationTypes(relationTypes.filter(t => t !== '知识产权公有'));
+                              }
+                            }}
+                          />
+                          <span className="text-sm text-[#595959]">知识产权公有</span>
+                          <div className="relative group">
+                            <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
+                              共同拥有X份软件著作权,共同拥有X份专利
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                            </div>
+                          </div>
+                        </label>
+                        {relationTypes.includes('知识产权公有') && (
+                          <div className="mt-2 ml-6 p-3 bg-[#F5F5F5] rounded-lg flex flex-col gap-3 w-fit">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-[#595959]">共同拥有</span>
+                              <InputNumber
+                                min={1}
+                                className="w-16"
+                                value={softwareCopyrightCount}
+                                onChange={(val) => setSoftwareCopyrightCount(val || 1)}
+                              />
+                              <span className="text-sm text-[#595959]">份软件著作权</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-[#595959]">共同拥有</span>
+                              <InputNumber
+                                min={1}
+                                className="w-16"
+                                value={patentCount}
+                                onChange={(val) => setPatentCount(val || 1)}
+                              />
+                              <span className="text-sm text-[#595959]">份专利</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
