@@ -1,0 +1,87 @@
+.condition-tree-selector {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+/* 触发器 */
+.cts-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  min-height: 32px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.cts-trigger:hover {
+  border-color: #1890ff;
+}
+
+.cts-trigger-text {
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cts-placeholder {
+  color: #999;
+}
+
+.cts-trigger-icon {
+  font-size: 12px;
+  color: #999;
+  margin-left: 4px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.cts-icon-rotate {
+  transform: rotate(180deg);
+}
+
+/* 下拉面板 */
+.cts-panel {
+  position: absolute;
+  left: 0;
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 12px;
+}
+
+.cts-panel-up {
+  bottom: calc(100% + 4px);
+}
+
+.cts-panel-down {
+  top: calc(100% + 4px);
+}
+
+/* 搜索框 */
+.cts-search {
+  margin-bottom: 8px;
+}
+
+/* 树形区域 */
+.cts-tree-wrap {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* 树节点样式覆盖 */
+.cts-tree-wrap .ant-tree-treenode {
+  white-space: nowrap;
+}
+
+.cts-tree-wrap .ant-tree-node-content-wrapper {
+  white-space: nowrap;
+}

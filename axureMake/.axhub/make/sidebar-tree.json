@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-11T03:30:15.954Z",
+  "updatedAt": "2026-06-14T10:53:01.537Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -127,6 +127,25 @@
                   "kind": "item",
                   "title": "分表格-报名与资审汇总 副本",
                   "itemKey": "prototypes/registration-review-copy-copy-copy"
+                }
+              ]
+            },
+            {
+              "id": "folder-1781427903066-9jqec4",
+              "kind": "folder",
+              "title": "最终版",
+              "children": [
+                {
+                  "id": "item-prototypes-qual-review-condition-config",
+                  "kind": "item",
+                  "title": "资格审查条件配置",
+                  "itemKey": "prototypes/qual-review-condition-config"
+                },
+                {
+                  "id": "item-prototypes-procurement-announcement-copy-copy-copy2-copy2",
+                  "kind": "item",
+                  "title": "编制公告页-设置报名附件检测 副本2",
+                  "itemKey": "prototypes/procurement-announcement-copy-copy-copy2-copy2"
                 }
               ]
             }
@@ -348,6 +367,12 @@
     }
   ],
   "components": [
+    {
+      "id": "item-components-condition-tree-selector",
+      "kind": "item",
+      "title": "condition tree selector",
+      "itemKey": "components/condition-tree-selector"
+    },
     {
       "id": "item-components-ref-line-chart",
       "kind": "item",
