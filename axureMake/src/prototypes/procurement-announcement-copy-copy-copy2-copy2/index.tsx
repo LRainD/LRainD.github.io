@@ -62,6 +62,7 @@ import {
 } from 'lucide-react';
 import { Table, Switch, Radio, Tree, Select } from 'antd';
 import type { TreeDataNode } from 'antd';
+import ConditionTreeSelector, { defaultConditionTreeData } from '../../components/condition-tree-selector';
 import './style.css';
 
 const Component = () => {
@@ -72,13 +73,38 @@ const Component = () => {
   const [noticeFormat, setNoticeFormat] = useState('template');
   const [supplierCount, setSupplierCount] = useState('');
   const [isNoticeGenerated, setIsNoticeGenerated] = useState(false);
+  const [parsingProgress, setParsingProgress] = useState(0);
+  const [isParsing, setIsParsing] = useState(false);
+  const [showAttachmentRecommendation, setShowAttachmentRecommendation] = useState(false);
+  const [isAttachmentBubbleClosed, setIsAttachmentBubbleClosed] = useState(false);
+  const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
+  const [isQualConditionModalOpen, setIsQualConditionModalOpen] = useState(false);
+  const [activeQualTab, setActiveQualTab] = useState<'parse' | 'history'>('parse');
+
+  // 资审条件智能推荐表格数据
+  const [qualConditionRecommendData] = useState([
+    { id: 1, conditionItem: '营业执照', strength: '强制条件', conditionName: '营业执照', reason: '招标公告第3.2.1条明确要求投标人须提供有效的营业执照复印件并加盖公章，属于供应商主体资格的基础证明文件，是识别供应商合法经营身份的必要附件，建议设置为强制性的文件检测项', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 2, conditionItem: '法人身份证', strength: '强制条件', conditionName: '法人身份证', reason: '公告中3.2.2条要求法定代表人身份证明及身份证复印件，用于核实供应商法定代表人的真实身份及授权合法性，是资格审查中身份核验的关键文件，推荐作为强制文件检测项', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 3, conditionItem: '资质证书', strength: '强制条件', conditionName: '资质证书', reason: '根据公告3.1.2条投标人须具备建筑机电安装工程专业承包资质，资质证书是判断供应商是否满足专业承包能力要求的核心依据，应设置为文件检测的强制条件', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 4, conditionItem: '安全施工许可证', strength: '一般条件', conditionName: '安全施工许可证', reason: '公告第3.1.4条提及投标人应具备安全生产许可证，该证件是评估供应商施工安全管理能力的重要参考，虽非本次招标的绝对门槛，但建议作为一般性文件检测项，用于辅助评判供应商综合履约能力', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 5, conditionItem: '未在严重违法失信企业名单', strength: '强制条件', conditionName: '未在严重违法失信企业名单', reason: '标注样例中多次出现严重违法失信名单严重失信失信人不能参与投标《信用中国》失信惩戒范围内其他严重失信被国家或地方等政府单位列入不良信用企业名单等表述核心语义均聚焦于主体存在失信违约等负面信用记录该文本中严重违约失信行为的与样例中严重违法失信名单严重失信失信人等在描述对象和领域上完全一致即企业或供应商的信用状况属于同一语义范畴因此匹配', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 6, conditionItem: '专业资质证书信息', strength: '强制条件', conditionName: '注册证书 机电工程施工总承包\n设置证书等级 三级', reason: '标注样例为具有经营机电相关承包的资质该文本中建筑机电安装工程专业承包三级资质明确指向机电类工程承包资质三级表示资质等级不影响核心语义匹配且资质一词与样例中资质完全对应机电安装与机电相关在行业术语中属同一范畴因此该文本与标注样例匹配', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 7, conditionItem: '专业资质证书信息', strength: '强制条件', conditionName: '注册证书 机电工程施工总承包\n设置证书等级 一级', reason: '标注样例中要求具有经营机电相关承包的资质该文本明确出现建筑机电安装工程专业承包资质属于机电类工程承包资质核心对象均为机电相关承包资质指代词三级和空格不影响语义匹配因此符合标注样例', source: '招标公告专业资质证书(7).doc', action: '引用' },
+    { id: 8, conditionItem: '专业资质证书信息', strength: '强制条件', conditionName: '注册证书 建筑机电安装工程专业承包', reason: '招标公告3.1.2条明确要求投标人须具备"建筑机电安装工程专业承包三级资质"，该要求直接对应建筑业企业资质等级标准中的三级资质；且该资质范围覆盖风口安装工程（属于设备、线路、管道的安装范畴），符合24.4.3条关于三级资质可承担单项合同额1000万元以下各类建筑工程项目的设备、线路、管道安装的规', source: '招标公告专业资质证书(7).doc', action: '引用' },
+  ]);
+
+  // 附件组成智能推荐表格数据
+  const [attachmentRecommendData] = useState([
+    { id: 1, fileItem: '法人身份证', fileItemName: '法人身份证', required: true, recommendReason: '大模型返回的原文', source: 'XXX采购公告.pdf', action: '引用' },
+    { id: 2, fileItem: '自定义', fileItemName: '其他不在组成里的项', required: false, recommendReason: '大模型返回的原文', source: 'XXX采购公告.pdf', action: '已设置' },
+  ]);
 
   // 附件表格数据
   const [attachments, setAttachments] = useState([
     { id: 1, name: '职业健康安全认证体系证书', fileName: '职业健康安全认证体系证书', required: false, hasSample: true, sampleName: 'SquirrelMushroom_ZH-CN2854383605...', sampleFile: true },
     { id: 2, name: '工商企业信用等级', fileName: '工商企业信用等级', required: false, hasSample: true, sampleName: '111.pdf', sampleFile: true },
     { id: 3, name: '法人身份证', fileName: '法人身份证', required: false, hasSample: false, sampleName: '', sampleFile: false },
-    { id: 4, name: '自定义123', fileName: '自定义123', required: false, hasSample: false, sampleName: '', sampleFile: false },
+    { id: 4, name: '自定义', fileName: '自定义123', required: false, hasSample: false, sampleName: '', sampleFile: false },
     { id: 5, name: '环境管理认证体系证书', fileName: '环境管理认证体系证书', required: true, hasSample: false, sampleName: '', sampleFile: false },
     { id: 6, name: '其他附件', fileName: '其他附件', required: false, hasSample: false, sampleName: '', sampleFile: false },
   ]);
@@ -96,80 +122,6 @@ const Component = () => {
 
   const [isQualAttachmentSet, setIsQualAttachmentSet] = useState(true);
   const [isQualConditionSet, setIsQualConditionSet] = useState(true);
-
-  // 资格审查条件 - 树形下拉面板状态
-  const [selectedTreeKeys, setSelectedTreeKeys] = useState<React.Key[]>([]);
-  const [activeQualRowId, setActiveQualRowId] = useState<number | null>(null);
-  const qualTreeDropdownRef = useRef<HTMLDivElement>(null);
-
-  // 树形选择器数据（参考截图）
-  const qualTreeData: TreeDataNode[] = [
-    {
-      title: '风险信息',
-      key: 'risk',
-      children: [
-        { title: '未在经营异常企业名单', key: 'risk-1' },
-        { title: '未在严重违法失信名单', key: 'risk-2' },
-        { title: '未在失信被执行人名单', key: 'risk-3' },
-        { title: '未在涉诉限用名单', key: 'risk-4' },
-      ],
-    },
-    {
-      title: '基础信息',
-      key: 'basic',
-      children: [
-        { title: '企业名称', key: 'basic-1' },
-        { title: '统一社会信用代码', key: 'basic-2' },
-        { title: '注册资本', key: 'basic-3' },
-        { title: '成立日期', key: 'basic-4' },
-        { title: '企业类型', key: 'basic-5' },
-      ],
-    },
-    {
-      title: '业绩信息',
-      key: 'performance',
-      children: [
-        { title: '类似业绩数量', key: 'performance-1' },
-        { title: '类似业绩金额', key: 'performance-2' },
-      ],
-    },
-    {
-      title: '资质证书信息',
-      key: 'qualification',
-      children: [
-        { title: '质量管理体系认证', key: 'qualification-1' },
-        { title: '环境管理体系认证', key: 'qualification-2' },
-        { title: '职业健康安全管理体系认证', key: 'qualification-3' },
-      ],
-    },
-    {
-      title: '荣誉奖项信息',
-      key: 'honor',
-      children: [
-        { title: '国家级奖项', key: 'honor-1' },
-        { title: '省级奖项', key: 'honor-2' },
-      ],
-    },
-    {
-      title: '人员资质信息',
-      key: 'personnel',
-      children: [
-        { title: '注册建造师数量', key: 'personnel-1' },
-        { title: '中级以上职称人员数量', key: 'personnel-2' },
-      ],
-    },
-    {
-      title: '文件检测',
-      key: 'file-detect',
-      children: [
-        { title: '报名文件检测', key: 'file-detect-1' },
-      ],
-    },
-    {
-      title: '自定义',
-      key: 'custom',
-    },
-  ];
 
   // 常见报名附件选项（用于报名文件检测时的下拉框）
   const FILE_ATTACH_OPTIONS = [
@@ -226,66 +178,45 @@ const Component = () => {
     '设备安装改造维修许可证',
   ];
 
+  // 资格审查附件组成 - 文件项下拉选项（参考运营解决方案配置）
+  const QUAL_FILE_ITEM_OPTIONS = [
+    '营业执照', '法人身份证', '银行信用等级', '工商企业信用等级', '纳税信用等级',
+    '财务会计信用等级', '资质证书', '安全施工许可证', '自定义'
+  ];
+
   // 查找节点标题
-  const findNodeTitle = (nodes: TreeDataNode[], key: string): string | null => {
-    for (const node of nodes) {
-      if (node.key === key) return node.title as string;
-      if (node.children) {
-        const found = findNodeTitle(node.children, key);
-        if (found) return found;
-      }
-    }
-    return null;
-  };
-
-  // 切换树形下拉面板
-  const handleToggleTreeDropdown = (rowId: number) => {
-    if (activeQualRowId === rowId) {
-      setActiveQualRowId(null);
-      setSelectedTreeKeys([]);
-    } else {
-      setActiveQualRowId(rowId);
-      const row = qualConditions.find((item) => item.id === rowId);
-      if (row && row.treeKey) {
-        setSelectedTreeKeys([row.treeKey]);
-      } else {
-        setSelectedTreeKeys([]);
-      }
-    }
-  };
-
-  // 选择树节点
-  const handleSelectTreeNode = (keys: React.Key[]) => {
-    setSelectedTreeKeys(keys);
-    if (keys.length > 0 && activeQualRowId) {
-      const selectedKey = keys[0] as string;
-      const title = findNodeTitle(qualTreeData, selectedKey);
-      if (title) {
-        const isFileDetect = selectedKey === 'file-detect-1';
-        setQualConditions((prev) =>
-          prev.map((item) =>
-            item.id === activeQualRowId
-              ? {
-                  ...item,
-                  name: title,
-                  treeKey: selectedKey,
-                  category: isFileDetect ? '' : title,
-                  isFileDetect,
-                }
-              : item
-          )
-        );
-      }
-      setActiveQualRowId(null);
-      setSelectedTreeKeys([]);
-    }
-  };
-
   // 更新报名文件检测的附件选择
   const handleFileAttachChange = (rowId: number, value: string) => {
     setQualConditions((prev) =>
       prev.map((item) =>
         item.id === rowId ? { ...item, category: value } : item
+      )
+    );
+  };
+
+  // 自定义条件名称输入
+  const handleCustomCategoryChange = (rowId: number, value: string) => {
+    setQualConditions((prev) =>
+      prev.map((item) =>
+        item.id === rowId ? { ...item, category: value } : item
+      )
+    );
+  };
+
+  // ConditionTreeSelector 选中变化
+  const handleConditionTreeChange = (rowId: number, value: string, treeKey?: string) => {
+    const isFileDetect = treeKey === 'file-detect-1';
+    setQualConditions((prev) =>
+      prev.map((item) =>
+        item.id === rowId
+          ? {
+              ...item,
+              name: value,
+              treeKey,
+              category: isFileDetect ? '' : value,
+              isFileDetect,
+            }
+          : item
       )
     );
   };
@@ -298,9 +229,85 @@ const Component = () => {
     ]);
   };
 
+  // 一键同步资审附件组成到资格审查条件
+  const handleSyncQualConditionsFromAttachments = () => {
+    const fileDetectChildren = defaultConditionTreeData.find((node: any) => node.key === 'file-detect')?.children || [];
+    const fileDetectMap = new Map<string, { title: string; key: string }>();
+    fileDetectChildren.forEach((child: any) => {
+      if (child.key !== 'file-detect-custom') {
+        fileDetectMap.set(child.title as string, { title: child.title as string, key: child.key as string });
+      }
+    });
+
+    const newConditions = attachments
+      .filter((attachment) => attachment.name !== '其他附件')
+      .map((attachment, index) => {
+        const matched = fileDetectMap.get(attachment.name);
+        const displayName = attachment.name === '自定义' ? attachment.fileName : attachment.name;
+        if (matched) {
+          return {
+            id: Date.now() + index,
+            name: matched.title,
+            treeKey: matched.key,
+            strength: '强制条件',
+            category: displayName,
+            reviewType: '系统',
+            reviewMethod: '',
+          };
+        }
+        return {
+          id: Date.now() + index,
+          name: '自定义文件',
+          treeKey: 'file-detect-custom',
+          strength: '强制条件',
+          category: displayName,
+          reviewType: '系统',
+          reviewMethod: '',
+        };
+      })
+      .filter((condition) => {
+        // 去重：已存在的不再加入
+        return !qualConditions.some((q) => {
+          if (condition.treeKey === 'file-detect-custom') {
+            return q.treeKey === 'file-detect-custom' && q.category === condition.category;
+          }
+          return q.treeKey === condition.treeKey;
+        });
+      });
+
+    setQualConditions((prev) => [...prev, ...newConditions]);
+  };
+
   // 删除资格审查条件行
   const handleDeleteQualCondition = (id: number) => {
     setQualConditions((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  // 添加资格审查附件行
+  const handleAddAttachment = () => {
+    setAttachments((prev) => [
+      ...prev,
+      { id: Date.now(), name: '', fileName: '', required: false, hasSample: false, sampleName: '', sampleFile: false }
+    ]);
+  };
+
+  // 删除资格审查附件行
+  const handleDeleteAttachment = (id: number) => {
+    setAttachments((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  // 更新资格审查附件
+  const handleUpdateAttachment = (id: number, field: string, value: any) => {
+    setAttachments((prev) => prev.map((item) => {
+      if (item.id === id) {
+        const updated = { ...item, [field]: value };
+        if (field === 'name' && value !== '自定义') {
+          updated.fileName = value;
+        }
+        return updated;
+      }
+      return item;
+    }));
   };
 
   // 辅助报名文件检测
@@ -362,15 +369,40 @@ const Component = () => {
     setFileItemSearchText('');
   };
 
+  // 解析公告附件进度模拟
+  useEffect(() => {
+    if (!isNoticeGenerated) {
+      setIsParsing(false);
+      setParsingProgress(0);
+      setShowAttachmentRecommendation(false);
+      setIsAttachmentBubbleClosed(false);
+      return;
+    }
+
+    setIsParsing(true);
+    setParsingProgress(0);
+    setShowAttachmentRecommendation(false);
+    setIsAttachmentBubbleClosed(false);
+
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += 1;
+      setParsingProgress(currentProgress);
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+        setIsParsing(false);
+        setShowAttachmentRecommendation(true);
+      }
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, [isNoticeGenerated]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (fileItemDropdownRef.current && !fileItemDropdownRef.current.contains(event.target as Node)) {
         setActiveFileItemRowId(null);
         setFileItemSearchText('');
-      }
-      if (qualTreeDropdownRef.current && !qualTreeDropdownRef.current.contains(event.target as Node)) {
-        setActiveQualRowId(null);
-        setSelectedTreeKeys([]);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -778,6 +810,33 @@ const Component = () => {
                 <div className="flex items-center">
                   <div className="w-1 h-4 bg-primary mr-2"></div>
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查附件组成</h2>
+                  {isParsing && (
+                    <span className="ml-3 text-xs text-blue-500 whitespace-nowrap">
+                      正在解析文件附件（解析进度：<span className="text-red-500">{parsingProgress}%</span>），稍后可以查看系统推荐的资审条件项！
+                    </span>
+                  )}
+                  {showAttachmentRecommendation && (
+                    <div className="ml-3 relative">
+                      {/* 气泡 - 绝对定位浮在上方 */}
+                      {!isAttachmentBubbleClosed && (
+                        <div className="absolute bottom-full left-0 mb-1 bg-blue-500 text-white text-xs px-3 py-1.5 rounded flex items-center whitespace-nowrap z-10">
+                          已有新的推荐附件组成产生，建议立刻查看！
+                          <button
+                            className="ml-2 hover:text-blue-100"
+                            onClick={() => setIsAttachmentBubbleClosed(true)}
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                          {/* 小三角指向下方 */}
+                          <div className="absolute -bottom-1 left-6 w-2 h-2 bg-blue-500 rotate-45"></div>
+                        </div>
+                      )}
+                      <span
+                        className="text-xs text-primary cursor-pointer hover:underline"
+                        onClick={() => setIsAttachmentModalOpen(true)}
+                      >智能附件组成推荐，点击查看！</span>
+                    </div>
+                  )}
                 </div>
                 <button className="text-gray-400 hover:text-gray-600">
                   <ChevronUp className="w-5 h-5" />
@@ -817,15 +876,32 @@ const Component = () => {
                           title: '文件项',
                           dataIndex: 'name',
                           render: (text: string, record: any) => (
-                            <>
-                              {text}
-                              {record.id === 5 && <span className="text-red-500 ml-1">*</span>}
-                            </>
+                            <Select
+                              value={text || undefined}
+                              onChange={(value) => handleUpdateAttachment(record.id, 'name', value)}
+                              options={QUAL_FILE_ITEM_OPTIONS.map((o) => ({ label: o, value: o }))}
+                              style={{ width: '100%' }}
+                              placeholder="请选择文件项"
+                              size="small"
+                            />
                           ),
                         },
                         {
                           title: '文件项名称',
                           dataIndex: 'fileName',
+                          render: (text: string, record: any) => (
+                            record.name === '自定义' ? (
+                              <input
+                                type="text"
+                                value={text || ''}
+                                placeholder="请输入文件项名称"
+                                onChange={(e) => handleUpdateAttachment(record.id, 'fileName', e.target.value)}
+                                className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:border-primary"
+                              />
+                            ) : (
+                              <span className="text-xs text-gray-700 dark:text-gray-200">{text}</span>
+                            )
+                          ),
                         },
                         {
                           title: '分供商必须上传',
@@ -860,15 +936,23 @@ const Component = () => {
                         {
                           title: '操作',
                           align: 'center',
-                          render: () => (
-                            <span className="text-red-500 cursor-pointer hover:underline">删除</span>
+                          render: (_: any, record: any) => (
+                            <span
+                              className="text-red-500 cursor-pointer hover:underline"
+                              onClick={() => handleDeleteAttachment(record.id)}
+                            >
+                              删除
+                            </span>
                           ),
                         },
                       ]}
                     />
 
                     {/* 添加按钮 */}
-                    <div className="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                    <div
+                      className="mt-2 p-2 border border-dashed border-gray-300 dark:border-gray-600 rounded text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                      onClick={handleAddAttachment}
+                    >
                       <span className="text-gray-500 text-sm">添加</span>
                     </div>
 
@@ -884,7 +968,10 @@ const Component = () => {
                 <div className="flex items-center">
                   <div className="w-1 h-4 bg-primary mr-2"></div>
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查条件</h2>
-                  <span className="ml-3 text-xs text-primary cursor-pointer hover:underline">智能资审条件推荐，点击查看！</span>
+                  <span
+                    className="ml-3 text-xs text-primary cursor-pointer hover:underline"
+                    onClick={() => setIsQualConditionModalOpen(true)}
+                  >智能资审条件推荐，点击查看！</span>
                 </div>
                 <button className="text-gray-400 hover:text-gray-600">
                   <ChevronUp className="w-5 h-5" />
@@ -912,6 +999,12 @@ const Component = () => {
                   <button className="bg-primary hover:bg-primary-dark text-white text-xs px-3 py-1.5 rounded flex items-center">
                     <Plus className="w-[14px] h-[14px] mr-1" /> 批量添加资审项
                   </button>
+                  <button
+                    className="bg-primary hover:bg-primary-dark text-white text-xs px-3 py-1.5 rounded flex items-center ml-2"
+                    onClick={handleSyncQualConditionsFromAttachments}
+                  >
+                    一键同步资审附件组成
+                  </button>
                 </div>
 
                 {/* 资格审查条件表格 */}
@@ -933,40 +1026,12 @@ const Component = () => {
                           title: <><span className="text-red-500">*</span> 资格审查条件项</>,
                           dataIndex: 'name',
                           render: (text: string, record: any) => (
-                            <div className="relative" ref={activeQualRowId === record.id ? qualTreeDropdownRef : undefined}>
-                              <div
-                                className="relative cursor-pointer border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 hover:border-primary"
-                                onClick={() => handleToggleTreeDropdown(record.id)}
-                              >
-                                <span className={`text-xs ${text ? 'text-gray-700 dark:text-gray-200' : 'text-gray-400'}`}>
-                                  {text || '请选择资格审查条件项'}
-                                </span>
-                                <ChevronDown className={`absolute right-1 top-1.5 text-gray-400 w-3 h-3 pointer-events-none transition-transform ${activeQualRowId === record.id ? 'rotate-180' : ''}`} />
-                              </div>
-                              {activeQualRowId === record.id && (
-                                <div className="absolute left-0 right-0 bottom-full mb-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded shadow-lg z-50 p-3">
-                                  <div className="mb-2">
-                                    <div className="relative">
-                                      <input
-                                        type="text"
-                                        placeholder="请输入关键字"
-                                        className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-1.5 pr-8 text-xs focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200"
-                                      />
-                                      <Search className="absolute right-2 top-1.5 text-gray-400 w-3.5 h-3.5" />
-                                    </div>
-                                  </div>
-                                  <div className="max-h-64 overflow-y-auto">
-                                    <Tree
-                                      treeData={qualTreeData}
-                                      selectedKeys={selectedTreeKeys}
-                                      onSelect={handleSelectTreeNode}
-                                      showLine
-                                      showIcon={false}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
+                            <ConditionTreeSelector
+                              value={text}
+                              onChange={(value, treeKey) => handleConditionTreeChange(record.id, value, treeKey)}
+                              placeholder="请选择资格审查条件项"
+                              expandUp={true}
+                            />
                           ),
                         },
                         {
@@ -985,6 +1050,17 @@ const Component = () => {
                           title: <><span className="text-red-500">*</span> 资格审查条件名称</>,
                           dataIndex: 'category',
                           render: (text: string, record: any) => {
+                            if (record.name === '自定义' || record.name === '自定义文件') {
+                              return (
+                                <input
+                                  type="text"
+                                  value={text || ''}
+                                  placeholder={record.name === '自定义文件' ? '请输入检测文件名称' : '请输入资格审查条件名称'}
+                                  onChange={(e) => handleCustomCategoryChange(record.id, e.target.value)}
+                                  className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:border-primary"
+                                />
+                              );
+                            }
                             if (record.isFileDetect) {
                               return (
                                 <Select
@@ -1040,6 +1116,198 @@ const Component = () => {
           </div>
         </div>
       </main>
+
+      {/* 附件组成智能推荐弹窗 */}
+      {isAttachmentModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 rounded shadow-lg w-[900px] max-h-[80vh] flex flex-col">
+            {/* 标题栏 */}
+            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center">
+                <div className="w-1 h-4 bg-primary mr-2"></div>
+                <h3 className="font-bold text-gray-800 dark:text-white text-sm">附件组成智能推荐</h3>
+              </div>
+              <button
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                onClick={() => setIsAttachmentModalOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* 表格内容 */}
+            <div className="flex-1 overflow-auto p-4">
+              <Table
+                dataSource={attachmentRecommendData}
+                rowKey="id"
+                size="small"
+                pagination={false}
+                columns={[
+                  {
+                    title: '序号',
+                    width: 60,
+                    align: 'center',
+                    render: (_: any, __: any, index: number) => index + 1,
+                  },
+                  {
+                    title: '文件项',
+                    dataIndex: 'fileItem',
+                  },
+                  {
+                    title: '文件项名称',
+                    dataIndex: 'fileItemName',
+                  },
+                  {
+                    title: '分供商必须上传',
+                    dataIndex: 'required',
+                    align: 'center',
+                    render: (required: boolean) => (
+                      <Switch size="small" checked={required} />
+                    ),
+                  },
+                  {
+                    title: '推荐依据',
+                    dataIndex: 'recommendReason',
+                  },
+                  {
+                    title: '来源',
+                    dataIndex: 'source',
+                  },
+                  {
+                    title: '操作',
+                    align: 'center',
+                    render: (_: any, record: any) => (
+                      <span className={`cursor-pointer hover:underline ${record.action === '已设置' ? 'text-gray-400' : 'text-primary'}`}>
+                        {record.action}
+                      </span>
+                    ),
+                  },
+                ]}
+              />
+            </div>
+
+            {/* 底部关闭按钮 */}
+            <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+              <button
+                className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600"
+                onClick={() => setIsAttachmentModalOpen(false)}
+              >
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 资审条件智能推荐弹窗 */}
+      {isQualConditionModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="bg-white dark:bg-gray-800 rounded shadow-lg w-[1000px] max-h-[80vh] flex flex-col">
+            {/* 标题栏 */}
+            <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-700/50">
+              <div className="flex items-center">
+                <div className="w-1 h-4 bg-primary mr-2"></div>
+                <h3 className="font-bold text-gray-800 dark:text-white text-sm">资审条件智能推荐</h3>
+              </div>
+              <button
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                onClick={() => setIsQualConditionModalOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* 标签页 */}
+            <div className="px-4 border-b border-gray-200 dark:border-gray-700 flex">
+              <button
+                className={`py-2 text-sm mr-6 border-b-2 transition-colors ${activeQualTab === 'parse' ? 'text-primary border-primary' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
+                onClick={() => setActiveQualTab('parse')}
+              >
+                公告解析
+              </button>
+              <button
+                className={`py-2 text-sm border-b-2 transition-colors ${activeQualTab === 'history' ? 'text-primary border-primary' : 'text-gray-500 border-transparent hover:text-gray-700'}`}
+                onClick={() => setActiveQualTab('history')}
+              >
+                历史推荐
+              </button>
+            </div>
+
+            {/* 内容区 */}
+            <div className="flex-1 overflow-auto p-4">
+              {!isNoticeGenerated ? (
+                <div className="flex items-center justify-center h-48 text-gray-500 text-sm">
+                  暂无解析结果，请上传采购公告或等待解析完毕
+                </div>
+              ) : (
+                <Table
+                  dataSource={qualConditionRecommendData}
+                  rowKey="id"
+                  size="small"
+                  pagination={false}
+                  columns={[
+                    {
+                      title: '序号',
+                      width: 50,
+                      align: 'center',
+                      render: (_: any, __: any, index: number) => index + 1,
+                    },
+                    {
+                      title: '资格审查条件项',
+                      dataIndex: 'conditionItem',
+                      width: 140,
+                    },
+                    {
+                      title: '资审条件强度',
+                      dataIndex: 'strength',
+                      width: 100,
+                      align: 'center',
+                    },
+                    {
+                      title: '资格审查条件名称',
+                      dataIndex: 'conditionName',
+                      width: 160,
+                      render: (text: string) => (
+                        <span className="whitespace-pre-line text-xs">{text}</span>
+                      ),
+                    },
+                    {
+                      title: '推荐依据',
+                      dataIndex: 'reason',
+                      render: (text: string) => (
+                        <span className="text-xs leading-relaxed">{text}</span>
+                      ),
+                    },
+                    {
+                      title: '来源',
+                      dataIndex: 'source',
+                      width: 140,
+                    },
+                    {
+                      title: '操作',
+                      width: 60,
+                      align: 'center',
+                      render: (_: any, record: any) => (
+                        <span className="text-primary cursor-pointer hover:underline text-xs">{record.action}</span>
+                      ),
+                    },
+                  ]}
+                />
+              )}
+            </div>
+
+            {/* 底部关闭按钮 */}
+            <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+              <button
+                className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 px-4 py-1.5 rounded text-sm hover:bg-gray-50 dark:hover:bg-gray-600"
+                onClick={() => setIsQualConditionModalOpen(false)}
+              >
+                关闭
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

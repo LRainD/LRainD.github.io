@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-14T10:53:01.537Z",
+  "updatedAt": "2026-06-14T13:23:58.631Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -136,6 +136,12 @@
               "title": "最终版",
               "children": [
                 {
+                  "id": "item-prototypes-solution-config-copy",
+                  "kind": "item",
+                  "title": "运营解决方案配置页面 副本",
+                  "itemKey": "prototypes/solution-config-copy"
+                },
+                {
                   "id": "item-prototypes-qual-review-condition-config",
                   "kind": "item",
                   "title": "资格审查条件配置",
@@ -144,8 +150,14 @@
                 {
                   "id": "item-prototypes-procurement-announcement-copy-copy-copy2-copy2",
                   "kind": "item",
-                  "title": "编制公告页-设置报名附件检测 副本2",
+                  "title": "编制公告页",
                   "itemKey": "prototypes/procurement-announcement-copy-copy-copy2-copy2"
+                },
+                {
+                  "id": "item-prototypes-registration-review-copy2-copy",
+                  "kind": "item",
+                  "title": "报名与资审汇总",
+                  "itemKey": "prototypes/registration-review-copy2-copy"
                 }
               ]
             }
@@ -393,12 +405,6 @@
     }
   ],
   "docs": [
-    {
-      "id": "item-docs---------------md",
-      "kind": "item",
-      "title": "影响点.md",
-      "itemKey": "docs/迭代文档/调价变更/影响点.md"
-    },
     {
       "id": "item-docs-ai-recommendation-pattern-md",
       "kind": "item",

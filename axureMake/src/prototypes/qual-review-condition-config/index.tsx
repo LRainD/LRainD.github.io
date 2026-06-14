@@ -82,6 +82,7 @@ const Component = function QualReviewConditionConfig() {
       aiOnly: false,
       postReviewEnabled: false,
       postReviewCompliance: false,
+      fileDetectionEnabled: false,
       conditionItems: [
         { id: 101, conditionItem: '自定义', strength: '强制条件', conditionName: '', category: '', reviewMethod: '人工', mappingCode: '', forceUseType: '不强制使用(推...' }
       ]
@@ -225,6 +226,7 @@ const Component = function QualReviewConditionConfig() {
         aiOnly: false,
         postReviewEnabled: false,
         postReviewCompliance: false,
+        fileDetectionEnabled: false,
         conditionItems: []
       }
     ]);
@@ -559,6 +561,20 @@ const Component = function QualReviewConditionConfig() {
                                       size="small"
                                       checked={value}
                                       onChange={(checked) => handleUpdateRow(record.id, 'postReviewCompliance', checked)}
+                                    />
+                                  )
+                                },
+                                {
+                                  title: '是否启用文件检测',
+                                  dataIndex: 'fileDetectionEnabled',
+                                  key: 'fileDetectionEnabled',
+                                  width: 140,
+                                  align: 'center',
+                                  render: (value: boolean, record: any) => (
+                                    <Switch
+                                      size="small"
+                                      checked={value}
+                                      onChange={(checked) => handleUpdateRow(record.id, 'fileDetectionEnabled', checked)}
                                     />
                                   )
                                 },
