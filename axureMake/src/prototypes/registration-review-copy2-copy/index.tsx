@@ -37,6 +37,7 @@ import {
   AlertCircle,
   Edit,
   CheckCircle,
+  XCircle,
   Clock,
   Circle,
   CheckCircle2,
@@ -56,6 +57,7 @@ import {
   Eye,
   FileDown
 } from 'lucide-react';
+import { Select, Input } from 'antd';
 import './style.css';
 
 /**
@@ -69,17 +71,22 @@ const Component = () => {
   const [activeTab, setActiveTab] = useState('material');
   const [searchValue, setSearchValue] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [detectionItemFilter, setDetectionItemFilter] = useState('');
 
-  // 资格审查条件通过状态（仅文件检测类可修改）
-  const [conditionChecks, setConditionChecks] = useState<Record<number, boolean>>({
-    1: true,
-    2: true,
-    3: true,
-    4: true,
-    5: true,
-    6: false,
-    7: true,
+  // 资格审查条件通过状态（仅文件检测类、自定义类可修改）
+  const [conditionChecks, setConditionChecks] = useState<Record<number, string>>({
+    1: '通过',
+    2: '通过',
+    3: '通过',
+    4: '通过',
+    5: '通过',
+    6: '待核实',
+    7: '通过',
   });
+
+  // 资格审查弹窗筛选条件
+  const [conditionSearchKeyword, setConditionSearchKeyword] = useState('');
+  const [conditionResultFilter, setConditionResultFilter] = useState('all');
 
   // 模拟供应商数据
   const suppliers = [
@@ -169,8 +176,8 @@ const Component = () => {
     { id: 3, item: '未在经营异常企业名单', name: '未在经营异常企业名单', category: '风险类', intensity: '强制条件', method: '系统', source: '第三方数据', issuer: '--', result: '通过', reason: '', basis: '', operation: '--' },
     { id: 4, item: '是否存在重大税收违法', name: '是否存在重大税收违法', category: '风险类', intensity: '强制条件', method: '系统', source: '第三方数据', issuer: '--', result: '通过', reason: '', basis: '', operation: '--' },
     { id: 5, item: "分供商'换马甲'检测", name: '马甲检测项设置', category: '风险类', intensity: '强制条件', method: '系统', source: '云筑网', issuer: '--', result: '通过', reason: '', basis: '', operation: '--' },
-    { id: 6, item: '报名文件检测', name: '法人授权委托书', category: '文件检测类', intensity: '必须符合', method: '系统', source: '第三方数据', issuer: '--', result: '不通过', reason: '未检测到营业执照', basis: '需上传营业执照', operation: '--' },
-    { id: 7, item: '报名文件检测', name: '安全生产许可证', category: '文件检测类', intensity: '加分项', method: '系统', source: '第三方数据', issuer: '--', result: '通过', reason: '安全生产许可证已过期，请供应商及时办理续期并重新上传', basis: '来自原文：需上传安全生产许可证', operation: '--' },
+    { id: 6, item: '法人授权委托书', name: '法人授权委托书', category: '文件检测类', intensity: '强制条件', method: '系统', source: '第三方数据', issuer: '--', result: '待核实', reason: '未检测到营业执照', basis: '需上传营业执照', suggestion: '建议补充法人身份证明及授权期限说明，确保授权文件在投标有效期内', operation: '--' },
+    { id: 7, item: '安全生产许可证', name: '安全生产许可证', category: '文件检测类', intensity: '建议条件', method: '系统', source: '第三方数据', issuer: '--', result: '通过', reason: '安全生产许可证已过期，请供应商及时办理续期并重新上传', basis: '来自原文：需上传安全生产许可证', suggestion: '许可证即将到期，建议提前3个月办理续期并更新上传', operation: '--' },
   ];
 
   return (
@@ -518,16 +525,28 @@ const Component = () => {
                   />
                 </div>
                 <div className="flex items-center text-xs">
-                  <span className="text-gray-500 mr-2">资格审查条件是否通过</span>
-                  <select
-                    className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs focus:border-primary outline-none"
+                  <span className="text-gray-500 mr-2">检测项</span>
+                  <Input
+                    size="small"
+                    style={{ width: 160 }}
+                    placeholder="请输入检测项"
+                    value={detectionItemFilter}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDetectionItemFilter(e.target.value)}
+                  />
+                </div>
+                <div className="flex items-center text-xs">
+                  <span className="text-gray-500 mr-2">检测结果</span>
+                  <Select
+                    size="small"
+                    style={{ width: 120 }}
                     value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                  >
-                    <option value="all">全部</option>
-                    <option value="passed">已通过</option>
-                    <option value="failed">未通过</option>
-                  </select>
+                    onChange={(value: string) => setFilterStatus(value)}
+                    options={[
+                      { value: 'all', label: '全部' },
+                      { value: 'passed', label: '已通过' },
+                      { value: 'failed', label: '未通过' },
+                    ]}
+                  />
                 </div>
                 <button className="bg-primary text-white text-xs px-4 py-1.5 rounded hover:bg-primary-dark">查询</button>
                 <button className="text-gray-500 text-xs px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50">重置</button>
@@ -618,7 +637,13 @@ const Component = () => {
                             className="text-primary hover:text-primary-dark text-xs bg-transparent flex items-center gap-1 whitespace-nowrap"
                           >
                             资格审查
-                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                            {supplier.id === 1 ? (
+                              <AlertCircle className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                            ) : supplier.id === 2 ? (
+                              <XCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                            ) : (
+                              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                            )}
                           </button>
                         </td>
                       </tr>
@@ -782,6 +807,50 @@ const Component = () => {
                   <div className="w-1 h-4 bg-primary mr-2"></div>
                   <h3 className="font-bold text-gray-800 dark:text-white text-sm">资格审查条件</h3>
                 </div>
+
+                {/* 统计信息 */}
+                {(() => {
+                  const total = reviewConditions.length;
+                  const passed = reviewConditions.filter((i) => conditionChecks[i.id] === '通过').length;
+                  const failed = reviewConditions.filter((i) => conditionChecks[i.id] === '未通过').length;
+                  const pending = reviewConditions.filter((i) => conditionChecks[i.id] === '待核实').length;
+                  const percent = total > 0 ? Math.round((passed / total) * 100) : 0;
+                  return (
+                    <div className="text-xs text-gray-600 dark:text-gray-300 mb-3">
+                      本次共完成 <span className="text-blue-500 font-bold">{total}</span> 个检测项，通过 <span className="text-blue-500 font-bold">{passed}</span> 个检测项，待核实 <span className="text-yellow-500 font-bold">{pending}</span> 个检测项，未通过 <span className="text-red-500 font-bold">{failed}</span> 个检测项。检测通过比例 <span className="text-blue-500 font-bold">{percent}%</span>。
+                    </div>
+                  );
+                })()}
+
+                {/* 筛选条件 */}
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-600 dark:text-gray-300">检测项：</span>
+                    <Input
+                      size="small"
+                      style={{ width: 200 }}
+                      placeholder="请输入关键字搜索"
+                      value={conditionSearchKeyword}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConditionSearchKeyword(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-600 dark:text-gray-300">检测结果：</span>
+                    <Select
+                      size="small"
+                      style={{ width: 120 }}
+                      value={conditionResultFilter}
+                      onChange={(value: string) => setConditionResultFilter(value)}
+                      options={[
+                        { value: 'all', label: '全部' },
+                        { value: '通过', label: '通过' },
+                        { value: '未通过', label: '未通过' },
+                        { value: '待核实', label: '待核实' },
+                      ]}
+                    />
+                  </div>
+                </div>
+
                 <div className="border border-gray-200 dark:border-gray-700 rounded overflow-hidden">
                   <table className="w-full text-xs text-left">
                     <thead className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium">
@@ -799,49 +868,63 @@ const Component = () => {
                         <th className="p-3 border-r border-gray-200 dark:border-gray-600">是否通过</th>
                         <th className="p-3 border-r border-gray-200 dark:border-gray-600">未通过具体原因</th>
                         <th className="p-3 border-r border-gray-200 dark:border-gray-600">审查依据</th>
+                        <th className="p-3 border-r border-gray-200 dark:border-gray-600">检测建议</th>
                         <th className="p-3">操作</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700 text-gray-600 dark:text-gray-300">
-                      {reviewConditions.map((item) => (
-                        <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                          <td className="p-3 text-center">{item.id}</td>
-                          <td className="p-3">{item.item}</td>
-                          <td className="p-3">
-                            {item.id === 5 ? (
-                              <span className="text-blue-500 cursor-pointer hover:underline">{item.name}</span>
-                            ) : (
-                              item.name
-                            )}
-                          </td>
-                          <td className="p-3">{item.category}</td>
-                          <td className="p-3">{item.intensity}</td>
-                          <td className="p-3">{item.method}</td>
-                          <td className="p-3">{item.source}</td>
-                          <td className="p-3">{item.issuer}</td>
-                          <td className="p-3">
-                            <div className="flex items-center justify-center">
-                              <label className={`inline-flex items-center ${item.category === '文件检测类' ? 'cursor-pointer' : 'cursor-default'}`}>
-                                <input
-                                  type="checkbox"
-                                  className="rounded border-gray-300 text-green-500 focus:ring-green-500 w-4 h-4"
-                                  checked={conditionChecks[item.id] ?? false}
-                                  disabled={item.category !== '文件检测类'}
-                                  onChange={(e) =>
-                                    setConditionChecks((prev) => ({
+                      {reviewConditions
+                        .filter((item) => {
+                          const result = conditionChecks[item.id] ?? '通过';
+                          const matchKeyword =
+                            !conditionSearchKeyword ||
+                            item.item.includes(conditionSearchKeyword) ||
+                            item.name.includes(conditionSearchKeyword);
+                          const matchResult = conditionResultFilter === 'all' || result === conditionResultFilter;
+                          return matchKeyword && matchResult;
+                        })
+                        .map((item) => (
+                          <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td className="p-3 text-center">{item.id}</td>
+                            <td className="p-3">{item.item}</td>
+                            <td className="p-3">
+                              {item.id === 5 ? (
+                                <span className="text-blue-500 cursor-pointer hover:underline">{item.name}</span>
+                              ) : (
+                                item.name
+                              )}
+                            </td>
+                            <td className="p-3">{item.category}</td>
+                            <td className="p-3">{item.intensity}</td>
+                            <td className="p-3">{item.method}</td>
+                            <td className="p-3">{item.source}</td>
+                            <td className="p-3">{item.issuer}</td>
+                            <td className="p-3">
+                              <div className="flex items-center justify-center">
+                                <Select
+                                  size="small"
+                                  style={{ width: 90 }}
+                                  value={conditionChecks[item.id] ?? '通过'}
+                                  disabled={item.category !== '文件检测类' && item.category !== '自定义'}
+                                  onChange={(value: string) =>
+                                    setConditionChecks((prev: Record<number, string>) => ({
                                       ...prev,
-                                      [item.id]: e.target.checked,
+                                      [item.id]: value,
                                     }))
                                   }
+                                  options={[
+                                    { value: '通过', label: '通过' },
+                                    { value: '未通过', label: '未通过' },
+                                  ]}
                                 />
-                              </label>
-                            </div>
-                          </td>
-                          <td className="p-3">{item.reason}</td>
-                          <td className="p-3">{item.basis}</td>
-                          <td className="p-3">{item.operation}</td>
-                        </tr>
-                      ))}
+                              </div>
+                            </td>
+                            <td className="p-3">{item.reason}</td>
+                            <td className="p-3">{item.basis}</td>
+                            <td className="p-3">{(item as any).suggestion || ''}</td>
+                            <td className="p-3">{item.operation}</td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

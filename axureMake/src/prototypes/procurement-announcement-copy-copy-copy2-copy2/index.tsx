@@ -60,7 +60,7 @@ import {
   PenLine,
   Wand2
 } from 'lucide-react';
-import { Table, Switch, Radio, Tree, Select } from 'antd';
+import { Table, Switch, Radio, Tree, Select, Tooltip } from 'antd';
 import type { TreeDataNode } from 'antd';
 import ConditionTreeSelector, { defaultConditionTreeData } from '../../components/condition-tree-selector';
 import './style.css';
@@ -812,7 +812,7 @@ const Component = () => {
                   <h2 className="font-bold text-gray-800 dark:text-white text-sm">资格审查附件组成</h2>
                   {isParsing && (
                     <span className="ml-3 text-xs text-blue-500 whitespace-nowrap">
-                      正在解析文件附件（解析进度：<span className="text-red-500">{parsingProgress}%</span>），稍后可以查看系统推荐的资审条件项！
+                      正在解析公告附件（解析进度：<span className="text-red-500">{parsingProgress}%</span>），稍后可以查看系统推荐的附件组成项！
                     </span>
                   )}
                   {showAttachmentRecommendation && (
@@ -1004,6 +1004,9 @@ const Component = () => {
                     onClick={handleSyncQualConditionsFromAttachments}
                   >
                     一键同步资审附件组成
+                    <Tooltip title="一键同步资审附件组成检测项：表示将资格审查附件组成项一键同步为资审条件项，若已经有相同的条件项，则会系统自动去重">
+                      <HelpCircle className="w-[14px] h-[14px] ml-1 cursor-help" />
+                    </Tooltip>
                   </button>
                 </div>
 
