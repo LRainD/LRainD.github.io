@@ -27,11 +27,18 @@
           ]
         },
         {
-          "id": "folder-1781012710216-solution",
-          "kind": "folder",
-          "title": "解决方案",
-          "children": []
-        },
+      "id": "folder-1781012710216-solution",
+      "kind": "folder",
+      "title": "解决方案",
+      "children": [
+        {
+          "id": "item-prototypes-solution-relation-rule-config",
+          "kind": "item",
+          "title": "运营解决方案配置-工商关联规则",
+          "itemKey": "prototypes/solution-relation-rule-config"
+        }
+      ]
+    },
         {
           "id": "folder-1780559066636-5aqpil",
           "kind": "folder",

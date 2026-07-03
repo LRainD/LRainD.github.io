@@ -52,6 +52,7 @@
 | 页面名称 | 路径 | 说明 |
 |---------|------|------|
 | 规则配置页面 | `/prototypes/rule-config/` | 风控规则配置管理，支持多业务线规则配置 |
+| 工商关联规则配置 | `/prototypes/solution-relation-rule-config/` | 运营后台解决方案配置，支持工商关联规则参数设置 |
 | 数字合规官配置 | `/prototypes/digital-compliance-officer/` | 数字合规官配置管理，统一运营后台风格 |
 | Ant Design 参考 | `/prototypes/ref-antd/` | Ant Design 组件参考示例 |
 | App 首页参考 | `/prototypes/ref-app-home/` | 移动端首页参考示例 |
@@ -166,6 +167,7 @@
 | 页面名称 | 路径 | 状态 | 备注 |
 | :--- | :--- | :--- | :--- |
 | 编制采购清单 | `src/prototypes/procurement-list/index.tsx` | ✅ 已修复 | 已按 Axure 导出规范重构 |
+| 工商关联规则配置 | `src/prototypes/solution-relation-rule-config/index.tsx` | ✅ 已完成 | 运营后台解决方案配置页面 |
 
 ## 🏗️ 开发规范总结 (Axure 导出)
 

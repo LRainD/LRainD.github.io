@@ -29,6 +29,8 @@
 ├── 系统设置
 │   ├── 机构管理 /prototypes/org-manage/
 │   └── 用户管理 /prototypes/user-manage/
+├── 解决方案
+│   └── 工商关联规则配置 /prototypes/solution-relation-rule-config/ ✅
 └── 参考示例
     ├── Ant Design 组件 /prototypes/ref-antd/
     └── App 首页 /prototypes/ref-app-home/
@@ -39,6 +41,7 @@
 | 页面/模块 | 路径或入口 | 用途 | 关联规格 |
 |----------|-----------|------|---------|
 | 规则配置 | `/prototypes/rule-config/` | 风控规则配置管理，支持多业务线规则配置 | `rule-config/spec.md` |
+| 工商关联规则配置 | `/prototypes/solution-relation-rule-config/` | 运营后台解决方案配置，支持工商关联规则参数设置 | `-` |
 | Ant Design 参考 | `/prototypes/ref-antd/` | Ant Design 组件参考示例 | `ref-antd/spec.md` |
 | App 首页参考 | `/prototypes/ref-app-home/` | 移动端首页参考示例 | `ref-app-home/spec.md` |
 
@@ -47,6 +50,7 @@
 | 页面 | 本地地址 |
 |------|---------|
 | 规则配置 | http://localhost:51722/prototypes/rule-config/index.html |
+| 工商关联规则配置 | http://localhost:51722/prototypes/solution-relation-rule-config/index.html |
 | Ant Design 参考 | http://localhost:51722/prototypes/ref-antd/index.html |
 | App 首页参考 | http://localhost:51722/prototypes/ref-app-home/index.html |
 

@@ -153,6 +153,7 @@
 ### 1. 技术栈选择
 
 - 默认：Tailwind CSS V4
+- 前端UI框架：antdesign
 
 ### 2. 可访问性要求
 
