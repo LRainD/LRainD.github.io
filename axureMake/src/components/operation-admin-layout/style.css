@@ -1,0 +1,261 @@
+@import "tailwindcss";
+
+/* 运营后台统一布局组件样式 */
+.operation-admin-layout {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* 左侧边栏 */
+.operation-admin-sider {
+  background: #fff !important;
+  position: relative;
+}
+
+.operation-admin-logo {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.operation-admin-logo-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.operation-admin-logo-text {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+.operation-admin-menu {
+  border-right: none;
+  padding-top: 8px;
+}
+
+.operation-admin-menu .ant-menu-item {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.operation-admin-menu .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+/* 子菜单样式 */
+.operation-admin-menu .ant-menu-submenu-title {
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+  padding: 0 16px !important;
+  font-size: 13px;
+}
+
+.operation-admin-menu .ant-menu-sub {
+  background: #fff;
+}
+
+.operation-admin-menu .ant-menu-sub .ant-menu-item {
+  height: 36px;
+  line-height: 36px;
+  padding-left: 48px !important;
+  font-size: 13px;
+  color: #666;
+}
+
+.operation-admin-menu .ant-menu-sub .ant-menu-item-selected {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.operation-admin-menu .ant-menu-sub .ant-menu-item:hover {
+  color: #1890ff;
+}
+
+/* 展开的子菜单父项样式 */
+.operation-admin-menu .ant-menu-submenu-open > .ant-menu-submenu-title {
+  color: #333;
+}
+
+/* 菜单图标样式 */
+.operation-admin-menu .ant-menu-item .anticon,
+.operation-admin-menu .ant-menu-submenu-title .anticon {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.operation-admin-collapse {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  padding: 8px;
+  color: #999;
+  background: #fff;
+  border-top: 1px solid #e8e8e8;
+  text-align: center;
+  z-index: 10;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 主布局 */
+.operation-admin-main {
+  background: #f0f2f5;
+}
+
+/* 顶部导航栏 */
+.operation-admin-header {
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+}
+
+.operation-admin-header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 13px;
+  color: #666;
+}
+
+.operation-admin-header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.operation-admin-header-link:hover {
+  color: #1677ff;
+}
+
+.operation-admin-header-link-icon {
+  font-size: 14px;
+}
+
+.operation-admin-header-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.operation-admin-header-user:hover {
+  color: #1677ff;
+}
+
+.operation-admin-header-user-icon {
+  font-size: 14px;
+}
+
+.operation-admin-header-logout {
+  color: #999;
+  margin-left: 2px;
+}
+
+/* 面包屑导航栏 */
+.operation-admin-breadcrumb {
+  background: #f0f2f5;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.operation-admin-breadcrumb-item.active {
+  color: #333;
+}
+
+.operation-admin-breadcrumb-separator {
+  color: #999;
+}
+
+/* 主内容区 */
+.operation-admin-content {
+  padding: 16px;
+  overflow: auto;
+}
+
+.operation-admin-content-inner {
+  background: #f0f2f5;
+}
+
+/* 机构信息栏 */
+.operation-admin-org-bar {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.operation-admin-org-select {
+  width: 180px;
+}
+
+.operation-admin-platform-select {
+  width: 100%;
+}
+
+.operation-admin-platform-select .ant-select-selector {
+  height: 32px !important;
+  line-height: 30px !important;
+}
+
+.operation-admin-org-details {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.operation-admin-org-item {
+  font-size: 13px;
+}
+
+.operation-admin-org-label {
+  color: #666;
+}
+
+.operation-admin-org-value {
+  color: #333;
+}
+
+/* 滚动条样式 */
+.operation-admin-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.operation-admin-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.operation-admin-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.operation-admin-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
