@@ -3,24 +3,15 @@
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  Home,
-  Building2,
-  AlertTriangle,
-  FileCheck,
-  Link2,
-  Sparkles,
-  LayoutGrid,
   HelpCircle,
-  Bell,
-  User,
   ChevronDown,
-  Menu,
   Search,
   ChevronUp,
   Plus,
   Trash2
 } from 'lucide-react';
 import { Select, InputNumber } from 'antd';
+import AiWorkshopSidebar from '../../components/ai-workshop-sidebar';
 import logoImage from '../../../assets/media/image.png';
 import './style.css';
 
@@ -35,20 +26,6 @@ interface SearchSuggestion {
   name: string;
   creditCode: string;
 }
-
-const menuItems = [
-  { icon: Home, label: '主页', key: 'home' },
-  { icon: Building2, label: '企业检测', key: 'enterprise' },
-  { icon: AlertTriangle, label: '风险解析', key: 'risk' },
-  { icon: FileCheck, label: '投标智检', key: 'bid' },
-  { icon: Link2, label: '企业关联', key: 'relation', active: true },
-  { icon: Sparkles, label: '智能清标', key: 'clear' }
-];
-
-const serviceItems = [
-  { icon: LayoutGrid, label: '应用市场', key: 'market' },
-  { icon: HelpCircle, label: '帮助中心', key: 'help' }
-];
 
 // 生成模拟企业数据
 const generateMockEnterprises = (keyword: string): SearchSuggestion[] => {
@@ -306,133 +283,13 @@ const Component = () => {
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex">
       {/* 左侧导航栏 */}
-      <aside
-        className={`${sidebarCollapsed ? 'w-16' : 'w-[200px]'} bg-white border-r border-[#F0F0F0] flex flex-col transition-all duration-300 fixed h-full z-10`}
-      >
-        {/* LOGO区域 */}
-        <div className="h-16 flex items-center px-4">
-          {sidebarCollapsed ? (
-            <div className="flex items-center justify-center w-full">
-              <img
-                src={logoImage}
-                alt="云筑AI工坊"
-                className="w-8 h-8 object-contain"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <img
-                src={logoImage}
-                alt="云筑AI工坊"
-                className="w-8 h-8 object-contain"
-              />
-              <span className="text-[#262626] font-medium text-sm">云筑AI工坊</span>
-            </div>
-          )}
-        </div>
-
-        {/* 主页 - 独立区域 */}
-        <div className="pt-2 pb-2">
-          <nav className="px-2">
-            <button
-              className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-lg text-sm transition-colors text-[#595959] hover:bg-[#F5F5F5]`}
-            >
-              <Home className="w-4 h-4 flex-shrink-0" />
-              {!sidebarCollapsed && <span>主页</span>}
-            </button>
-          </nav>
-        </div>
-
-        {/* 工具模块 */}
-        <div className="flex-1 py-2 overflow-y-auto">
-          {!sidebarCollapsed && (
-            <div className="px-4 mb-2 text-xs text-[#8C8C8C]">工具</div>
-          )}
-          <nav className="space-y-1 px-2">
-            {menuItems.filter(item => item.key !== 'home').map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.key}
-                  className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center' : 'gap-3'} px-3 py-2.5 rounded-lg text-sm transition-colors ${
-                    item.active
-                      ? 'bg-[#E6F4FF] text-[#1677FF]'
-                      : 'text-[#595959] hover:bg-[#F5F5F5]'
-                  }`}
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  {!sidebarCollapsed && <span>{item.label}</span>}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* 服务模块 */}
-          {!sidebarCollapsed && (
-            <div className="px-4 mt-6 mb-2 text-xs text-[#8C8C8C]">服务</div>
-          )}
-          <nav className="space-y-1 px-2">
-            {serviceItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={item.key}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#595959] hover:bg-[#F5F5F5] transition-colors"
-                >
-                  <Icon className="w-4 h-4 flex-shrink-0" />
-                  {!sidebarCollapsed && <span>{item.label}</span>}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* 底部工具栏 */}
-        <div className="border-t border-[#F0F0F0] p-2">
-          {/* 消息通知 - 收起时显示在上方 */}
-          {sidebarCollapsed && (
-            <div className="flex justify-center mb-2">
-              <button className="p-2 hover:bg-[#F5F5F5] rounded-lg transition-colors relative">
-                <Bell className="w-4 h-4 text-[#595959]" />
-                <span className="absolute top-1 right-1 w-4 h-4 bg-[#FF4D4F] text-white text-[10px] rounded-full flex items-center justify-center">
-                  10
-                </span>
-              </button>
-            </div>
-          )}
-          
-          {/* 展开/收起按钮 */}
-          <div className={`flex items-center ${sidebarCollapsed ? 'justify-center' : 'justify-between'} px-2 mb-2`}>
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-2 hover:bg-[#F5F5F5] rounded-lg transition-colors"
-            >
-              <Menu className="w-4 h-4 text-[#595959]" />
-            </button>
-            {!sidebarCollapsed && (
-              <button className="p-2 hover:bg-[#F5F5F5] rounded-lg transition-colors relative">
-                <Bell className="w-4 h-4 text-[#595959]" />
-                <span className="absolute top-1 right-1 w-4 h-4 bg-[#FF4D4F] text-white text-[10px] rounded-full flex items-center justify-center">
-                  10
-                </span>
-              </button>
-            )}
-          </div>
-
-          {/* 用户信息 */}
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-[#595959] hover:bg-[#F5F5F5] transition-colors">
-            <div className="w-6 h-6 rounded-full bg-[#1677FF] flex items-center justify-center">
-              <User className="w-3.5 h-3.5 text-white" />
-            </div>
-            {!sidebarCollapsed && (
-              <>
-                <span className="flex-1 text-left">yzw_liurundong</span>
-                <ChevronDown className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </div>
-      </aside>
+      <AiWorkshopSidebar
+        collapsed={sidebarCollapsed}
+        onCollapseChange={setSidebarCollapsed}
+        activeMenuKey="relation"
+        logoImage={logoImage}
+        notificationCount={10}
+      />
 
       {/* 主内容区 */}
       <main className={`flex-1 ${sidebarCollapsed ? 'ml-16' : 'ml-[200px]'} transition-all duration-300`}>

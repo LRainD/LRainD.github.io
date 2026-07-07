@@ -415,6 +415,12 @@
       "kind": "item",
       "title": "运营后台统一布局",
       "itemKey": "components/operation-admin-layout"
+    },
+    {
+      "id": "item-components-ai-workshop-sidebar",
+      "kind": "item",
+      "title": "AI工坊侧边栏",
+      "itemKey": "components/ai-workshop-sidebar"
     }
   ],
   "docs": [
