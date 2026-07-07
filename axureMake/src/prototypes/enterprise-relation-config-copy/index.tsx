@@ -8,7 +8,10 @@ import {
   Search,
   ChevronUp,
   Plus,
-  Trash2
+  Trash2,
+  X,
+  Upload,
+  Download
 } from 'lucide-react';
 import { Select, InputNumber } from 'antd';
 import AiWorkshopSidebar from '../../components/ai-workshop-sidebar';
@@ -25,6 +28,13 @@ interface EnterpriseItem {
 interface SearchSuggestion {
   name: string;
   creditCode: string;
+}
+
+interface ImportFile {
+  id: string;
+  name: string;
+  status: '待校验' | '校验中' | '校验通过' | '校验失败';
+  uploadTime: string;
 }
 
 // 生成模拟企业数据
@@ -227,6 +237,10 @@ const Component = () => {
   const [litigationCount, setLitigationCount] = useState<number>(1);
   const [softwareCopyrightCount, setSoftwareCopyrightCount] = useState<number>(1);
   const [patentCount, setPatentCount] = useState<number>(1);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [importTab, setImportTab] = useState<'manual' | 'excel'>('manual');
+  const [manualEnterpriseNames, setManualEnterpriseNames] = useState('');
+  const [importFiles, setImportFiles] = useState<ImportFile[]>([]);
 
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -359,7 +373,10 @@ const Component = () => {
               <div className="p-4">
                 {/* 批量导入按钮和统计 */}
                 <div className="flex items-center justify-between mb-3">
-                  <button className="px-4 py-1.5 text-sm border border-[#D9D9D9] rounded hover:border-[#1677FF] hover:text-[#1677FF] transition-colors">
+                  <button
+                    className="px-4 py-1.5 text-sm border border-[#D9D9D9] rounded hover:border-[#1677FF] hover:text-[#1677FF] transition-colors"
+                    onClick={() => setIsImportModalOpen(true)}
+                  >
                     批量导入企业
                   </button>
                   <span className="text-xs text-[#8C8C8C]">共计{enterpriseList.length}家，上限50家</span>
@@ -673,16 +690,16 @@ const Component = () => {
                         <input
                           type="checkbox"
                           className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('相同手机号')}
+                          checked={relationTypes.includes('相同电话号码')}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '相同手机号']);
+                              setRelationTypes([...relationTypes, '相同电话号码']);
                             } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '相同手机号'));
+                              setRelationTypes(relationTypes.filter(t => t !== '相同电话号码'));
                             }
                           }}
                         />
-                        <span className="text-sm text-[#595959]">相同手机号</span>
+                        <span className="text-sm text-[#595959]">相同电话号码</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -828,6 +845,159 @@ const Component = () => {
             </button>
           </div>
         </div>
+
+        {/* 批量导入企业弹窗 */}
+        {isImportModalOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white w-full max-w-[720px] rounded-lg shadow-xl flex flex-col max-h-[80vh]">
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[#F0F0F0]">
+                <div className="flex items-center gap-2">
+                  <div className="w-1 h-4 bg-[#1677FF] rounded-sm"></div>
+                  <span className="text-base font-medium text-[#262626]">批量导入企业</span>
+                </div>
+                <button
+                  className="text-[#8C8C8C] hover:text-[#595959] transition-colors"
+                  onClick={() => setIsImportModalOpen(false)}
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="p-5 flex-1 overflow-auto">
+                {/* Tab 切换 */}
+                <div className="flex mb-5 border border-[#D9D9D9] rounded overflow-hidden">
+                  <button
+                    className={`flex-1 py-2 text-sm font-medium transition-colors ${
+                      importTab === 'manual'
+                        ? 'bg-[#1677FF] text-white'
+                        : 'bg-white text-[#595959] hover:text-[#1677FF]'
+                    }`}
+                    onClick={() => setImportTab('manual')}
+                  >
+                    手动输入企业名称
+                  </button>
+                  <button
+                    className={`flex-1 py-2 text-sm font-medium transition-colors ${
+                      importTab === 'excel'
+                        ? 'bg-[#1677FF] text-white'
+                        : 'bg-white text-[#595959] hover:text-[#1677FF]'
+                    }`}
+                    onClick={() => setImportTab('excel')}
+                  >
+                    导入Excel文件
+                  </button>
+                </div>
+
+                {importTab === 'manual' ? (
+                  <div className="flex items-start gap-3">
+                    <div className="flex items-center gap-1 pt-2">
+                      <span className="text-sm text-[#FF4D4F]">*</span>
+                      <span className="text-sm text-[#262626]">企业名称</span>
+                      <div className="relative group">
+                        <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
+                          可换行批量输入企业名称，每行代表一家企业
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
+                        </div>
+                      </div>
+                      <span className="text-sm text-[#262626]">：</span>
+                    </div>
+                    <textarea
+                      className="flex-1 min-h-[160px] p-3 text-sm text-[#262626] border border-[#D9D9D9] rounded resize-none focus:outline-none focus:border-[#1677FF] placeholder:text-[#BFBFBF]"
+                      placeholder="可换行批量输入企业名称"
+                      value={manualEnterpriseNames}
+                      onChange={(e) => setManualEnterpriseNames(e.target.value)}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-3 mb-4">
+                      <button className="flex items-center gap-1.5 px-4 py-1.5 bg-[#1677FF] text-white text-sm rounded hover:bg-[#4096FF] transition-colors">
+                        <Upload className="w-4 h-4" />
+                        上传导入文件
+                      </button>
+                      <button className="flex items-center gap-1.5 px-4 py-1.5 border border-[#D9D9D9] text-[#595959] text-sm rounded hover:border-[#1677FF] hover:text-[#1677FF] transition-colors">
+                        <Download className="w-4 h-4" />
+                        下载导入模版
+                      </button>
+                    </div>
+
+                    <div className="border border-[#F0F0F0] rounded-lg overflow-hidden">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="bg-[#FAFAFA]">
+                            <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">导入文件</th>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">校验状态</th>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">上传时间</th>
+                            <th className="px-4 py-3 text-right text-sm font-medium text-[#262626]">操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {importFiles.length === 0 ? (
+                            <tr>
+                              <td colSpan={4} className="py-16">
+                                <div className="flex flex-col items-center justify-center text-[#BFBFBF]">
+                                  <div className="w-16 h-16 mb-3 border-2 border-dashed border-[#D9D9D9] rounded-lg flex items-center justify-center">
+                                    <div className="w-8 h-6 border-2 border-[#D9D9D9] rounded-sm relative">
+                                      <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-5 h-3 border-2 border-[#D9D9D9] border-b-0 rounded-t-sm"></div>
+                                    </div>
+                                  </div>
+                                  <span className="text-sm">暂无数据</span>
+                                </div>
+                              </td>
+                            </tr>
+                          ) : (
+                            importFiles.map((file) => (
+                              <tr key={file.id} className="border-t border-[#F0F0F0]">
+                                <td className="px-4 py-3 text-sm text-[#595959]">{file.name}</td>
+                                <td className="px-4 py-3 text-sm text-[#595959]">{file.status}</td>
+                                <td className="px-4 py-3 text-sm text-[#595959]">{file.uploadTime}</td>
+                                <td className="px-4 py-3 text-right">
+                                  <button
+                                    className="text-sm text-[#FF4D4F] hover:text-[#FF7875] transition-colors"
+                                    onClick={() => setImportFiles(importFiles.filter(f => f.id !== file.id))}
+                                  >
+                                    删除
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-3 px-5 py-4 border-t border-[#F0F0F0]">
+                <button
+                  className="px-5 py-1.5 text-sm border border-[#D9D9D9] rounded text-[#595959] hover:border-[#1677FF] hover:text-[#1677FF] transition-colors"
+                  onClick={() => setIsImportModalOpen(false)}
+                >
+                  取消
+                </button>
+                <button
+                  className={`px-5 py-1.5 text-sm rounded transition-colors ${
+                    (importTab === 'manual' && manualEnterpriseNames.trim().length > 0) ||
+                    (importTab === 'excel' && importFiles.length > 0)
+                      ? 'bg-[#1677FF] text-white hover:bg-[#4096FF]'
+                      : 'bg-[#F5F5F5] text-[#BFBFBF] cursor-not-allowed'
+                  }`}
+                  disabled={
+                    (importTab === 'manual' && manualEnterpriseNames.trim().length === 0) ||
+                    (importTab === 'excel' && importFiles.length === 0)
+                  }
+                >
+                  确定提交
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
