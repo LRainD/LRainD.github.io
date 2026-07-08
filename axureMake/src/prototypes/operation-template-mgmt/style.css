@@ -1,0 +1,178 @@
+.operation-template-mgmt-page {
+  background: #fff;
+  padding: 16px;
+}
+
+/* 统计信息 */
+.template-summary {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+/* 表格 */
+.template-table {
+  margin-bottom: 16px;
+}
+
+.template-table .ant-table-cell {
+  font-size: 13px;
+}
+
+.template-type-system {
+  color: #1890ff;
+}
+
+.template-type-custom {
+  color: #666;
+}
+
+.template-status-enabled {
+  color: #52c41a;
+}
+
+.template-status-disabled {
+  color: #f5222d;
+}
+
+.template-action-cell {
+  flex-wrap: wrap;
+}
+
+.template-action-link {
+  color: #1890ff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.template-action-link:hover {
+  color: #40a9ff;
+}
+
+.template-action-delete {
+  color: #f5222d;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.template-action-delete:hover {
+  color: #ff4d4f;
+}
+
+/* 分页栏 */
+.template-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.template-pagination-total {
+  font-size: 13px;
+  color: #666;
+}
+
+.template-page-size-select {
+  width: 100px;
+}
+
+.template-jump-page {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.template-jump-input {
+  width: 48px;
+}
+
+/* 企业关系管理弹窗 */
+.enterprise-relation-modal .ant-modal-body {
+  padding: 16px 24px 24px;
+}
+
+.enterprise-relation-tabs .ant-tabs-nav {
+  margin-bottom: 16px;
+}
+
+.enterprise-relation-add {
+  margin-bottom: 12px;
+}
+
+.enterprise-relation-add .ant-btn {
+  padding-left: 0;
+}
+
+.enterprise-relation-table .ant-table-cell {
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.relation-name-input {
+  width: 100%;
+}
+
+.relation-category-input {
+  width: 100%;
+}
+
+.relation-name-cell {
+  display: flex;
+  align-items: center;
+}
+
+.relation-tree-connector {
+  width: 24px;
+  height: 32px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.relation-tree-connector::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: -8px;
+  bottom: 50%;
+  width: 1px;
+  background: #d9d9d9;
+}
+
+.relation-tree-connector::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  width: 16px;
+  height: 1px;
+  background: #d9d9d9;
+}
+
+.relation-meta-select {
+  width: 100%;
+}
+
+.relation-meta-multi-select {
+  width: 100%;
+}
+
+.relation-meta-multi-select .ant-select-selector {
+  min-height: 32px;
+  padding: 2px 4px;
+}
+
+.relation-meta-multi-select .ant-select-selection-item {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  color: #333;
+  font-size: 12px;
+}
+
+.relation-action-help {
+  margin-left: 4px;
+  color: #999;
+  font-size: 12px;
+}

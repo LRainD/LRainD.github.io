@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-14T13:23:58.631Z",
+  "updatedAt": "2026-07-08T15:18:39.944Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
@@ -237,6 +237,25 @@
           "kind": "item",
           "title": "企业关联-配置页面 迭代-增加配置",
           "itemKey": "prototypes/enterprise-relation-config-copy"
+        },
+        {
+          "id": "item-prototypes-enterprise-relation-config-copy-copy",
+          "kind": "item",
+          "title": "企业关联-配置页面 迭代-增加配置 副本",
+          "itemKey": "prototypes/enterprise-relation-config-copy-copy"
+        }
+      ]
+    },
+    {
+      "id": "folder-config-mgmt",
+      "kind": "folder",
+      "title": "配置管理",
+      "children": [
+        {
+          "id": "item-prototypes-operation-template-mgmt",
+          "kind": "item",
+          "title": "运营模板管理",
+          "itemKey": "prototypes/operation-template-mgmt"
         }
       ]
     },
