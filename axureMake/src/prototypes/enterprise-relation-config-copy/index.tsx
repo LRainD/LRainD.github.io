@@ -11,7 +11,9 @@ import {
   Trash2,
   X,
   Upload,
-  Download
+  Download,
+  Loader2,
+  CheckCircle2
 } from 'lucide-react';
 import { Select, InputNumber } from 'antd';
 import AiWorkshopSidebar from '../../components/ai-workshop-sidebar';
@@ -23,6 +25,9 @@ interface EnterpriseItem {
   seq: number;
   name: string;
   creditCode: string;
+  loading?: boolean;
+  found?: boolean;
+  errorMessage?: string;
 }
 
 interface SearchSuggestion {
@@ -289,9 +294,67 @@ const Component = () => {
 
   const handleEnterpriseSelect = (id: string, name: string, creditCode: string) => {
     const newList = enterpriseList.map(enterprise =>
-      enterprise.id === id ? { ...enterprise, name, creditCode } : enterprise
+      enterprise.id === id
+        ? { ...enterprise, name, creditCode, found: true, errorMessage: undefined, loading: false }
+        : enterprise
     );
     setEnterpriseList(newList);
+  };
+
+  const determineFoundResults = (count: number): boolean[] => {
+    if (count === 1) return [true];
+    if (count === 2) return Math.random() > 0.5 ? [true, false] : [false, true];
+    const results = Array.from({ length: count }, () => Math.random() > 0.5);
+    if (!results.includes(true)) results[0] = true;
+    if (!results.includes(false)) results[1] = false;
+    return results;
+  };
+
+  const handleManualSubmit = () => {
+    const names = manualEnterpriseNames
+      .split('\n')
+      .map(name => name.trim())
+      .filter(name => name.length > 0);
+    if (names.length === 0) return;
+
+    const startSeq = enterpriseList.length + 1;
+    const newItems: EnterpriseItem[] = names.map((name, index) => ({
+      id: `${Date.now()}-${index}`,
+      seq: startSeq + index,
+      name,
+      creditCode: '',
+      loading: true
+    }));
+    const foundResults = determineFoundResults(names.length);
+
+    setEnterpriseList([...enterpriseList, ...newItems]);
+    setManualEnterpriseNames('');
+    setIsImportModalOpen(false);
+
+    newItems.forEach((item, index) => {
+      setTimeout(() => {
+        const isFound = foundResults[index];
+        setEnterpriseList(prev =>
+          prev.map(enterprise => {
+            if (enterprise.id !== item.id) return enterprise;
+            if (isFound) {
+              return {
+                ...enterprise,
+                loading: false,
+                found: true,
+                creditCode: `${Math.floor(Math.random() * 9) + 1}${Array.from({ length: 17 }, () => Math.floor(Math.random() * 10)).join('')}`
+              };
+            }
+            return {
+              ...enterprise,
+              loading: false,
+              found: false,
+              errorMessage: '根据企业名称未查询到相关企业'
+            };
+          })
+        );
+      }, (index + 1) * 1500);
+    });
   };
 
   return (
@@ -428,17 +491,32 @@ const Component = () => {
                                 onChange={(name) => handleEnterpriseNameChange(item.id, name)}
                                 onSelect={(name, creditCode) => handleEnterpriseSelect(item.id, name, creditCode)}
                               />
+                              {item.found === false && item.errorMessage && (
+                                <div className="mt-1 text-xs text-[#FF4D4F]">{item.errorMessage}</div>
+                              )}
                             </td>
                             <td className="px-3 py-3">
                               <div className="relative">
                                 <input
                                   type="text"
-                                  className="w-full px-3 py-1.5 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF] pr-8"
+                                  className={`w-full px-3 py-1.5 text-sm border rounded focus:outline-none pr-8 ${
+                                    item.found === false
+                                      ? 'border-[#FF4D4F] bg-[#FFF2F0]'
+                                      : 'border-[#D9D9D9] focus:border-[#1677FF]'
+                                  }`}
                                   placeholder=""
                                   value={item.creditCode}
                                   readOnly
                                 />
-                                <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BFBFBF]" />
+                                {item.loading && (
+                                  <Loader2 className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1677FF] animate-spin" />
+                                )}
+                                {!item.loading && item.found === true && (
+                                  <CheckCircle2 className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#52C41A]" />
+                                )}
+                                {!item.loading && item.found !== true && (
+                                  <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-[#BFBFBF]" />
+                                )}
                               </div>
                             </td>
                             <td className="px-3 py-3 text-center">
@@ -991,6 +1069,11 @@ const Component = () => {
                     (importTab === 'manual' && manualEnterpriseNames.trim().length === 0) ||
                     (importTab === 'excel' && importFiles.length === 0)
                   }
+                  onClick={() => {
+                    if (importTab === 'manual') {
+                      handleManualSubmit();
+                    }
+                  }}
                 >
                   确定提交
                 </button>
