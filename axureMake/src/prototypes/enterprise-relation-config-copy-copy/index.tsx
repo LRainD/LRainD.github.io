@@ -15,7 +15,8 @@ import {
   Loader2,
   CheckCircle2
 } from 'lucide-react';
-import { Select, InputNumber } from 'antd';
+import { Select, Table, Pagination, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import AiWorkshopSidebar from '../../components/ai-workshop-sidebar';
 import logoImage from '../../../assets/media/image.png';
 import './style.css';
@@ -41,6 +42,29 @@ interface ImportFile {
   status: '待校验' | '校验中' | '校验通过' | '校验失败';
   uploadTime: string;
 }
+
+const relationTypeTemplates: Record<string, { name: string; riskLevel: string; metaType: string; metaData: string; equityRange: string }[]> = {
+  system: [
+    { name: '董监高', riskLevel: '高风险', metaType: '普通元数据', metaData: '董监高,董事长,董事会秘书,董事,股东监事,联席公司秘书,职工监事,职工代表董事,职工代表监事,监事会主席,监事,独立董事,执行董事,执行事务合伙人,副董事长,联席总裁,高级副总裁,联席董事长,代理总经理,总裁,总经理,常务副总经理,副总裁,副总经理,总会计师,理事长,执行监事,财务负责人,财务总监,负责人,经营者,经理,内审负责人', equityRange: '--' },
+    { name: '股东', riskLevel: '高风险', metaType: '普通元数据', metaData: '股东,投资人,工商股东：-,工商股东,新三板股东：X%,工商股东：X%,十大股东：X%', equityRange: '--' },
+    { name: '法人', riskLevel: '高风险', metaType: '普通元数据', metaData: '法定代表人', equityRange: '--' },
+    { name: '机构隶属', riskLevel: '中风险', metaType: '普通元数据', metaData: '分支机构', equityRange: '--' },
+    { name: '涉诉关联', riskLevel: '低风险', metaType: '普通元数据', metaData: '在X份裁判文书中为同一方', equityRange: '--' },
+    { name: '联系方式相同', riskLevel: '低风险', metaType: '普通元数据', metaData: '有相同的邮箱,有相同的电话号码,有相同的地址', equityRange: '--' },
+    { name: '知识产权公有', riskLevel: '低风险', metaType: '普通元数据', metaData: '共同拥有X份软件著作权,共同拥有X份专利', equityRange: '--' },
+    { name: '其他', riskLevel: '低风险', metaType: '普通元数据', metaData: '其它,其他', equityRange: '--' },
+  ],
+  simple: [
+    { name: '董监高', riskLevel: '高风险', metaType: '普通元数据', metaData: '董事,监事,高管,法定代表人,总经理,副总经理,财务负责人', equityRange: '--' },
+    { name: '股东', riskLevel: '高风险', metaType: '普通元数据', metaData: '股东,投资人,工商股东,十大股东：X%', equityRange: '--' },
+    { name: '法人', riskLevel: '高风险', metaType: '普通元数据', metaData: '法定代表人', equityRange: '--' },
+    { name: '机构隶属', riskLevel: '中风险', metaType: '普通元数据', metaData: '分支机构,子公司', equityRange: '--' },
+    { name: '涉诉关联', riskLevel: '低风险', metaType: '普通元数据', metaData: '在同一裁判文书中为同一方', equityRange: '--' },
+    { name: '联系方式相同', riskLevel: '低风险', metaType: '普通元数据', metaData: '有相同的电话,有相同的邮箱', equityRange: '--' },
+    { name: '知识产权公有', riskLevel: '低风险', metaType: '普通元数据', metaData: '共同拥有X份专利', equityRange: '--' },
+    { name: '其他', riskLevel: '低风险', metaType: '普通元数据', metaData: '其它', equityRange: '--' },
+  ],
+};
 
 // 生成模拟企业数据
 const generateMockEnterprises = (keyword: string): SearchSuggestion[] => {
@@ -227,6 +251,250 @@ const EnterpriseSearchInput = ({
   );
 };
 
+// 模板配置视图
+interface TemplateItem {
+  id: string;
+  name: string;
+  type: '系统模板' | '自定义模板';
+  status: '启用' | '禁用';
+  level: string;
+  createdAt: string;
+}
+
+const generateMockTemplates = (): TemplateItem[] => {
+  const baseRows: TemplateItem[] = [
+    { id: '1', name: '系统模板', type: '系统模板', status: '启用', level: '3层', createdAt: '2026-04-25 11:54:14' },
+    { id: '2', name: '1里', type: '自定义模板', status: '禁用', level: '3层', createdAt: '2026-07-08 19:11:46' },
+    { id: '3', name: '测试模板5', type: '自定义模板', status: '启用', level: '3层', createdAt: '2026-06-24 18:16:14' },
+    { id: '4', name: '测试模板4', type: '自定义模板', status: '启用', level: '3层', createdAt: '2026-06-18 16:28:49' },
+    { id: '5', name: '测试模板3', type: '自定义模板', status: '禁用', level: '3层', createdAt: '2026-06-18 16:25:25' },
+    { id: '6', name: '测试模板2', type: '自定义模板', status: '启用', level: '3层', createdAt: '2026-06-18 16:20:48' },
+    { id: '7', name: '测试模板1', type: '自定义模板', status: '启用', level: '3层', createdAt: '2026-06-18 16:13:57' },
+    { id: '8', name: '测试模板', type: '自定义模板', status: '禁用', level: '3层', createdAt: '2026-06-18 16:06:18' },
+    { id: '9', name: '极关链赊销模型', type: '自定义模板', status: '禁用', level: '3层', createdAt: '2026-04-28 17:31:42' },
+    { id: '10', name: '115676890', type: '自定义模板', status: '禁用', level: '5层', createdAt: '2026-04-28 16:51:49' },
+  ];
+
+  const extraRows: TemplateItem[] = Array.from({ length: 27 }, (_, i) => ({
+    id: `${i + 11}`,
+    name: `自定义模板${i + 1}`,
+    type: '自定义模板',
+    status: i % 3 === 0 ? '禁用' : '启用',
+    level: i % 5 === 0 ? '5层' : '3层',
+    createdAt: `2026-0${6 - (i % 6)}-${10 + (i % 20)} ${10 + (i % 10)}:${(i % 60).toString().padStart(2, '0')}:${(i % 60).toString().padStart(2, '0')}`,
+  }));
+
+  return [...baseRows, ...extraRows];
+};
+
+const mockTemplates = generateMockTemplates();
+
+const TemplateConfigView = ({ onBack }: { onBack: () => void }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [templates, setTemplates] = useState<TemplateItem[]>(mockTemplates);
+
+  const filteredTemplates = React.useMemo(() => {
+    if (!searchKeyword.trim()) return templates;
+    return templates.filter((item) => item.name.toLowerCase().includes(searchKeyword.toLowerCase()));
+  }, [templates, searchKeyword]);
+
+  const pagedTemplates = React.useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredTemplates.slice(start, start + pageSize);
+  }, [filteredTemplates, currentPage, pageSize]);
+
+  const total = filteredTemplates.length;
+  const startCount = total === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const endCount = Math.min(currentPage * pageSize, total);
+
+  const toggleStatus = (id: string) => {
+    setTemplates((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, status: item.status === '启用' ? '禁用' : '启用' } : item
+      )
+    );
+  };
+
+  const handleDelete = (id: string) => {
+    setTemplates((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const columns = [
+    {
+      title: '模板名称',
+      dataIndex: 'name',
+      key: 'name',
+      render: (name: string) => <span className="text-sm text-[#262626]">{name}</span>,
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      key: 'type',
+      render: (type: string) => (
+        <span className={`text-sm ${type === '系统模板' ? 'text-[#1677FF]' : 'text-[#595959]'}`}>
+          {type}
+        </span>
+      ),
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <span
+          className={`inline-block px-2 py-0.5 text-xs rounded ${
+            status === '启用'
+              ? 'bg-[#F6FFED] text-[#52C41A] border border-[#B7EB8F]'
+              : 'bg-[#FFF2E8] text-[#FA541C] border border-[#FFBB96]'
+          }`}
+        >
+          {status}
+        </span>
+      ),
+    },
+    {
+      title: '检测层级',
+      dataIndex: 'level',
+      key: 'level',
+      render: (level: string) => <span className="text-sm text-[#595959]">{level}</span>,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (createdAt: string) => <span className="text-sm text-[#595959]">{createdAt}</span>,
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_: unknown, record: TemplateItem) => (
+        <div className="flex items-center gap-3">
+          <a className="text-sm text-[#1677FF] hover:text-[#4096FF] cursor-pointer">企业关系管理</a>
+          <a className="text-sm text-[#1677FF] hover:text-[#4096FF] cursor-pointer">配置规则</a>
+          {record.type === '自定义模板' && (
+            <>
+              <a
+                className="text-sm text-[#1677FF] hover:text-[#4096FF] cursor-pointer"
+                onClick={() => toggleStatus(record.id)}
+              >
+                {record.status === '启用' ? '禁用' : '启用'}
+              </a>
+              <a className="text-sm text-[#1677FF] hover:text-[#4096FF] cursor-pointer">复制模板</a>
+              <a
+                className="text-sm text-[#FF4D4F] hover:text-[#FF7875] cursor-pointer"
+                onClick={() => handleDelete(record.id)}
+              >
+                删除
+              </a>
+            </>
+          )}
+          {record.type === '系统模板' && (
+            <a className="text-sm text-[#1677FF] hover:text-[#4096FF] cursor-pointer">复制模板</a>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="bg-white rounded-lg p-6 min-h-[calc(100vh-220px)]">
+      {/* 页面标题与统计 */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <h1 className="text-base font-medium text-[#262626]">配置企业关系与风险等级映射关系</h1>
+          <span className="text-[#8C8C8C]">|</span>
+          <span className="text-sm text-[#595959]">按企业规模场景配置规则</span>
+        </div>
+        <div className="text-sm text-[#8C8C8C]">
+          本页:{pagedTemplates.length}条&nbsp;&nbsp;总计:{total}条
+        </div>
+      </div>
+
+      {/* 搜索栏 */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="relative w-72">
+          <Input
+            placeholder="请输入模板名称"
+            value={searchKeyword}
+            onChange={(e) => {
+              setSearchKeyword(e.target.value);
+              setCurrentPage(1);
+            }}
+            prefix={<SearchOutlined className="text-[#BFBFBF]" />}
+            className="text-sm"
+          />
+        </div>
+        <button
+          className="px-4 py-1.5 text-sm bg-[#1677FF] text-white rounded hover:bg-[#4096FF] transition-colors"
+          onClick={onBack}
+        >
+          返回
+        </button>
+      </div>
+
+      {/* 表格 */}
+      <Table
+        columns={columns}
+        dataSource={pagedTemplates}
+        rowKey="id"
+        pagination={false}
+        className="enterprise-template-table"
+      />
+
+      {/* 分页 */}
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#F0F0F0]">
+        <span className="text-sm text-[#595959]">
+          第 {startCount}-{endCount} 条/总共 {total} 条
+        </span>
+        <div className="flex items-center gap-4">
+          <Pagination
+            current={currentPage}
+            pageSize={pageSize}
+            total={total}
+            onChange={(page, size) => {
+              setCurrentPage(page);
+              if (size) setPageSize(size);
+            }}
+            showSizeChanger={false}
+            simple={false}
+          />
+          <div className="flex items-center gap-2 text-sm text-[#595959]">
+            <Select
+              value={pageSize}
+              onChange={(value) => {
+                setPageSize(value);
+                setCurrentPage(1);
+              }}
+              options={[
+                { value: 10, label: '10条/页' },
+                { value: 20, label: '20条/页' },
+                { value: 50, label: '50条/页' },
+              ]}
+              className="w-24"
+            />
+            <span>跳至</span>
+            <Input
+              type="number"
+              min={1}
+              max={Math.ceil(total / pageSize)}
+              className="w-14 text-center"
+              onPressEnter={(e) => {
+                const page = Number((e.target as HTMLInputElement).value);
+                if (page >= 1 && page <= Math.ceil(total / pageSize)) {
+                  setCurrentPage(page);
+                }
+              }}
+            />
+            <span>页</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Component = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentStep] = useState(1);
@@ -236,12 +504,9 @@ const Component = () => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [enterpriseList, setEnterpriseList] = useState<EnterpriseItem[]>([]);
   const [relationLevel, setRelationLevel] = useState<number>(5);
-  const [relationTypes, setRelationTypes] = useState<string[]>(['董监高', '法定代表人', '股东', '分支机构']);
-  const [shareholderRange, setShareholderRange] = useState<{ start: number | ''; end: number | '' }>({ start: 0, end: 100 });
-  const [shareholderRangeError, setShareholderRangeError] = useState('');
-  const [litigationCount, setLitigationCount] = useState<number>(1);
-  const [softwareCopyrightCount, setSoftwareCopyrightCount] = useState<number>(1);
-  const [patentCount, setPatentCount] = useState<number>(1);
+  const [relationTypeTab, setRelationTypeTab] = useState<'2-10' | '11-50' | '51-500'>('2-10');
+  const [relationTemplate, setRelationTemplate] = useState<'system' | 'simple'>('system');
+  const [viewMode, setViewMode] = useState<'config' | 'template'>('config');
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [importTab, setImportTab] = useState<'manual' | 'excel'>('manual');
   const [manualEnterpriseNames, setManualEnterpriseNames] = useState('');
@@ -371,7 +636,9 @@ const Component = () => {
       {/* 主内容区 */}
       <main className={`flex-1 ${sidebarCollapsed ? 'ml-16' : 'ml-[200px]'} transition-all duration-300`}>
         <div className="p-6">
-          {/* 页面标题区域 */}
+          {viewMode === 'config' ? (
+            <>
+              {/* 页面标题区域 */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <h1 className="text-xl font-medium text-[#262626]">企业关联检测</h1>
@@ -620,278 +887,87 @@ const Component = () => {
                     <label className="text-sm text-[#262626] font-medium w-24">关系类型</label>
                   </div>
 
-                  {/* 人员关系 */}
-                  <div className="flex items-start gap-4">
-                    <span className="text-sm text-[#8C8C8C] w-24 text-right">人员关系：</span>
-                    <div className="grid grid-cols-[auto_auto_auto] gap-x-4 gap-y-2 items-start">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('董监高')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '董监高']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '董监高'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">董监高</span>
-                        <div className="relative group">
-                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed max-h-60 overflow-y-auto break-words">
-                            董监高包含：董监高,董事长,董事会秘书,董事,股东监事,联席公司秘书,职工监事,职工代表董事,职工代表监事,监事会主席,监事,独立董事,执行董事,执行事务合伙人,副董事长，联席总裁,高级副总裁,联席董事长,代理总经理,总裁,总经理,常务副总经理,副总裁,副总经理，总会计师,理事长,执行监事,财务负责人,财务总监,负责人,经营者,经理,内审负责人
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
-                          </div>
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('法定代表人')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '法定代表人']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '法定代表人'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">法定代表人</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('股东')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '股东']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '股东'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">股东</span>
-                      </label>
-                      {relationTypes.includes('股东') && (
-                        <div className="col-start-3 col-end-4 row-start-2 p-3 bg-[#F5F5F5] rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-[#595959]">占比</span>
-                            <input
-                              type="number"
-                              min={0}
-                              max={100}
-                              className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
-                              placeholder="起始值"
-                              value={shareholderRange.start}
-                              onChange={(e) => {
-                                const val = e.target.value === '' ? '' : Number(e.target.value);
-                                const newRange = { ...shareholderRange, start: val };
-                                setShareholderRange(newRange);
-                                if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
-                                  setShareholderRangeError('结束值必须大于起始值');
-                                } else {
-                                  setShareholderRangeError('');
-                                }
-                              }}
-                            />
-                            <span className="text-sm text-[#595959]">%</span>
-                            <span className="text-sm text-[#595959]">-</span>
-                            <input
-                              type="number"
-                              min={0}
-                              max={100}
-                              className="w-20 px-2 py-1 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
-                              placeholder="结束值"
-                              value={shareholderRange.end}
-                              onChange={(e) => {
-                                const val = e.target.value === '' ? '' : Number(e.target.value);
-                                const newRange = { ...shareholderRange, end: val };
-                                setShareholderRange(newRange);
-                                if (newRange.start !== '' && newRange.end !== '' && newRange.start >= newRange.end) {
-                                  setShareholderRangeError('结束值必须大于起始值');
-                                } else {
-                                  setShareholderRangeError('');
-                                }
-                              }}
-                            />
-                            <span className="text-sm text-[#595959]">%</span>
-                            {shareholderRangeError && (
-                              <span className="text-sm text-[#FF4D4F]">{shareholderRangeError}</span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  {/* 模板选择 */}
+                  <div className="flex items-center gap-3">
+                    <label className="text-sm text-[#262626]">模板选择：</label>
+                    <Select
+                      className="w-48"
+                      value={relationTemplate}
+                      onChange={(value) => setRelationTemplate(value)}
+                      options={[
+                        { value: 'system', label: '系统模板' },
+                        { value: 'simple', label: '精简模板' },
+                      ]}
+                    />
+                    <button
+                      className="px-4 py-1.5 text-sm bg-[#1677FF] text-white rounded hover:bg-[#4096FF] transition-colors"
+                      onClick={() => setViewMode('template')}
+                    >
+                      模板配置
+                    </button>
                   </div>
 
-                  {/* 机构隶属 */}
-                  <div className="flex items-start gap-4">
-                    <span className="text-sm text-[#8C8C8C] w-24 text-right">机构隶属：</span>
-                    <div className="flex flex-wrap items-center gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('分支机构')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '分支机构']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '分支机构'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">分支机构</span>
-                      </label>
-                    </div>
+                  {/* 所属场景 Tab */}
+                  <div className="flex border-b border-[#F0F0F0]">
+                    {[
+                      { key: '2-10', label: '2-10家' },
+                      { key: '11-50', label: '11-50家' },
+                      { key: '51-500', label: '51-500家' },
+                    ].map((tab) => (
+                      <button
+                        key={tab.key}
+                        className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                          relationTypeTab === tab.key
+                            ? 'text-[#1677FF] border-[#1677FF]'
+                            : 'text-[#595959] border-transparent hover:text-[#1677FF]'
+                        }`}
+                        onClick={() => setRelationTypeTab(tab.key as typeof relationTypeTab)}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
                   </div>
 
-                  {/* 其他 */}
-                  <div className="flex items-start gap-4">
-                    <div className="flex items-center gap-1 w-24 justify-end">
-                      <span className="text-sm text-[#8C8C8C]">其他</span>
-                      <div className="relative group">
-                        <span className="w-4 h-4 flex items-center justify-center text-[10px] text-[#8C8C8C] border border-[#8C8C8C] rounded-full cursor-help leading-none">!</span>
-                        <div className="absolute bottom-full left-0 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-80 leading-relaxed break-words">
-                          注意：系统关联路径计算消耗过大，最大计算关联路径数为10，若勾选较多其他关联类型，可能由于过多的其他类型关联，可能导致影响董监高、法定代表人、股东、分支机构的关联路径的展示。
-                          <div className="absolute top-full left-2 border-4 border-transparent border-t-[#262626]"></div>
-                        </div>
-                      </div>
-                      <span className="text-sm text-[#8C8C8C]">：</span>
-                    </div>
-                    <div className="grid grid-cols-[auto_auto_auto_auto_auto] gap-x-4 gap-y-2 items-start">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('相同电话号码')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '相同电话号码']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '相同电话号码'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">相同电话号码</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('相同邮箱')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '相同邮箱']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '相同邮箱'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">相同邮箱</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('相同地址')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '相同地址']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '相同地址'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">相同地址</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('涉诉关联')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '涉诉关联']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '涉诉关联'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">涉诉关联</span>
-                        <div className="relative group">
-                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
-                            在X份裁判文书中为同一方
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
-                          </div>
-                        </div>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 rounded border-[#D9D9D9]"
-                          checked={relationTypes.includes('知识产权公有')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setRelationTypes([...relationTypes, '知识产权公有']);
-                            } else {
-                              setRelationTypes(relationTypes.filter(t => t !== '知识产权公有'));
-                            }
-                          }}
-                        />
-                        <span className="text-sm text-[#595959]">知识产权公有</span>
-                        <div className="relative group">
-                          <HelpCircle className="w-4 h-4 text-[#BFBFBF] cursor-help" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#262626] text-white text-xs rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 w-64 leading-relaxed break-words">
-                            共同拥有X份软件著作权,共同拥有X份专利
-                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#262626]"></div>
-                          </div>
-                        </div>
-                      </label>
-                      {relationTypes.includes('涉诉关联') && (
-                        <div className="col-start-4 col-end-5 row-start-2 p-3 bg-[#F5F5F5] rounded-lg">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-[#595959]">在</span>
-                            <InputNumber
-                              min={1}
-                              className="w-16"
-                              value={litigationCount}
-                              onChange={(val) => setLitigationCount(val || 1)}
-                            />
-                            <span className="text-sm text-[#595959]">份裁判文书中为同一方</span>
-                          </div>
-                        </div>
-                      )}
-                      {relationTypes.includes('知识产权公有') && (
-                        <div className="col-start-5 col-end-6 row-start-2 p-3 bg-[#F5F5F5] rounded-lg flex flex-col gap-3 w-fit">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-[#595959]">共同拥有</span>
-                            <InputNumber
-                              min={1}
-                              className="w-16"
-                              value={softwareCopyrightCount}
-                              onChange={(val) => setSoftwareCopyrightCount(val || 1)}
-                            />
-                            <span className="text-sm text-[#595959]">份软件著作权</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-[#595959]">共同拥有</span>
-                            <InputNumber
-                              min={1}
-                              className="w-16"
-                              value={patentCount}
-                              onChange={(val) => setPatentCount(val || 1)}
-                            />
-                            <span className="text-sm text-[#595959]">份专利</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                  {/* 关系类型表格 */}
+                  <div className="border border-[#F0F0F0] rounded-lg overflow-hidden">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="bg-[#FAFAFA]">
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">企业关系名称</th>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">风险等级</th>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">所属场景</th>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">元数据类型</th>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">关联元数据</th>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">股权区间</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {relationTypeTemplates[relationTemplate].map((row) => (
+                          <tr key={row.name} className="border-t border-[#F0F0F0]">
+                            <td className="px-4 py-3 text-sm text-[#595959] whitespace-nowrap">{row.name}</td>
+                            <td className="px-4 py-3 text-sm whitespace-nowrap">
+                              <span
+                                className={`inline-block px-2 py-0.5 text-xs rounded ${
+                                  row.riskLevel === '高风险'
+                                    ? 'bg-[#FFF1F0] text-[#FF4D4F] border border-[#FFA39E]'
+                                    : row.riskLevel === '中风险'
+                                    ? 'bg-[#FFFBE6] text-[#FAAD14] border border-[#FFE58F]'
+                                    : 'bg-[#F6FFED] text-[#52C41A] border border-[#B7EB8F]'
+                                }`}
+                              >
+                                {row.riskLevel}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-sm text-[#595959] whitespace-nowrap">
+                              {relationTypeTab === '2-10' ? '2-10家' : relationTypeTab === '11-50' ? '11-50家' : '51-500家'}
+                            </td>
+                            <td className="px-4 py-3 text-sm text-[#595959] whitespace-nowrap">{row.metaType}</td>
+                            <td className="px-4 py-3 text-sm text-[#595959] leading-relaxed">{row.metaData}</td>
+                            <td className="px-4 py-3 text-sm text-[#595959] whitespace-nowrap">{row.equityRange}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -922,6 +998,10 @@ const Component = () => {
               开始检测
             </button>
           </div>
+            </>
+          ) : (
+            <TemplateConfigView onBack={() => setViewMode('config')} />
+          )}
         </div>
 
         {/* 批量导入企业弹窗 */}
