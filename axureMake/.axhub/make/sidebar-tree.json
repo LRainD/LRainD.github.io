@@ -1,12 +1,25 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-08T15:18:39.944Z",
+  "updatedAt": "2026-07-09T02:49:11.979Z",
   "prototypes": [
     {
       "id": "folder-1780295356890-uukgw6",
       "kind": "folder",
       "title": "日常迭代",
       "children": [
+        {
+          "id": "folder-1783565240417-mddxre",
+          "kind": "folder",
+          "title": "国资委审计需求",
+          "children": [
+            {
+              "id": "item-prototypes-bidding-base-info",
+              "kind": "item",
+              "title": "招标基础信息",
+              "itemKey": "prototypes/bidding-base-info"
+            }
+          ]
+        },
         {
           "id": "folder-1780295365514-zyn7oe",
           "kind": "folder",
@@ -241,7 +254,7 @@
         {
           "id": "item-prototypes-enterprise-relation-config-copy-copy",
           "kind": "item",
-          "title": "企业关联-配置页面 迭代-增加配置 副本",
+          "title": "企业关联-私有化合并",
           "itemKey": "prototypes/enterprise-relation-config-copy-copy"
         }
       ]
