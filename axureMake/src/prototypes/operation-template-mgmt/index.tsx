@@ -1,10 +1,10 @@
 /**
  * @name 运营模板管理
  */
-import React, { useState } from 'react';
-import { Table, Pagination, Select, Input, Space, Modal, Tabs, Button, Tooltip } from 'antd';
-import { PlusOutlined, QuestionCircleOutlined, CloseOutlined } from '@ant-design/icons';
-import OperationAdminLayout from '../../components/operation-admin-layout';
+import React, { useMemo, useState } from 'react';
+import { Table, Pagination, Select, Input, Space, Modal, Button, Tooltip } from 'antd';
+import { PlusOutlined, QuestionCircleOutlined, CloseOutlined, FileTextOutlined } from '@ant-design/icons';
+import OperationAdminLayout, { DEFAULT_MENU_ITEMS } from '../../components/operation-admin-layout';
 import './style.css';
 
 interface TemplateItem {
@@ -16,15 +16,30 @@ interface TemplateItem {
   createTime: string;
 }
 
+interface SceneConfig {
+  metaType: string;
+  relatedMeta: string[];
+  equityRange: string;
+}
+
 interface EnterpriseRelation {
   id: number;
   categoryName: string;
   name: string;
-  scene: string;
-  metaType: string;
-  relatedMeta: string[];
-  equityRange: string;
+  configs: Record<string, SceneConfig>;
   parentId?: number;
+}
+
+interface RelationViewRow {
+  key: string;
+  relationId: number;
+  sceneKey: string;
+  isFirstScene: boolean;
+  categoryName: string;
+  name: string;
+  config: SceneConfig;
+  depth: number;
+  relation: EnterpriseRelation;
 }
 
 const MOCK_DATA: TemplateItem[] = [
@@ -41,6 +56,13 @@ const MOCK_DATA: TemplateItem[] = [
 ];
 
 const TOTAL = 37;
+
+const SCENE_KEYS = ['2-10', '11-50', '51-500'];
+const SCENE_LABELS: Record<string, string> = {
+  '2-10': '2-10家',
+  '11-50': '11-50家',
+  '51-500': '51-500家',
+};
 
 const RELATED_META_OPTIONS = [
   { label: '副董事长', value: '副董事长' },
@@ -92,113 +114,191 @@ const RELATED_META_OPTIONS = [
   { label: '其他', value: '其他' }
 ];
 
+const META_TYPE_OPTIONS = [{ label: '普通元数据', value: '普通元数据' }];
+
+const CATEGORY_OPTIONS = [
+  { label: '人员关系', value: '人员关系' },
+  { label: '机构隶属', value: '机构隶属' },
+  { label: '其他', value: '其他' },
+];
+
+const createEmptySceneConfig = (relatedMeta: string[] = [], equityRange = '--'): SceneConfig => ({
+  metaType: '普通元数据',
+  relatedMeta,
+  equityRange,
+});
+
+const MENU_ITEMS = DEFAULT_MENU_ITEMS.reduce<any[]>((acc, item) => {
+  if (item.key === 'template_mgmt') {
+    return acc;
+  }
+  if (item.key === 'config_mgmt') {
+    acc.push({
+      ...item,
+      children: [
+        { key: 'template_mgmt', icon: <FileTextOutlined />, label: '模板管理' }
+      ]
+    });
+  } else {
+    acc.push(item);
+  }
+  return acc;
+}, []);
+
 const DEFAULT_RELATIONS: EnterpriseRelation[] = [
   {
     id: 1,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '董监高',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['副董事长', '董事长', '董事', '独立董事', '职工代表董事', '执行董事', '执行事务合伙人', '董事会秘书', '联席公司秘书', '职工监事', '职工代表监事', '监事', '董监高', '股东监事', '监事会主席'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['副董事长', '董事长', '董事', '独立董事', '职工代表董事', '执行董事', '执行事务合伙人', '董事会秘书', '联席公司秘书', '职工监事', '职工代表监事', '监事', '董监高', '股东监事', '监事会主席']),
+      '11-50': createEmptySceneConfig(['副董事长', '董事长', '董事', '独立董事', '职工代表董事', '执行董事', '执行事务合伙人', '董事会秘书', '联席公司秘书', '职工监事', '职工代表监事', '监事', '董监高', '股东监事', '监事会主席']),
+      '51-500': createEmptySceneConfig(['副董事长', '董事长', '董事', '独立董事', '职工代表董事', '执行董事', '执行事务合伙人', '董事会秘书', '联席公司秘书', '职工监事', '职工代表监事', '监事', '董监高', '股东监事', '监事会主席']),
+    }
   },
   {
     id: 2,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '股东',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['股东', '工商股东：-', '工商股东', '新三板股东：X%', '工商股东：X%', '十大股东：X%', '投资人'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['股东', '工商股东：-', '工商股东', '新三板股东：X%', '工商股东：X%', '十大股东：X%', '投资人']),
+      '11-50': createEmptySceneConfig(['股东', '工商股东：-', '工商股东', '新三板股东：X%', '工商股东：X%', '十大股东：X%', '投资人']),
+      '51-500': createEmptySceneConfig(['股东', '工商股东：-', '工商股东', '新三板股东：X%', '工商股东：X%', '十大股东：X%', '投资人']),
+    }
   },
   {
     id: 3,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '法人',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['法定代表人'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['法定代表人']),
+      '11-50': createEmptySceneConfig(['法定代表人']),
+      '51-500': createEmptySceneConfig(['法定代表人']),
+    }
   },
   {
     id: 4,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '核心管理',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['总经理', '总裁', '常务副总经理', '副总裁', '副总经理', '联席董事长'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['总经理', '总裁', '常务副总经理', '副总裁', '副总经理', '联席董事长']),
+      '11-50': createEmptySceneConfig(['总经理', '总裁', '常务副总经理', '副总裁', '副总经理', '联席董事长']),
+      '51-500': createEmptySceneConfig(['总经理', '总裁', '常务副总经理', '副总裁', '副总经理', '联席董事长']),
+    }
   },
   {
     id: 5,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '经营管理',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['总会计师', '理事长', '执行监事', '财务负责人', '财务总监', '负责人', '经营者', '经理', '内审负责人'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['总会计师', '理事长', '执行监事', '财务负责人', '财务总监', '负责人', '经营者', '经理', '内审负责人']),
+      '11-50': createEmptySceneConfig(['总会计师', '理事长', '执行监事', '财务负责人', '财务总监', '负责人', '经营者', '经理', '内审负责人']),
+      '51-500': createEmptySceneConfig(['总会计师', '理事长', '执行监事', '财务负责人', '财务总监', '负责人', '经营者', '经理', '内审负责人']),
+    }
   },
   {
     id: 6,
-    categoryName: '',
+    categoryName: '机构隶属',
     name: '机构隶属',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['分支机构'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['分支机构']),
+      '11-50': createEmptySceneConfig(['分支机构']),
+      '51-500': createEmptySceneConfig(['分支机构']),
+    }
   },
   {
     id: 7,
-    categoryName: '',
+    categoryName: '其他',
     name: '涉诉关联',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['在X份裁判文书中为同一方'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['在X份裁判文书中为同一方']),
+      '11-50': createEmptySceneConfig(['在X份裁判文书中为同一方']),
+      '51-500': createEmptySceneConfig(['在X份裁判文书中为同一方']),
+    }
   },
   {
     id: 8,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '联系方式相同',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['有相同的邮箱', '有相同的电话号码', '有相同的地址'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['有相同的邮箱', '有相同的电话号码', '有相同的地址']),
+      '11-50': createEmptySceneConfig(['有相同的邮箱', '有相同的电话号码', '有相同的地址']),
+      '51-500': createEmptySceneConfig(['有相同的邮箱', '有相同的电话号码', '有相同的地址']),
+    }
   },
   {
     id: 9,
-    categoryName: '',
+    categoryName: '人员关系',
     name: '知识产权公有',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['共同拥有X份软件著作权', '共同拥有X份专利'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['共同拥有X份软件著作权', '共同拥有X份专利']),
+      '11-50': createEmptySceneConfig(['共同拥有X份软件著作权', '共同拥有X份专利']),
+      '51-500': createEmptySceneConfig(['共同拥有X份软件著作权', '共同拥有X份专利']),
+    }
   },
   {
     id: 10,
-    categoryName: '',
+    categoryName: '其他',
     name: '其他',
-    scene: '2-10家',
-    metaType: '普通元数据',
-    relatedMeta: ['其它', '其他'],
-    equityRange: '--'
+    configs: {
+      '2-10': createEmptySceneConfig(['其它', '其他']),
+      '11-50': createEmptySceneConfig(['其它', '其他']),
+      '51-500': createEmptySceneConfig(['其它', '其他']),
+    }
   }
 ];
 
 const Component = function OperationTemplateMgmt() {
-  const [platform, setPlatform] = useState('平台abc');
-  const [orgCode] = useState('0001');
-  const [parentOrg] = useState('-');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [relationModalOpen, setRelationModalOpen] = useState(false);
   const [relations, setRelations] = useState<EnterpriseRelation[]>(DEFAULT_RELATIONS);
-  const [activeTab, setActiveTab] = useState('2-10');
 
-  const handleRelatedMetaChange = (relationId: number, values: string[]) => {
+  const getRelationDepth = (record: EnterpriseRelation): number => {
+    if (!record.parentId) return 0;
+    const parent = relations.find(item => item.id === record.parentId);
+    return parent ? getRelationDepth(parent) + 1 : 0;
+  };
+
+  const relationRows = useMemo<RelationViewRow[]>(() => {
+    const rows: RelationViewRow[] = [];
+    relations.forEach(relation => {
+      const depth = getRelationDepth(relation);
+      SCENE_KEYS.forEach((sceneKey, index) => {
+        rows.push({
+          key: `${relation.id}-${sceneKey}`,
+          relationId: relation.id,
+          sceneKey,
+          isFirstScene: index === 0,
+          categoryName: relation.categoryName,
+          name: relation.name,
+          config: relation.configs[sceneKey],
+          depth,
+          relation,
+        });
+      });
+    });
+    return rows;
+  }, [relations]);
+
+  const handleSceneConfigChange = (
+    relationId: number,
+    sceneKey: string,
+    field: keyof SceneConfig,
+    value: string | string[]
+  ) => {
     setRelations(prev => prev.map(item => {
       if (item.id === relationId) {
-        return { ...item, relatedMeta: values };
+        return {
+          ...item,
+          configs: {
+            ...item.configs,
+            [sceneKey]: {
+              ...item.configs[sceneKey],
+              [field]: value,
+            },
+          },
+        };
       }
       return item;
     }));
@@ -231,10 +331,11 @@ const Component = function OperationTemplateMgmt() {
       id: Date.now(),
       categoryName: '',
       name: '新子关系',
-      scene: '2-10家',
-      metaType: '普通元数据',
-      relatedMeta: [],
-      equityRange: '--',
+      configs: {
+        '2-10': createEmptySceneConfig(),
+        '11-50': createEmptySceneConfig(),
+        '51-500': createEmptySceneConfig(),
+      },
       parentId
     };
     setRelations(prev => {
@@ -246,29 +347,57 @@ const Component = function OperationTemplateMgmt() {
     });
   };
 
-  const getRelationDepth = (record: EnterpriseRelation): number => {
-    if (!record.parentId) return 0;
-    const parent = relations.find(item => item.id === record.parentId);
-    return parent ? getRelationDepth(parent) + 1 : 0;
+  const renderMergedCell = (content: React.ReactNode, isFirstScene: boolean) => {
+    if (!isFirstScene) {
+      return { children: null, props: { rowSpan: 0 } };
+    }
+    return { children: content, props: { rowSpan: SCENE_KEYS.length } };
   };
 
-  const renderNameCell = (name: string, record: EnterpriseRelation) => {
-    const depth = getRelationDepth(record);
-    if (depth > 0) {
-      return (
+  const renderNameCell = (name: string, record: RelationViewRow) => {
+    const { depth, isFirstScene } = record;
+    if (!isFirstScene) return { children: null, props: { rowSpan: 0 } };
+    return {
+      children: (
         <div className="relation-name-cell">
-          <div className="relation-tree-connector" style={{ marginLeft: (depth - 1) * 24 }} />
+          {depth > 0 && (
+            <div className="relation-tree-connector" style={{ marginLeft: (depth - 1) * 24 }} />
+          )}
+          <Input
+            value={name}
+            onChange={(e) => handleNameChange(record.relationId, e.target.value)}
+            className="relation-name-input"
+          />
         </div>
-      );
-    }
-    return (
-      <div className="relation-name-cell">
-        <Input
-          value={name}
-          onChange={(e) => handleNameChange(record.id, e.target.value)}
-          className="relation-name-input"
+      ),
+      props: { rowSpan: SCENE_KEYS.length },
+    };
+  };
+
+  const renderCategoryCell = (categoryName: string, record: RelationViewRow) => {
+    const { depth, isFirstScene } = record;
+    if (depth > 0 || !isFirstScene) return { children: null, props: { rowSpan: 0 } };
+    return {
+      children: (
+        <Select
+          value={categoryName}
+          options={CATEGORY_OPTIONS}
+          onChange={(value) => handleCategoryNameChange(record.relationId, value)}
+          className="relation-category-select"
+          placeholder="请选择"
         />
-      </div>
+      ),
+      props: { rowSpan: SCENE_KEYS.length },
+    };
+  };
+
+  const renderActionCell = (_: any, record: RelationViewRow) => {
+    return renderMergedCell(
+      <Space direction="vertical" size={4} className="relation-action-cell">
+        <span className="template-action-link" onClick={() => handleAddChild(record.relationId)}>添加子关系</span>
+        <span className="template-action-delete" onClick={() => handleDeleteRelation(record.relationId)}>删除</span>
+      </Space>,
+      record.isFirstScene
     );
   };
 
@@ -278,50 +407,47 @@ const Component = function OperationTemplateMgmt() {
       dataIndex: 'categoryName',
       key: 'categoryName',
       width: 120,
-      render: (categoryName: string, record: EnterpriseRelation) => {
-        const depth = getRelationDepth(record);
-        if (depth > 0) return null;
-        return (
-          <Input
-            value={categoryName}
-            onChange={(e) => handleCategoryNameChange(record.id, e.target.value)}
-            className="relation-category-input"
-          />
-        );
-      },
+      render: (categoryName: string, record: RelationViewRow) => renderCategoryCell(categoryName, record),
     },
     {
       title: '企业关系名称',
       dataIndex: 'name',
       key: 'name',
-      width: 120,
-      render: (name: string, record: EnterpriseRelation) => renderNameCell(name, record),
+      width: 160,
+      render: (name: string, record: RelationViewRow) => renderNameCell(name, record),
     },
     {
       title: '所属场景',
-      dataIndex: 'scene',
-      key: 'scene',
-      width: 100,
+      dataIndex: 'sceneKey',
+      key: 'sceneKey',
+      width: 90,
+      render: (sceneKey: string) => SCENE_LABELS[sceneKey],
     },
     {
       title: '元数据类型',
-      dataIndex: 'metaType',
+      dataIndex: 'config',
       key: 'metaType',
-      width: 120,
-      render: (value: string) => (
-        <Select value={value} options={[{ label: '普通元数据', value: '普通元数据' }]} className="relation-meta-select" />
+      width: 140,
+      render: (config: SceneConfig, record: RelationViewRow) => (
+        <Select
+          value={config.metaType}
+          options={META_TYPE_OPTIONS}
+          onChange={(value) => handleSceneConfigChange(record.relationId, record.sceneKey, 'metaType', value)}
+          className="relation-meta-select"
+        />
       ),
     },
     {
       title: '关联元数据',
-      dataIndex: 'relatedMeta',
+      dataIndex: 'config',
       key: 'relatedMeta',
-      render: (values: string[], record: EnterpriseRelation) => (
+      width: 240,
+      render: (config: SceneConfig, record: RelationViewRow) => (
         <Select
           mode="multiple"
-          value={values}
+          value={config.relatedMeta}
           options={RELATED_META_OPTIONS}
-          onChange={(changedValues) => handleRelatedMetaChange(record.id, changedValues)}
+          onChange={(values) => handleSceneConfigChange(record.relationId, record.sceneKey, 'relatedMeta', values)}
           className="relation-meta-multi-select"
           placeholder="请选择"
           allowClear
@@ -330,9 +456,17 @@ const Component = function OperationTemplateMgmt() {
     },
     {
       title: '股权区间',
-      dataIndex: 'equityRange',
+      dataIndex: 'config',
       key: 'equityRange',
       width: 100,
+      render: (config: SceneConfig, record: RelationViewRow) => (
+        <Input
+          value={config.equityRange}
+          onChange={(e) => handleSceneConfigChange(record.relationId, record.sceneKey, 'equityRange', e.target.value)}
+          className="relation-equity-input"
+          placeholder="--"
+        />
+      ),
     },
     {
       title: (
@@ -344,13 +478,8 @@ const Component = function OperationTemplateMgmt() {
         </span>
       ),
       key: 'action',
-      width: 80,
-      render: (_: any, record: EnterpriseRelation) => (
-        <Space direction="vertical" size={4} className="relation-action-cell">
-          <span className="template-action-link" onClick={() => handleAddChild(record.id)}>添加子关系</span>
-          <span className="template-action-delete" onClick={() => handleDeleteRelation(record.id)}>删除</span>
-        </Space>
-      ),
+      width: 90,
+      render: renderActionCell,
     },
   ];
 
@@ -381,12 +510,6 @@ const Component = function OperationTemplateMgmt() {
       ),
     },
     {
-      title: '检测层级',
-      dataIndex: 'level',
-      key: 'level',
-      render: (level: number) => `${level}层`,
-    },
-    {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
@@ -408,15 +531,14 @@ const Component = function OperationTemplateMgmt() {
 
   return (
     <OperationAdminLayout
-      activeMenuKey="config_mgmt"
+      activeMenuKey="template_mgmt"
+      defaultOpenKeys={['config_mgmt']}
+      menuItems={MENU_ITEMS}
       breadcrumbItems={[
         { label: '配置管理' },
         { label: '模板管理', active: true }
       ]}
-      platform={platform}
-      orgCode={orgCode}
-      parentOrg={parentOrg}
-      onPlatformChange={setPlatform}
+      showOrgBar={false}
     >
       <div className="operation-template-mgmt-page">
         {/* 统计信息 */}
@@ -475,27 +597,17 @@ const Component = function OperationTemplateMgmt() {
           <Button key="close" onClick={() => setRelationModalOpen(false)}>关闭</Button>,
           <Button key="save" type="primary" onClick={() => setRelationModalOpen(false)}>保存</Button>
         ]}
-        width={960}
+        width={1000}
         className="enterprise-relation-modal"
         closeIcon={<CloseOutlined />}
       >
-        <Tabs
-          activeKey={activeTab}
-          onChange={setActiveTab}
-          items={[
-            { key: '2-10', label: '2-10家' },
-            { key: '11-50', label: '11-50家' },
-            { key: '51-500', label: '51-500家' }
-          ]}
-          className="enterprise-relation-tabs"
-        />
         <div className="enterprise-relation-add">
           <Button type="link" icon={<PlusOutlined />}>新增企业关系</Button>
         </div>
         <Table
           className="enterprise-relation-table"
-          dataSource={relations}
-          rowKey="id"
+          dataSource={relationRows}
+          rowKey="key"
           columns={relationColumns}
           pagination={false}
           bordered

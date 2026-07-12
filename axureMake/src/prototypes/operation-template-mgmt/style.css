@@ -94,10 +94,6 @@
   padding: 16px 24px 24px;
 }
 
-.enterprise-relation-tabs .ant-tabs-nav {
-  margin-bottom: 16px;
-}
-
 .enterprise-relation-add {
   margin-bottom: 12px;
 }
@@ -115,7 +111,7 @@
   width: 100%;
 }
 
-.relation-category-input {
+.relation-category-select {
   width: 100%;
 }
 
@@ -175,4 +171,8 @@
   margin-left: 4px;
   color: #999;
   font-size: 12px;
+}
+
+.relation-equity-input {
+  width: 100%;
 }

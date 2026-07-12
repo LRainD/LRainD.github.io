@@ -9,20 +9,12 @@ import type { ColumnsType } from 'antd/es/table';
 import logoImage from '../../../assets/media/集采工作台logo图标.png';
 import {
   Home,
-  UserPlus,
-  ShoppingCart,
   Store,
   ChevronDown,
   ChevronUp,
   Calendar,
   Gavel,
-  Users,
-  FileCheck,
-  ShieldCheck,
-  Wallet,
-  Shield,
-  ChevronsLeft,
-  ChevronsRight,
+  Menu,
   Search,
   Building2,
   ListVideo,
@@ -123,8 +115,8 @@ const Component = () => {
         {
           title: '整改进展情况',
           dataIndex: 'progress',
-          ellipsis: true,
           width: 180,
+          onCell: () => ({ style: { whiteSpace: 'normal', wordBreak: 'break-all' } }),
         },
         {
           title: '追责人次',
@@ -143,9 +135,9 @@ const Component = () => {
     },
   ];
 
-  const renderSidebarItem = (icon: React.ReactNode, label: string, active?: boolean) => (
+  const renderSidebarItem = (label: string, icon?: React.ReactNode, active?: boolean) => (
     <div className={`px-4 py-2 cursor-pointer flex items-center group relative ${active ? 'nav-item-active' : 'hover:bg-white/10'}`}>
-      {icon}
+      {icon ? icon : <span className="w-[18px] h-[18px] flex-shrink-0" />}
       <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>{label}</span>
       {isSidebarCollapsed && (
         <div className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">{label}</div>
@@ -161,9 +153,9 @@ const Component = () => {
           <img src={logoImage} alt="集采工作台" className="h-8" />
         </div>
         <nav className="flex-1 overflow-y-auto py-2 text-sm custom-scrollbar">
-          {renderSidebarItem(<Home className="w-[18px] h-[18px] flex-shrink-0" />, '首页')}
-          {renderSidebarItem(<UserPlus className="w-[18px] h-[18px] flex-shrink-0" />, '权限申请菜单测试')}
-          {renderSidebarItem(<ShoppingCart className="w-[18px] h-[18px] flex-shrink-0" />, '采购列表')}
+          {renderSidebarItem('首页', <Home className="w-[18px] h-[18px] flex-shrink-0" />)}
+          {renderSidebarItem('权限申请菜单测试')}
+          {renderSidebarItem('采购列表')}
           <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center group relative">
             <Store className="w-[18px] h-[18px] flex-shrink-0" />
             <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>分供商管理</span>
@@ -174,7 +166,7 @@ const Component = () => {
             <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>采购计划管理</span>
             {!isSidebarCollapsed && <ChevronDown className="w-4 h-4 ml-auto" />}
           </div>
-          <div className="bg-black/10 pb-1">
+          <div>
             <div className="px-4 py-2 hover:bg-white/10 cursor-pointer flex items-center group relative">
               <Gavel className="w-[18px] h-[18px] flex-shrink-0" />
               <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>招标采购</span>
@@ -182,33 +174,30 @@ const Component = () => {
             </div>
             {!isSidebarCollapsed && (
               <>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">待采购任务</div>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">招标/采购稽查</div>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">集中资格预审列表</div>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">招标列表</div>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer nav-item-active font-medium">非招标采购</div>
-                <div className="pl-12 pr-4 py-2 text-xs opacity-80 hover:text-white hover:bg-white/5 cursor-pointer">采购列表</div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-90 hover:text-white hover:bg-white/5 cursor-pointer">待采购任务</div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-90 hover:text-white hover:bg-white/5 cursor-pointer">招标/采购稽查</div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-90 hover:text-white hover:bg-white/5 cursor-pointer">集中资格预审列表</div>
+                <div className="pl-12 pr-4 py-2 text-xs text-white nav-item-active font-medium cursor-pointer">招标列表</div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-90 hover:text-white hover:bg-white/5 cursor-pointer">非招标采购</div>
+                <div className="pl-12 pr-4 py-2 text-xs opacity-90 hover:text-white hover:bg-white/5 cursor-pointer">采购列表</div>
               </>
             )}
           </div>
-          {renderSidebarItem(<Users className="w-[18px] h-[18px] flex-shrink-0" />, '推荐人管理')}
-          {renderSidebarItem(<FileCheck className="w-[18px] h-[18px] flex-shrink-0" />, '评标/评审专家列表')}
-          {renderSidebarItem(<ShieldCheck className="w-[18px] h-[18px] flex-shrink-0" />, '厂家直签审核')}
-          {renderSidebarItem(<Wallet className="w-[18px] h-[18px] flex-shrink-0" />, '投标/响应保证金管理')}
-          {renderSidebarItem(<Shield className="w-[18px] h-[18px] flex-shrink-0" />, '履约保证金管理')}
+          {renderSidebarItem('推荐人管理')}
+          {renderSidebarItem('评标/评审列表')}
+          {renderSidebarItem('厂家直签审核')}
+          {renderSidebarItem('投标/响应保证金管理')}
+          {renderSidebarItem('履约保证金管理')}
+          {renderSidebarItem('评标/评审专家库')}
+          {renderSidebarItem('踏勘中心')}
+          {renderSidebarItem('招标采购推送列表')}
         </nav>
         <div
-          className="p-4 border-t border-white/10 flex items-center cursor-pointer hover:bg-white/10 justify-center"
+          className="px-4 py-3 border-t border-white/10 flex items-center cursor-pointer hover:bg-white/10"
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         >
-          {isSidebarCollapsed ? (
-            <ChevronsRight className="w-5 h-5" />
-          ) : (
-            <>
-              <ChevronsLeft className="w-5 h-5 mr-3" />
-              <span className="text-sm">收起菜单</span>
-            </>
-          )}
+          <Menu className="w-[18px] h-[18px] flex-shrink-0" />
+          <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${isSidebarCollapsed ? 'opacity-0 w-0 ml-0' : 'opacity-100'}`}>收起菜单</span>
         </div>
       </aside>
 

@@ -22,7 +22,7 @@ import {
   UserOutlined,
   WarningOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Select } from 'antd';
+import { Layout, Menu, Select, type MenuProps } from 'antd';
 import logoImage from '../../../assets/media/运营后台左上角logo.png';
 import './style.css';
 
@@ -78,8 +78,12 @@ export interface OperationAdminLayoutProps {
   activeMenuKey: string;
   /** 默认展开的左侧菜单组 key */
   defaultOpenKeys?: string[];
+  /** 自定义左侧菜单项，默认使用 DEFAULT_MENU_ITEMS */
+  menuItems?: MenuProps['items'];
   /** 面包屑数据 */
   breadcrumbItems?: BreadcrumbItem[];
+  /** 是否显示顶部机构信息栏（平台下拉、机构编码、上级组织） */
+  showOrgBar?: boolean;
   /** 机构选择值 */
   platform?: string;
   /** 机构编码 */
@@ -98,7 +102,9 @@ const Component = function OperationAdminLayout(props: OperationAdminLayoutProps
   const {
     activeMenuKey,
     defaultOpenKeys = ['solution'],
+    menuItems = DEFAULT_MENU_ITEMS,
     breadcrumbItems = [],
+    showOrgBar = true,
     platform = '平台abc',
     orgCode = '0001',
     parentOrg = '-',
@@ -125,7 +131,7 @@ const Component = function OperationAdminLayout(props: OperationAdminLayoutProps
           mode="inline"
           selectedKeys={[activeMenuKey]}
           defaultOpenKeys={defaultOpenKeys}
-          items={DEFAULT_MENU_ITEMS}
+          items={menuItems}
           className="operation-admin-menu"
         />
         <div className="operation-admin-collapse" onClick={() => setCollapsed(!collapsed)}>
@@ -170,29 +176,31 @@ const Component = function OperationAdminLayout(props: OperationAdminLayoutProps
         <Content className="operation-admin-content">
           <div className="operation-admin-content-inner">
             {/* 顶部信息栏 */}
-            <div className="operation-admin-org-bar">
-              <div className="operation-admin-org-select">
-                <Select
-                  value={platform}
-                  onChange={onPlatformChange}
-                  options={[
-                    { label: '平台abc', value: '平台abc' },
-                    { label: '平台xyz', value: '平台xyz' }
-                  ]}
-                  className="operation-admin-platform-select"
-                />
+            {showOrgBar && (
+              <div className="operation-admin-org-bar">
+                <div className="operation-admin-org-select">
+                  <Select
+                    value={platform}
+                    onChange={onPlatformChange}
+                    options={[
+                      { label: '平台abc', value: '平台abc' },
+                      { label: '平台xyz', value: '平台xyz' }
+                    ]}
+                    className="operation-admin-platform-select"
+                  />
+                </div>
+                <div className="operation-admin-org-details">
+                  <span className="operation-admin-org-item">
+                    <span className="operation-admin-org-label">机构编码：</span>
+                    <span className="operation-admin-org-value">{orgCode}</span>
+                  </span>
+                  <span className="operation-admin-org-item">
+                    <span className="operation-admin-org-label">上级组织：</span>
+                    <span className="operation-admin-org-value">{parentOrg}</span>
+                  </span>
+                </div>
               </div>
-              <div className="operation-admin-org-details">
-                <span className="operation-admin-org-item">
-                  <span className="operation-admin-org-label">机构编码：</span>
-                  <span className="operation-admin-org-value">{orgCode}</span>
-                </span>
-                <span className="operation-admin-org-item">
-                  <span className="operation-admin-org-label">上级组织：</span>
-                  <span className="operation-admin-org-value">{parentOrg}</span>
-                </span>
-              </div>
-            </div>
+            )}
 
             {/* 页面自定义内容 */}
             {children}

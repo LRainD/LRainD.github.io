@@ -19,7 +19,9 @@
 |------|------|----------|--------|------|
 | activeMenuKey | `string` | 是 | - | 当前选中的左侧菜单 key |
 | defaultOpenKeys | `string[]` | 否 | `['solution']` | 默认展开的左侧菜单组 key |
+| menuItems | `MenuProps['items']` | 否 | `DEFAULT_MENU_ITEMS` | 自定义左侧菜单项，未传入时使用内置默认菜单 |
 | breadcrumbItems | `{ label: string; active?: boolean }[]` | 否 | `[]` | 面包屑路径项，最后一项可标记 active |
+| showOrgBar | `boolean` | 否 | `true` | 是否显示顶部机构信息栏（平台下拉、机构编码、上级组织） |
 | platform | `string` | 否 | `'平台abc'` | 顶部机构选择值 |
 | orgCode | `string` | 否 | `'0001'` | 机构编码 |
 | parentOrg | `string` | 否 | `'-'` | 上级组织 |
