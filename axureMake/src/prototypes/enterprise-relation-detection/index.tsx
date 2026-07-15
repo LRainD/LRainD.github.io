@@ -26,6 +26,7 @@ interface DetectionRecord {
   relation: string;
   startTime: string;
   quotaUsage: string;
+  initiator: string;
 }
 
 const mockData: DetectionRecord[] = [
@@ -35,7 +36,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026041400001669970',
     relation: '存在企业关联关系的企业：2家',
     startTime: '2026-04-14 20:47:37',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '2',
@@ -43,7 +45,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026041400001691227',
     relation: '存在企业关联关系的企业：0家',
     startTime: '2026-04-14 20:43:08',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '3',
@@ -51,7 +54,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026040900001370209',
     relation: '存在企业关联关系的企业：3家',
     startTime: '2026-04-09 19:51:44',
-    quotaUsage: '消耗企业关联检测额度：3家'
+    quotaUsage: '消耗企业关联检测额度：3家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '4',
@@ -59,7 +63,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026040900001345745',
     relation: '存在企业关联关系的企业：0家',
     startTime: '2026-04-09 19:19:50',
-    quotaUsage: '消耗企业关联检测额度：3家'
+    quotaUsage: '消耗企业关联检测额度：3家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '5',
@@ -67,7 +72,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD202604080000150135',
     relation: '存在企业关联关系的企业：-家',
     startTime: '2026-04-08 11:11:46',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '6',
@@ -75,7 +81,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD202604070000130726',
     relation: '存在企业关联关系的企业：-家',
     startTime: '2026-04-07 17:53:23',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '7',
@@ -83,7 +90,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026012000001357416',
     relation: '存在企业关联关系的企业：2家',
     startTime: '2026-03-30 17:49:00',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '8',
@@ -91,7 +99,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD202601190000235234',
     relation: '存在企业关联关系的企业：-家',
     startTime: '2026-01-20 16:26:24',
-    quotaUsage: '消耗企业关联检测额度：50家'
+    quotaUsage: '消耗企业关联检测额度：50家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '9',
@@ -99,7 +108,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD2026011300001242446',
     relation: '存在企业关联关系的企业：2家',
     startTime: '2026-01-13 18:10:05',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   },
   {
     id: '10',
@@ -107,7 +117,8 @@ const mockData: DetectionRecord[] = [
     detectNo: 'AAD202601130000100150',
     relation: '存在企业关联关系的企业：2家',
     startTime: '2026-01-13 18:06:50',
-    quotaUsage: '消耗企业关联检测额度：2家'
+    quotaUsage: '消耗企业关联检测额度：2家',
+    initiator: 'jctest1 (jctest1)'
   }
 ];
 
@@ -140,8 +151,8 @@ export default function EnterpriseRelationDetection() {
       };
     }
     return {
-      text: 'text-[#FF4D4F]',
-      label: '检测超时'
+      text: 'text-[#1677FF]',
+      label: '检测中'
     };
   };
 
@@ -296,6 +307,7 @@ export default function EnterpriseRelationDetection() {
                     <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">状态</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">检测发起时间</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">权益使用</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">发起人</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[#262626]">操作</th>
                   </tr>
                 </thead>
@@ -329,12 +341,10 @@ export default function EnterpriseRelationDetection() {
                             /^\d+$/.test(part) ? <span key={i} className="text-[#1677FF]">{part}</span> : part
                           )}
                         </td>
+                        <td className="px-4 py-3 text-sm text-[#595959]">{record.initiator}</td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <button className="text-sm text-[#1677FF] hover:underline">查看结果</button>
-                            {record.status === 'timeout' && (
-                              <button className="text-sm text-[#1677FF] hover:underline">重新检测</button>
-                            )}
                           </div>
                         </td>
                       </tr>

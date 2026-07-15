@@ -1,0 +1,89 @@
+.operation-template-mgmt-page {
+  background: #fff;
+  padding: 16px;
+}
+
+/* 工具栏 */
+.enterprise-relation-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.enterprise-relation-toolbar .ant-btn-link {
+  padding-left: 0;
+}
+
+/* 企业关系配置表格 */
+.enterprise-relation-table .ant-table-cell {
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.relation-name-input {
+  width: 100%;
+}
+
+.relation-category-select {
+  width: 100%;
+}
+
+.relation-meta-select {
+  width: 100%;
+}
+
+.relation-meta-multi-select {
+  width: 100%;
+}
+
+.relation-meta-multi-select .ant-select-selector {
+  min-height: 32px;
+  padding: 2px 4px;
+}
+
+.relation-meta-multi-select .ant-select-selection-item {
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  color: #333;
+  font-size: 12px;
+}
+
+.relation-action-help {
+  margin-left: 4px;
+  color: #999;
+  font-size: 12px;
+}
+
+.relation-risk-level-select {
+  width: 100%;
+}
+
+.relation-hover-desc-input {
+  width: 100%;
+}
+
+/* 操作列 */
+.template-action-cell {
+  flex-wrap: wrap;
+}
+
+.template-action-link {
+  color: #1890ff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.template-action-link:hover {
+  color: #40a9ff;
+}
+
+.template-action-delete {
+  color: #f5222d;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.template-action-delete:hover {
+  color: #ff4d4f;
+}
