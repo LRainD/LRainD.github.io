@@ -27,12 +27,35 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>1.8</java.version>
+		<!-- LangChain4j 要求 JDK 11+，这里使用 JDK 17 -->
+		<java.version>17</java.version>
+		<langchain4j.version>0.36.0</langchain4j.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- LangChain4j 核心 Spring Boot Starter：自动装配 ChatModel、EmbeddingModel 等 -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-spring-boot-starter</artifactId>
+			<version>${langchain4j.version}</version>
+		</dependency>
+
+		<!-- LangChain4j OpenAI 适配器：用于调用 GPT 系列模型 -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
+			<version>${langchain4j.version}</version>
+		</dependency>
+
+		<!-- 本地 Embedding 模型（BGE small zh v1.5），用于 RAG 向量检索示例 -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-embeddings-bge-small-zh-v15</artifactId>
+			<version>${langchain4j.version}</version>
 		</dependency>
 
 		<dependency>
