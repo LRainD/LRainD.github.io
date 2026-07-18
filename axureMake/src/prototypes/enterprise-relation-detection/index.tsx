@@ -14,7 +14,9 @@ import {
   Bell,
   User,
   ChevronDown,
-  Menu
+  Menu,
+  Calendar,
+  ArrowRight
 } from 'lucide-react';
 import logoImage from '../../../assets/media/image.png';
 import './style.css';
@@ -139,9 +141,46 @@ const serviceItems = [
 export default function EnterpriseRelationDetection() {
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const totalItems = 19;
+  const [detectNo, setDetectNo] = useState('');
+  const [searchNo, setSearchNo] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [searchStartDate, setSearchStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [searchEndDate, setSearchEndDate] = useState('');
+  const [startDateFocused, setStartDateFocused] = useState(false);
+  const [endDateFocused, setEndDateFocused] = useState(false);
   const pageSize = 10;
-  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const filteredData = mockData.filter((record) => {
+    const matchNo = record.detectNo.toLowerCase().includes(searchNo.toLowerCase());
+    const recordDate = record.startTime.split(' ')[0];
+    const matchStart = !searchStartDate || recordDate >= searchStartDate;
+    const matchEnd = !searchEndDate || recordDate <= searchEndDate;
+    return matchNo && matchStart && matchEnd;
+  });
+  const totalItems = filteredData.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleSearch = () => {
+    setSearchNo(detectNo.trim());
+    setSearchStartDate(startDate);
+    setSearchEndDate(endDate);
+    setCurrentPage(1);
+  };
+
+  const handleReset = () => {
+    setDetectNo('');
+    setSearchNo('');
+    setStartDate('');
+    setSearchStartDate('');
+    setEndDate('');
+    setSearchEndDate('');
+    setCurrentPage(1);
+  };
 
   const getStatusStyle = (status: string) => {
     if (status === 'completed') {
@@ -289,12 +328,66 @@ export default function EnterpriseRelationDetection() {
 
       {/* 主内容区 */}
       <main className={`flex-1 ${sidebarCollapsed ? 'ml-16' : 'ml-[200px]'} transition-all duration-300`}>
-        <div className="p-6">
+        <div className="p-6 space-y-4">
+          {/* 筛选条件 */}
+          <div className="bg-white rounded-lg shadow-sm border border-[#F0F0F0] p-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4 flex-wrap">
+                <label className="text-sm text-[#262626]">检测编号</label>
+                <input
+                  type="text"
+                  value={detectNo}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDetectNo(e.target.value)}
+                  onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSearch()}
+                  placeholder="请输入检测编号"
+                  className="w-[240px] px-3 py-1.5 text-sm border border-[#D9D9D9] rounded focus:outline-none focus:border-[#1677FF]"
+                />
+                <label className="text-sm text-[#262626]">发起时间</label>
+                <div className="flex items-center px-2 py-1.5 border border-[#D9D9D9] rounded focus-within:border-[#1677FF] bg-white">
+                  <input
+                    type={startDateFocused ? 'date' : 'text'}
+                    value={startDate}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStartDate(e.target.value)}
+                    onFocus={() => setStartDateFocused(true)}
+                    onBlur={() => setStartDateFocused(false)}
+                    placeholder="开始日期"
+                    className="w-[110px] text-sm outline-none text-center bg-transparent"
+                  />
+                  <ArrowRight className="w-4 h-4 text-[#8C8C8C] mx-2" />
+                  <input
+                    type={endDateFocused ? 'date' : 'text'}
+                    value={endDate}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)}
+                    onFocus={() => setEndDateFocused(true)}
+                    onBlur={() => setEndDateFocused(false)}
+                    placeholder="结束日期"
+                    className="w-[110px] text-sm outline-none text-center bg-transparent"
+                  />
+                  <Calendar className="w-4 h-4 text-[#8C8C8C] ml-2" />
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleSearch}
+                  className="px-4 py-1.5 text-sm bg-[#1677FF] text-white rounded hover:bg-[#4096FF] transition-colors"
+                >
+                  查询
+                </button>
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-1.5 text-sm border border-[#D9D9D9] rounded hover:border-[#1677FF] hover:text-[#1677FF] transition-colors"
+                >
+                  重置
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* 表格区域 */}
           <div className="bg-white rounded-lg shadow-sm border border-[#F0F0F0]">
             {/* 表格右上角统计 */}
             <div className="flex justify-end px-4 pt-3 pb-2">
-              <span className="text-xs text-[#8C8C8C]">本页:10条 总计:40条</span>
+              <span className="text-xs text-[#8C8C8C]">本页:{paginatedData.length}条 总计:{totalItems}条</span>
             </div>
             {/* 表格 */}
             <div className="overflow-x-auto">
@@ -312,16 +405,17 @@ export default function EnterpriseRelationDetection() {
                   </tr>
                 </thead>
                 <tbody>
-                  {mockData.map((record, index) => {
+                  {paginatedData.map((record, index) => {
                     const statusStyle = getStatusStyle(record.status);
+                    const globalIndex = (currentPage - 1) * pageSize + index;
                     return (
                       <tr
                         key={record.id}
                         className={`border-b border-[#F0F0F0] hover:bg-[#FAFAFA] transition-colors ${
-                          index === mockData.length - 1 ? 'border-b-0' : ''
+                          index === paginatedData.length - 1 ? 'border-b-0' : ''
                         }`}
                       >
-                        <td className="px-4 py-3 text-sm text-[#595959]">{index + 1}</td>
+                        <td className="px-4 py-3 text-sm text-[#595959]">{globalIndex + 1}</td>
                         <td className="px-4 py-3 text-sm text-[#1677FF] cursor-pointer hover:underline">
                           {record.detectNo}
                         </td>

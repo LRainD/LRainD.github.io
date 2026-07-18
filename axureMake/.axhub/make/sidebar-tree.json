@@ -415,6 +415,12 @@
       "itemKey": "prototypes/rule-config"
     },
     {
+      "id": "item-prototypes-centralized-qualification-review-list",
+      "kind": "item",
+      "title": "集中资格预审列表",
+      "itemKey": "prototypes/centralized-qualification-review-list"
+    },
+    {
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
       "title": "演示原型",

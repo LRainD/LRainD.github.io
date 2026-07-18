@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1890ff;
+  --color-primary-dark: #096dd9;
+  --color-page-bg: #f0f2f5;
+  --color-sidebar: #1890ff;
+  --color-sidebar-active: rgba(255, 255, 255, 0.15);
+  --color-border-base: #d9d9d9;
+  --color-text-main: #333333;
+  --color-text-muted: #666666;
+  --color-text-secondary: #999999;
+  --color-table-header-bg: #f5f7fa;
+  --color-table-row-hover: #e6f7ff;
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+}
+
+/* Custom form controls */
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #1890ff;
+}
+
+/* Table styles */
+.qual-review-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.qual-review-table th {
+  background-color: #f5f7fa;
+  color: #333;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e8e8e8;
+  white-space: nowrap;
+}
+
+.qual-review-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  vertical-align: top;
+}
+
+.qual-review-table tbody tr:hover {
+  background-color: #e6f7ff;
+}
+
+.qual-review-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Date range input */
+.date-range-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 8px;
+  height: 32px;
+  flex: 1;
+  min-width: 0;
+}
+
+.date-range-input input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 12px;
+  color: #333;
+  width: 100%;
+  min-width: 0;
+}
+
+.date-range-input input::placeholder {
+  color: #bfbfbf;
+}
+
+/* Status tags */
+.status-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.status-default {
+  background-color: #f5f5f5;
+  color: #666;
+  border: 1px solid #d9d9d9;
+}
+
+.status-primary {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.status-success {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.status-warning {
+  background-color: #fff7e6;
+  color: #fa8c16;
+  border: 1px solid #ffd591;
+}
+
+/* Checkbox custom */
+.custom-checkbox {
+  width: 14px;
+  height: 14px;
+  accent-color: #1890ff;
+  cursor: pointer;
+}
+
+/* Sidebar menu item active indicator */
+.sidebar-sub-item-active {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-left: 3px solid #fff;
+}
