@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+/* 合同类型管理页面 */
+.contract-type-mgmt-card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px 24px;
+  min-height: calc(100vh - 86px);
+}
+
+/* 标题栏 */
+.contract-type-mgmt-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.contract-type-mgmt-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.contract-type-mgmt-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contract-search-input {
+  width: 220px;
+}
+
+.contract-search-input .ant-input {
+  font-size: 13px;
+}
+
+.contract-search-icon {
+  color: #bfbfbf;
+}
+
+.contract-add-btn {
+  background: #1677ff;
+  border-color: #1677ff;
+}
+
+.contract-add-btn:hover {
+  background: #4096ff;
+  border-color: #4096ff;
+}
+
+/* 表格 */
+.contract-type-mgmt-table {
+  font-size: 13px;
+}
+
+.contract-type-mgmt-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  color: #666;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+
+.contract-type-mgmt-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  white-space: nowrap;
+}
+
+.contract-type-mgmt-table .ant-table-tbody > tr:hover > td {
+  background: #e6f7ff;
+}
+
+/* 分类名称单元格 */
+.contract-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contract-expand-icon {
+  color: #999;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  cursor: pointer;
+}
+
+.contract-name-text {
+  color: #333;
+}
+
+/* 最近更新人 */
+.contract-updater-cell {
+  display: inline-flex;
+  align-items: center;
+}
+
+.contract-updater-avatar {
+  background: #1677ff;
+  color: #fff;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.contract-updater-name {
+  color: #333;
+}
+
+/* 操作列 */
+.contract-action-cell {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.contract-action-link {
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.contract-action-link:hover {
+  color: #1677ff;
+}
+
+.contract-action-link.active {
+  color: #1677ff;
+}
+
+.contract-action-link.danger {
+  color: #ff4d4f;
+}
+
+.contract-action-link.danger:hover {
+  color: #ff7875;
+}
+
+/* 编辑合同类型页面 */
+.contract-type-edit-card {
+  background: #fff;
+  border-radius: 4px;
+  min-height: calc(100vh - 86px);
+}
+
+/* 编辑页头部 */
+.contract-type-edit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.contract-type-edit-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contract-type-edit-logo {
+  height: 28px;
+  width: auto;
+}
+
+.contract-type-edit-header-line {
+  width: 1px;
+  height: 20px;
+  background: #e0e0e0;
+}
+
+.contract-type-edit-header-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.contract-type-edit-back-btn {
+  color: #999;
+  font-size: 16px;
+}
+
+.contract-type-edit-back-btn:hover {
+  color: #666;
+}
+
+/* 编辑页表单区域 */
+.contract-type-edit-body {
+  padding: 32px 24px;
+}
+
+.contract-type-edit-form {
+  max-width: 1200px;
+}
+
+.contract-type-edit-form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.contract-type-edit-form-item {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.contract-type-edit-form-item .ant-form-item-label {
+  padding-bottom: 8px;
+}
+
+.contract-type-edit-form-item .ant-form-item-label > label {
+  font-size: 13px;
+  color: #666;
+}
+
+.contract-type-edit-form-item .ant-form-item-label > label.ant-form-item-required::before {
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+.contract-type-edit-form-item .ant-input,
+.contract-type-edit-form-item .ant-select-selector {
+  border-radius: 4px;
+  border-color: #d9d9d9;
+}
+
+.contract-type-edit-form-item .ant-input::placeholder,
+.contract-type-edit-form-item .ant-select-selection-placeholder {
+  color: #bfbfbf;
+  font-size: 13px;
+}
+
+/* 确定按钮 */
+.contract-type-edit-submit-item {
+  margin-top: 32px;
+  margin-bottom: 0;
+}
+
+.contract-type-edit-submit-btn {
+  background: #1677ff;
+  border-color: #1677ff;
+  min-width: 88px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.contract-type-edit-submit-btn:hover {
+  background: #4096ff;
+  border-color: #4096ff;
+}
