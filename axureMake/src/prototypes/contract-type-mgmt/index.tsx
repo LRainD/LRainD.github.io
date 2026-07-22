@@ -10,7 +10,6 @@ import {
 } from '@ant-design/icons';
 import { Avatar, Button, Form, Input, Modal, Space, Table, TreeSelect } from 'antd';
 import TemplateAdminLayout from '../../components/template-admin-layout';
-import logoImage from '../../../assets/picture/云筑网带文字logo.png';
 import { ContractType, MOCK_DATA } from './mock';
 import './style.css';
 
@@ -171,7 +170,7 @@ const Component = function ContractTypeMgmt() {
       render: (_: unknown, record: ContractType) => (
         <Space size={10} className="contract-action-cell">
           <span className="contract-action-link danger" onClick={() => handleDelete(record)}>删除</span>
-          <span className="contract-action-link" onClick={() => handleAdd(record)}>新增</span>
+          <span className="contract-action-link active" onClick={() => handleAdd(record)}>新增</span>
           <span className="contract-action-link active" onClick={() => handleEdit(record)}>编辑</span>
         </Space>
       )
@@ -185,16 +184,17 @@ const Component = function ContractTypeMgmt() {
           {/* 编辑页标题栏 */}
           <div className="contract-type-edit-header">
             <div className="contract-type-edit-header-left">
-              <img src={logoImage} alt="logo" className="contract-type-edit-logo" />
-              <span className="contract-type-edit-header-line" />
-              <span className="contract-type-edit-header-title">编辑业务类型</span>
+              <span className="contract-type-edit-header-title">
+                {editMode === 'add' ? '新增应用分类' : '编辑业务类型'}
+              </span>
             </div>
             <Button
               type="text"
               className="contract-type-edit-back-btn"
-              icon={<RollbackOutlined />}
               onClick={handleBack}
-            />
+            >
+              返回<RollbackOutlined />
+            </Button>
           </div>
 
           {/* 表单区域 */}

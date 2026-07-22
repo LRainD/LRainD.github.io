@@ -21,7 +21,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "antd": "^6.1.2",
     "echarts": "^6.0.0",
-    "execa": "^9.6.1",
+    "execa": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.9.3",
@@ -30,6 +30,8 @@
     "ws": "^8.18.3"
   },
   "dependencies": {
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-react": "^1.0.6",
     "archiver": "^7.0.1",
     "extract-zip": "^2.0.1",
     "formidable": "^3.5.4",

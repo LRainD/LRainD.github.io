@@ -1,0 +1,519 @@
+@import "tailwindcss";
+
+/* 应用字段配置页面 */
+.app-field-config-card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px 24px;
+  min-height: calc(100vh - 86px);
+}
+
+/* 页面头部 */
+.app-field-config-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.app-field-config-header-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-field-config-app-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.app-field-config-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.app-field-config-back {
+  flex-shrink: 0;
+  height: 32px;
+  font-size: 13px;
+  color: #666;
+  border-color: #d9d9d9;
+  border-radius: 4px;
+}
+
+.app-field-config-back:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+/* Tabs */
+.app-field-config-tabs {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.app-field-config-tab {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  padding-bottom: 10px;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.app-field-config-tab:hover {
+  color: #333;
+}
+
+.app-field-config-tab.active {
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.app-field-config-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #1677ff;
+  border-radius: 2px 2px 0 0;
+}
+
+/* 表格 */
+.app-field-config-table {
+  font-size: 13px;
+}
+
+.app-field-config-table .ant-table-container {
+  border-radius: 4px;
+}
+
+.app-field-config-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  color: #333;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-color: #f0f0f0;
+  white-space: nowrap;
+}
+
+.app-field-config-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-color: #f0f0f0;
+  color: #333;
+}
+
+.app-field-config-table .ant-table-tbody > tr:hover > td {
+  background: #fafafa;
+}
+
+/* 必填标识 */
+.field-config-required::before {
+  content: '*';
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+/* 输入框 */
+.field-config-input {
+  width: 100%;
+}
+
+.field-config-input .ant-input {
+  border-radius: 4px;
+  border-color: #d9d9d9;
+  font-size: 13px;
+}
+
+.field-config-input .ant-input::placeholder {
+  color: #bfbfbf;
+}
+
+.field-config-input-disabled .ant-input {
+  background: #f5f5f5;
+  color: #999;
+  border-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.field-config-input-disabled .ant-input::placeholder {
+  color: #bfbfbf;
+}
+
+/* 选择器 */
+.field-config-select {
+  width: 100%;
+}
+
+.field-config-select .ant-select-selector {
+  border-radius: 4px;
+  border-color: #d9d9d9;
+  font-size: 13px;
+}
+
+.field-config-select .ant-select-selection-placeholder {
+  color: #bfbfbf;
+}
+
+.field-config-select-disabled .ant-select-selector {
+  background: #f5f5f5 !important;
+  color: #999 !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed;
+}
+
+.field-config-select-disabled .ant-select-selection-item {
+  color: #999;
+}
+
+.field-config-select-disabled .ant-select-arrow {
+  color: #bfbfbf;
+}
+
+/* 文字按钮 */
+.field-config-text-btn {
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 13px;
+}
+
+/* 设置/查看字段说明 */
+.field-config-set-description-btn,
+.field-config-view-description-btn,
+.field-config-set-applicable-btn,
+.field-config-set-label-btn {
+  color: #1677ff;
+}
+
+.field-config-set-description-btn:hover,
+.field-config-view-description-btn:hover,
+.field-config-set-applicable-btn:hover,
+.field-config-set-label-btn:hover {
+  color: #4096ff;
+}
+
+/* 字段标签 */
+.field-config-label-tag {
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #1677ff;
+  background: #e6f4ff;
+  border: 1px solid #91caff;
+  border-radius: 4px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 适用业务类型标签 */
+.field-config-applicable-tags {
+  row-gap: 6px;
+}
+
+.field-config-applicable-tag {
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #666;
+  background: #f5f5f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field-config-applicable-tag .ant-tag-close-icon {
+  color: #999;
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+.field-config-applicable-tag .ant-tag-close-icon:hover {
+  color: #666;
+}
+
+/* 适用业务类型选择器 */
+.field-config-applicable-tree-select {
+  width: 100%;
+}
+
+.field-config-applicable-tree-select .ant-select-selector {
+  min-height: 36px;
+  border-radius: 4px;
+  border-color: #d9d9d9;
+}
+
+/* 空值占位 */
+.field-config-empty-text {
+  color: #bfbfbf;
+  font-size: 13px;
+}
+
+/* 删除操作 */
+.field-config-delete {
+  color: #ff4d4f;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 13px;
+}
+
+.field-config-delete:hover {
+  color: #ff7875;
+}
+
+/* 删除二次确认气泡 */
+.field-config-delete-popconfirm .ant-popover-inner {
+  border-radius: 4px;
+}
+
+.field-config-delete-popconfirm .ant-popconfirm-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.field-config-delete-popconfirm .ant-popconfirm-description {
+  font-size: 13px;
+  color: #666;
+}
+
+.field-config-delete-popconfirm .ant-popconfirm-buttons .ant-btn {
+  font-size: 13px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.field-config-delete-popconfirm .ant-popconfirm-buttons .ant-btn-primary {
+  background: #ff4d4f;
+  border-color: #ff4d4f;
+}
+
+.field-config-delete-popconfirm .ant-popconfirm-buttons .ant-btn-primary:hover {
+  background: #ff7875;
+  border-color: #ff7875;
+}
+
+/* 表格 footer */
+.app-field-config-table .ant-table-footer {
+  padding: 0;
+  background: transparent;
+  border-top: none;
+}
+
+/* 添加一行 */
+.app-field-config-add-row {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #d9d9d9;
+  border-radius: 0 0 4px 4px;
+  color: #1677ff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  margin: -1px -1px -1px -1px;
+}
+
+.app-field-config-add-row:hover {
+  border-color: #1677ff;
+  background: #f0f7ff;
+}
+
+/* 底部提交 */
+.app-field-config-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.app-field-config-submit {
+  background: #1677ff;
+  border-color: #1677ff;
+  min-width: 88px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.app-field-config-submit:hover {
+  background: #4096ff;
+  border-color: #4096ff;
+}
+
+/* 富文本编辑器（WangEditor） */
+.field-config-wang-editor {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.field-config-wang-toolbar {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.field-config-wang-content {
+  min-height: 260px;
+  max-height: 360px;
+  overflow-y: hidden;
+}
+
+/* 字段说明查看 */
+.field-config-description-view {
+  min-height: 80px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  padding: 4px;
+}
+
+.field-config-description-view ul,
+.field-config-description-view ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+.field-config-description-view p {
+  margin: 8px 0;
+}
+
+/* 页面切换容器 */
+.app-field-page {
+  position: relative;
+  min-height: calc(100vh - 86px);
+}
+
+.app-field-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+}
+
+.app-field-view.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  position: relative;
+}
+
+/* 系统字段-应用列表 */
+.system-field-app-list-card {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px 24px;
+  min-height: calc(100vh - 86px);
+}
+
+/* 标题栏 */
+.system-field-app-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.system-field-app-list-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+/* 表格 */
+.system-field-app-list-table {
+  font-size: 13px;
+}
+
+.system-field-app-list-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  color: #666;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+
+.system-field-app-list-table .ant-table-tbody > tr > td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.system-field-app-list-table .ant-table-tbody > tr:hover > td {
+  background: #e6f7ff;
+}
+
+/* 最近更新人 */
+.system-field-updater-name {
+  color: #333;
+}
+
+/* 操作列 */
+.system-field-action-link {
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.system-field-action-link:hover {
+  color: #1677ff;
+}
+
+.system-field-action-link.active {
+  color: #1677ff;
+}
+
+/* 新增应用弹窗表单 */
+.system-field-add-app-form {
+  padding-top: 8px;
+}
+
+.system-field-add-app-form .ant-form-item {
+  margin-bottom: 20px;
+}
+
+.system-field-add-app-form .ant-form-item:last-child {
+  margin-bottom: 0;
+}
+
+.system-field-add-app-form .ant-form-item-label > label {
+  color: #333;
+  font-weight: 500;
+}
+
+/* 字段标签弹窗表单 */
+.field-config-label-form {
+  padding-top: 8px;
+}
+
+.field-config-label-form .ant-form-item {
+  margin-bottom: 0;
+}
+
+.field-config-label-form .ant-form-item-label > label {
+  color: #333;
+  font-weight: 500;
+}

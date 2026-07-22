@@ -4,10 +4,8 @@
  */
 import React from 'react';
 import {
-  ApartmentOutlined,
   FileTextOutlined,
-  SettingOutlined,
-  TeamOutlined
+  SettingOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Tag, type MenuProps } from 'antd';
 import logoImage from '../../../assets/picture/云筑网带文字logo.png';
@@ -17,10 +15,8 @@ const { Sider, Content } = Layout;
 
 // 范本系统管理后台左侧菜单默认数据
 export const DEFAULT_MENU_ITEMS: MenuProps['items'] = [
-  { key: 'org_structure', icon: <ApartmentOutlined />, label: '组织架构' },
-  { key: 'members_depts', icon: <TeamOutlined />, label: '成员与部门' },
   { key: 'contract_type', icon: <FileTextOutlined />, label: '业务类型' },
-  { key: 'global_settings', icon: <SettingOutlined />, label: '全局设置' }
+  { key: 'system_fields', icon: <SettingOutlined />, label: '系统字段' }
 ];
 
 export interface TabItem {

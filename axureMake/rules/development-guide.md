@@ -50,23 +50,6 @@ src/
 
 ## 验收流程
 
-### 1. 运行验收脚本
-
-```bash
-node scripts/check-app-ready.mjs /components/[组件目录]
-# 或
-node scripts/check-app-ready.mjs /prototypes/[原型目录]
-```
-
-关键返回字段：
-- `status`: `READY` / `ERROR` / `TIMEOUT`
-- `targetUrl`: 本次验收目标地址
-- `errors`: 构建/运行时/页面加载错误列表
-
-### 2. 错误处理
-
-当状态为 `ERROR`：按 `errors` 修复后重新执行验收脚本，直到通过。
-
 ## 验收清单（提交前）
 
 - [ ] `index.tsx` 与 `spec.md` 完整存在
