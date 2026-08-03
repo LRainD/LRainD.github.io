@@ -1,12 +1,9 @@
 /**
  * @name 应用字段配置
  */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Modal, Popconfirm, Select, Space, Table, Tag, TreeSelect } from 'antd';
-import type { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
-import { Editor, Toolbar } from '@wangeditor/editor-for-react';
-import '@wangeditor/editor/dist/css/style.css';
 import TemplateAdminLayout from '../../components/template-admin-layout';
 import {
   APP_MOCK_DATA,
@@ -46,15 +43,8 @@ const Component = function AppFieldConfig() {
   const [labelModalVisible, setLabelModalVisible] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<FieldConfigItem | null>(null);
   const [selectedApplicableTypes, setSelectedApplicableTypes] = useState<string[]>([]);
-
-  const [editor, setEditor] = useState<IDomEditor | null>(null);
-  const [editorHtml, setEditorHtml] = useState('');
+  const [descriptionValue, setDescriptionValue] = useState('');
   const [labelForm] = Form.useForm();
-
-  const toolbarConfig: Partial<IToolbarConfig> = {};
-  const editorConfig: Partial<IEditorConfig> = {
-    placeholder: '请输入字段说明…'
-  };
 
   const treeMeta = useMemo(() => {
     const nodeMap = new Map<string, BusinessTypeNode>();
@@ -74,14 +64,6 @@ const Component = function AppFieldConfig() {
     walk(BUSINESS_TYPE_TREE);
     return { nodeMap, parentMap, pathMap };
   }, []);
-
-  useEffect(() => {
-    return () => {
-      if (editor == null) return;
-      editor.destroy();
-      setEditor(null);
-    };
-  }, [editor]);
 
   const handleEditApp = (record: ApplicationItem) => {
     setSelectedApp(record);
@@ -166,25 +148,36 @@ const Component = function AppFieldConfig() {
 
   const handleOpenDescriptionModal = (record: FieldConfigItem) => {
     setCurrentRecord(record);
-    setEditorHtml(record.description || '');
+    setDescriptionValue(record.description || '');
     setDescriptionModalVisible(true);
   };
 
   const handleSaveDescription = () => {
     if (!currentRecord) return;
     setData(prev =>
-      prev.map(item => (item.key === currentRecord.key ? { ...item, description: editorHtml } : item))
+      prev.map(item => (item.key === currentRecord.key ? { ...item, description: descriptionValue } : item))
     );
     setDescriptionModalVisible(false);
     setCurrentRecord(null);
-    setEditorHtml('');
+    setDescriptionValue('');
     message.success('保存成功');
   };
 
   const handleCancelDescription = () => {
     setDescriptionModalVisible(false);
     setCurrentRecord(null);
-    setEditorHtml('');
+    setDescriptionValue('');
+  };
+
+  const handleDeleteDescription = () => {
+    if (!currentRecord) return;
+    setData(prev =>
+      prev.map(item => (item.key === currentRecord.key ? { ...item, description: '' } : item))
+    );
+    setDescriptionModalVisible(false);
+    setCurrentRecord(null);
+    setDescriptionValue('');
+    message.success('删除成功');
   };
 
   const handleOpenViewModal = (record: FieldConfigItem) => {
@@ -642,29 +635,40 @@ const Component = function AppFieldConfig() {
       <Modal
         title="设置字段说明"
         open={descriptionModalVisible}
-        onOk={handleSaveDescription}
         onCancel={handleCancelDescription}
-        okText="保存"
-        cancelText="取消"
-        width={960}
+        footer={
+          <div className="field-config-description-modal-footer">
+            <Popconfirm
+              title="确认删除"
+              description="是否确认删除该字段说明？"
+              onConfirm={handleDeleteDescription}
+              okText="确认"
+              cancelText="取消"
+              placement="top"
+              overlayClassName="field-config-delete-description-popconfirm"
+            >
+              <Button danger disabled={!descriptionValue}>
+                删除
+              </Button>
+            </Popconfirm>
+            <Space>
+              <Button onClick={handleCancelDescription}>取消</Button>
+              <Button type="primary" onClick={handleSaveDescription}>
+                保存
+              </Button>
+            </Space>
+          </div>
+        }
+        width={640}
         maskClosable={false}
       >
-        <div className="field-config-wang-editor">
-          <Toolbar
-            editor={editor}
-            defaultConfig={toolbarConfig}
-            mode="default"
-            className="field-config-wang-toolbar"
-          />
-          <Editor
-            defaultConfig={editorConfig}
-            value={editorHtml}
-            onCreated={setEditor}
-            onChange={(editorInstance) => setEditorHtml(editorInstance.getHtml())}
-            mode="default"
-            className="field-config-wang-content"
-          />
-        </div>
+        <Input.TextArea
+          value={descriptionValue}
+          onChange={(e) => setDescriptionValue(e.target.value)}
+          placeholder="请输入字段说明"
+          rows={8}
+          className="field-config-description-textarea"
+        />
       </Modal>
 
       <Modal
@@ -674,10 +678,11 @@ const Component = function AppFieldConfig() {
         footer={null}
         width={640}
       >
-        <div
-          className="field-config-description-view"
-          dangerouslySetInnerHTML={{ __html: currentRecord?.description || '' }}
-        />
+        <div className="field-config-description-view">
+          {currentRecord?.description
+            ? currentRecord.description.replace(/<[^>]+>/g, '')
+            : '—'}
+        </div>
       </Modal>
 
       <Modal

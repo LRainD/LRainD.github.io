@@ -374,6 +374,13 @@
   overflow-y: hidden;
 }
 
+/* 设置字段说明弹窗底部 */
+.field-config-description-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* 字段说明查看 */
 .field-config-description-view {
   min-height: 80px;
