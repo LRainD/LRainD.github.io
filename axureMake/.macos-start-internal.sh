@@ -10,6 +10,13 @@ print_ai_prompt() {
   echo "AI求助：我在 macOS 启动 Axhub Make 失败，问题：${issue}，项目路径：$(pwd)。请直接带我修到 npm run dev 成功（我有安装权限），并按“每次只给我下一条可执行命令，我执行后回传结果，你再给下一条”方式直到成功。"
 }
 
+# 优先使用 nvm 管理的 Node 22（本项目依赖要求 Node >= 18.19，推荐 22）
+export NVM_DIR="$HOME/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  . "$NVM_DIR/nvm.sh" >/dev/null 2>&1
+  nvm use 22 >/dev/null 2>&1 || true
+fi
+
 echo "[1/3] 检查 Node.js、npm、Git..."
 
 missing_required_tools=()
