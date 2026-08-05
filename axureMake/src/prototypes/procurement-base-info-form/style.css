@@ -202,17 +202,17 @@
   color: #333;
 }
 
-/* AI 高亮字段：提升层级并让输入框/下拉框背景变白、边框琥珀色，避免灰蒙蒙 */
-.form-item.ai-field-highlight {
-  position: relative;
-  z-index: 50; /* 高于遮罩层(40) */
-  background-color: #ffffff !important; /* 强制背景为纯白，增强对比 */
-  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.3), 0 4px 6px -2px rgba(251, 191, 36, 0.1);
-}
-
-.dark .form-item.ai-field-highlight {
-  background-color: #1f2937 !important; /* 深色模式背景 */
-}
+/* AI 高亮字段：提升层级并保持黄色高亮，避免灰蒙蒙 */
+ .form-item.ai-field-highlight {
+   position: relative;
+   z-index: 50; /* 高于遮罩层(40) */
+   background-color: #fef9c3 !important; /* 恢复浅黄色背景 (对应 Tailwind bg-yellow-100) */
+   box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.4), 0 4px 6px -2px rgba(251, 191, 36, 0.2);
+ }
+ 
+ .dark .form-item.ai-field-highlight {
+   background-color: rgba(113, 63, 18, 0.4) !important; /* 深色模式下的暗黄色背景 */
+ }
 
 .form-item.ai-field-highlight .form-input,
 .form-item.ai-field-highlight .form-select {
