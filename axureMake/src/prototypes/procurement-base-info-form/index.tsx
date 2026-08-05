@@ -679,7 +679,7 @@ const Component = () => {
                       id="field-cooperationCategory"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'cooperationCategory'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -707,7 +707,7 @@ const Component = () => {
                       id="field-purchaseCategory"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'purchaseCategory'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -774,7 +774,7 @@ const Component = () => {
                       id="field-organizationalForm"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'organizationalForm'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -802,7 +802,7 @@ const Component = () => {
                       id="field-purchaseMode"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'purchaseMode'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -832,7 +832,7 @@ const Component = () => {
                       id="field-transactionMode"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'transactionMode'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -860,7 +860,7 @@ const Component = () => {
                       id="field-contractType"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'contractType'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -888,7 +888,7 @@ const Component = () => {
                       id="field-contractTemplate"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'contractTemplate'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >
@@ -1018,7 +1018,7 @@ const Component = () => {
                       id="field-buySell"
                       className={`form-item p-2 rounded transition-all duration-500 ${
                         currentHighlightField === 'buySell'
-                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02]'
+                          ? 'bg-yellow-100 dark:bg-yellow-900/30 ring-2 ring-yellow-400 shadow-lg scale-[1.02] ai-field-highlight'
                           : ''
                       }`}
                     >

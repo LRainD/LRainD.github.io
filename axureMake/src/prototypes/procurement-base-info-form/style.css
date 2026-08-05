@@ -202,6 +202,30 @@
   color: #333;
 }
 
+/* AI 高亮字段：提升层级并让输入框/下拉框背景变白、边框琥珀色，避免灰蒙蒙 */
+.form-item.ai-field-highlight {
+  position: relative;
+  z-index: 50; /* 高于遮罩层(40) */
+  background-color: #ffffff !important; /* 强制背景为纯白，增强对比 */
+  box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.3), 0 4px 6px -2px rgba(251, 191, 36, 0.1);
+}
+
+.dark .form-item.ai-field-highlight {
+  background-color: #1f2937 !important; /* 深色模式背景 */
+}
+
+.form-item.ai-field-highlight .form-input,
+.form-item.ai-field-highlight .form-select {
+  background-color: #ffffff !important;
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+.dark .form-item.ai-field-highlight .form-input,
+.dark .form-item.ai-field-highlight .form-select {
+  background-color: #374151 !important;
+}
+
 /* 概算金额专用：保持人民币、输入框、万在一行 */
 .amount-input-wrap {
   display: flex;
