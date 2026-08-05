@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-04T01:39:49.948Z",
+  "updatedAt": "2026-08-05T06:18:06.723Z",
   "prototypes": [
     {
       "id": "folder-1784626442209-wraztp",
@@ -373,8 +373,14 @@
         {
           "id": "item-prototypes-procurement-list-copy2-copy5",
           "kind": "item",
-          "title": "编制采购公告 引导提示1",
+          "title": "编制公告页 引导提示1",
           "itemKey": "prototypes/procurement-list-copy2-copy5"
+        },
+        {
+          "id": "item-prototypes-procurement-base-info-form",
+          "kind": "item",
+          "title": "采购基础信息",
+          "itemKey": "prototypes/procurement-base-info-form"
         }
       ]
     },
