@@ -1,0 +1,594 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx-full-deck_ppt169_20260805",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "86085d4100cd8c0ce6286cd86d54c31f34888d5d96ee0615272e6994a1973436",
+    "file_count": 24,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "00066b0accd1b6673a64af7ad20bf21a8e9808fb942428f3cc50c187260f8e65"
+      },
+      {
+        "file": "02_industry_painpoints.svg",
+        "sha256": "3e6b5da1f6b189ed9c979a962d81fdc4d8d12221dd0d452438769b9394bbf0fe"
+      },
+      {
+        "file": "03_risk_objects.svg",
+        "sha256": "d4e7b3f1b4274d3982c41fa861bbe4e3dad6213c57f1bc467824aab1164ed252"
+      },
+      {
+        "file": "04_solution_loop.svg",
+        "sha256": "fb8b35cb12a0552d73da711fac51dacb4010262cd355f611fef216ed57d54216"
+      },
+      {
+        "file": "05_data_sources.svg",
+        "sha256": "0d0af88d1943e501b93153d02749d5a4570f69f83e1721b23ba0968a3cd0bd08"
+      },
+      {
+        "file": "06_data_elements.svg",
+        "sha256": "b4e02946192928579d117f24c2383e03036fbfbe0c70f1a434b6189cc797a4e0"
+      },
+      {
+        "file": "07_business_architecture.svg",
+        "sha256": "289fb43b6019eb25bc50aa81543c8121992b92e5a4a9c3bc8a7eb850ea29d500"
+      },
+      {
+        "file": "08_technical_architecture.svg",
+        "sha256": "17fd2ee96af424e2d29dc31713fbc5cc453ce2ebeca2fde73a240be5151957ed"
+      },
+      {
+        "file": "09_dual_engine.svg",
+        "sha256": "ab6722a493611258e33833a607a1ad11bd4aa57c5cf2e43faf656d23ae5087d8"
+      },
+      {
+        "file": "10_multi_agent.svg",
+        "sha256": "7caddab5baccebcc4faea2669d80f7c2ef775c263cb54537b56c1e553cf7141c"
+      },
+      {
+        "file": "11_regulatory_loop.svg",
+        "sha256": "b8fce43090e7eabde00250f6448add2bdec3b686948fe361668ed371dfbd28f6"
+      },
+      {
+        "file": "12_evidence_audit.svg",
+        "sha256": "ffec9f92e38d3e2c43699da686b8d36fa3fbf20d8cb29f265b72c28fbec47a80"
+      },
+      {
+        "file": "13_capability_matrix.svg",
+        "sha256": "e7676db2a00e95cca60482acd67143b83e76a1bddae45b28430360bd3cf2b704"
+      },
+      {
+        "file": "14_application_scale.svg",
+        "sha256": "39f2ba35850916c194ced204210c71e27f21e69b8aab1b37acd8b7e382119567"
+      },
+      {
+        "file": "15_operational_results.svg",
+        "sha256": "e3b306b5edd05cbc81abc46b733590e402430f9964b1d52154f7cafb3433db6b"
+      },
+      {
+        "file": "16_case_clause.svg",
+        "sha256": "ecfdebf6726abeb957cbb5a4692a1c62ccd28e38b455b36d14c23de12f75f560"
+      },
+      {
+        "file": "17_case_similarity.svg",
+        "sha256": "6a724294652672424c6bb9a7be24ae44b77a016fd06923c901e2139bb83f0b14"
+      },
+      {
+        "file": "18_case_qualification.svg",
+        "sha256": "f4e54545411db17559334e1eaf11185eb8ade0039bfaa9902ff7554f08eea46e"
+      },
+      {
+        "file": "19_quantified_value.svg",
+        "sha256": "ca47ebce23e3d1c66b68b8ff346f6f3eccb74b493947c9434de3e88173c6e683"
+      },
+      {
+        "file": "20_platform_integration.svg",
+        "sha256": "1d8bdf31ab406884a770ebaccc7391f0c0ee65e62e790249e0534f6dc7a1b72b"
+      },
+      {
+        "file": "21_industry_advantage.svg",
+        "sha256": "3b77c603ce6c4b31ca2731ae535cfbfa2dc77cbe146b225d371ae5bd7bc709be"
+      },
+      {
+        "file": "22_commercialization.svg",
+        "sha256": "7b9c298b1414499418b00f9960d67b2024f7491af8cc738518009875da5729d9"
+      },
+      {
+        "file": "23_team.svg",
+        "sha256": "b2ec9508d8401a82035379bd89665c6bb994d25d4ec1c4ac381e54d2c4b79786"
+      },
+      {
+        "file": "24_summary.svg",
+        "sha256": "6504f344021e59d6fe0e4af14c82cefd107bc4a2dbc507f8cd23c0fe21fba717"
+      }
+    ]
+  },
+  "summary": {
+    "total": 24,
+    "passed": 21,
+    "warnings": 3,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 4,
+      "issues": [
+        {
+          "file": "01_cover.svg",
+          "message": "Detected 1 paragraph-like line run(s) split across sibling <text> elements (<g id=\"cover-copy\"> x=70.0, y=418.0..452.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+        },
+        {
+          "file": "02_industry_painpoints.svg",
+          "message": "Detected 1 paragraph-like line run(s) split across sibling <text> elements (<g id=\"pain-late-control\"> x=877.0, y=514.0..539.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+        },
+        {
+          "file": "02_industry_painpoints.svg",
+          "message": "20 ungrouped top-level Slide-local element(s) in svg_output (<rect> #3, <rect> #4, <rect> #5, ...); group only logical content units in a top-level <g id=\"...\">. Keep genuine static page framing as a root primitive and declare a supported data-pptx-role such as \"background\" or \"decoration\""
+        },
+        {
+          "file": "14_application_scale.svg",
+          "message": "<text> exceeds <g id=\"scope\"> data-pptx-bounds on the horizontal axis: content (980.0, 460.6)-(1233.3, 480.9), container (80.0, 390.0)-(1200.0, 590.0), overflow horizontal 3.0%, vertical 0.0%; expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Detected 1 paragraph-like line run(s) split across sibling <text> elements (<g id=\"cover-copy\"> x=70.0, y=418.0..452.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 13,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "00066b0accd1b6673a64af7ad20bf21a8e9808fb942428f3cc50c187260f8e65"
+    },
+    {
+      "file": "02_industry_painpoints.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/02_industry_painpoints.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Detected 1 paragraph-like line run(s) split across sibling <text> elements (<g id=\"pain-late-control\"> x=877.0, y=514.0..539.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate.",
+        "20 ungrouped top-level Slide-local element(s) in svg_output (<rect> #3, <rect> #4, <rect> #5, ...); group only logical content units in a top-level <g id=\"...\">. Keep genuine static page framing as a root primitive and declare a supported data-pptx-role such as \"background\" or \"decoration\""
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 46,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "3e6b5da1f6b189ed9c979a962d81fdc4d8d12221dd0d452438769b9394bbf0fe"
+    },
+    {
+      "file": "03_risk_objects.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/03_risk_objects.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 23,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "d4e7b3f1b4274d3982c41fa861bbe4e3dad6213c57f1bc467824aab1164ed252"
+    },
+    {
+      "file": "04_solution_loop.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/04_solution_loop.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 23,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "fb8b35cb12a0552d73da711fac51dacb4010262cd355f611fef216ed57d54216"
+    },
+    {
+      "file": "05_data_sources.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/05_data_sources.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 21,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "0d0af88d1943e501b93153d02749d5a4570f69f83e1721b23ba0968a3cd0bd08"
+    },
+    {
+      "file": "06_data_elements.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/06_data_elements.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 31,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "b4e02946192928579d117f24c2383e03036fbfbe0c70f1a434b6189cc797a4e0"
+    },
+    {
+      "file": "07_business_architecture.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/07_business_architecture.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 36,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "289fb43b6019eb25bc50aa81543c8121992b92e5a4a9c3bc8a7eb850ea29d500"
+    },
+    {
+      "file": "08_technical_architecture.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/08_technical_architecture.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 28,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "17fd2ee96af424e2d29dc31713fbc5cc453ce2ebeca2fde73a240be5151957ed"
+    },
+    {
+      "file": "09_dual_engine.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/09_dual_engine.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 30,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "ab6722a493611258e33833a607a1ad11bd4aa57c5cf2e43faf656d23ae5087d8"
+    },
+    {
+      "file": "10_multi_agent.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/10_multi_agent.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "7caddab5baccebcc4faea2669d80f7c2ef775c263cb54537b56c1e553cf7141c"
+    },
+    {
+      "file": "11_regulatory_loop.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/11_regulatory_loop.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 25,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "b8fce43090e7eabde00250f6448add2bdec3b686948fe361668ed371dfbd28f6"
+    },
+    {
+      "file": "12_evidence_audit.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/12_evidence_audit.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 23,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "ffec9f92e38d3e2c43699da686b8d36fa3fbf20d8cb29f265b72c28fbec47a80"
+    },
+    {
+      "file": "13_capability_matrix.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/13_capability_matrix.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 20,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "e7676db2a00e95cca60482acd67143b83e76a1bddae45b28430360bd3cf2b704"
+    },
+    {
+      "file": "14_application_scale.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/14_application_scale.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "<text> exceeds <g id=\"scope\"> data-pptx-bounds on the horizontal axis: content (980.0, 460.6)-(1233.3, 480.9), container (80.0, 390.0)-(1200.0, 590.0), overflow horizontal 3.0%, vertical 0.0%; expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "39f2ba35850916c194ced204210c71e27f21e69b8aab1b37acd8b7e382119567"
+    },
+    {
+      "file": "15_operational_results.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/15_operational_results.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 13,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "e3b306b5edd05cbc81abc46b733590e402430f9964b1d52154f7cafb3433db6b"
+    },
+    {
+      "file": "16_case_clause.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/16_case_clause.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "ecfdebf6726abeb957cbb5a4692a1c62ccd28e38b455b36d14c23de12f75f560"
+    },
+    {
+      "file": "17_case_similarity.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/17_case_similarity.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "6a724294652672424c6bb9a7be24ae44b77a016fd06923c901e2139bb83f0b14"
+    },
+    {
+      "file": "18_case_qualification.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/18_case_qualification.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 30,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "f4e54545411db17559334e1eaf11185eb8ade0039bfaa9902ff7554f08eea46e"
+    },
+    {
+      "file": "19_quantified_value.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/19_quantified_value.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 20,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "ca47ebce23e3d1c66b68b8ff346f6f3eccb74b493947c9434de3e88173c6e683"
+    },
+    {
+      "file": "20_platform_integration.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/20_platform_integration.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "1d8bdf31ab406884a770ebaccc7391f0c0ee65e62e790249e0534f6dc7a1b72b"
+    },
+    {
+      "file": "21_industry_advantage.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/21_industry_advantage.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 26,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "3b77c603ce6c4b31ca2731ae535cfbfa2dc77cbe146b225d371ae5bd7bc709be"
+    },
+    {
+      "file": "22_commercialization.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/22_commercialization.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 21,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "7b9c298b1414499418b00f9960d67b2024f7491af8cc738518009875da5729d9"
+    },
+    {
+      "file": "23_team.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/23_team.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "b2ec9508d8401a82035379bd89665c6bb994d25d4ec1c4ac381e54d2c4b79786"
+    },
+    {
+      "file": "24_summary.svg",
+      "path": "projects/zzx-full-deck_ppt169_20260805/svg_output/24_summary.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 16,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "6504f344021e59d6fe0e4af14c82cefd107bc4a2dbc507f8cd23c0fe21fba717"
+    }
+  ]
+}

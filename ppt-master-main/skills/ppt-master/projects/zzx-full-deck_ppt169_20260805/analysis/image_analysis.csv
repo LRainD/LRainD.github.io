@@ -1,0 +1,21 @@
+No,Filename,Width,Height,AspectRatio,PixelAspectRatio,SourceDisplayRatio,RatioSource,Format,HasTransparentPixels,UsageCount,DisplayRatioVariants,AssetKind,SvgRenderable,PptxNativeSupported,SizeKB,Category
+1,agent_network.png,451,362,1.25,1.25,,native,PNG,True,1,,bitmap,True,True,243.2,Standard landscape
+2,ai_engine.png,420,389,1.08,1.08,,native,PNG,True,1,,bitmap,True,True,260.2,Near square
+3,breach.png,324,341,0.95,0.95,,native,PNG,True,1,,bitmap,True,True,150.0,Near square
+4,collusion.png,432,322,1.34,1.34,,native,PNG,True,1,,bitmap,True,True,198.9,Standard landscape
+5,cover_hero.png,1536,1024,1.50,1.50,,native,PNG,False,1,,bitmap,True,True,1717.6,Standard landscape
+6,dark_operation.png,368,368,1.00,1.00,,native,PNG,True,1,,bitmap,True,True,163.0,Near square
+7,data_lake.png,451,366,1.23,1.23,,native,PNG,True,1,,bitmap,True,True,237.7,Standard landscape
+8,efficiency.png,471,480,0.98,0.98,,native,PNG,True,1,,bitmap,True,True,284.0,Near square
+9,evidence_chain.png,447,312,1.43,1.43,,native,PNG,True,1,,bitmap,True,True,193.1,Standard landscape
+10,fake_bid.png,456,366,1.25,1.25,,native,PNG,True,1,,bitmap,True,True,212.2,Standard landscape
+11,growth_path.png,408,359,1.14,1.14,,native,PNG,True,1,,bitmap,True,True,188.3,Near square
+12,knowledge_graph.png,413,352,1.17,1.17,,native,PNG,True,1,,bitmap,True,True,190.7,Near square
+13,late_control.png,602,440,1.37,1.37,,native,PNG,True,1,,bitmap,True,True,295.2,Standard landscape
+14,platform_link.png,438,370,1.18,1.18,,native,PNG,True,1,,bitmap,True,True,241.5,Near square
+15,recognition.png,490,508,0.96,0.96,,native,PNG,True,1,,bitmap,True,True,314.9,Near square
+16,risk_data_sheet.png,1536,1024,1.50,1.50,,native,PNG,False,1,,bitmap,True,True,1530.5,Standard landscape
+17,team_collaboration.png,437,346,1.26,1.26,,native,PNG,True,1,,bitmap,True,True,233.8,Standard landscape
+18,tech_value_sheet.png,1536,1024,1.50,1.50,,native,PNG,False,1,,bitmap,True,True,1686.1,Standard landscape
+19,threshold.png,538,509,1.06,1.06,,native,PNG,True,1,,bitmap,True,True,333.2,Near square
+20,第二页.png,3840,2160,1.78,1.78,,native,PNG,False,1,,bitmap,True,True,5885.0,Wide landscape

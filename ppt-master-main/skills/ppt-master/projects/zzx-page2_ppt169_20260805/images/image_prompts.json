@@ -1,0 +1,28 @@
+{
+  "project": "zzx-page2",
+  "generated_at": "2026-08-05",
+  "deck_rendering": "3d-isometric",
+  "color_scheme": {
+    "background": "#F5F9FF",
+    "secondary_bg": "#EAF3FF",
+    "primary": "#0753B8",
+    "accent": "#FF6B20",
+    "secondary_accent": "#59A6FF",
+    "body_text": "#1B2638"
+  },
+  "items": [
+    {
+      "filename": "painpoint_icons_sheet.png",
+      "purpose": "第二页四类行业痛点的四个独立视觉图标素材表，仅用于切片",
+      "page_role": "local",
+      "text_policy": "none",
+      "aspect_ratio": "1:1",
+      "image_size": "2K",
+      "slice_grid": "2x2",
+      "slice_names": "efficiency,threshold,recognition,late_control",
+      "prompt": "3D isometric illustration with clean geometric forms rendered in true 30°/30°/30° projection. All edges are crisp and uniform, with flat solid fills and restrained tonal shifts for depth, no photorealism and no glossy plastic. Use one consistent corporate technology visual family: primary deep blue #0753B8 carries the main forms, secondary light blue #59A6FF adds highlights, pale background #F5F9FF remains a single perfectly flat color, and orange #FF6B20 appears only on warning details. Create an exact 2×2 grid with clear wide gutters, each compact square object centered and fully isolated inside its own cell. Top-left: an hourglass beside a clock, representing slow manual review. Top-right: a law book, balance scale and document checklist, representing high professional threshold. Bottom-left: a stack of PDF, Word, Excel and image documents with a magnifier and hidden warning marker, representing difficult multi-format recognition. Bottom-right: a cracked shield with an orange warning triangle and a transaction flow reaching the alert too late, representing delayed risk prevention. Keep every object large enough to fill its cell, with soft subtle grounding shadows and no shared elements crossing cell boundaries. NO text of any kind anywhere in the image — no letters, numbers, document abbreviations, signs, watermarks, labels, or written symbols. Do not depict identifiable brand logos or trademarks. Color values and color names are rendering guidance only — do NOT display them as visible text anywhere in the image.",
+      "alt_text": "四个蓝色等距3D行业痛点图标：效率、门槛、识别、防控",
+      "status": "Generated"
+    }
+  ]
+}

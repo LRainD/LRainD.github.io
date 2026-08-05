@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-page-role="cover">
+  <defs><linearGradient id="cBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#032E70"/><stop offset="55%" stop-color="#0753B8"/><stop offset="100%" stop-color="#0A78D4"/></linearGradient></defs>
+  <rect id="background" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="url(#cBg)"/>
+  <path id="grid-decoration" data-pptx-role="decoration" d="M0 585 C245 530 410 700 650 620 C870 547 1040 625 1280 565 M0 630 C260 575 430 730 690 655 C900 590 1080 665 1280 610" fill="none" stroke="#74B7FF" stroke-opacity="0.22" stroke-width="2"/>
+  <g id="cover-copy" data-pptx-bounds="70 92 730 500">
+    <rect x="70" y="95" width="92" height="8" rx="4" fill="#FF7B2C"/>
+    <text x="70" y="174" font-family="PingFang SC" font-size="58" font-weight="700" fill="#FFFFFF">数字合规官</text>
+    <text x="70" y="242" font-family="Arial" font-size="62" font-weight="700" fill="#FFFFFF">AI</text>
+    <text x="155" y="242" font-family="PingFang SC" font-size="58" font-weight="700" fill="#FFFFFF">数字员工</text>
+    <text x="70" y="300" font-family="PingFang SC" font-size="25" font-weight="500" fill="#D8EBFF">数据要素 + AI 大模型驱动的招采全流程立体穿透监管体系</text>
+    <line x1="70" y1="334" x2="620" y2="334" stroke="#8FC4FF" stroke-width="1.5"/>
+    <text x="70" y="377" font-family="PingFang SC" font-size="20" fill="#FFFFFF">赛道九｜赛题 33——招标采购交易数智化立体穿透监管</text>
+    <text x="70" y="418" font-family="PingFang SC" font-size="19" fill="#D8EBFF">申报单位：中建电子商务有限责任公司（云筑）</text>
+    <text x="70" y="452" font-family="PingFang SC" font-size="19" fill="#D8EBFF">联合单位：中建三局西南公司</text>
+    <rect x="70" y="502" width="118" height="42" rx="21" fill="#FFFFFF" fill-opacity="0.14" stroke="#A8D1FF"/>
+    <rect x="201" y="502" width="118" height="42" rx="21" fill="#FFFFFF" fill-opacity="0.14" stroke="#A8D1FF"/>
+    <rect x="332" y="502" width="118" height="42" rx="21" fill="#FFFFFF" fill-opacity="0.14" stroke="#A8D1FF"/>
+    <rect x="463" y="502" width="118" height="42" rx="21" fill="#FFFFFF" fill-opacity="0.14" stroke="#A8D1FF"/>
+    <text x="129" y="530" text-anchor="middle" font-family="PingFang SC" font-size="17" fill="#FFFFFF">智能识别</text><text x="260" y="530" text-anchor="middle" font-family="PingFang SC" font-size="17" fill="#FFFFFF">实时拦截</text><text x="391" y="530" text-anchor="middle" font-family="PingFang SC" font-size="17" fill="#FFFFFF">电子取证</text><text x="522" y="530" text-anchor="middle" font-family="PingFang SC" font-size="17" fill="#FFFFFF">全程追溯</text>
+  </g>
+  <g id="cover-visual" data-pptx-bounds="700 70 540 560"><image href="../images/cover_hero.png" x="700" y="82" width="535" height="500" preserveAspectRatio="xMidYMid meet"/><circle cx="978" cy="323" r="240" fill="none" stroke="#77B9FF" stroke-opacity="0.28" stroke-width="2"/><circle cx="978" cy="323" r="205" fill="none" stroke="#FFFFFF" stroke-opacity="0.16" stroke-width="1"/></g>
+  <g id="cover-footer" data-pptx-bounds="70 655 1140 35"><text x="70" y="680" font-family="PingFang SC" font-size="16" fill="#C7E2FF">以数字合规守护阳光招采，以智能监管助力建筑行业高质量发展</text><text x="1210" y="680" text-anchor="end" font-family="Arial" font-size="14" fill="#C7E2FF">2026</text></g>
+</svg>

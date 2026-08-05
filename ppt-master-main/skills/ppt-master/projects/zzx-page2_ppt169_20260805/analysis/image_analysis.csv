@@ -1,0 +1,7 @@
+No,Filename,Width,Height,AspectRatio,PixelAspectRatio,SourceDisplayRatio,RatioSource,Format,HasTransparentPixels,UsageCount,DisplayRatioVariants,AssetKind,SvgRenderable,PptxNativeSupported,SizeKB,Category
+1,efficiency.png,471,480,0.98,0.98,,native,PNG,True,1,,bitmap,True,True,284.0,Near square
+2,late_control.png,602,440,1.37,1.37,,native,PNG,True,1,,bitmap,True,True,295.2,Standard landscape
+3,painpoint_icons_sheet.png,1254,1254,1.00,1.00,,native,PNG,False,1,,bitmap,True,True,1362.4,Near square
+4,recognition.png,490,508,0.96,0.96,,native,PNG,True,1,,bitmap,True,True,314.9,Near square
+5,threshold.png,538,509,1.06,1.06,,native,PNG,True,1,,bitmap,True,True,333.2,Near square
+6,第二页.png,3840,2160,1.78,1.78,,native,PNG,False,1,,bitmap,True,True,5885.0,Wide landscape

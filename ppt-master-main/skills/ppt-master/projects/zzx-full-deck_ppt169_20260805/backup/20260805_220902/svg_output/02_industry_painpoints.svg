@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-page-role="content">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EDF6FF"/>
+      <stop offset="100%" stop-color="#F8FBFF"/>
+    </linearGradient>
+    <linearGradient id="topBand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#043A8C"/>
+      <stop offset="58%" stop-color="#0753B8"/>
+      <stop offset="100%" stop-color="#0B6ACD"/>
+    </linearGradient>
+    <linearGradient id="conclusion" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#EDF5FF"/>
+      <stop offset="72%" stop-color="#F9FBFF"/>
+      <stop offset="100%" stop-color="#FFF0E5"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0A3E83" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect id="page-background" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="url(#bg)"/>
+  <g id="header" data-pptx-bounds="0 0 1280 96">
+    <rect x="0" y="0" width="1280" height="76" fill="url(#topBand)"/>
+    <path d="M0 58 C260 76 478 42 702 65 C930 87 1100 53 1280 63 L1280 96 L0 96 Z" fill="#3D8EF4" fill-opacity="0.18"/>
+    <path d="M900 70 L940 20 L980 70 M960 70 L1008 7 L1058 70 M1040 70 L1102 30 L1165 70 M1130 70 L1192 15 L1260 70" fill="none" stroke="#75B8FF" stroke-width="1.5" stroke-opacity="0.35"/>
+    <line x1="112" y1="18" x2="112" y2="59" stroke="#BBD9FF" stroke-width="2"/>
+    <text x="24" y="49" font-family="PingFang SC" font-size="26" font-weight="500" fill="#FFFFFF">第</text>
+    <text x="62" y="53" font-family="Arial" font-size="48" font-weight="700" fill="#FFFFFF">2</text>
+    <text x="94" y="49" font-family="PingFang SC" font-size="26" font-weight="500" fill="#FFFFFF">页</text>
+    <text x="136" y="51" font-family="PingFang SC" font-size="32" font-weight="700" fill="#FFFFFF">核心问题：人工监管难以穿透海量招采业务</text>
+  </g>
+
+  <rect x="22" y="92" width="300" height="112" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="334" y="92" width="300" height="112" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="646" y="92" width="300" height="112" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="958" y="92" width="300" height="112" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+
+  <g id="metric-volume" data-pptx-bounds="22 92 300 112" transform="translate(45 112)">
+    <rect x="0" y="10" width="58" height="70" rx="10" fill="#E7F1FF"/>
+    <rect x="14" y="0" width="38" height="18" rx="5" fill="#8FC0FF"/>
+    <rect x="13" y="22" width="34" height="40" rx="4" fill="#FFFFFF" stroke="#3C83D9" stroke-width="2"/>
+    <path d="M20 32 H40 L37 45 H23 Z M25 52 H35" fill="none" stroke="#0753B8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <text x="127" y="124" font-family="PingFang SC" font-size="18" fill="#1B2638">年度采购业务超</text>
+  <text x="127" y="177" font-family="Arial" font-size="54" font-weight="700" fill="#0753B8">20</text>
+  <text x="206" y="177" font-family="PingFang SC" font-size="19" font-weight="600" fill="#1B2638">万次</text>
+
+  <g id="metric-files" data-pptx-bounds="334 92 300 112" transform="translate(357 112)">
+    <rect x="3" y="18" width="70" height="55" rx="8" fill="#1768C6"/>
+    <path d="M13 11 H40 L49 21 H73 V69 H3 V18 Z" fill="#79B2F8"/>
+    <rect x="25" y="0" width="44" height="56" rx="4" fill="#FFFFFF" stroke="#A9C9ED" stroke-width="2"/>
+    <line x1="33" y1="12" x2="60" y2="12" stroke="#8AAFD6" stroke-width="3"/>
+    <line x1="33" y1="23" x2="60" y2="23" stroke="#8AAFD6" stroke-width="3"/>
+  </g>
+  <text x="439" y="124" font-family="PingFang SC" font-size="18" fill="#1B2638">单次涉及</text>
+  <text x="439" y="177" font-family="Arial" font-size="54" font-weight="700" fill="#0753B8">8</text>
+  <text x="477" y="177" font-family="PingFang SC" font-size="19" font-weight="600" fill="#1B2638">类文件</text>
+
+  <g id="metric-pages" data-pptx-bounds="646 92 300 112" transform="translate(667 111)">
+    <path d="M5 62 L52 76 L91 56 L44 43 Z" fill="#8CBDF3"/>
+    <path d="M8 48 L55 62 L94 42 L47 29 Z" fill="#A7CDF6"/>
+    <path d="M11 34 L58 48 L97 28 L50 15 Z" fill="#C2DDF9"/>
+    <path d="M14 20 L61 34 L100 14 L53 1 Z" fill="#FFFFFF" stroke="#A8C7EA" stroke-width="1.5"/>
+  </g>
+  <text x="751" y="124" font-family="PingFang SC" font-size="18" fill="#1B2638">附件超</text>
+  <text x="751" y="177" font-family="Arial" font-size="54" font-weight="700" fill="#0753B8">100</text>
+  <text x="865" y="177" font-family="PingFang SC" font-size="19" font-weight="600" fill="#1B2638">余页</text>
+
+  <g id="metric-nodes" data-pptx-bounds="958 92 300 112" transform="translate(981 111)">
+    <rect x="7" y="3" width="58" height="73" rx="8" fill="#FFFFFF" stroke="#0753B8" stroke-width="3"/>
+    <rect x="23" y="0" width="27" height="12" rx="5" fill="#6DAAF0"/>
+    <path d="M20 24 L26 30 L36 18 M20 42 L26 48 L36 36 M20 60 L26 66 L36 54" fill="none" stroke="#0753B8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="43" y1="26" x2="57" y2="26" stroke="#8AAFD6" stroke-width="3"/>
+    <line x1="43" y1="44" x2="57" y2="44" stroke="#8AAFD6" stroke-width="3"/>
+    <line x1="43" y1="62" x2="57" y2="62" stroke="#8AAFD6" stroke-width="3"/>
+  </g>
+  <text x="1063" y="124" font-family="PingFang SC" font-size="18" fill="#1B2638">需核对</text>
+  <text x="1063" y="177" font-family="Arial" font-size="54" font-weight="700" fill="#0753B8">100+</text>
+  <text x="1190" y="177" font-family="PingFang SC" font-size="17" font-weight="600" fill="#1B2638">合规节点</text>
+
+  <rect x="22" y="222" width="606" height="178" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="652" y="222" width="606" height="178" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="22" y="414" width="606" height="178" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="652" y="414" width="606" height="178" rx="16" fill="#FFFFFF" stroke="#D4E4F8" stroke-width="1" filter="url(#cardShadow)"/>
+
+  <g id="pain-efficiency" data-pptx-bounds="22 222 606 178">
+  <image href="../images/efficiency.png" x="42" y="244" width="146" height="132" preserveAspectRatio="xMidYMid meet"/>
+  <line x1="200" y1="244" x2="200" y2="378" stroke="#D8E5F4" stroke-width="2"/>
+  <rect x="220" y="246" width="42" height="36" rx="8" fill="#0753B8"/>
+  <text x="241" y="272" font-family="Arial" font-size="22" font-weight="700" text-anchor="middle" fill="#FFFFFF">01</text>
+  <text x="278" y="274" font-family="PingFang SC" font-size="27" font-weight="700" fill="#0753B8">痛点一｜效率低</text>
+  <polygon points="222,312 233,318 222,324" fill="#0753B8"/>
+  <text x="244" y="324" font-family="PingFang SC" font-size="18" fill="#1B2638">单批次人工审查约</text>
+  <text x="410" y="324" font-family="PingFang SC" font-size="20" font-weight="700" fill="#FF6B20">3 小时</text>
+  <line x1="222" y1="340" x2="598" y2="340" stroke="#D6E2F0" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="222" y="371" font-family="PingFang SC" font-size="18" fill="#1B2638">年度合规审查投入高达</text>
+  <text x="420" y="371" font-family="PingFang SC" font-size="20" font-weight="700" fill="#FF6B20">7.5 万人天</text>
+  </g>
+
+  <g id="pain-threshold" data-pptx-bounds="652 222 606 178">
+  <image href="../images/threshold.png" x="675" y="244" width="146" height="132" preserveAspectRatio="xMidYMid meet"/>
+  <line x1="833" y1="244" x2="833" y2="378" stroke="#D8E5F4" stroke-width="2"/>
+  <rect x="853" y="246" width="42" height="36" rx="8" fill="#0753B8"/>
+  <text x="874" y="272" font-family="Arial" font-size="22" font-weight="700" text-anchor="middle" fill="#FFFFFF">02</text>
+  <text x="911" y="274" font-family="PingFang SC" font-size="27" font-weight="700" fill="#0753B8">痛点二｜门槛高</text>
+  <polygon points="855,312 866,318 855,324" fill="#0753B8"/>
+  <text x="877" y="324" font-family="PingFang SC" font-size="18" fill="#1B2638">需对照</text>
+  <text x="941" y="324" font-family="PingFang SC" font-size="20" font-weight="700" fill="#FF6B20">20 余部</text>
+  <text x="1015" y="324" font-family="PingFang SC" font-size="18" fill="#1B2638">法律法规和行业标准</text>
+  <line x1="855" y1="340" x2="1228" y2="340" stroke="#D6E2F0" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="855" y="371" font-family="PingFang SC" font-size="18" fill="#1B2638">人工遗漏与出错率约</text>
+  <text x="1021" y="371" font-family="Arial" font-size="22" font-weight="700" fill="#FF6B20">30%</text>
+  </g>
+
+  <g id="pain-recognition" data-pptx-bounds="22 414 606 178">
+  <image href="../images/recognition.png" x="42" y="436" width="146" height="132" preserveAspectRatio="xMidYMid meet"/>
+  <line x1="200" y1="436" x2="200" y2="570" stroke="#D8E5F4" stroke-width="2"/>
+  <rect x="220" y="438" width="42" height="36" rx="8" fill="#0753B8"/>
+  <text x="241" y="464" font-family="Arial" font-size="22" font-weight="700" text-anchor="middle" fill="#FFFFFF">03</text>
+  <text x="278" y="466" font-family="PingFang SC" font-size="27" font-weight="700" fill="#0753B8">痛点三｜识别难</text>
+  <polygon points="222,502 233,508 222,514" fill="#0753B8"/>
+  <text x="244" y="514" font-family="PingFang SC" font-size="18" fill="#1B2638">公告、证书、清单和附件等</text>
+  <text x="477" y="514" font-family="PingFang SC" font-size="19" font-weight="700" fill="#FF6B20">多格式</text>
+  <text x="244" y="539" font-family="PingFang SC" font-size="18" fill="#1B2638">异构数据难以统一解析</text>
+  <line x1="222" y1="548" x2="598" y2="548" stroke="#D6E2F0" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="222" y="578" font-family="PingFang SC" font-size="18" fill="#1B2638">隐性风险与跨文件异常难发现</text>
+  </g>
+
+  <g id="pain-late-control" data-pptx-bounds="652 414 606 178">
+  <image href="../images/late_control.png" x="671" y="439" width="154" height="126" preserveAspectRatio="xMidYMid meet"/>
+  <line x1="833" y1="436" x2="833" y2="570" stroke="#D8E5F4" stroke-width="2"/>
+  <rect x="853" y="438" width="42" height="36" rx="8" fill="#0753B8"/>
+  <text x="874" y="464" font-family="Arial" font-size="22" font-weight="700" text-anchor="middle" fill="#FFFFFF">04</text>
+  <text x="911" y="466" font-family="PingFang SC" font-size="27" font-weight="700" fill="#0753B8">痛点四｜防控晚</text>
+  <polygon points="855,502 866,508 855,514" fill="#0753B8"/>
+  <text x="877" y="514" font-family="PingFang SC" font-size="18" fill="#1B2638">围标串标、资质造假等问题</text>
+  <text x="877" y="539" font-family="PingFang SC" font-size="18" fill="#1B2638">往往在</text>
+  <text x="941" y="539" font-family="PingFang SC" font-size="19" font-weight="700" fill="#FF6B20">采购完成后</text>
+  <text x="1042" y="539" font-family="PingFang SC" font-size="18" fill="#1B2638">才暴露</text>
+  <line x1="855" y1="548" x2="1228" y2="548" stroke="#D6E2F0" stroke-width="1" stroke-dasharray="4,4"/>
+  <text x="855" y="578" font-family="PingFang SC" font-size="18" fill="#1B2638">整改、审计与追责</text>
+  <text x="1013" y="578" font-family="PingFang SC" font-size="19" font-weight="700" fill="#FF6B20">成本高</text>
+  </g>
+
+  <g id="conclusion-banner" data-pptx-bounds="22 612 1236 82">
+  <rect x="22" y="612" width="1236" height="82" rx="18" fill="url(#conclusion)" stroke="#B9D7FA" stroke-width="1.5"/>
+  <circle cx="83" cy="653" r="28" fill="#FFFFFF" stroke="#75ADEF" stroke-width="5"/>
+  <circle cx="83" cy="653" r="16" fill="none" stroke="#0753B8" stroke-width="4"/>
+  <circle cx="83" cy="653" r="5" fill="#0753B8"/>
+  <line x1="83" y1="653" x2="104" y2="635" stroke="#0753B8" stroke-width="5" stroke-linecap="round"/>
+  <line x1="126" y1="629" x2="126" y2="677" stroke="#9CB9D9" stroke-width="2"/>
+  <text x="155" y="662" font-family="PingFang SC" font-size="29" font-weight="700" fill="#0A3F91">人工审查模式</text>
+  <text x="342" y="662" font-family="PingFang SC" font-size="29" font-weight="700" fill="#FF6B20">无法同时满足</text>
+  <text x="542" y="662" font-family="PingFang SC" font-size="30" font-weight="700" fill="#0A3F91">“规模、速度、准确、实时、追溯”</text>
+  <text x="1050" y="662" font-family="PingFang SC" font-size="25" font-weight="700" fill="#D95C1A">五项监管要求</text>
+  </g>
+  <text id="source-note" data-pptx-role="footer" x="1038" y="711" font-family="PingFang SC" font-size="11" fill="#6F7F94">数据来源：项目申报材料，统计周期待补充</text>
+</svg>
