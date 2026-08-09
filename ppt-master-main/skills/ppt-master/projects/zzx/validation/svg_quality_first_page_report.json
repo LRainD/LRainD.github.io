@@ -1,0 +1,171 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "first-page",
+  "target": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "d6efeda5477d3756339fbca62ee761c5bbf67801cefc9e81a979766a1a9912de",
+    "file_count": 1,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+      }
+    ]
+  },
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "warnings": 0,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 0,
+      "issues": []
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {
+      "#032E70": [
+        "01_cover.svg"
+      ],
+      "#0A78D4": [
+        "01_cover.svg"
+      ],
+      "#66A8ED": [
+        "01_cover.svg"
+      ],
+      "#74B7FF": [
+        "01_cover.svg"
+      ],
+      "#76BAFF": [
+        "01_cover.svg"
+      ],
+      "#77B9FF": [
+        "01_cover.svg"
+      ],
+      "#7A9DC5": [
+        "01_cover.svg"
+      ],
+      "#8FC4FF": [
+        "01_cover.svg"
+      ],
+      "#9DCAFA": [
+        "01_cover.svg"
+      ],
+      "#9DD1FF": [
+        "01_cover.svg"
+      ],
+      "#A8D1FF": [
+        "01_cover.svg"
+      ],
+      "#B9DDFF": [
+        "01_cover.svg"
+      ],
+      "#C7E2FF": [
+        "01_cover.svg"
+      ],
+      "#D8EBFF": [
+        "01_cover.svg"
+      ],
+      "#FF7B2C": [
+        "01_cover.svg"
+      ]
+    },
+    "fonts": {
+      "Arial": [
+        "01_cover.svg"
+      ],
+      "PingFang SC": [
+        "01_cover.svg"
+      ]
+    },
+    "sizes": {
+      "20": [
+        "01_cover.svg"
+      ],
+      "25": [
+        "01_cover.svg"
+      ],
+      "58": [
+        "01_cover.svg"
+      ],
+      "62": [
+        "01_cover.svg"
+      ]
+    }
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx/svg_output/01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 1,
+        "contextual_values": {
+          "colors": [
+            "#032E70",
+            "#0A78D4",
+            "#66A8ED",
+            "#74B7FF",
+            "#76BAFF",
+            "#77B9FF",
+            "#7A9DC5",
+            "#8FC4FF",
+            "#9DCAFA",
+            "#9DD1FF",
+            "#A8D1FF",
+            "#B9DDFF",
+            "#C7E2FF",
+            "#D8EBFF",
+            "#FF7B2C"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "20": 1,
+          "25": 1,
+          "58": 2,
+          "62": 1
+        }
+      },
+      "passed": true,
+      "source_sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+    }
+  ]
+}

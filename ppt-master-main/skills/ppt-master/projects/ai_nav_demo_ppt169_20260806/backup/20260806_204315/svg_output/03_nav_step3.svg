@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" data-pptx-page-role="content">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  
+  <g id="navbar" data-pptx-bounds="40 20 1200 70">
+    <!-- 步骤1 -->
+    <g id="step1">
+      <circle cx="80" cy="55" r="16" fill="#CBD5E1"/>
+      <text x="80" y="59" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">01</text>
+      <text x="102" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">核心问题</text>
+    </g>
+    
+    <!-- 步骤2 -->
+    <g id="step2">
+      <circle cx="280" cy="55" r="16" fill="#CBD5E1"/>
+      <text x="280" y="59" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">02</text>
+      <text x="302" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">数据来源与</text>
+      <text x="302" y="67" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">利用方式</text>
+    </g>
+    
+    <!-- 步骤3：高亮 -->
+    <g id="step3">
+      <circle cx="480" cy="55" r="18" fill="#2563EB"/>
+      <text x="480" y="60" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">03</text>
+      <text x="505" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="14" font-weight="bold" fill="#1E293B">技术方案与</text>
+      <text x="505" y="67" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="14" font-weight="bold" fill="#1E293B">创新点</text>
+      <line x1="505" y1="77" x2="565" y2="77" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    
+    <!-- 步骤4 -->
+    <g id="step4">
+      <circle cx="680" cy="55" r="16" fill="#CBD5E1"/>
+      <text x="680" y="59" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">04</text>
+      <text x="702" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">应用规模</text>
+      <text x="702" y="67" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">范本</text>
+    </g>
+    
+    <!-- 步骤5 -->
+    <g id="step5">
+      <circle cx="880" cy="55" r="16" fill="#CBD5E1"/>
+      <text x="880" y="59" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">05</text>
+      <text x="902" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">应用效果与</text>
+      <text x="902" y="67" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">量化成效</text>
+    </g>
+    
+    <!-- 步骤6 -->
+    <g id="step6">
+      <circle cx="1080" cy="55" r="16" fill="#CBD5E1"/>
+      <text x="1080" y="59" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF" text-anchor="middle">06</text>
+      <text x="1102" y="52" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">应用价值与</text>
+      <text x="1102" y="67" font-family="Microsoft YaHei, PingFang SC, sans-serif" font-size="13" fill="#64748B">市场前景</text>
+    </g>
+  </g>
+</svg>

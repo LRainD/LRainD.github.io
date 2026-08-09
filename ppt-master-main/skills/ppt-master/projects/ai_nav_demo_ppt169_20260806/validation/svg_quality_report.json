@@ -1,0 +1,180 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/ai_nav_demo_ppt169_20260806",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "bb3af80d88df6262febf1da25f561bce6c563207f87b57366a189e00c9edc7f4",
+    "file_count": 6,
+    "files": [
+      {
+        "file": "01_nav_step1.svg",
+        "sha256": "79d7b0766a5954b7de321f83d8cc7ea86538198b2750faf9bc9071dbde91f894"
+      },
+      {
+        "file": "02_nav_step2.svg",
+        "sha256": "8f31aaebef6e1bab750275392dfbf3aae511d2482e7e264fabb254076d12e2e2"
+      },
+      {
+        "file": "03_nav_step3.svg",
+        "sha256": "d2a8c59f850241765ddb04141dcd9aa8c6054e1a6d1619b01175f99cf51ed619"
+      },
+      {
+        "file": "04_nav_step4.svg",
+        "sha256": "3a6e3cf12a75d304e4709fbe25ad26657db9272bbaca361f4316c4d43b19d3a9"
+      },
+      {
+        "file": "05_nav_step5.svg",
+        "sha256": "375fcd9bd56f6bbbee60031e370473510def73c649c8591c72aed15738d9782c"
+      },
+      {
+        "file": "06_nav_step6.svg",
+        "sha256": "77ef9df5fce002c56d61744473f93376852027c8de0838d0f4d1f3fe4a7b76db"
+      }
+    ]
+  },
+  "summary": {
+    "total": 6,
+    "passed": 6,
+    "warnings": 0,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 0,
+      "issues": []
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_nav_step1.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/01_nav_step1.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "79d7b0766a5954b7de321f83d8cc7ea86538198b2750faf9bc9071dbde91f894"
+    },
+    {
+      "file": "02_nav_step2.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/02_nav_step2.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "8f31aaebef6e1bab750275392dfbf3aae511d2482e7e264fabb254076d12e2e2"
+    },
+    {
+      "file": "03_nav_step3.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/03_nav_step3.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "d2a8c59f850241765ddb04141dcd9aa8c6054e1a6d1619b01175f99cf51ed619"
+    },
+    {
+      "file": "04_nav_step4.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/04_nav_step4.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "3a6e3cf12a75d304e4709fbe25ad26657db9272bbaca361f4316c4d43b19d3a9"
+    },
+    {
+      "file": "05_nav_step5.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/05_nav_step5.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "375fcd9bd56f6bbbee60031e370473510def73c649c8591c72aed15738d9782c"
+    },
+    {
+      "file": "06_nav_step6.svg",
+      "path": "projects/ai_nav_demo_ppt169_20260806/svg_output/06_nav_step6.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Microsoft YaHei, PingFang SC, sans-serif"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "77ef9df5fce002c56d61744473f93376852027c8de0838d0f4d1f3fe4a7b76db"
+    }
+  ]
+}

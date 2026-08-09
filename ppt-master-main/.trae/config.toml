@@ -1,0 +1,6 @@
+# 替换沙箱镜像为 Python3.15，适配项目最低要求
+sandbox_container_image = "python:3.15"
+# 持久化沙箱，不用每次重启容器都重装依赖
+persist_sandbox = true
+# 可选：放开沙箱网络，正常拉取pip依赖
+sandbox_network_enabled = true

@@ -1,0 +1,83 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx-page7_ppt169_20260806",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "7f9daf46ddb959f490ca553101af536991d66274529790be4a147bd84733975a",
+    "file_count": 1,
+    "files": [
+      {
+        "file": "01_dual_engine_synergy.svg",
+        "sha256": "67eb746abda2c43ae0fc59cedf24c102e9c40a3db41288473d772fef4a8c9af4"
+      }
+    ]
+  },
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "warnings": 1,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 1,
+      "issues": [
+        {
+          "file": "01_dual_engine_synergy.svg",
+          "message": "Detected 3 paragraph-like line run(s) split across sibling <text> elements (<g id=\"rule-engine\"> x=50.0, y=228.0..266.0, 3 lines; <g id=\"ai-engine\"> x=875.0, y=228.0..266.0, 3 lines; <g id=\"footer-note\"> x=174.0, y=630.0..654.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_dual_engine_synergy.svg",
+      "path": "projects/zzx-page7_ppt169_20260806/svg_output/01_dual_engine_synergy.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Detected 3 paragraph-like line run(s) split across sibling <text> elements (<g id=\"rule-engine\"> x=50.0, y=228.0..266.0, 3 lines; <g id=\"ai-engine\"> x=875.0, y=228.0..266.0, 3 lines; <g id=\"footer-note\"> x=174.0, y=630.0..654.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 39,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "67eb746abda2c43ae0fc59cedf24c102e9c40a3db41288473d772fef4a8c9af4"
+    }
+  ]
+}

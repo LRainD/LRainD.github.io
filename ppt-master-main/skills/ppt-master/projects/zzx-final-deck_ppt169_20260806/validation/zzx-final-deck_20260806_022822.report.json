@@ -1,0 +1,290 @@
+{
+  "schema": "ppt-master.pptx-postflight-report.v1",
+  "status": "passed-with-warnings",
+  "output": {
+    "path": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx-final-deck_ppt169_20260806/exports/zzx-final-deck_20260806_022822.pptx",
+    "bytes": 7999774
+  },
+  "source": {
+    "svg_slide_count": 20,
+    "layout_definition_count": 0,
+    "fingerprint": {
+      "algorithm": "sha256",
+      "digest": "ed2fd277f5f8b81d8550cfed059c6f12928e9358b3c216929f96bb1905ba457b",
+      "file_count": 20,
+      "files": [
+        {
+          "file": "01_cover.svg",
+          "sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+        },
+        {
+          "file": "02_painpoints.svg",
+          "sha256": "e2aa2f187348276042f37fc58b3298f1825dd7555841699f7bbcc2fe4e33a39a"
+        },
+        {
+          "file": "03_risk_objects.svg",
+          "sha256": "a098ebb6aea17491cd9ff15b28dfca8a2861924cdc076c529a8a92f07c9b2f1b"
+        },
+        {
+          "file": "04_solution_loop.svg",
+          "sha256": "573604978ce0b10e09b721930e529151bad30c51cfd9e9d5381b90ce5f5c9357"
+        },
+        {
+          "file": "05_data_evidence.svg",
+          "sha256": "9527c5cc1a9f449e6e8a39452b13214426a2700a4ef9f253fbef38028c5481f4"
+        },
+        {
+          "file": "06_rule_flow.svg",
+          "sha256": "73fb2444483f6ea4cfde890b3668600d8f19e7ada778585b5ca5b48aa643ebe8"
+        },
+        {
+          "file": "07_dual_engine.svg",
+          "sha256": "2528660b2344e2b361ec43f6497cc9b1fae4e7283c88d8fc9a495d2d3504c62e"
+        },
+        {
+          "file": "08_rule_engine.svg",
+          "sha256": "ff8d7884062c76d61fb4cc0c44b898c9a7109479fdaaacce6094a3fe7a865935"
+        },
+        {
+          "file": "09_ai_agents.svg",
+          "sha256": "bd34d54e2a9d795e03b21db7fa7822223905b9997d83abf81b5fa5a6fb170f7c"
+        },
+        {
+          "file": "10_rule_landscape.svg",
+          "sha256": "1fe201858235db4e5228face61a11371646b7253cfc359cc5c3c5cd0295b761d"
+        },
+        {
+          "file": "11_case_qualification.svg",
+          "sha256": "70b2918e4132d51394d837d95aeef291c44f621f7f963df24e5b78b549b1931c"
+        },
+        {
+          "file": "12_case_clause.svg",
+          "sha256": "2a321199c7d30adcacbb6c77b5f1ee3f68bbf7b0e845d3551ea9da1fcc0a8445"
+        },
+        {
+          "file": "13_case_similarity.svg",
+          "sha256": "11e39e218bacd925b9807b65a11d586c010788bf3c6d92cfce5083356231fe76"
+        },
+        {
+          "file": "14_regulatory_loop.svg",
+          "sha256": "ea4bf677a3f1b5cb24bddbbf939498c15f71e4be320fadd1c079f4a3021bbfc2"
+        },
+        {
+          "file": "15_evidence_audit.svg",
+          "sha256": "0105bd35b6f9bfe804feb47fa0438aba77dab83f9a912dca1d83f875e71e7b3c"
+        },
+        {
+          "file": "16_application_scale.svg",
+          "sha256": "c5bb65dc1d210d30954adeebef08af103505667034fbd97709c26c7ee76151b8"
+        },
+        {
+          "file": "17_operational_results.svg",
+          "sha256": "d5a17ac3a5bc4966061ff5017db3c129f1b8f8fe2ce39911d8066ce4995fcce5"
+        },
+        {
+          "file": "18_quantified_value.svg",
+          "sha256": "52942ea6e32930f251865ae0b5bf0565fe9e0955b879832674615c45240ccc02"
+        },
+        {
+          "file": "19_platform_integration.svg",
+          "sha256": "8242c5dd977ea48796f1340fa00225f38728ee70f8c64c6b5dfaca87cbd1ba57"
+        },
+        {
+          "file": "20_summary.svg",
+          "sha256": "3c076cd39d6f5b73ac64ffa10bea80ea781f120ebb809df170a5ef71477c1b71"
+        }
+      ]
+    }
+  },
+  "package": {
+    "zip_integrity": "passed",
+    "corrupt_member": null,
+    "slides": 20,
+    "notes": 0,
+    "masters": 1,
+    "layouts": 1
+  },
+  "checks": {
+    "zip_integrity": "passed",
+    "slide_count": "passed",
+    "internal_relationships": "enforced-at-build",
+    "structured_package": "not-applicable",
+    "transitions": "enforced-at-build",
+    "animations": "enforced-at-build",
+    "quality_gate": "passed",
+    "quality_warnings": "warning",
+    "template_tokens": "passed",
+    "external_images": "passed",
+    "font_portability": "passed"
+  },
+  "quality": {
+    "status": "loaded",
+    "path": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx-final-deck_ppt169_20260806/validation/svg_quality_report.json",
+    "schema": "ppt-master.svg-quality-report.v1",
+    "stage": "final",
+    "source_match": "passed",
+    "source_fingerprint": {
+      "algorithm": "sha256",
+      "digest": "ed2fd277f5f8b81d8550cfed059c6f12928e9358b3c216929f96bb1905ba457b",
+      "file_count": 20,
+      "files": [
+        {
+          "file": "01_cover.svg",
+          "sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+        },
+        {
+          "file": "02_painpoints.svg",
+          "sha256": "e2aa2f187348276042f37fc58b3298f1825dd7555841699f7bbcc2fe4e33a39a"
+        },
+        {
+          "file": "03_risk_objects.svg",
+          "sha256": "a098ebb6aea17491cd9ff15b28dfca8a2861924cdc076c529a8a92f07c9b2f1b"
+        },
+        {
+          "file": "04_solution_loop.svg",
+          "sha256": "573604978ce0b10e09b721930e529151bad30c51cfd9e9d5381b90ce5f5c9357"
+        },
+        {
+          "file": "05_data_evidence.svg",
+          "sha256": "9527c5cc1a9f449e6e8a39452b13214426a2700a4ef9f253fbef38028c5481f4"
+        },
+        {
+          "file": "06_rule_flow.svg",
+          "sha256": "73fb2444483f6ea4cfde890b3668600d8f19e7ada778585b5ca5b48aa643ebe8"
+        },
+        {
+          "file": "07_dual_engine.svg",
+          "sha256": "2528660b2344e2b361ec43f6497cc9b1fae4e7283c88d8fc9a495d2d3504c62e"
+        },
+        {
+          "file": "08_rule_engine.svg",
+          "sha256": "ff8d7884062c76d61fb4cc0c44b898c9a7109479fdaaacce6094a3fe7a865935"
+        },
+        {
+          "file": "09_ai_agents.svg",
+          "sha256": "bd34d54e2a9d795e03b21db7fa7822223905b9997d83abf81b5fa5a6fb170f7c"
+        },
+        {
+          "file": "10_rule_landscape.svg",
+          "sha256": "1fe201858235db4e5228face61a11371646b7253cfc359cc5c3c5cd0295b761d"
+        },
+        {
+          "file": "11_case_qualification.svg",
+          "sha256": "70b2918e4132d51394d837d95aeef291c44f621f7f963df24e5b78b549b1931c"
+        },
+        {
+          "file": "12_case_clause.svg",
+          "sha256": "2a321199c7d30adcacbb6c77b5f1ee3f68bbf7b0e845d3551ea9da1fcc0a8445"
+        },
+        {
+          "file": "13_case_similarity.svg",
+          "sha256": "11e39e218bacd925b9807b65a11d586c010788bf3c6d92cfce5083356231fe76"
+        },
+        {
+          "file": "14_regulatory_loop.svg",
+          "sha256": "ea4bf677a3f1b5cb24bddbbf939498c15f71e4be320fadd1c079f4a3021bbfc2"
+        },
+        {
+          "file": "15_evidence_audit.svg",
+          "sha256": "0105bd35b6f9bfe804feb47fa0438aba77dab83f9a912dca1d83f875e71e7b3c"
+        },
+        {
+          "file": "16_application_scale.svg",
+          "sha256": "c5bb65dc1d210d30954adeebef08af103505667034fbd97709c26c7ee76151b8"
+        },
+        {
+          "file": "17_operational_results.svg",
+          "sha256": "d5a17ac3a5bc4966061ff5017db3c129f1b8f8fe2ce39911d8066ce4995fcce5"
+        },
+        {
+          "file": "18_quantified_value.svg",
+          "sha256": "52942ea6e32930f251865ae0b5bf0565fe9e0955b879832674615c45240ccc02"
+        },
+        {
+          "file": "19_platform_integration.svg",
+          "sha256": "8242c5dd977ea48796f1340fa00225f38728ee70f8c64c6b5dfaca87cbd1ba57"
+        },
+        {
+          "file": "20_summary.svg",
+          "sha256": "3c076cd39d6f5b73ac64ffa10bea80ea781f120ebb809df170a5ef71477c1b71"
+        }
+      ]
+    },
+    "summary": {
+      "total": 20,
+      "passed": 19,
+      "warnings": 1,
+      "errors": 0
+    },
+    "categories": {
+      "blocking": {
+        "count": 0,
+        "issues": []
+      },
+      "introduced": {
+        "count": 1,
+        "issues": [
+          {
+            "file": "12_case_clause.svg",
+            "message": "Detected 2 paragraph-like line run(s) split across sibling <text> elements (<g id=\"recognition\"> x=615.0, y=260.0..286.0, 2 lines; <g id=\"recognition\"> x=615.0, y=404.0..430.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+          }
+        ]
+      },
+      "inherited": {
+        "count": 0,
+        "issues": []
+      },
+      "source-import": {
+        "count": 0,
+        "summary": {
+          "warning_count": 0,
+          "by_code": {}
+        }
+      }
+    }
+  },
+  "resources": {
+    "unresolved_template_tokens": [],
+    "fonts": {
+      "stacks": [
+        "Arial",
+        "PingFang SC"
+      ],
+      "generic_only_stacks": [],
+      "unsafe_exported_faces": []
+    },
+    "images": {
+      "data_uri": 0,
+      "local": 9,
+      "external": 0,
+      "external_references": []
+    }
+  },
+  "deck_motion": {
+    "transition": {
+      "effect": "fade",
+      "effect_options": {},
+      "duration": 0.4,
+      "auto_advance": null
+    },
+    "animation": {
+      "effect": "none",
+      "effect_request": null,
+      "duration": 0.4,
+      "stagger": 0.5,
+      "trigger": "after-previous"
+    },
+    "cli_overrides": {
+      "transition": false,
+      "transition_duration": false,
+      "auto_advance": false,
+      "animation": false,
+      "animation_duration": false,
+      "animation_stagger": false,
+      "animation_trigger": false
+    },
+    "narration_timings": false
+  },
+  "backup_path": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx-final-deck_ppt169_20260806/backup/20260806_022822/svg_output",
+  "conversion_trace_path": null
+}

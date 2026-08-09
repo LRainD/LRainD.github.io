@@ -1,0 +1,1252 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "/Users/liurundong/Desktop/云端演示项目/LRainD.github.io/ppt-master-main/skills/ppt-master/projects/zzx",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "216de479c6dce5bf52318d9471da1044d4d6390b97f42552e48d31a32f50bec6",
+    "file_count": 20,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+      },
+      {
+        "file": "02_painpoints.svg",
+        "sha256": "e2aa2f187348276042f37fc58b3298f1825dd7555841699f7bbcc2fe4e33a39a"
+      },
+      {
+        "file": "03_risk_objects.svg",
+        "sha256": "a098ebb6aea17491cd9ff15b28dfca8a2861924cdc076c529a8a92f07c9b2f1b"
+      },
+      {
+        "file": "04_solution_loop.svg",
+        "sha256": "573604978ce0b10e09b721930e529151bad30c51cfd9e9d5381b90ce5f5c9357"
+      },
+      {
+        "file": "05_data_evidence.svg",
+        "sha256": "9190788b51c37a7ebf90f935bf91a23578c6c67d9c2fe266f4554973d007d4ea"
+      },
+      {
+        "file": "06_rule_flow.svg",
+        "sha256": "73fb2444483f6ea4cfde890b3668600d8f19e7ada778585b5ca5b48aa643ebe8"
+      },
+      {
+        "file": "07_dual_engine.svg",
+        "sha256": "2528660b2344e2b361ec43f6497cc9b1fae4e7283c88d8fc9a495d2d3504c62e"
+      },
+      {
+        "file": "08_rule_engine.svg",
+        "sha256": "ff8d7884062c76d61fb4cc0c44b898c9a7109479fdaaacce6094a3fe7a865935"
+      },
+      {
+        "file": "09_ai_agents.svg",
+        "sha256": "bd34d54e2a9d795e03b21db7fa7822223905b9997d83abf81b5fa5a6fb170f7c"
+      },
+      {
+        "file": "10_rule_landscape.svg",
+        "sha256": "1fe201858235db4e5228face61a11371646b7253cfc359cc5c3c5cd0295b761d"
+      },
+      {
+        "file": "11_case_qualification.svg",
+        "sha256": "70b2918e4132d51394d837d95aeef291c44f621f7f963df24e5b78b549b1931c"
+      },
+      {
+        "file": "12_case_clause.svg",
+        "sha256": "2a321199c7d30adcacbb6c77b5f1ee3f68bbf7b0e845d3551ea9da1fcc0a8445"
+      },
+      {
+        "file": "13_case_similarity.svg",
+        "sha256": "11e39e218bacd925b9807b65a11d586c010788bf3c6d92cfce5083356231fe76"
+      },
+      {
+        "file": "14_regulatory_loop.svg",
+        "sha256": "ea4bf677a3f1b5cb24bddbbf939498c15f71e4be320fadd1c079f4a3021bbfc2"
+      },
+      {
+        "file": "15_evidence_audit.svg",
+        "sha256": "0105bd35b6f9bfe804feb47fa0438aba77dab83f9a912dca1d83f875e71e7b3c"
+      },
+      {
+        "file": "16_application_scale.svg",
+        "sha256": "c5bb65dc1d210d30954adeebef08af103505667034fbd97709c26c7ee76151b8"
+      },
+      {
+        "file": "17_operational_results.svg",
+        "sha256": "d5a17ac3a5bc4966061ff5017db3c129f1b8f8fe2ce39911d8066ce4995fcce5"
+      },
+      {
+        "file": "18_quantified_value.svg",
+        "sha256": "52942ea6e32930f251865ae0b5bf0565fe9e0955b879832674615c45240ccc02"
+      },
+      {
+        "file": "19_platform_integration.svg",
+        "sha256": "8242c5dd977ea48796f1340fa00225f38728ee70f8c64c6b5dfaca87cbd1ba57"
+      },
+      {
+        "file": "20_summary.svg",
+        "sha256": "3c076cd39d6f5b73ac64ffa10bea80ea781f120ebb809df170a5ef71477c1b71"
+      }
+    ]
+  },
+  "summary": {
+    "total": 20,
+    "passed": 19,
+    "warnings": 1,
+    "errors": 2
+  },
+  "issue_types": {
+    "illustration_locked_image_reference_mismatch_error": 1,
+    "illustration_locked_image_unreferenced_error": 1
+  },
+  "categories": {
+    "blocking": {
+      "count": 2,
+      "issues": [
+        {
+          "scope": "illustration",
+          "message": "05_reference_body.png is referenced from images/reference_replica/05_reference_body.png, not exclusively from its locked project path."
+        },
+        {
+          "scope": "illustration",
+          "message": "05_reference_body.png has usable terminal content but its locked file is not referenced by any svg_output <image> element."
+        }
+      ]
+    },
+    "introduced": {
+      "count": 1,
+      "issues": [
+        {
+          "file": "12_case_clause.svg",
+          "message": "Detected 2 paragraph-like line run(s) split across sibling <text> elements (<g id=\"recognition\"> x=615.0, y=260.0..286.0, 2 lines; <g id=\"recognition\"> x=615.0, y=404.0..430.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {
+      "#032E70": [
+        "01_cover.svg",
+        "20_summary.svg"
+      ],
+      "#083F91": [
+        "02_painpoints.svg",
+        "03_risk_objects.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg"
+      ],
+      "#0A78D4": [
+        "01_cover.svg",
+        "20_summary.svg"
+      ],
+      "#0D9097": [
+        "03_risk_objects.svg"
+      ],
+      "#268A50": [
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "19_platform_integration.svg"
+      ],
+      "#334A67": [
+        "03_risk_objects.svg"
+      ],
+      "#52677F": [
+        "02_painpoints.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg"
+      ],
+      "#5A6C82": [
+        "02_painpoints.svg",
+        "03_risk_objects.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg"
+      ],
+      "#5C8FD1": [
+        "03_risk_objects.svg"
+      ],
+      "#66A8ED": [
+        "01_cover.svg"
+      ],
+      "#6F7F94": [
+        "02_painpoints.svg",
+        "03_risk_objects.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "10_rule_landscape.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg"
+      ],
+      "#74B7FF": [
+        "01_cover.svg",
+        "20_summary.svg"
+      ],
+      "#76BAFF": [
+        "01_cover.svg"
+      ],
+      "#77B9FF": [
+        "01_cover.svg"
+      ],
+      "#7A9DC5": [
+        "01_cover.svg"
+      ],
+      "#8FC4FF": [
+        "01_cover.svg"
+      ],
+      "#9ABCE3": [
+        "09_ai_agents.svg"
+      ],
+      "#9CC5F2": [
+        "04_solution_loop.svg"
+      ],
+      "#9CCAFF": [
+        "17_operational_results.svg",
+        "19_platform_integration.svg",
+        "20_summary.svg"
+      ],
+      "#9DCAFA": [
+        "01_cover.svg"
+      ],
+      "#9DD1FF": [
+        "01_cover.svg"
+      ],
+      "#9EB7D2": [
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg"
+      ],
+      "#9ED0FF": [
+        "18_quantified_value.svg"
+      ],
+      "#A8D1FF": [
+        "01_cover.svg"
+      ],
+      "#B9D7FA": [
+        "02_painpoints.svg"
+      ],
+      "#B9DDFF": [
+        "01_cover.svg"
+      ],
+      "#C7E2FF": [
+        "01_cover.svg"
+      ],
+      "#C98700": [
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "11_case_qualification.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "17_operational_results.svg"
+      ],
+      "#CFC5F0": [
+        "06_rule_flow.svg"
+      ],
+      "#D4E4F8": [
+        "02_painpoints.svg"
+      ],
+      "#D6E3F0": [
+        "03_risk_objects.svg",
+        "05_data_evidence.svg",
+        "08_rule_engine.svg",
+        "16_application_scale.svg"
+      ],
+      "#D8EBFF": [
+        "01_cover.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg",
+        "20_summary.svg"
+      ],
+      "#D94F4F": [
+        "03_risk_objects.svg",
+        "04_solution_loop.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "17_operational_results.svg"
+      ],
+      "#E7F1FF": [
+        "02_painpoints.svg"
+      ],
+      "#E8F3FF": [
+        "03_risk_objects.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "17_operational_results.svg",
+        "19_platform_integration.svg"
+      ],
+      "#E8F7EF": [
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "14_regulatory_loop.svg",
+        "19_platform_integration.svg"
+      ],
+      "#E9F3FF": [
+        "04_solution_loop.svg"
+      ],
+      "#EAF2FB": [
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg"
+      ],
+      "#EAF4FF": [
+        "02_painpoints.svg"
+      ],
+      "#F1EDFF": [
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "19_platform_integration.svg"
+      ],
+      "#F7FAFE": [
+        "11_case_qualification.svg",
+        "15_evidence_audit.svg"
+      ],
+      "#FF7B2C": [
+        "01_cover.svg"
+      ],
+      "#FF8A3D": [
+        "10_rule_landscape.svg",
+        "12_case_clause.svg"
+      ],
+      "#FFE9E6": [
+        "04_solution_loop.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "17_operational_results.svg"
+      ],
+      "#FFF0E7": [
+        "02_painpoints.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "19_platform_integration.svg"
+      ],
+      "#FFF4DE": [
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "11_case_qualification.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "17_operational_results.svg"
+      ]
+    },
+    "fonts": {
+      "Arial": [
+        "01_cover.svg",
+        "02_painpoints.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "10_rule_landscape.svg",
+        "14_regulatory_loop.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "20_summary.svg"
+      ],
+      "PingFang SC": [
+        "01_cover.svg",
+        "02_painpoints.svg",
+        "03_risk_objects.svg",
+        "04_solution_loop.svg",
+        "05_data_evidence.svg",
+        "06_rule_flow.svg",
+        "07_dual_engine.svg",
+        "08_rule_engine.svg",
+        "09_ai_agents.svg",
+        "10_rule_landscape.svg",
+        "11_case_qualification.svg",
+        "12_case_clause.svg",
+        "13_case_similarity.svg",
+        "14_regulatory_loop.svg",
+        "15_evidence_audit.svg",
+        "16_application_scale.svg",
+        "17_operational_results.svg",
+        "18_quantified_value.svg",
+        "19_platform_integration.svg",
+        "20_summary.svg"
+      ]
+    },
+    "sizes": {
+      "39": [
+        "20_summary.svg"
+      ],
+      "62": [
+        "01_cover.svg"
+      ],
+      "68": [
+        "18_quantified_value.svg"
+      ],
+      "70": [
+        "10_rule_landscape.svg"
+      ],
+      "92": [
+        "17_operational_results.svg"
+      ]
+    }
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [
+      {
+        "severity": "error",
+        "kind": "locked_image_reference_mismatch",
+        "message": "05_reference_body.png is referenced from images/reference_replica/05_reference_body.png, not exclusively from its locked project path."
+      },
+      {
+        "severity": "error",
+        "kind": "locked_image_unreferenced",
+        "message": "05_reference_body.png has usable terminal content but its locked file is not referenced by any svg_output <image> element."
+      }
+    ],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "projects/zzx/svg_output/01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 1,
+        "contextual_values": {
+          "colors": [
+            "#032E70",
+            "#0A78D4",
+            "#66A8ED",
+            "#74B7FF",
+            "#76BAFF",
+            "#77B9FF",
+            "#7A9DC5",
+            "#8FC4FF",
+            "#9DCAFA",
+            "#9DD1FF",
+            "#A8D1FF",
+            "#B9DDFF",
+            "#C7E2FF",
+            "#D8EBFF",
+            "#FF7B2C"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "62": 1
+        }
+      },
+      "passed": true,
+      "source_sha256": "fe81efb5f1716e88131143d4b7749bb28c3cb83ae894378419710a5e6515dbc0"
+    },
+    {
+      "file": "02_painpoints.svg",
+      "path": "projects/zzx/svg_output/02_painpoints.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 32,
+        "tspan_elements": 1,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#B9D7FA",
+            "#D4E4F8",
+            "#E7F1FF",
+            "#EAF4FF",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "e2aa2f187348276042f37fc58b3298f1825dd7555841699f7bbcc2fe4e33a39a"
+    },
+    {
+      "file": "03_risk_objects.svg",
+      "path": "projects/zzx/svg_output/03_risk_objects.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 22,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#0D9097",
+            "#334A67",
+            "#5A6C82",
+            "#5C8FD1",
+            "#6F7F94",
+            "#D6E3F0",
+            "#D94F4F",
+            "#E8F3FF"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "a098ebb6aea17491cd9ff15b28dfca8a2861924cdc076c529a8a92f07c9b2f1b"
+    },
+    {
+      "file": "04_solution_loop.svg",
+      "path": "projects/zzx/svg_output/04_solution_loop.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 29,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#9CC5F2",
+            "#C98700",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#E9F3FF",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "573604978ce0b10e09b721930e529151bad30c51cfd9e9d5381b90ce5f5c9357"
+    },
+    {
+      "file": "05_data_evidence.svg",
+      "path": "projects/zzx/svg_output/05_data_evidence.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 54,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#D6E3F0",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFF0E7",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "9190788b51c37a7ebf90f935bf91a23578c6c67d9c2fe266f4554973d007d4ea"
+    },
+    {
+      "file": "06_rule_flow.svg",
+      "path": "projects/zzx/svg_output/06_rule_flow.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 50,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#CFC5F0",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF0E7",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "73fb2444483f6ea4cfde890b3668600d8f19e7ada778585b5ca5b48aa643ebe8"
+    },
+    {
+      "file": "07_dual_engine.svg",
+      "path": "projects/zzx/svg_output/07_dual_engine.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 30,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "2528660b2344e2b361ec43f6497cc9b1fae4e7283c88d8fc9a495d2d3504c62e"
+    },
+    {
+      "file": "08_rule_engine.svg",
+      "path": "projects/zzx/svg_output/08_rule_engine.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 60,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#D6E3F0",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF0E7",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "ff8d7884062c76d61fb4cc0c44b898c9a7109479fdaaacce6094a3fe7a865935"
+    },
+    {
+      "file": "09_ai_agents.svg",
+      "path": "projects/zzx/svg_output/09_ai_agents.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 46,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#9ABCE3",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "bd34d54e2a9d795e03b21db7fa7822223905b9997d83abf81b5fa5a6fb170f7c"
+    },
+    {
+      "file": "10_rule_landscape.svg",
+      "path": "projects/zzx/svg_output/10_rule_landscape.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 39,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#E8F3FF",
+            "#FF8A3D",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "70": 1
+        }
+      },
+      "passed": true,
+      "source_sha256": "1fe201858235db4e5228face61a11371646b7253cfc359cc5c3c5cd0295b761d"
+    },
+    {
+      "file": "11_case_qualification.svg",
+      "path": "projects/zzx/svg_output/11_case_qualification.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 31,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9EB7D2",
+            "#C98700",
+            "#E8F7EF",
+            "#EAF2FB",
+            "#F7FAFE",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "70b2918e4132d51394d837d95aeef291c44f621f7f963df24e5b78b549b1931c"
+    },
+    {
+      "file": "12_case_clause.svg",
+      "path": "projects/zzx/svg_output/12_case_clause.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Detected 2 paragraph-like line run(s) split across sibling <text> elements (<g id=\"recognition\"> x=615.0, y=260.0..286.0, 2 lines; <g id=\"recognition\"> x=615.0, y=404.0..430.0, 2 lines). If each run is one prose paragraph, combine it into one <text>: keep its first line as direct text and use direct <tspan> children with the parent x and positive relative dy values for later lines. An all-<tspan> form may start with dy=\"0\". Keep semantically independent text frames separate."
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 24,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9EB7D2",
+            "#D94F4F",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#EAF2FB",
+            "#F1EDFF",
+            "#FF8A3D",
+            "#FFE9E6",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "2a321199c7d30adcacbb6c77b5f1ee3f68bbf7b0e845d3551ea9da1fcc0a8445"
+    },
+    {
+      "file": "13_case_similarity.svg",
+      "path": "projects/zzx/svg_output/13_case_similarity.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 24,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9EB7D2",
+            "#D94F4F",
+            "#E8F3FF",
+            "#EAF2FB",
+            "#F1EDFF",
+            "#FFE9E6",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "11e39e218bacd925b9807b65a11d586c010788bf3c6d92cfce5083356231fe76"
+    },
+    {
+      "file": "14_regulatory_loop.svg",
+      "path": "projects/zzx/svg_output/14_regulatory_loop.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 28,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "ea4bf677a3f1b5cb24bddbbf939498c15f71e4be320fadd1c079f4a3021bbfc2"
+    },
+    {
+      "file": "15_evidence_audit.svg",
+      "path": "projects/zzx/svg_output/15_evidence_audit.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 24,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#C98700",
+            "#E8F3FF",
+            "#F1EDFF",
+            "#F7FAFE",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "0105bd35b6f9bfe804feb47fa0438aba77dab83f9a912dca1d83f875e71e7b3c"
+    },
+    {
+      "file": "16_application_scale.svg",
+      "path": "projects/zzx/svg_output/16_application_scale.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 29,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#D6E3F0"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "c5bb65dc1d210d30954adeebef08af103505667034fbd97709c26c7ee76151b8"
+    },
+    {
+      "file": "17_operational_results.svg",
+      "path": "projects/zzx/svg_output/17_operational_results.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 23,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9CCAFF",
+            "#C98700",
+            "#D8EBFF",
+            "#D94F4F",
+            "#E8F3FF",
+            "#FFE9E6",
+            "#FFF4DE"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "92": 1
+        }
+      },
+      "passed": true,
+      "source_sha256": "d5a17ac3a5bc4966061ff5017db3c129f1b8f8fe2ce39911d8066ce4995fcce5"
+    },
+    {
+      "file": "18_quantified_value.svg",
+      "path": "projects/zzx/svg_output/18_quantified_value.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 21,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9ED0FF",
+            "#D8EBFF"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "68": 2
+        }
+      },
+      "passed": true,
+      "source_sha256": "52942ea6e32930f251865ae0b5bf0565fe9e0955b879832674615c45240ccc02"
+    },
+    {
+      "file": "19_platform_integration.svg",
+      "path": "projects/zzx/svg_output/19_platform_integration.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "PingFang SC"
+        ],
+        "text_elements": 22,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#083F91",
+            "#268A50",
+            "#52677F",
+            "#5A6C82",
+            "#6F7F94",
+            "#9CCAFF",
+            "#D8EBFF",
+            "#E8F3FF",
+            "#E8F7EF",
+            "#F1EDFF",
+            "#FFF0E7"
+          ],
+          "font_families": [
+            "PingFang SC"
+          ]
+        }
+      },
+      "passed": true,
+      "source_sha256": "8242c5dd977ea48796f1340fa00225f38728ee70f8c64c6b5dfaca87cbd1ba57"
+    },
+    {
+      "file": "20_summary.svg",
+      "path": "projects/zzx/svg_output/20_summary.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "fonts": [
+          "Arial",
+          "PingFang SC"
+        ],
+        "text_elements": 16,
+        "tspan_elements": 0,
+        "contextual_values": {
+          "colors": [
+            "#032E70",
+            "#0A78D4",
+            "#74B7FF",
+            "#9CCAFF",
+            "#D8EBFF"
+          ],
+          "font_families": [
+            "Arial",
+            "PingFang SC"
+          ]
+        },
+        "sparse_typography_sizes": {
+          "39": 1
+        }
+      },
+      "passed": true,
+      "source_sha256": "3c076cd39d6f5b73ac64ffa10bea80ea781f120ebb809df170a5ef71477c1b71"
+    }
+  ]
+}

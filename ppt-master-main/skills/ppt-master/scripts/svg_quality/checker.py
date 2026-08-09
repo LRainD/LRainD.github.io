@@ -14,6 +14,8 @@ Dependencies:
     Standard library plus local PPT Master validation modules.
 """
 
+from __future__ import annotations
+
 import copy
 import hashlib
 import html

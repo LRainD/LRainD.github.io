@@ -17,7 +17,7 @@ Dependencies:
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Mapping
+from typing import Mapping, Union
 
 from .errors import (
     FormulaEvaluationError,
@@ -41,7 +41,7 @@ from .models import (
 )
 
 
-AdjustmentValue = str | int | float
+AdjustmentValue = Union[str, int, float]
 CONNECTOR_PRESET_TYPES = frozenset(
     {
         "line",

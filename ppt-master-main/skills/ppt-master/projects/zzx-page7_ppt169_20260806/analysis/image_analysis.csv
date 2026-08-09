@@ -1,0 +1,8 @@
+No,Filename,Width,Height,AspectRatio,PixelAspectRatio,SourceDisplayRatio,RatioSource,Format,HasTransparentPixels,UsageCount,DisplayRatioVariants,AssetKind,SvgRenderable,PptxNativeSupported,SizeKB,Category
+1,ai.png,326,319,1.02,1.02,,native,PNG,True,1,,bitmap,True,True,125.8,Near square
+2,compare.png,459,231,1.99,1.99,,native,PNG,True,1,,bitmap,True,True,76.0,Wide landscape
+3,engine_icon_sheet.png,1536,1024,1.50,1.50,,native,PNG,False,1,,bitmap,True,True,1157.3,Standard landscape
+4,match.png,333,297,1.12,1.12,,native,PNG,True,1,,bitmap,True,True,86.1,Near square
+5,output.png,314,314,1.00,1.00,,native,PNG,True,1,,bitmap,True,True,101.3,Near square
+6,rules.png,334,314,1.06,1.06,,native,PNG,True,1,,bitmap,True,True,91.8,Near square
+7,search.png,304,302,1.01,1.01,,native,PNG,True,1,,bitmap,True,True,79.6,Near square

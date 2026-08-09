@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-page-role="content">
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#043A8C"/><stop offset="100%" stop-color="#0B6ACD"/></linearGradient>
+    <linearGradient id="soft" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EDF6FF"/><stop offset="100%" stop-color="#F8FBFF"/></linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0753B8"/><stop offset="68%" stop-color="#EAF4FF"/><stop offset="100%" stop-color="#FFFFFF"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0A3E83" flood-opacity="0.12"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><polygon points="0,1 10,6 0,11" fill="#75ADEF"/></marker>
+    <marker id="arrowWhite" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto"><polygon points="0,1 10,6 0,11" fill="#FFFFFF"/></marker>
+  </defs>
+  <rect id="page-background" data-pptx-role="background" x="0" y="0" width="1280" height="720" fill="#F4F8FD"/>
+  <g id="header" data-pptx-bounds="32 20 1216 88">
+    <text x="34" y="58" font-family="PingFang SC" font-size="32" font-weight="700" fill="#083F91">07｜核心引擎：规则与 AI 双引擎协同</text>
+    <text x="34" y="88" font-family="PingFang SC" font-size="17" fill="#5A6C82">结构化问题由规则引擎稳定判定，复杂语义问题由 AI 引擎深入识别，结果统一汇总并分级输出</text>
+    <line x1="34" y1="104" x2="1246" y2="104" stroke="#BCD3EC"/>
+  </g>
+  <g id="summary" data-pptx-bounds="30 112 1220 38">
+    <rect x="30" y="112" width="1220" height="38" rx="9" fill="url(#soft)" stroke="#B9D4F3" stroke-width="1.5"/>
+    <circle cx="57" cy="131" r="13" fill="#0753B8"/>
+    <circle cx="57" cy="131" r="7" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M57 131 L64 125 M57 127 L57 134 M54 131 L61 131" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+    <text x="82" y="137" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">本页核心结论</text>
+    <line x1="190" y1="119" x2="190" y2="143" stroke="#BCD3EC" stroke-width="1.2"/>
+    <text x="210" y="136" font-family="PingFang SC" font-size="13" fill="#1B3B63">根据问题确定性和复杂度分流：规则引擎负责条件明确的结构化判断，AI 引擎负责复杂语义与非结构化识别，结果统一返回业务流程。</text>
+  </g>
+  <g id="rule-engine" data-pptx-bounds="30 154 395 306">
+    <rect x="30" y="154" width="395" height="306" rx="12" fill="#FFFFFF" stroke="#2169C2" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="30" y="154" width="395" height="53" rx="12" fill="#0753B8"/>
+    <rect x="30" y="194" width="395" height="13" fill="#0753B8"/>
+    <circle cx="72" cy="184" r="29" fill="#FFFFFF" stroke="#0753B8" stroke-width="1.5"/>
+    <image href="../images/rules.png" x="49" y="161" width="46" height="46" preserveAspectRatio="xMidYMid meet"/>
+    <text x="121" y="188" font-family="PingFang SC" font-size="22" font-weight="700" fill="#FFFFFF">规则引擎｜确定性问题</text>
+    <path d="M374 171 L385 176 L385 187 Q385 197 374 201 Q363 197 363 187 L363 176 Z" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M369 184 L373 188 L380 180" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="50" y="228" font-family="PingFang SC" font-size="14" fill="#1B2638">对标准结构化数据执行条件匹配、阈值判断和关系计算，</text>
+    <text x="50" y="247" font-family="PingFang SC" font-size="14" fill="#1B2638">识别字段缺失、资质失效、资质有效期、严重违法失信、</text>
+    <text x="50" y="266" font-family="PingFang SC" font-size="14" fill="#1B2638">工商关联及精准信息重复等风险。</text>
+    <rect x="48" y="283" width="359" height="69" rx="8" fill="#F8FBFF" stroke="#C4DAF5"/>
+    <image href="../images/match.png" x="68" y="293" width="43" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/compare.png" x="175" y="293" width="54" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/output.png" x="304" y="293" width="43" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <line x1="151" y1="291" x2="151" y2="344" stroke="#D3E3F6"/>
+    <line x1="278" y1="291" x2="278" y2="344" stroke="#D3E3F6"/>
+    <text x="61" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">条件匹配</text>
+    <text x="170" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">阈值判断</text>
+    <text x="299" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">关系计算</text>
+    <line x1="50" y1="389" x2="405" y2="389" stroke="#AFC9E8" stroke-dasharray="4,4"/>
+    <text x="174" y="411" font-family="PingFang SC" font-size="17" font-weight="700" fill="#0753B8">代表场景</text>
+    <text x="50" y="438" font-family="PingFang SC" font-size="15" fill="#1B2638">字段缺失　　资质失效　　工商关联　　精准重叠</text>
+  </g>
+  <g id="ai-engine" data-pptx-bounds="855 154 395 306">
+    <rect x="855" y="154" width="395" height="306" rx="12" fill="#FFFFFF" stroke="#2169C2" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="855" y="154" width="395" height="53" rx="12" fill="#0753B8"/>
+    <rect x="855" y="194" width="395" height="13" fill="#0753B8"/>
+    <circle cx="897" cy="184" r="29" fill="#FFFFFF" stroke="#0753B8" stroke-width="1.5"/>
+    <image href="../images/ai.png" x="874" y="161" width="46" height="46" preserveAspectRatio="xMidYMid meet"/>
+    <text x="945" y="188" font-family="PingFang SC" font-size="22" font-weight="700" fill="#FFFFFF">AI 引擎｜复杂性问题</text>
+    <path d="M1206 174 Q1218 164 1226 176 Q1237 180 1229 190 Q1224 200 1214 195 Q1204 201 1199 190 Q1193 180 1206 174 Z" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M1210 181 Q1215 177 1221 181 M1210 187 Q1215 183 1221 187" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+    <text x="875" y="228" font-family="PingFang SC" font-size="14" fill="#1B2638">对公告、附件、清单和合同等非结构化材料进行语义理解</text>
+    <text x="875" y="247" font-family="PingFang SC" font-size="14" fill="#1B2638">与跨文件比对，识别排斥条款、附件符合性、异常相似</text>
+    <text x="875" y="266" font-family="PingFang SC" font-size="14" fill="#1B2638">和合同条款偏离等风险。</text>
+    <rect x="873" y="283" width="359" height="69" rx="8" fill="#F8FBFF" stroke="#C4DAF5"/>
+    <image href="../images/search.png" x="895" y="293" width="43" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/rules.png" x="1018" y="293" width="43" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/compare.png" x="1138" y="293" width="54" height="43" preserveAspectRatio="xMidYMid meet"/>
+    <line x1="995" y1="291" x2="995" y2="344" stroke="#D3E3F6"/>
+    <line x1="1112" y1="291" x2="1112" y2="344" stroke="#D3E3F6"/>
+    <text x="884" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">语义理解</text>
+    <text x="1008" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">知识检索</text>
+    <text x="1127" y="370" font-family="PingFang SC" font-size="16" font-weight="700" fill="#0753B8">跨文件比对</text>
+    <line x1="875" y1="389" x2="1230" y2="389" stroke="#AFC9E8" stroke-dasharray="4,4"/>
+    <text x="999" y="411" font-family="PingFang SC" font-size="17" font-weight="700" fill="#0753B8">代表场景</text>
+    <text x="875" y="438" font-family="PingFang SC" font-size="15" fill="#1B2638">排斥性条款　附件符合性　异常相似　合同偏离</text>
+  </g>
+  <g id="synergy" data-pptx-bounds="425 215 430 220">
+    <line x1="426" y1="300" x2="496" y2="300" stroke="#75ADEF" stroke-width="6" marker-end="url(#arrow)"/>
+    <line x1="784" y1="300" x2="854" y2="300" stroke="#75ADEF" stroke-width="6" marker-end="url(#arrow)"/>
+    <circle cx="640" cy="300" r="62" fill="#FFFFFF" stroke="#75ADEF" stroke-width="2"/>
+    <circle cx="640" cy="300" r="53" fill="#EDF5FF" stroke="#C2DCF7" stroke-width="1"/>
+    <text x="640" y="289" text-anchor="middle" font-family="PingFang SC" font-size="25" font-weight="700" fill="#0753B8">规则</text>
+    <text x="640" y="322" text-anchor="middle" font-family="Arial" font-size="30" font-weight="700" fill="#0753B8">+</text>
+    <text x="640" y="350" text-anchor="middle" font-family="Arial" font-size="25" font-weight="700" fill="#0753B8">AI</text>
+    <line x1="640" y1="216" x2="640" y2="238" stroke="#C8DCF2" stroke-dasharray="3,3"/>
+    <line x1="640" y1="362" x2="640" y2="385" stroke="#C8DCF2" stroke-dasharray="3,3"/>
+    <text x="640" y="402" text-anchor="middle" font-family="PingFang SC" font-size="15" font-weight="700" fill="#0753B8">确定性问题用规则，复杂性问题用 AI</text>
+  </g>
+  <g id="output-band" data-pptx-bounds="30 488 1220 82">
+    <rect x="30" y="488" width="1220" height="82" rx="12" fill="url(#band)" stroke="#9FC5EC" stroke-width="1.5"/>
+    <circle cx="72" cy="529" r="24" fill="#FFFFFF" stroke="#0753B8" stroke-width="2"/>
+    <path d="M72 529 L83 518 M72 523 L72 534 M67 529 L77 529" fill="none" stroke="#0753B8" stroke-width="3" stroke-linecap="round"/>
+    <text x="108" y="538" font-family="PingFang SC" font-size="24" font-weight="700" fill="#FFFFFF">统一输出</text>
+    <line x1="201" y1="499" x2="201" y2="559" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.5"/>
+    <rect x="222" y="505" width="150" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.9"/>
+    <rect x="390" y="505" width="150" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.9"/>
+    <rect x="558" y="505" width="150" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.9"/>
+    <image href="../images/output.png" x="235" y="512" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/search.png" x="403" y="512" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+    <image href="../images/rules.png" x="571" y="512" width="30" height="30" preserveAspectRatio="xMidYMid meet"/>
+    <text x="273" y="535" font-family="PingFang SC" font-size="15" fill="#0753B8">风险结论</text>
+    <text x="441" y="535" font-family="PingFang SC" font-size="15" fill="#0753B8">命中证据</text>
+    <text x="609" y="535" font-family="PingFang SC" font-size="15" fill="#0753B8">判断依据</text>
+    <text x="378" y="536" font-family="Arial" font-size="24" font-weight="700" fill="#0753B8">+</text>
+    <text x="546" y="536" font-family="Arial" font-size="24" font-weight="700" fill="#0753B8">+</text>
+    <line x1="720" y1="529" x2="762" y2="529" stroke="#FFFFFF" stroke-width="6" marker-end="url(#arrowWhite)"/>
+    <rect x="785" y="505" width="102" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.95"/>
+    <rect x="900" y="505" width="125" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.95"/>
+    <rect x="1038" y="505" width="150" height="48" rx="9" fill="#FFFFFF" fill-opacity="0.95"/>
+    <circle cx="807" cy="529" r="13" fill="#5AA35A"/><path d="M800 529 L805 534 L815 523" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="922" cy="529" r="13" fill="#F3A21A"/><circle cx="922" cy="526" r="5" fill="#FFFFFF"/><path d="M929 533 L936 540" stroke="#FFFFFF" stroke-width="3"/>
+    <circle cx="1060" cy="529" r="13" fill="#D9342B"/><path d="M1060 521 L1060 531 M1060 536 L1060 537" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+    <text x="828" y="535" font-family="PingFang SC" font-size="15" font-weight="700" fill="#21456F">通过</text>
+    <text x="943" y="535" font-family="PingFang SC" font-size="15" font-weight="700" fill="#21456F">提示/复核</text>
+    <text x="1081" y="535" font-family="PingFang SC" font-size="15" font-weight="700" fill="#21456F">预警/拦截</text>
+  </g>
+  <g id="footer-note" data-pptx-bounds="30 600 1228 94">
+    <rect x="30" y="600" width="1220" height="72" rx="14" fill="#FFFFFF" stroke="#C8DDF4" stroke-width="1.5"/>
+    <text x="62" y="630" font-family="PingFang SC" font-size="17" font-weight="700" fill="#0753B8">协同机制</text>
+    <text x="174" y="630" font-family="PingFang SC" font-size="16" fill="#1B2638">规则引擎负责“快、准、稳”的确定性判断，AI 引擎负责“懂语义、识异常”的复杂分析，</text>
+    <text x="174" y="654" font-family="PingFang SC" font-size="16" fill="#1B2638">两者协同形成从发现风险、解释证据到分级处置的完整闭环。</text>
+    <text x="1036" y="688" font-family="PingFang SC" font-size="11" fill="#6F7F94">数据来源：项目申报材料，统计周期待补充</text>
+  </g>
+</svg>

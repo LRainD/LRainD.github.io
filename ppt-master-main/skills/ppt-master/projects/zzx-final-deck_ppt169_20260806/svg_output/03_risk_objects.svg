@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-page-role="content">
+  <rect id="page-background" data-pptx-role="background" width="1280" height="720" fill="#F4F8FD"/>
+  <g id="header" data-pptx-bounds="28 18 1224 90">
+    <text x="34" y="57" font-family="PingFang SC" font-size="32" font-weight="700" fill="#083F91">03｜四类主体、四大风险贯穿交易全流程</text>
+    <text x="34" y="87" font-family="PingFang SC" font-size="17" fill="#5A6C82">两级协同监管围绕主体、文件、规则、行为、关系、时间和处置形成可核验证据链</text>
+    <line x1="34" y1="104" x2="1246" y2="104" stroke="#BCD3EC"/>
+  </g>
+
+  <g id="supervision-overview" data-pptx-bounds="18 118 1244 100">
+    <rect x="18" y="120" width="205" height="92" rx="6" fill="#FFFFFF" stroke="#BCD3EC"/>
+    <text x="32" y="143" font-family="PingFang SC" font-size="15" font-weight="700" fill="#083F91">谁来监管</text>
+    <text x="32" y="165" font-family="PingFang SC" font-size="12" fill="#334A67">集团监管部门开展集中监测，<tspan x="32" dy="18">统筹能力和穿透分析；采购单位</tspan><tspan x="32" dy="18">对本级业务实时自查与整改。</tspan></text>
+
+    <rect x="240" y="120" width="360" height="62" rx="6" fill="#0753B8"/>
+    <path d="M240 120H600L578 151L600 182H240Z" fill="#0753B8"/>
+    <rect x="266" y="138" width="25" height="29" rx="2" fill="#FFFFFF"/>
+    <rect x="272" y="132" width="13" height="35" fill="#FFFFFF"/>
+    <line x1="278" y1="139" x2="278" y2="162" stroke="#0753B8" stroke-width="2"/>
+    <text x="420" y="148" text-anchor="middle" font-family="PingFang SC" font-size="22" font-weight="700" fill="#FFFFFF">集团集中监管</text>
+    <text x="420" y="171" text-anchor="middle" font-family="PingFang SC" font-size="12" fill="#D8EBFF">集中监测｜统筹督办｜穿透分析</text>
+
+    <line x1="595" y1="151" x2="624" y2="151" stroke="#0753B8" stroke-width="6"/>
+    <polygon points="624,143 638,151 624,159" fill="#0753B8"/>
+    <line x1="685" y1="151" x2="716" y2="151" stroke="#0D9097" stroke-width="6"/>
+    <polygon points="685,143 671,151 685,159" fill="#0D9097"/>
+    <circle cx="654" cy="151" r="45" fill="#FFFFFF" stroke="#5C8FD1" stroke-width="5"/>
+    <circle cx="654" cy="151" r="37" fill="#0753B8"/>
+    <text x="654" y="145" text-anchor="middle" font-family="PingFang SC" font-size="16" font-weight="700" fill="#FFFFFF">两级协同</text>
+    <text x="654" y="166" text-anchor="middle" font-family="PingFang SC" font-size="16" font-weight="700" fill="#FFFFFF">监管</text>
+    <line x1="654" y1="196" x2="654" y2="220" stroke="#5C8FD1" stroke-width="5"/>
+    <polygon points="646,216 654,229 662,216" fill="#5C8FD1"/>
+
+    <rect x="708" y="120" width="350" height="62" rx="6" fill="#0D9097"/>
+    <path d="M708 120H1058V182H708L730 151Z" fill="#0D9097"/>
+    <rect x="740" y="138" width="25" height="29" rx="2" fill="#FFFFFF"/>
+    <rect x="746" y="132" width="13" height="35" fill="#FFFFFF"/>
+    <line x1="752" y1="139" x2="752" y2="162" stroke="#0D9097" stroke-width="2"/>
+    <text x="883" y="148" text-anchor="middle" font-family="PingFang SC" font-size="22" font-weight="700" fill="#FFFFFF">采购单位自查</text>
+    <text x="883" y="171" text-anchor="middle" font-family="PingFang SC" font-size="12" fill="#D5F4F3">业务自查｜风险复核｜整改处置</text>
+
+    <rect x="1075" y="120" width="187" height="92" rx="6" fill="#FFFFFF" stroke="#BCD3EC"/>
+    <text x="1089" y="143" font-family="PingFang SC" font-size="15" font-weight="700" fill="#083F91">监管链</text>
+    <text x="1089" y="165" font-family="PingFang SC" font-size="12" fill="#334A67">采购方、供应商、评审方和<tspan x="1089" dy="18">履约方，及各主体在业务过程</tspan><tspan x="1089" dy="18">中产生的文件、规则与行为。</tspan></text>
+  </g>
+
+  <g id="business-stages" data-pptx-bounds="252 222 826 34">
+    <text x="252" y="246" font-family="PingFang SC" font-size="14" font-weight="700" fill="#083F91">业务主轴</text>
+    <g fill="#0753B8">
+      <rect x="355" y="226" width="126" height="28" rx="6"/><rect x="497" y="226" width="126" height="28" rx="6"/>
+      <rect x="639" y="226" width="126" height="28" rx="6"/><rect x="781" y="226" width="126" height="28" rx="6"/>
+      <rect x="923" y="226" width="126" height="28" rx="6"/>
+    </g>
+    <g font-family="PingFang SC" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+      <text x="418" y="245">① 采购需求</text><text x="560" y="245">② 招标发布</text><text x="702" y="245">③ 投标响应</text><text x="844" y="245">④ 评标定标</text><text x="986" y="245">⑤ 合同履约</text>
+    </g>
+    <g fill="#5C8FD1"><polygon points="483,235 495,240 483,245"/><polygon points="625,235 637,240 625,245"/><polygon points="767,235 779,240 767,245"/><polygon points="909,235 921,240 909,245"/></g>
+  </g>
+
+  <g id="risk-matrix" data-pptx-bounds="18 262 1098 262">
+    <rect x="18" y="262" width="1098" height="262" rx="7" fill="#FFFFFF" stroke="#BCD3EC"/>
+    <rect x="18" y="262" width="286" height="262" rx="7" fill="#F7FAFE" stroke="#BCD3EC"/>
+    <line x1="304" y1="262" x2="304" y2="524" stroke="#BCD3EC"/>
+    <line x1="446" y1="262" x2="446" y2="524" stroke="#D6E3F0" stroke-dasharray="3,3"/>
+    <line x1="588" y1="262" x2="588" y2="524" stroke="#D6E3F0" stroke-dasharray="3,3"/>
+    <line x1="730" y1="262" x2="730" y2="524" stroke="#D6E3F0" stroke-dasharray="3,3"/>
+    <line x1="872" y1="262" x2="872" y2="524" stroke="#D6E3F0" stroke-dasharray="3,3"/>
+    <line x1="1014" y1="262" x2="1014" y2="524" stroke="#D6E3F0" stroke-dasharray="3,3"/>
+    <line x1="18" y1="327" x2="1116" y2="327" stroke="#D6E3F0"/><line x1="18" y1="392" x2="1116" y2="392" stroke="#D6E3F0"/><line x1="18" y1="457" x2="1116" y2="457" stroke="#D6E3F0"/>
+    <rect x="18" y="262" width="42" height="262" rx="7" fill="#E8F3FF"/>
+    <text x="39" y="325" text-anchor="middle" font-family="PingFang SC" font-size="16" font-weight="700" fill="#083F91"><tspan x="39" dy="0">四</tspan><tspan x="39" dy="22">类</tspan><tspan x="39" dy="22">主</tspan><tspan x="39" dy="22">体</tspan><tspan x="39" dy="22">×</tspan><tspan x="39" dy="22">四</tspan><tspan x="39" dy="22">大</tspan><tspan x="39" dy="22">风</tspan><tspan x="39" dy="22">险</tspan></text>
+
+    <g id="subjects" font-family="PingFang SC">
+      <circle cx="90" cy="294" r="23" fill="#0753B8"/><rect x="82" y="283" width="16" height="20" fill="#FFFFFF"/><line x1="87" y1="287" x2="87" y2="299" stroke="#0753B8"/><line x1="93" y1="287" x2="93" y2="299" stroke="#0753B8"/>
+      <text x="124" y="292" font-size="18" font-weight="700" fill="#0753B8">采购方</text><text x="124" y="311" font-size="11" fill="#52677F">规则设置风险</text>
+      <text x="210" y="286" font-size="10" fill="#334A67">需求说明违法分包、排斥性条款；</text><text x="210" y="301" font-size="10" fill="#334A67">合同文件不规范等问题。</text>
+
+      <circle cx="90" cy="359" r="23" fill="#0D9097"/><circle cx="84" cy="352" r="6" fill="#FFFFFF"/><circle cx="96" cy="352" r="6" fill="#FFFFFF"/><path d="M74 371Q84 357 94 371M86 371Q96 357 106 371" fill="#FFFFFF"/>
+      <text x="124" y="357" font-size="18" font-weight="700" fill="#0D9097">供应商</text><text x="124" y="376" font-size="11" fill="#52677F">投标真实性与关联风险</text>
+      <text x="210" y="351" font-size="10" fill="#334A67">重点识别资质失效、关联关系、</text><text x="210" y="366" font-size="10" fill="#334A67">异常一致性与围标串标线索。</text>
+
+      <circle cx="90" cy="424" r="23" fill="#7B61C9"/><path d="M78 414L88 424M88 414L78 424M94 430L103 439" stroke="#FFFFFF" stroke-width="4"/><rect x="87" y="419" width="15" height="6" transform="rotate(45 94 422)" fill="#FFFFFF"/>
+      <text x="124" y="422" font-size="18" font-weight="700" fill="#7B61C9">评审方</text><text x="124" y="441" font-size="11" fill="#52677F">评审过程合规风险</text>
+      <text x="210" y="416" font-size="10" fill="#334A67">监督专家抽选、评审流程与结果，</text><text x="210" y="431" font-size="10" fill="#334A67">核查异常打分及倾向行为。</text>
+
+      <circle cx="90" cy="489" r="23" fill="#D94F4F"/><path d="M72 487L83 479L91 486L98 480L109 489L100 499L91 493L83 499Z" fill="#FFFFFF"/>
+      <text x="124" y="487" font-size="18" font-weight="700" fill="#D94F4F">履约方</text><text x="124" y="506" font-size="11" fill="#52677F">合同一致性与履约风险</text>
+      <text x="210" y="481" font-size="10" fill="#334A67">重点比对合同条款、采购结果与</text><text x="210" y="496" font-size="10" fill="#334A67">履约记录，识别关键条款偏离。</text>
+    </g>
+
+    <rect x="332" y="278" width="242" height="28" rx="14" fill="#0753B8"/><text x="453" y="297" text-anchor="middle" font-family="PingFang SC" font-size="14" font-weight="700" fill="#FFFFFF">规则设置风险</text><line x1="574" y1="292" x2="1054" y2="292" stroke="#0753B8" stroke-width="3"/><line x1="860" y1="292" x2="1054" y2="292" stroke="#0753B8" stroke-width="3" stroke-dasharray="8,6"/><polygon points="1054,286 1065,292 1054,298" fill="#0753B8"/>
+    <rect x="430" y="343" width="270" height="28" rx="14" fill="#0D9097"/><text x="565" y="362" text-anchor="middle" font-family="PingFang SC" font-size="14" font-weight="700" fill="#FFFFFF">投标真实性与关联风险</text><line x1="700" y1="357" x2="1054" y2="357" stroke="#0D9097" stroke-width="3" stroke-dasharray="8,6"/><polygon points="1054,351 1065,357 1054,363" fill="#0D9097"/>
+    <rect x="568" y="408" width="250" height="28" rx="14" fill="#7B61C9"/><text x="693" y="427" text-anchor="middle" font-family="PingFang SC" font-size="14" font-weight="700" fill="#FFFFFF">评审过程合规风险</text><line x1="818" y1="422" x2="1054" y2="422" stroke="#7B61C9" stroke-width="3" stroke-dasharray="8,6"/><polygon points="1054,416 1065,422 1054,428" fill="#7B61C9"/>
+    <rect x="786" y="473" width="248" height="28" rx="14" fill="#D94F4F"/><text x="910" y="492" text-anchor="middle" font-family="PingFang SC" font-size="14" font-weight="700" fill="#FFFFFF">合同一致性与履约风险</text><line x1="1034" y1="487" x2="1054" y2="487" stroke="#D94F4F" stroke-width="3"/><polygon points="1054,481 1065,487 1054,493" fill="#D94F4F"/>
+  </g>
+
+  <g id="legend" data-pptx-bounds="1128 262 134 262">
+    <rect x="1128" y="262" width="134" height="262" rx="7" fill="#FFFFFF" stroke="#9EB7D2"/>
+    <text x="1195" y="288" text-anchor="middle" font-family="PingFang SC" font-size="15" font-weight="700" fill="#083F91">图例说明</text>
+    <line x1="1143" y1="308" x2="1178" y2="308" stroke="#0753B8" stroke-width="3"/><text x="1186" y="312" font-family="PingFang SC" font-size="11" fill="#334A67">当前能力</text>
+    <line x1="1143" y1="332" x2="1178" y2="332" stroke="#0753B8" stroke-width="3" stroke-dasharray="7,5"/><text x="1186" y="336" font-family="PingFang SC" font-size="11" fill="#334A67">规划能力</text>
+    <text x="1143" y="367" font-family="PingFang SC" font-size="12" font-weight="700" fill="#52677F">风险色带</text>
+    <rect x="1143" y="383" width="18" height="7" rx="3" fill="#0753B8"/><text x="1168" y="391" font-family="PingFang SC" font-size="10" fill="#334A67">规则设置</text>
+    <rect x="1143" y="406" width="18" height="7" rx="3" fill="#0D9097"/><text x="1168" y="414" font-family="PingFang SC" font-size="10" fill="#334A67">投标关联</text>
+    <rect x="1143" y="429" width="18" height="7" rx="3" fill="#7B61C9"/><text x="1168" y="437" font-family="PingFang SC" font-size="10" fill="#334A67">评审合规</text>
+    <rect x="1143" y="452" width="18" height="7" rx="3" fill="#D94F4F"/><text x="1168" y="460" font-family="PingFang SC" font-size="10" fill="#334A67">合同履约</text>
+  </g>
+
+  <g id="evidence-chain" data-pptx-bounds="18 536 1244 130">
+    <rect x="18" y="536" width="1244" height="130" rx="7" fill="#FFFFFF" stroke="#BCD3EC"/>
+    <rect x="18" y="536" width="44" height="130" rx="7" fill="#0753B8"/>
+    <text x="40" y="565" text-anchor="middle" font-family="PingFang SC" font-size="16" font-weight="700" fill="#FFFFFF"><tspan x="40" dy="0">证</tspan><tspan x="40" dy="22">据</tspan><tspan x="40" dy="22">主</tspan><tspan x="40" dy="22">线</tspan></text>
+    <g font-family="PingFang SC" text-anchor="middle">
+      <circle cx="105" cy="575" r="24" fill="#083F91"/><circle cx="97" cy="570" r="6" fill="#FFFFFF"/><circle cx="113" cy="570" r="6" fill="#FFFFFF"/><path d="M88 588Q105 570 122 588" fill="#FFFFFF"/>
+      <text x="105" y="615" font-size="13" font-weight="700" fill="#083F91">主体身份关系</text><text x="105" y="634" font-size="10" fill="#52677F">身份｜股权｜资质</text>
+      <circle cx="278" cy="575" r="24" fill="#0753B8"/><rect x="267" y="561" width="22" height="28" rx="2" fill="#FFFFFF"/><line x1="272" y1="568" x2="284" y2="568" stroke="#0753B8"/><line x1="272" y1="574" x2="284" y2="574" stroke="#0753B8"/>
+      <text x="278" y="615" font-size="13" font-weight="700" fill="#083F91">原始文件版本</text><text x="278" y="634" font-size="10" fill="#52677F">源文件｜附件｜版本</text>
+      <circle cx="451" cy="575" r="24" fill="#0D9097"/><path d="M451 556L466 562V574Q466 586 451 593Q436 586 436 574V562Z" fill="#FFFFFF"/><path d="M444 575L449 580L459 568" fill="none" stroke="#0D9097" stroke-width="3"/>
+      <text x="451" y="615" font-size="13" font-weight="700" fill="#083F91">规则行为记录</text><text x="451" y="634" font-size="10" fill="#52677F">规则｜操作｜评审</text>
+      <circle cx="624" cy="575" r="24" fill="#7B61C9"/><rect x="611" y="562" width="26" height="21" rx="2" fill="#FFFFFF"/><line x1="616" y1="587" x2="632" y2="587" stroke="#FFFFFF" stroke-width="3"/><line x1="624" y1="583" x2="624" y2="590" stroke="#FFFFFF" stroke-width="3"/>
+      <text x="624" y="615" font-size="13" font-weight="700" fill="#083F91">时间节点</text><text x="624" y="634" font-size="10" fill="#52677F">流程节点｜时序合规</text>
+      <circle cx="797" cy="575" r="24" fill="#FF6B20"/><rect x="786" y="560" width="21" height="29" rx="2" fill="#FFFFFF"/><circle cx="806" cy="583" r="7" fill="none" stroke="#FF6B20" stroke-width="3"/>
+      <text x="797" y="615" font-size="13" font-weight="700" fill="#083F91">风险依据</text><text x="797" y="634" font-size="10" fill="#52677F">对比结果｜引用条款</text>
+      <circle cx="970" cy="575" r="24" fill="#0753B8"/><circle cx="963" cy="569" r="6" fill="#FFFFFF"/><circle cx="977" cy="569" r="6" fill="#FFFFFF"/><path d="M950 586Q963 573 974 586M966 586Q977 573 990 586" fill="#FFFFFF"/>
+      <text x="970" y="615" font-size="13" font-weight="700" fill="#083F91">复核处置记录</text><text x="970" y="634" font-size="10" fill="#52677F">风险复核｜整改要求</text>
+      <circle cx="1143" cy="575" r="24" fill="#083F91"/><rect x="1132" y="559" width="22" height="30" rx="3" fill="#FFFFFF"/><path d="M1137 571L1141 575L1149 567M1137 580L1141 584L1149 576" fill="none" stroke="#083F91" stroke-width="2"/>
+      <text x="1143" y="615" font-size="13" font-weight="700" fill="#083F91">监管闭环</text><text x="1143" y="634" font-size="10" fill="#52677F">闭环确认｜持续优化</text>
+    </g>
+    <g stroke="#0753B8" stroke-width="2" fill="#0753B8">
+      <line x1="132" y1="575" x2="244" y2="575"/><polygon points="244,570 253,575 244,580"/>
+      <line x1="305" y1="575" x2="417" y2="575"/><polygon points="417,570 426,575 417,580"/>
+      <line x1="478" y1="575" x2="590" y2="575"/><polygon points="590,570 599,575 590,580"/>
+      <line x1="651" y1="575" x2="763" y2="575"/><polygon points="763,570 772,575 763,580"/>
+      <line x1="824" y1="575" x2="936" y2="575"/><polygon points="936,570 945,575 936,580"/>
+      <line x1="997" y1="575" x2="1109" y2="575"/><polygon points="1109,570 1118,575 1109,580"/>
+    </g>
+  </g>
+
+  <g id="conclusion" data-pptx-bounds="18 678 1244 34">
+    <rect x="18" y="678" width="1244" height="34" rx="6" fill="#0753B8"/>
+    <circle cx="151" cy="695" r="11" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M145 695L150 700L158 689" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <text x="640" y="701" text-anchor="middle" font-family="PingFang SC" font-size="16" font-weight="700" fill="#FFFFFF">系统监管的是可核验的业务证据，而非对主体进行笼统判断，形成“识别—预警—处置—复核—闭环”的全流程监管闭环。</text>
+  </g>
+</svg>

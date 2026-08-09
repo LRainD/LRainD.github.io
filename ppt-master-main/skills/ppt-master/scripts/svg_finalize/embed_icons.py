@@ -75,7 +75,8 @@ ICON_BASE_SIZES = {
 }
 _ICON_LIBRARY_ALIASES = {'chunk': 'chunk-filled'}
 DEFAULT_ICON_BASE_SIZE = 24
-BaseGeometry = float | tuple[float, float, float, float]
+from typing import Union, Tuple
+BaseGeometry = Union[float, Tuple[float, float, float, float]]
 
 
 def _get_viewbox_size(content: str) -> float:
@@ -86,7 +87,7 @@ def _get_viewbox_size(content: str) -> float:
     return 0
 
 
-def _get_viewbox_geometry(content: str) -> tuple[float, float, float, float] | None:
+def _get_viewbox_geometry(content: str) -> Union[Tuple[float, float, float, float], None]:
     """Extract full viewBox geometry as (min_x, min_y, width, height)."""
     match = re.search(r'viewBox=["\']([^"\']+)["\']', content)
     if not match:
