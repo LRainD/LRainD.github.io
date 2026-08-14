@@ -1,0 +1,27 @@
+.bg-sidebar {
+  background-color: #ffffff;
+}
+
+.bg-sidebar-active {
+  background-color: #fff7e6;
+}
+
+.text-primary {
+  color: #fa8c16;
+}
+
+.border-primary {
+  border-color: #fa8c16;
+}
+
+.bg-primary {
+  background-color: #fa8c16;
+}
+
+.bg-bg-page {
+  background-color: #f5f5f5;
+}
+
+.border-border-base {
+  border-color: #f0f0f0;
+}
