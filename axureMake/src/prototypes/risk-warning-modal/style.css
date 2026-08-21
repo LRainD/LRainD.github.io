@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1677ff;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-success: #52c41a;
+  --color-border: #d9d9d9;
+  --color-bg-layout: #f5f5f5;
+  --color-text: rgba(0, 0, 0, 0.88);
+  --color-text-secondary: rgba(0, 0, 0, 0.65);
+  --color-text-tertiary: rgba(0, 0, 0, 0.45);
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes feedback-modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.risk-warning-modal-overlay {
+  @apply fixed inset-0 bg-black/45 z-[1000] flex items-center justify-center p-4;
+}
+
+.risk-warning-modal-container {
+  @apply bg-white rounded-sm shadow-lg w-full max-w-[1200px] max-h-[90vh] flex flex-col overflow-hidden;
+}
+
+.risk-warning-modal-header {
+  @apply px-6 py-4 border-b border-gray-100 flex items-center justify-between shrink-0;
+}
+
+.risk-warning-modal-body {
+  @apply p-6 overflow-y-auto flex-1;
+}
+
+.risk-warning-modal-footer {
+  @apply px-6 py-4 border-t border-gray-100 flex items-center justify-between shrink-0 bg-white;
+}
+
+.risk-table {
+  @apply min-w-[1600px] border-collapse text-sm table-fixed;
+}
+
+.risk-table th {
+  @apply bg-gray-50 text-left px-3 py-3 font-medium text-text-secondary border-b border-gray-200 whitespace-nowrap;
+}
+
+.risk-table td {
+  @apply px-3 py-4 border-b border-gray-100 align-top;
+}
+
+.risk-table tr:hover td {
+  @apply bg-blue-50/30;
+}
+
+.status-tag {
+  @apply px-2 py-0.5 rounded-sm text-xs inline-block;
+}
+
+.status-tag-warning {
+  @apply bg-orange-50 text-orange-500 border border-orange-200;
+}
+
+.status-tag-info {
+  @apply bg-blue-50 text-blue-500 border border-blue-200;
+}
+
+.upload-btn {
+  @apply border border-dashed border-gray-300 rounded-sm px-3 py-2 text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center gap-1 text-xs;
+}
+
+.action-btn {
+  @apply px-4 py-1.5 rounded-sm text-sm transition-colors;
+}
+
+.action-btn-primary {
+  @apply bg-primary text-white hover:bg-blue-600;
+}
+
+.feedback-icon-btn {
+  @apply p-1 rounded-full transition-colors hover:bg-gray-100;
+}
+
+.feedback-icon-btn.active-like {
+  @apply text-blue-500 bg-blue-50;
+}
+
+.feedback-icon-btn.active-dislike {
+  @apply text-red-500 bg-red-50;
+}
+
+.toast-container {
+  @apply fixed top-8 left-1/2 z-[10000];
+  animation: toast-enter 300ms ease-out;
+}
+
+.toast {
+  @apply bg-white shadow-[0_6px_16px_0_rgba(0,0,0,0.08),0_3px_6px_-4px_rgba(0,0,0,0.12),0_9px_28px_8px_rgba(0,0,0,0.05)] px-4 py-2.5 rounded-sm flex items-center gap-3 text-sm text-text min-w-[120px] justify-center;
+}
+
+.feedback-modal-overlay {
+  @apply fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4;
+}
+
+.feedback-modal-container {
+  @apply bg-white rounded-sm shadow-2xl w-full max-w-[440px] flex flex-col overflow-hidden relative;
+  animation: feedback-modal-enter 200ms ease-out;
+}
+
+.modal-title-decorator {
+  @apply w-1 h-4 bg-primary rounded-full mr-2;
+}
+
+.problem-option {
+  @apply flex items-center gap-2 p-2 border border-gray-200 rounded-sm cursor-pointer hover:border-primary hover:bg-blue-50/30 transition-all;
+}
+
+.problem-option.active {
+  @apply border-primary bg-blue-50/50 text-primary ring-1 ring-primary/20;
+}

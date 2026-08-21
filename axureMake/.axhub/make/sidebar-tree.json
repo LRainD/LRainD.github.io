@@ -1,7 +1,107 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-11T06:04:21.959Z",
+  "updatedAt": "2026-08-21T03:28:44.469Z",
   "prototypes": [
+    {
+      "id": "folder-1774706974674-5x6tue",
+      "kind": "folder",
+      "title": "数字合规官",
+      "children": [
+        {
+          "id": "item-prototypes-digital-compliance-settings",
+          "kind": "item",
+          "title": "数字合规官设置",
+          "itemKey": "prototypes/digital-compliance-settings"
+        },
+        {
+          "id": "item-prototypes-digital-compliance-officer-copy-copy",
+          "kind": "item",
+          "title": "集采AI配置迭代-管理员配置",
+          "itemKey": "prototypes/digital-compliance-officer-copy-copy"
+        },
+        {
+          "id": "item-prototypes-digital-compliance-officer-copy",
+          "kind": "item",
+          "title": "集采AI配置第二版",
+          "itemKey": "prototypes/digital-compliance-officer-copy"
+        },
+        {
+          "id": "item-prototypes-procurement-list",
+          "kind": "item",
+          "title": "业务系统接入流程",
+          "itemKey": "prototypes/procurement-list"
+        },
+        {
+          "id": "item-prototypes-ai-interaction-v2",
+          "kind": "item",
+          "title": "数字合规官AI交互第二种交互",
+          "itemKey": "prototypes/ai-interaction-v2"
+        },
+        {
+          "id": "folder-1774707123009-80pi9r",
+          "kind": "folder",
+          "title": "风控规则",
+          "children": [
+            {
+              "id": "item-prototypes-business-warning-monitor",
+              "kind": "item",
+              "title": "business-warning-monitor",
+              "itemKey": "prototypes/business-warning-monitor"
+            },
+            {
+              "id": "item-prototypes-supplier-risk-detail",
+              "kind": "item",
+              "title": "supplier-risk-detail",
+              "itemKey": "prototypes/supplier-risk-detail"
+            }
+          ]
+        },
+        {
+          "id": "folder-1774863249957-vszss3",
+          "kind": "folder",
+          "title": "老版本暂定废弃的",
+          "children": [
+            {
+              "id": "item-prototypes-procurement-list-copy",
+              "kind": "item",
+              "title": "数字合规官AI交互",
+              "itemKey": "prototypes/procurement-list-copy"
+            },
+            {
+              "id": "item-prototypes-digital-compliance-officer",
+              "kind": "item",
+              "title": "数字合规官配置",
+              "itemKey": "prototypes/digital-compliance-officer"
+            }
+          ]
+        },
+        {
+          "id": "folder-1786930117449-vqwj9b",
+          "kind": "folder",
+          "title": "8月迭代",
+          "children": [
+            {
+              "id": "item-prototypes-risk-warning-feedback",
+              "kind": "item",
+              "title": "风控预警问题反馈",
+              "itemKey": "prototypes/risk-warning-feedback"
+            },
+            {
+              "id": "item-prototypes-risk-warning-modal",
+              "kind": "item",
+              "title": "风控预警弹窗",
+              "itemKey": "prototypes/risk-warning-modal"
+            }
+          ]
+        },
+        {
+          "id": "folder-1787282893624-crpbes",
+          "kind": "folder",
+          "title": "思维链优化迭代",
+          "children": []
+        }
+      ]
+    },
     {
       "id": "folder-1784626442209-wraztp",
       "kind": "folder",
@@ -406,81 +506,6 @@
           "kind": "item",
           "title": "采购基础信息",
           "itemKey": "prototypes/procurement-base-info-form"
-        }
-      ]
-    },
-    {
-      "id": "folder-1774706974674-5x6tue",
-      "kind": "folder",
-      "title": "数字合规官",
-      "children": [
-        {
-          "id": "item-prototypes-digital-compliance-settings",
-          "kind": "item",
-          "title": "数字合规官设置",
-          "itemKey": "prototypes/digital-compliance-settings"
-        },
-        {
-          "id": "item-prototypes-digital-compliance-officer-copy-copy",
-          "kind": "item",
-          "title": "集采AI配置迭代-管理员配置",
-          "itemKey": "prototypes/digital-compliance-officer-copy-copy"
-        },
-        {
-          "id": "item-prototypes-digital-compliance-officer-copy",
-          "kind": "item",
-          "title": "集采AI配置第二版",
-          "itemKey": "prototypes/digital-compliance-officer-copy"
-        },
-        {
-          "id": "item-prototypes-procurement-list",
-          "kind": "item",
-          "title": "业务系统接入流程",
-          "itemKey": "prototypes/procurement-list"
-        },
-        {
-          "id": "item-prototypes-ai-interaction-v2",
-          "kind": "item",
-          "title": "数字合规官AI交互第二种交互",
-          "itemKey": "prototypes/ai-interaction-v2"
-        },
-        {
-          "id": "folder-1774707123009-80pi9r",
-          "kind": "folder",
-          "title": "风控规则",
-          "children": [
-            {
-              "id": "item-prototypes-business-warning-monitor",
-              "kind": "item",
-              "title": "business-warning-monitor",
-              "itemKey": "prototypes/business-warning-monitor"
-            },
-            {
-              "id": "item-prototypes-supplier-risk-detail",
-              "kind": "item",
-              "title": "supplier-risk-detail",
-              "itemKey": "prototypes/supplier-risk-detail"
-            }
-          ]
-        },
-        {
-          "id": "folder-1774863249957-vszss3",
-          "kind": "folder",
-          "title": "老版本暂定废弃的",
-          "children": [
-            {
-              "id": "item-prototypes-procurement-list-copy",
-              "kind": "item",
-              "title": "数字合规官AI交互",
-              "itemKey": "prototypes/procurement-list-copy"
-            },
-            {
-              "id": "item-prototypes-digital-compliance-officer",
-              "kind": "item",
-              "title": "数字合规官配置",
-              "itemKey": "prototypes/digital-compliance-officer"
-            }
-          ]
         }
       ]
     },

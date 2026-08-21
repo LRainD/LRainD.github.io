@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { Checkbox, Tour } from 'antd';
 import {
   X,
   ChevronUp,
-  FileText,
   Edit3,
   Info,
   Plus,
   AlertCircle,
-  CheckSquare,
-  Square,
   CheckCircle,
   ImageIcon,
   Loader2
 } from 'lucide-react';
 
 import { FileAssistantModal } from '../../components/file-assistant-modal';
+import aiBadge from '../../../assets/media/image.png';
 import './style.css';
 
 interface Attachment {
@@ -22,6 +21,8 @@ interface Attachment {
   name: string;
   signingStatus?: 'signing' | 'signed' | 'failed';
   size?: string;
+  isAiRecommended?: boolean;
+  recommendationReason?: string;
 }
 
 interface AttachmentCategory {
@@ -30,6 +31,14 @@ interface AttachmentCategory {
   required: boolean;
   hasTemplate: boolean;
   files: Attachment[];
+  noRecommendationReason?: string;
+}
+
+interface RecommendationMock {
+  id: number;
+  fileName: string;
+  size: string;
+  reason: string;
 }
 
 type UploadMethod = 'scan' | 'esign' | null;
@@ -63,14 +72,17 @@ const Component = () => {
       title: '工商企业信用等级',
       required: false,
       hasTemplate: true,
-      files: []
+      files: [
+        { id: 102, name: '工商登记信息证明.pdf', size: '920KB' }
+      ]
     },
     {
       id: 'other',
       title: '其他附件',
       required: false,
       hasTemplate: false,
-      files: []
+      files: [],
+      noRecommendationReason: '暂未推荐数据'
     },
     {
       id: 'idcard',
@@ -79,7 +91,8 @@ const Component = () => {
       hasTemplate: false,
       files: [
         { id: 101, name: '58052193124060022401088623860.jpg', size: '1.2MB' }
-      ]
+      ],
+      noRecommendationReason: '暂未推荐数据'
     }
   ];
 
@@ -160,8 +173,10 @@ const Component = () => {
 
   // 一键导入相关状态
   const [isAutoFilling, setIsAutoFilling] = useState(false);
-  const [isRecommendationModalOpen, setIsRecommendationModalOpen] = useState(false);
-  const [recommendations, setRecommendations] = useState<{ id: string, title: string, fileName: string, selected: boolean }[]>([]);
+  const [isImportGuideOpen, setIsImportGuideOpen] = useState(true);
+  const [dontRemindAgain, setDontRemindAgain] = useState(false);
+  const [importSummary, setImportSummary] = useState('');
+  const importButtonRef = useRef<HTMLButtonElement>(null);
 
   // 检查是否有签署中的附件
   const hasSigningAttachments = esignCategories.some(cat => 
@@ -181,71 +196,65 @@ const Component = () => {
     }
   };
 
-  // 一键导入逻辑
-  const handleAutoFill = () => {
+  const recommendationMap: Record<string, RecommendationMock[]> = {
+    health: [
+      {
+        id: 201,
+        fileName: '职业健康安全管理体系认证证书_2024.pdf',
+        size: '1.5MB',
+        reason: '文件名称包含“职业健康安全”，且证书类型与当前附件要求匹配'
+      },
+      {
+        id: 202,
+        fileName: '职业健康安全认证证书_有效期.pdf',
+        size: '1.8MB',
+        reason: '文件库标签标记为“体系认证”，并匹配当前报名项目的资质要求'
+      }
+    ],
+    credit: [
+      {
+        id: 203,
+        fileName: '企业信用等级证书_AAA级.pdf',
+        size: '1.3MB',
+        reason: '文件名称包含“企业信用等级”，与附件组成类型关键词匹配'
+      }
+    ],
+    other: [],
+    idcard: []
+  };
+
+  const runAutoFill = () => {
     setIsAutoFilling(true);
     setTimeout(() => {
-      const recommendationMap: Record<string, string> = {
-        'health': '职业健康安全管理体系认证证书_2024.pdf',
-        'credit': '企业信用等级证书_AAA级.pdf',
-        'other': '其他补充证明材料.pdf'
-      };
-
-      const list: { id: string, title: string, fileName: string, selected: boolean }[] = [];
-      categories.forEach(cat => {
-        if (cat.files.length === 0 && recommendationMap[cat.id]) {
-          list.push({
-            id: cat.id,
-            title: cat.title,
-            fileName: recommendationMap[cat.id],
-            selected: true
-          });
-        }
-      });
-
-      setRecommendations(list);
+      let importedCount = 0;
       setIsAutoFilling(false);
-      setIsRecommendationModalOpen(true);
+      setCategories(prev => prev.map(cat => {
+        const recommendations = recommendationMap[cat.id] || [];
+        const newFiles = recommendations
+          .filter(recommendation => !cat.files.some(file => file.id === recommendation.id))
+          .map(recommendation => ({
+            id: recommendation.id,
+            name: recommendation.fileName,
+            size: recommendation.size,
+            isAiRecommended: true,
+            recommendationReason: recommendation.reason,
+            signingStatus: uploadMethod === 'esign' ? 'signed' as const : undefined
+          }));
+        importedCount += newFiles.length;
+        return newFiles.length > 0 ? { ...cat, files: [...cat.files, ...newFiles] } : cat;
+      }));
+      setImportSummary(importedCount > 0 ? `已追加 ${importedCount} 个 AI 推荐附件` : '暂无可追加的 AI 推荐附件');
+      setTimeout(() => setImportSummary(''), 3000);
     }, 1000);
   };
 
-  const handleConfirmRecommendation = () => {
-    const selectedRecs = recommendations.filter(r => r.selected);
-    if (selectedRecs.length === 0) {
-      setIsRecommendationModalOpen(false);
+  const handleAutoFill = () => {
+    if (isAutoFilling) return;
+    if (!dontRemindAgain) {
+      setIsImportGuideOpen(true);
       return;
     }
-
-    setCategories(prev => prev.map(cat => {
-      const rec = selectedRecs.find(r => r.id === cat.id);
-      if (rec) {
-        return {
-          ...cat,
-          files: [{
-            id: Date.now() + Math.random(),
-            name: rec.fileName,
-            size: '1.5MB',
-            signingStatus: uploadMethod === 'esign' ? 'signed' : undefined
-          }]
-        };
-      }
-      return cat;
-    }));
-
-    setIsRecommendationModalOpen(false);
-  };
-
-  const toggleRecommendationSelect = (id: string) => {
-    setRecommendations(prev => prev.map(r => {
-      if (r.id === id) {
-        return { ...r, selected: !r.selected };
-      }
-      return r;
-    }));
-  };
-
-  const toggleAllRecommendations = (checked: boolean) => {
-    setRecommendations(prev => prev.map(r => ({ ...r, selected: checked })));
+    runAutoFill();
   };
 
   return (
@@ -367,24 +376,25 @@ const Component = () => {
                   <span className="text-xs text-gray-400 mr-3">
                     报名截止前可修改报名附件，请点击报价详情页【报名附件】修改
                   </span>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleAutoFill();
-                    }}
-                    disabled={isAutoFilling}
-                    className="bg-[#f5a623] text-white text-xs px-3 py-1.5 rounded flex items-center gap-1.5 hover:bg-[#e09513] transition-colors disabled:opacity-50 mr-3 shadow-sm"
-                  >
-                    {isAutoFilling && <Loader2 size={12} className="animate-spin" />}
-                    <span className="font-medium">一键导入</span>
-                    <div className="group relative">
-                      <Info size={14} className="text-white cursor-help" />
-                      <div className="absolute top-full right-0 mt-2 w-64 p-2 bg-gray-800 text-white text-[11px] rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[100] font-normal">
-                        文件助手将根据报名附件要求，推荐匹配的附件并自动填充当前为空的附件项。
-                        <div className="absolute bottom-full right-2 border-8 border-transparent border-b-gray-800"></div>
-                      </div>
+                  <div className="relative mr-3">
+                    <button
+                      ref={importButtonRef}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAutoFill();
+                      }}
+                      disabled={isAutoFilling}
+                      className="bg-[#f5a623] text-white text-xs px-3 py-1.5 rounded flex items-center gap-1.5 hover:bg-[#e09513] transition-colors disabled:opacity-50 shadow-sm"
+                    >
+                      {isAutoFilling && <Loader2 size={12} className="animate-spin" />}
+                      <span className="font-medium">一键导入</span>
+                      <Info size={14} className="text-white" />
+                    </button>
+                    <div className="absolute top-full right-0 mt-2 w-64 p-2 bg-gray-800 text-white text-[11px] rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-[100] font-normal">
+                      文件助手将根据报名附件要求，推荐匹配相关附件并追加到对应文件组成。
+                      <div className="absolute bottom-full right-2 border-8 border-transparent border-b-gray-800"></div>
                     </div>
-                  </button>
+                  </div>
                   <ChevronUp
                     className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isAttachmentExpanded ? '' : 'rotate-180'}`}
                   />
@@ -467,9 +477,9 @@ const Component = () => {
                       {/* 附件列表/分类展示 */}
                       <div className="ml-[100px] border border-gray-200 rounded bg-white divide-y divide-gray-100">
                         {categories.map((cat) => (
-                          <div key={cat.id} className="p-4">
+                          <div key={cat.id} className="p-3">
                             {/* 分类标题与模板下载 */}
-                            <div className="flex items-center mb-3">
+                            <div className="flex items-center mb-2">
                               <span className="text-sm text-gray-800 font-medium">
                                 {cat.required && <span className="text-red-500 mr-1">*</span>}
                                 {cat.title}
@@ -483,12 +493,15 @@ const Component = () => {
 
                             {/* 已上传文件列表 */}
                             {cat.files.length > 0 && (
-                              <div className="space-y-2 mb-3">
+                              <div className="space-y-1.5 mb-2">
                                 {cat.files.map((file) => (
                                   <div
                                     key={file.id}
-                                    className="inline-flex items-center border border-gray-200 rounded px-3 py-1.5 bg-white group max-w-full relative"
+                                    className="relative max-w-full rounded border border-gray-200 bg-white px-2.5 py-1"
                                   >
+                                    {file.isAiRecommended && (
+                                      <img src={aiBadge} alt="AI 推荐" className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-white object-contain shadow-sm" />
+                                    )}
                                     {/* 签署状态标签 - 仅在电子签章模式且有状态时显示 */}
                                     {uploadMethod === 'esign' && file.signingStatus === 'signing' && (
                                       <div className="absolute -top-2 left-2 bg-[#f5a623] text-white text-[10px] px-1.5 py-0.5 rounded-sm leading-none z-10">
@@ -501,32 +514,33 @@ const Component = () => {
                                       </div>
                                     )}
                                     
-                                    {file.name.toLowerCase().endsWith('.pdf') ? (
-                                      <div className="flex-shrink-0 w-4 h-4 bg-red-50 rounded flex items-center justify-center mr-2">
-                                        <span className="text-[8px] font-bold text-red-500 leading-none">PDF</span>
+                                    <div className="flex items-center">
+                                      {file.name.toLowerCase().endsWith('.pdf') ? (
+                                        <div className="flex-shrink-0 w-4 h-4 bg-red-50 rounded flex items-center justify-center mr-2">
+                                          <span className="text-[8px] font-bold text-red-500 leading-none">PDF</span>
+                                        </div>
+                                      ) : (
+                                        <ImageIcon className="w-4 h-4 text-[#f5a623] mr-2 flex-shrink-0" />
+                                      )}
+                                      <div className="flex flex-col">
+                                        <span className="text-sm text-gray-700 truncate max-w-[260px] mr-3">{file.name}</span>
+                                        {file.size && <span className="text-[10px] text-gray-400">{file.size}</span>}
                                       </div>
-                                    ) : (
-                                      <ImageIcon className="w-4 h-4 text-[#f5a623] mr-2 flex-shrink-0" />
+                                      <div className="flex items-center gap-2 ml-auto">
+                                        <button className="text-gray-400 hover:text-gray-600">
+                                          <Edit3 className="w-3.5 h-3.5" />
+                                        </button>
+                                        <button className="text-gray-400 hover:text-red-500" onClick={() => handleRemoveCategoryFile(cat.id, file.id)}>
+                                          <X className="w-3.5 h-3.5" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                    {file.isAiRecommended && file.recommendationReason && (
+                                      <p className="mt-1.5 max-w-[420px] break-words whitespace-normal border-t border-dashed border-[#f5a623]/30 pt-1.5 text-[11px] leading-4 text-[#b76a00]">
+                                        <span className="font-medium">推荐依据：</span>
+                                        <span className="mt-0.5 block">{file.recommendationReason}</span>
+                                      </p>
                                     )}
-                                    
-                                    <div className="flex flex-col">
-                                      <span className="text-sm text-gray-700 truncate max-w-[300px] mr-3">
-                                        {file.name}
-                                      </span>
-                                      {file.size && <span className="text-[10px] text-gray-400">{file.size}</span>}
-                                    </div>
-
-                                    <div className="flex items-center gap-2 ml-auto">
-                                      <button className="text-gray-400 hover:text-gray-600">
-                                        <Edit3 className="w-3.5 h-3.5" />
-                                      </button>
-                                      <button
-                                        className="text-gray-400 hover:text-red-500"
-                                        onClick={() => handleRemoveCategoryFile(cat.id, file.id)}
-                                      >
-                                        <X className="w-3.5 h-3.5" />
-                                      </button>
-                                    </div>
                                   </div>
                                 ))}
                               </div>
@@ -534,6 +548,9 @@ const Component = () => {
 
                             {/* 添加附件按钮 */}
                             <div>
+                              {cat.noRecommendationReason && (
+                                <p className="mb-2 text-xs text-red-500">{cat.noRecommendationReason}</p>
+                              )}
                               <button
                                 className="inline-flex items-center border border-gray-200 rounded px-3 py-1.5 text-xs text-gray-600 hover:border-[#f5a623] hover:text-[#f5a623] transition-colors bg-white"
                                 onClick={() => handleAddCategoryFile(cat.id)}
@@ -552,6 +569,7 @@ const Component = () => {
                           <span className="text-[#f5a623]">建议：</span>
                           <span className="text-[#f5a623]">请先检测报名文件完善性，再提交报名</span>
                         </p>
+                        {importSummary && <p className="mt-2 text-xs text-[#52a320]">{importSummary}</p>}
                       </div>
 
                     </>
@@ -612,6 +630,37 @@ const Component = () => {
         onConfirm={handleFileAssistantConfirm}
       />
 
+      <Tour
+        open={isImportGuideOpen}
+        onClose={() => setIsImportGuideOpen(false)}
+        mask={{ color: 'rgba(0, 0, 0, 0.45)' }}
+        gap={{ offset: 8, radius: 8 }}
+        placement="bottomRight"
+        indicatorsRender={() => null}
+        zIndex={100}
+        steps={[{
+          target: () => importButtonRef.current,
+          title: '一键导入，全新升级',
+          description: (
+            <div className="text-sm leading-6 text-gray-600">
+              <p>文件助手会根据当前报名附件要求，从您的文件库中智能匹配相关附件。确认后，推荐附件将自动追加到对应的文件组成中，已有附件不会被覆盖。</p>
+              <p className="mt-2 text-xs text-gray-400">推荐结果仅供参考，请确认附件内容及有效期。</p>
+              <Checkbox checked={dontRemindAgain} onChange={(event) => setDontRemindAgain(event.target.checked)} className="mt-4 text-xs text-gray-500">
+                不再提示
+              </Checkbox>
+            </div>
+          ),
+          nextButtonProps: {
+            children: '确认导入',
+            onClick: () => {
+              setIsImportGuideOpen(false);
+              runAutoFill();
+            },
+            className: '!bg-[#f5a623] !border-[#f5a623] hover:!bg-[#e09513] hover:!border-[#e09513]'
+          }
+        }]}
+      />
+
       {/* 提交失败弹窗 */}
       {isSubmitFailOpen && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-[60]">
@@ -662,85 +711,6 @@ const Component = () => {
         </div>
       )}
 
-      {/* 智能填充推荐列表弹窗 */}
-      {isRecommendationModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[110]">
-          <div className="bg-white w-[600px] rounded shadow-xl overflow-hidden flex flex-col">
-            <div className="flex items-center px-6 py-4 border-b border-gray-100">
-              <div className="w-8 h-8 bg-[#f5a623]/10 rounded-full flex items-center justify-center mr-3">
-                <FileText className="text-[#f5a623]" size={18} />
-              </div>
-              <h3 className="text-base font-bold text-gray-800">智能推荐附件</h3>
-              <button onClick={() => setIsRecommendationModalOpen(false)} className="ml-auto text-gray-400 hover:text-gray-600">
-                <X size={20} />
-              </button>
-            </div>
-            
-            <div className="p-6 max-h-[400px] overflow-y-auto">
-              <p className="text-sm text-gray-500 mb-6">
-                文件助手已为您在“我的文件库”中匹配到以下附件，请确认是否一键导入：
-              </p>
-              
-              <div className="border border-gray-100 rounded">
-                <div className="grid grid-cols-[48px_1fr_1fr] bg-gray-50 border-b border-gray-100 px-4 py-2 text-[12px] font-medium text-gray-500">
-                  <div className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      className="accent-[#f5a623] w-4 h-4 cursor-pointer"
-                      checked={recommendations.length > 0 && recommendations.every(r => r.selected)}
-                      onChange={(e) => toggleAllRecommendations(e.target.checked)}
-                    />
-                  </div>
-                  <div>对应附件组</div>
-                  <div>推荐引用的文件</div>
-                </div>
-                
-                {recommendations.length > 0 ? (
-                  recommendations.map(rec => (
-                    <div key={rec.id} className="grid grid-cols-[48px_1fr_1fr] px-4 py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors items-center">
-                      <div className="flex items-center">
-                        <input 
-                          type="checkbox" 
-                          className="accent-[#f5a623] w-4 h-4 cursor-pointer"
-                          checked={rec.selected}
-                          onChange={() => toggleRecommendationSelect(rec.id)}
-                        />
-                      </div>
-                      <div className="text-sm text-gray-700 font-medium">{rec.title}</div>
-                      <div className="flex items-center gap-2 overflow-hidden">
-                        <div className="flex-shrink-0 w-6 h-6 bg-red-50 rounded flex items-center justify-center">
-                          <FileText size={12} className="text-red-500" />
-                        </div>
-                        <span className="text-xs text-gray-600 truncate" title={rec.fileName}>{rec.fileName}</span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="py-10 text-center text-gray-400 text-sm">
-                    未发现可推荐的附件
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            <div className="flex justify-end gap-3 px-6 py-4 bg-gray-50">
-              <button 
-                onClick={() => setIsRecommendationModalOpen(false)}
-                className="px-6 py-2 border border-gray-200 rounded text-sm text-gray-600 hover:bg-white transition-colors"
-              >
-                取消
-              </button>
-              <button 
-                onClick={handleConfirmRecommendation}
-                disabled={recommendations.filter(r => r.selected).length === 0}
-                className="px-8 py-2 bg-[#f5a623] text-white rounded text-sm hover:bg-[#e09513] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                一键导入
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

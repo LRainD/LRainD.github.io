@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>局集采计划预测</title>
+  <style>
+    :root {
+      --ink: #19332d;
+      --ink-2: #31534a;
+      --muted: #7b8d87;
+      --line: #dfe8e3;
+      --paper: #fbfcfa;
+      --panel: #ffffff;
+      --teal: #1c7568;
+      --teal-light: #e9f4f0;
+      --orange: #d96735;
+      --orange-light: #fff0e8;
+      --yellow: #aa7414;
+      --yellow-light: #fff8df;
+      --shadow: 0 10px 28px rgba(34, 61, 53, .07);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .shell { display: flex; min-height: 100vh; }
+    .sidebar { width: 238px; flex: 0 0 238px; background: var(--ink); color: #dce9e3; padding: 24px 14px; display: flex; flex-direction: column; }
+    .brand { display: flex; gap: 11px; align-items: center; padding: 0 12px 27px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .brand-mark { width: 32px; height: 32px; display: grid; place-items: center; background: var(--orange); color: white; font-weight: 800; border-radius: 8px; }
+    .brand strong { display: block; font-size: 15px; letter-spacing: .5px; color: white; }
+    .brand small { color: #8daaa0; font-size: 11px; }
+    .nav-label { color: #6f9288; font-size: 11px; letter-spacing: 1px; margin: 26px 12px 8px; }
+    .nav-item { height: 42px; padding: 0 12px; border-radius: 7px; display: flex; align-items: center; gap: 11px; color: #b7cec6; margin: 3px 0; border: 0; background: transparent; width: 100%; text-align: left; }
+    .nav-item:hover, .nav-item.active { background: #28544a; color: white; }
+    .nav-icon { width: 20px; text-align: center; font-size: 16px; color: #86b5a7; }
+    .nav-item.active .nav-icon { color: #ff9a6c; }
+    .side-bottom { margin-top: auto; padding: 15px 12px 0; border-top: 1px solid rgba(255,255,255,.12); color: #8daaa0; font-size: 12px; }
+    .user { display: flex; align-items: center; gap: 9px; color: #e9f3ef; margin-bottom: 5px; }
+    .avatar { width: 28px; height: 28px; border-radius: 50%; background: #e7a56c; color: var(--ink); display: grid; place-items: center; font-weight: 700; }
+    .main { flex: 1; min-width: 0; }
+    .topbar { height: 72px; padding: 0 38px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,.72); }
+    .crumb { color: var(--muted); font-size: 13px; }
+    .crumb b { color: var(--ink); font-weight: 600; }
+    .top-actions { display: flex; align-items: center; gap: 18px; color: var(--muted); }
+    .notice { position: relative; font-size: 18px; }
+    .notice:after { content: ""; position: absolute; right: -2px; top: 0; width: 6px; height: 6px; background: var(--orange); border: 2px solid var(--paper); border-radius: 50%; }
+    .content { padding: 31px 38px 48px; max-width: 1600px; }
+    .title-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 26px; }
+    h1 { font-size: 27px; margin: 0 0 5px; letter-spacing: -.5px; }
+    .subtitle { color: var(--muted); }
+    .actions { display: flex; gap: 10px; }
+    .btn { border: 1px solid var(--line); background: white; color: var(--ink-2); border-radius: 6px; padding: 9px 15px; font-weight: 600; }
+    .btn:hover { border-color: var(--teal); color: var(--teal); }
+    .btn.primary { color: white; border-color: var(--orange); background: var(--orange); }
+    .btn.primary:hover { background: #bf5224; }
+    .btn.ghost { background: transparent; }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(170px, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .stat { background: var(--panel); border: 1px solid var(--line); padding: 19px 20px; border-radius: 8px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+    .stat:before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--teal); }
+    .stat.orange:before { background: var(--orange); }
+    .stat.yellow:before { background: #d5a02a; }
+    .stat .label { color: var(--muted); font-size: 12px; }
+    .stat strong { display: block; font-size: 25px; margin: 6px 0 2px; letter-spacing: -.5px; }
+    .stat p { margin: 0; color: var(--muted); font-size: 12px; }
+    .stat p em { color: var(--teal); font-style: normal; font-weight: 600; }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+    .panel-head { padding: 18px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+    .panel-head h2 { margin: 0; font-size: 16px; }
+    .panel-head small { color: var(--muted); }
+    .filters { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr auto; gap: 10px; padding: 15px 20px; background: #fcfdfc; border-bottom: 1px solid var(--line); }
+    .field { border: 1px solid var(--line); background: white; border-radius: 5px; padding: 9px 11px; color: var(--ink-2); outline: none; min-width: 0; }
+    .field:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-light); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 790px; }
+    th { text-align: left; padding: 12px 16px; background: #f5f8f6; color: var(--muted); font-weight: 600; font-size: 12px; white-space: nowrap; }
+    td { padding: 15px 16px; border-top: 1px solid #edf1ef; white-space: nowrap; color: var(--ink-2); }
+    tbody tr:hover { background: #fbfdfc; }
+    td:first-child { color: var(--ink); font-weight: 600; }
+    .tag { display: inline-flex; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .tag.green { color: var(--teal); background: var(--teal-light); }
+    .tag.orange { color: var(--orange); background: var(--orange-light); }
+    .tag.yellow { color: var(--yellow); background: var(--yellow-light); }
+    .tag.gray { color: #73847e; background: #eff3f1; }
+    .score { display: flex; align-items: center; gap: 7px; }
+    .bar { width: 44px; height: 5px; background: #e7eeeb; border-radius: 4px; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: var(--teal); }
+    .row-action { color: var(--teal); border: 0; background: transparent; font-weight: 600; padding: 0; }
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); }
+    .pages { display: flex; gap: 5px; }
+    .page { width: 28px; height: 28px; border: 1px solid var(--line); background: white; border-radius: 4px; color: var(--muted); }
+    .page.current { color: white; border-color: var(--teal); background: var(--teal); }
+    .side-stack { display: grid; gap: 20px; }
+    .risk-list { padding: 4px 20px 16px; }
+    .risk { display: flex; gap: 10px; padding: 13px 0; border-bottom: 1px solid #edf1ef; }
+    .risk:last-child { border-bottom: 0; }
+    .risk-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); margin-top: 7px; flex: 0 0 auto; }
+    .risk-dot.yellow { background: #d5a02a; }
+    .risk b { font-size: 13px; display: block; margin-bottom: 2px; }
+    .risk span { color: var(--muted); font-size: 12px; }
+    .task { padding: 17px 20px; }
+    .task-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .task strong { font-size: 14px; }
+    .task-meta { color: var(--muted); font-size: 12px; margin: 5px 0 12px; }
+    .progress { height: 7px; background: #e7eeeb; border-radius: 8px; overflow: hidden; }
+    .progress i { display: block; height: 100%; width: 76%; background: var(--teal); }
+    .task-foot { display: flex; justify-content: space-between; margin-top: 8px; color: var(--muted); font-size: 11px; }
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(21, 40, 35, .35); z-index: 10; }
+    .modal-backdrop.show { display: block; }
+    .drawer { position: absolute; right: 0; top: 0; bottom: 0; width: min(520px, 100%); background: white; box-shadow: -14px 0 36px rgba(0,0,0,.13); padding: 25px 28px; overflow-y: auto; }
+    .drawer-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+    .drawer-head h2 { margin: 0 0 5px; font-size: 19px; }
+    .close { border: 0; background: transparent; font-size: 23px; color: var(--muted); }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+    .detail-item label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 3px; }
+    .detail-item b { font-size: 14px; color: var(--ink); }
+    .evidence { margin-top: 22px; }
+    .evidence h3 { font-size: 14px; margin: 0 0 12px; }
+    .evidence-box { padding: 13px 15px; border: 1px solid var(--line); border-left: 3px solid var(--teal); background: #f8fbf9; color: var(--ink-2); font-size: 13px; margin-bottom: 10px; }
+    .evidence-box strong { display: block; color: var(--ink); margin-bottom: 4px; }
+    .drawer-actions { display: flex; gap: 9px; margin-top: 27px; }
+    .toast { position: fixed; right: 30px; bottom: 25px; padding: 12px 16px; background: var(--ink); color: white; border-radius: 6px; box-shadow: var(--shadow); opacity: 0; transform: translateY(8px); pointer-events: none; transition: .2s ease; z-index: 20; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .view[hidden] { display: none; }
+    .view .title-row { align-items: center; }
+    .page-tools { display: flex; gap: 9px; align-items: center; }
+    .data-panel { margin-top: 18px; }
+    .data-table td { white-space: normal; }
+    .data-table td:first-child { min-width: 170px; }
+    .data-table .muted { color: var(--muted); font-size: 12px; }
+    .empty-state { padding: 58px 20px; text-align: center; color: var(--muted); }
+    .empty-state strong { display: block; color: var(--ink-2); font-size: 16px; margin-bottom: 5px; }
+    .step-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 4px 0 22px; }
+    .step { padding: 15px 18px; border-top: 3px solid var(--line); color: var(--muted); background: white; }
+    .step:first-child { border-color: var(--teal); color: var(--teal); }
+    .step b { display: block; color: var(--ink); margin-bottom: 3px; }
+    .step span { font-size: 12px; }
+    .rule-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr 110px 90px; gap: 15px; align-items: center; padding: 16px 20px; border-top: 1px solid #edf1ef; }
+    .rule-row b { font-size: 13px; }
+    .rule-row span { color: var(--muted); font-size: 12px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
+    .form-label { color: var(--muted); font-size: 12px; margin-bottom: 6px; display: block; }
+    .form-field { width: 100%; border: 1px solid var(--line); border-radius: 5px; padding: 9px 11px; color: var(--ink-2); background: white; }
+    .dialog { width: min(680px, calc(100% - 32px)); max-height: calc(100vh - 48px); overflow-y: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: white; border-radius: 10px; box-shadow: 0 24px 70px rgba(0,0,0,.22); }
+    .dialog-head { padding: 22px 24px 18px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; }
+    .dialog-head h2 { margin: 0 0 4px; font-size: 19px; }
+    .dialog-body { padding: 4px 4px 0; }
+    .dialog-foot { padding: 17px 24px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 9px; }
+    .required:after { content: " *"; color: var(--orange); }
+    .check-row { display: flex; gap: 18px; align-items: center; min-height: 38px; flex-wrap: wrap; }
+    .check-row label { color: var(--ink-2); }
+    .form-error { color: #c5472d; font-size: 12px; min-height: 18px; padding: 0 20px 10px; }
+    .task-progress-card { margin: 0 20px 20px; padding: 15px; background: #f7faf8; border: 1px solid var(--line); border-radius: 7px; }
+    @media (max-width: 760px) { .step-list, .rule-row, .form-grid { grid-template-columns: 1fr; } .rule-row { gap: 5px; } }
+    @media (max-width: 1100px) { .sidebar { width: 205px; flex-basis: 205px; } .workspace { grid-template-columns: 1fr; } .side-stack { grid-template-columns: 1fr 1fr; } .filters { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 760px) { .sidebar { width: 64px; flex-basis: 64px; padding: 18px 8px; } .brand { padding: 0 8px 22px; } .brand div:not(.brand-mark), .nav-label, .nav-item span:not(.nav-icon), .side-bottom { display: none; } .nav-item { justify-content: center; padding: 0; } .topbar { padding: 0 18px; } .content { padding: 23px 16px 35px; } .title-row { display: block; } .actions { margin-top: 16px; } .stats { grid-template-columns: 1fr 1fr; } .filters { grid-template-columns: 1fr 1fr; } .filters .btn { grid-column: span 2; } .side-stack { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">集</div><div><strong>集采计划预测</strong><small>局级采购管理平台</small></div></div>
+      <div class="nav-label">计划中心</div>
+      <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span><span>工作台</span></button>
+      <button class="nav-item" data-view="forecast-tasks"><span class="nav-icon">◈</span><span>预测任务</span></button>
+      <button class="nav-item" data-view="forecast-results"><span class="nav-icon">▤</span><span>预测结果</span></button>
+      <button class="nav-item" data-view="annual-plans"><span class="nav-icon">✓</span><span>年度计划</span></button>
+      <div class="nav-label">数据与规则</div>
+      <button class="nav-item" data-view="projects"><span class="nav-icon">⌁</span><span>在建项目</span></button>
+      <button class="nav-item" data-view="history"><span class="nav-icon">◫</span><span>历史招采</span></button>
+      <button class="nav-item" data-view="rules"><span class="nav-icon">⊘</span><span>排除规则</span></button>
+      <button class="nav-item" data-view="master-data"><span class="nav-icon">▦</span><span>基础数据</span></button>
+      <div class="nav-label">系统设置</div>
+      <button class="nav-item" id="modelNav"><span class="nav-icon">✦</span><span>模型配置</span></button>
+      <button class="nav-item" data-view="system"><span class="nav-icon">⚙</span><span>系统管理</span></button>
+      <div class="side-bottom"><div class="user"><span class="avatar">刘</span><span>刘润东</span></div><div>局采购管理部 · 管理员</div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="crumb">计划中心&nbsp; / &nbsp;<b id="currentViewTitle">年度预测工作台</b></div><div class="top-actions"><span>数据截止日：2026-08-15</span><span class="notice">♧</span><span>帮助</span></div></header>
+      <section class="content view" data-view="dashboard">
+        <div class="title-row"><div><h1>2027 年度集采计划</h1><div class="subtitle">基于 2026 年历史首年招采数据的局级采购计划预测</div></div><div class="actions"><button class="btn" id="exportBtn">⇩ 导出计划</button><button class="btn primary" id="runBtn">▶ 运行预测</button></div></div>
+        <div class="stats">
+          <div class="stat"><div class="label">预测计划条目</div><strong>28</strong><p>较去年 <em>+4 条</em></p></div>
+          <div class="stat orange"><div class="label">总概算金额</div><strong>¥ 3.86 亿</strong><p>覆盖 43 个需求项目</p></div>
+          <div class="stat"><div class="label">覆盖区域</div><strong>12</strong><p>已匹配局级采购范围</p></div>
+          <div class="stat yellow"><div class="label">待审核条目</div><strong>7</strong><p><em>需要重点关注</em></p></div>
+        </div>
+        <div class="workspace">
+          <section class="panel">
+            <div class="panel-head"><div><h2>预测计划明细</h2><small>规则版本：V1.0.6 · 生成于 2026-08-20 09:42</small></div><span class="tag yellow">待审核</span></div>
+            <div class="filters"><input class="field" id="search" placeholder="搜索采购内容 / 项目" /><select class="field" id="region"><option value="">全部区域</option><option>华东区域</option><option>华南区域</option><option>西南区域</option></select><select class="field" id="confidence"><option value="">全部置信度</option><option>高</option><option>中</option><option>低</option></select><select class="field" id="status"><option value="">全部状态</option><option>待审核</option><option>已调整</option><option>已排除</option></select><button class="btn primary" id="filterBtn">筛选</button></div>
+            <div class="table-wrap"><table><thead><tr><th>采购内容</th><th>采购品类</th><th>区域</th><th>概算金额</th><th>计划时间</th><th>置信度</th><th>状态</th><th></th></tr></thead><tbody id="planRows">
+              <tr data-region="华东区域" data-confidence="高" data-status="待审核" data-text="施工设备租赁 设备租赁"><td>施工设备租赁</td><td>设备租赁</td><td>华东区域</td><td>¥ 4,820 万</td><td>03.15 — 04.20</td><td><div class="score"><span>92</span><span class="bar"><i style="width:92%"></i></span></div></td><td><span class="tag yellow">待审核</span></td><td><button class="row-action detail" data-title="施工设备租赁">查看</button></td></tr>
+              <tr data-region="华南区域" data-confidence="中" data-status="已调整" data-text="临建设施服务 临建设施"><td>临建设施服务</td><td>临建设施</td><td>华南区域</td><td>¥ 2,160 万</td><td>02.10 — 03.18</td><td><div class="score"><span>78</span><span class="bar"><i style="width:78%"></i></span></div></td><td><span class="tag orange">已调整</span></td><td><button class="row-action detail" data-title="临建设施服务">查看</button></td></tr>
+              <tr data-region="西南区域" data-confidence="高" data-status="待审核" data-text="钢材及周转材料 钢材"><td>钢材及周转材料</td><td>钢材</td><td>西南区域</td><td>¥ 8,640 万</td><td>04.01 — 05.12</td><td><div class="score"><span>87</span><span class="bar"><i style="width:87%"></i></span></div></td><td><span class="tag yellow">待审核</span></td><td><button class="row-action detail" data-title="钢材及周转材料">查看</button></td></tr>
+              <tr data-region="华东区域" data-confidence="低" data-status="已排除" data-text="办公设备采购 办公设备"><td>办公设备采购</td><td>办公设备</td><td>华东区域</td><td>¥ 680 万</td><td>05.08 — 05.30</td><td><div class="score"><span>41</span><span class="bar"><i style="width:41%;background:#d5a02a"></i></span></div></td><td><span class="tag gray">已排除</span></td><td><button class="row-action detail" data-title="办公设备采购">查看</button></td></tr>
+              <tr data-region="华南区域" data-confidence="高" data-status="待审核" data-text="混凝土及外加剂 混凝土"><td>混凝土及外加剂</td><td>混凝土</td><td>华南区域</td><td>¥ 6,350 万</td><td>01.20 — 02.28</td><td><div class="score"><span>90</span><span class="bar"><i style="width:90%"></i></span></div></td><td><span class="tag yellow">待审核</span></td><td><button class="row-action detail" data-title="混凝土及外加剂">查看</button></td></tr>
+            </tbody></table></div>
+            <div class="pagination"><span>显示 1–5 条，共 28 条计划</span><div class="pages"><button class="page current">1</button><button class="page">2</button><button class="page">3</button><button class="page">›</button></div></div>
+          </section>
+          <aside class="side-stack">
+            <section class="panel"><div class="panel-head"><h2>数据风险提示</h2><span class="tag orange">5 项</span></div><div class="risk-list"><div class="risk"><i class="risk-dot"></i><div><b>金额样本不足</b><span>3 条计划仅匹配到 1 个历史样本</span></div></div><div class="risk"><i class="risk-dot yellow"></i><div><b>品类待标准化</b><span>2 条历史记录未匹配标准编码</span></div></div><div class="risk"><i class="risk-dot"></i><div><b>排除规则命中</b><span>1 条候选属于股份区域联采中心</span></div></div></div></section>
+            <section class="panel"><div class="panel-head"><h2>最近预测任务</h2><button class="row-action" id="historyBtn">任务记录</button></div><div class="task"><div class="task-top"><strong>2027 年度计划初版预测</strong><span class="tag green">已完成</span></div><div class="task-meta">2026-08-20 09:42 · 43 个项目 · 12 个区域</div><div class="progress"><i></i></div><div class="task-foot"><span>规则计算完成</span><span>100%</span></div></div><div class="task"><div class="task-top"><strong>2026 年度执行偏差回填</strong><span class="tag orange">处理中</span></div><div class="task-meta">2026-08-19 16:18 · 导入 126 条记录</div><div class="progress"><i style="width:38%;background:var(--orange)"></i></div><div class="task-foot"><span>正在校验数据</span><span>38%</span></div></div></section>
+          </aside>
+        </div>
+      </section>
+      <section class="content view" data-view="forecast-tasks" hidden>
+        <div class="title-row"><div><h1>预测任务</h1><div class="subtitle">管理年度预测任务、运行进度和规则版本</div></div><button class="btn primary" id="newTaskBtn">＋ 新建预测任务</button></div>
+        <div class="step-list"><div class="step"><b>数据准备</b><span>43 个项目 · 126 条历史记录</span></div><div class="step"><b>规则计算</b><span>已完成 · 28 条候选</span></div><div class="step"><b>模型增强</b><span>可选 · 已启用</span></div><div class="step"><b>人工审核</b><span>待审核 7 条</span></div></div>
+        <section class="panel"><div class="panel-head"><div><h2>任务记录</h2><small id="taskCount">共 8 个任务</small></div><select class="field"><option>全部年度</option><option>2027 年</option><option>2026 年</option></select></div><div class="table-wrap"><table class="data-table"><thead><tr><th>任务名称</th><th>预测年度</th><th>数据截止日</th><th>候选条目</th><th>规则版本</th><th>状态</th><th>操作</th></tr></thead><tbody id="taskRows"><tr><td>2027 年度计划初版预测<br><span class="muted">2026-08-20 09:42 · 刘润东</span></td><td>2027</td><td>2026-08-15</td><td>28 条</td><td>V1.0.6</td><td><span class="tag green">已完成</span></td><td><button class="row-action task-result">查看结果</button> · <button class="row-action task-rerun">重跑</button></td></tr><tr><td>2026 年度执行偏差回填<br><span class="muted">2026-08-19 16:18 · 王敏</span></td><td>2026</td><td>2026-08-15</td><td>126 条</td><td>V1.0.5</td><td><span class="tag orange">处理中</span></td><td><button class="row-action task-progress">查看进度</button> · <button class="row-action task-cancel">取消</button></td></tr></tbody></table></div></section>
+      </section>
+      <section class="content view" data-view="forecast-results" hidden>
+        <div class="title-row"><div><h1>预测结果</h1><div class="subtitle">查看候选需求、预测证据和排除记录</div></div><div class="page-tools"><span class="tag green">规则计算完成</span><button class="btn primary" data-toast="已生成年度计划草稿">生成年度计划</button></div></div>
+        <section class="panel"><div class="panel-head"><div><h2>候选需求列表</h2><small>包含纳入和排除的全部候选记录</small></div><button class="btn" data-toast="已下载候选明细">⇩ 下载明细</button></div><div class="table-wrap"><table class="data-table"><thead><tr><th>候选需求</th><th>来源项目</th><th>预测来源</th><th>概算金额</th><th>置信度</th><th>判定</th><th>操作</th></tr></thead><tbody><tr><td>施工设备租赁</td><td>华东区域 · 12 个项目</td><td>历史首年规则</td><td>¥ 4,820 万</td><td><span class="tag green">高 · 92</span></td><td><span class="tag green">纳入</span></td><td><button class="row-action detail" data-title="施工设备租赁">查看证据</button></td></tr><tr><td>办公设备采购</td><td>华东区域 · 2 个项目</td><td>排除规则</td><td>¥ 680 万</td><td><span class="tag yellow">低 · 41</span></td><td><span class="tag gray">已排除</span></td><td><button class="row-action detail" data-title="办公设备采购">查看原因</button></td></tr></tbody></table></div></section>
+      </section>
+      <section class="content view" data-view="annual-plans" hidden>
+        <div class="title-row"><div><h1>年度计划</h1><div class="subtitle">年度计划审核、发布与执行跟踪</div></div><div class="page-tools"><span class="tag yellow">待审核</span><button class="btn primary" data-toast="已提交审核">提交审核</button></div></div>
+        <section class="panel"><div class="panel-head"><div><h2>2027 年度局级集采计划</h2><small>计划编号：JCCG-2027-001 · 28 个明细条目 · ¥ 3.86 亿</small></div><button class="btn" data-toast="已导出年度计划">⇩ 导出计划</button></div><div class="rule-row"><b>草稿</b><span>系统预测已完成</span><span>2026-08-20 09:42</span><span class="tag yellow">待审核</span><button class="row-action" data-toast="已打开计划详情">查看详情</button></div><div class="rule-row"><b>审核校验</b><span>必填项 28/28 · 重复项 0</span><span>排除冲突 0</span><span class="tag green">通过</span><button class="row-action" data-toast="校验结果正常">重新校验</button></div></section>
+      </section>
+      <section class="content view" data-view="projects" hidden>
+        <div class="title-row"><div><h1>在建项目</h1><div class="subtitle">管理预测年度有效项目和新接项目</div></div><button class="btn primary" data-toast="导入模板已下载">⇩ 导入项目</button></div>
+        <section class="panel"><div class="panel-head"><div><h2>项目清单</h2><small>预测年度：2027 · 共 43 个项目</small></div><input class="field" placeholder="搜索项目名称或编号" style="width:230px" /></div><div class="table-wrap"><table class="data-table"><thead><tr><th>项目编号</th><th>项目名称</th><th>区域</th><th>项目类型</th><th>预计开工</th><th>项目状态</th><th>标识</th></tr></thead><tbody><tr><td>XM-2026-018</td><td>华东智慧物流基地</td><td>华东区域</td><td>工程建设</td><td>2026-10-15</td><td><span class="tag green">在建</span></td><td><span class="tag orange">新接项目</span></td></tr><tr><td>XM-2025-042</td><td>粤港澳综合管廊项目</td><td>华南区域</td><td>基础设施</td><td>2025-06-20</td><td><span class="tag green">在建</span></td><td><span class="tag gray">历史项目</span></td></tr></tbody></table></div></section>
+      </section>
+      <section class="content view" data-view="history" hidden>
+        <div class="title-row"><div><h1>历史招采</h1><div class="subtitle">导入历史数据，识别项目首年采购规律</div></div><div class="page-tools"><span class="tag green">数据已校验</span><button class="btn primary" data-toast="导入窗口已打开">＋ 导入数据</button></div></div>
+        <section class="panel"><div class="panel-head"><div><h2>历史首年招采样本</h2><small>已加载 2023—2026 年数据 · 1,286 条记录</small></div><button class="btn" data-toast="首年识别任务已提交">重新识别首年</button></div><div class="rule-row"><b>施工设备租赁</b><span>首年出现频率 86%</span><span>有效样本 42 个</span><span class="tag green">已匹配</span><button class="row-action" data-toast="已打开样本详情">查看样本</button></div><div class="rule-row"><b>临建设施服务</b><span>首年出现频率 64%</span><span>有效样本 31 个</span><span class="tag yellow">待确认</span><button class="row-action" data-toast="已打开待确认数据">处理异常</button></div></section>
+      </section>
+      <section class="content view" data-view="rules" hidden>
+        <div class="title-row"><div><h1>排除规则</h1><div class="subtitle">配置股份区域联采中心排除范围和规则优先级</div></div><button class="btn primary" data-toast="新规则表单已打开">＋ 新增规则</button></div>
+        <section class="panel"><div class="panel-head"><div><h2>规则列表</h2><small>启用规则 6 条 · 最近更新 2026-08-18</small></div><select class="field"><option>全部状态</option><option>已启用</option><option>已停用</option></select></div><div class="rule-row"><b>股份区域联采中心 - 设备类</b><span>采购品类：设备租赁</span><span>优先级：100</span><span class="tag green">已启用</span><button class="row-action" data-toast="规则编辑已打开">编辑</button></div><div class="rule-row"><b>股份区域联采中心 - 办公类</b><span>采购内容：办公设备</span><span>优先级：90</span><span class="tag green">已启用</span><button class="row-action" data-toast="规则编辑已打开">编辑</button></div><div class="rule-row"><b>华东局级集中采购范围</b><span>区域：华东 · 采购层级：局级</span><span>优先级：50</span><span class="tag gray">已停用</span><button class="row-action" data-toast="规则编辑已打开">编辑</button></div></section>
+      </section>
+      <section class="content view" data-view="master-data" hidden>
+        <div class="title-row"><div><h1>基础数据</h1><div class="subtitle">维护品类、采购方式、采购内容和区域标准编码</div></div><button class="btn primary" data-toast="基础数据导入模板已下载">⇩ 批量导入</button></div>
+        <section class="panel"><div class="panel-head"><div><h2>数据字典</h2><small>共 6 个数据域 · 最近同步 2026-08-20</small></div><button class="btn" data-toast="新增数据项表单已打开">＋ 新增数据项</button></div><div class="rule-row"><b>采购内容</b><span>128 个标准编码</span><span>2 条待处理异常</span><span class="tag yellow">待处理</span><button class="row-action" data-toast="已打开采购内容字典">管理</button></div><div class="rule-row"><b>采购品类</b><span>46 个标准编码</span><span>全部已关联</span><span class="tag green">正常</span><button class="row-action" data-toast="已打开采购品类字典">管理</button></div><div class="rule-row"><b>区域</b><span>12 个区域节点</span><span>组织权限已同步</span><span class="tag green">正常</span><button class="row-action" data-toast="已打开区域字典">管理</button></div></section>
+      </section>
+      <section class="content view" data-view="system" hidden>
+        <div class="title-row"><div><h1>系统管理</h1><div class="subtitle">用户、角色、区域授权和操作审计</div></div><button class="btn primary" data-toast="新增用户表单已打开">＋ 新增用户</button></div>
+        <section class="panel"><div class="panel-head"><div><h2>用户与权限</h2><small>当前用户 18 人 · 4 个角色</small></div><button class="btn" data-toast="审计日志已打开">查看审计日志</button></div><div class="rule-row"><b>刘润东</b><span>计划编制员 · 管理员</span><span>全局数据范围</span><span class="tag green">已启用</span><button class="row-action" data-toast="用户编辑已打开">编辑</button></div><div class="rule-row"><b>王敏</b><span>审核员</span><span>华南区域、华东区域</span><span class="tag green">已启用</span><button class="row-action" data-toast="用户编辑已打开">编辑</button></div></section>
+      </section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="backdrop"><aside class="drawer"><div class="drawer-head"><div><h2 id="drawerTitle">施工设备租赁</h2><span class="tag yellow">待审核</span></div><button class="close" id="closeDrawer">×</button></div><div class="detail-grid"><div class="detail-item"><label>采购品类</label><b>设备租赁</b></div><div class="detail-item"><label>合作品类</label><b>设备类</b></div><div class="detail-item"><label>采购方式</label><b>框架采购</b></div><div class="detail-item"><label>需求区域</label><b>华东区域</b></div><div class="detail-item"><label>概算金额</label><b>¥ 4,820 万</b></div><div class="detail-item"><label>计划周期</label><b>2027.03.15 — 04.20</b></div></div><div class="evidence"><h3>预测依据</h3><div class="evidence-box"><strong>纳入原因</strong>3 个同类型项目在首年采购中均出现施工设备租赁，历史出现频率 86%。</div><div class="evidence-box"><strong>来源项目</strong>华东区域在建项目 12 个，其中 5 个新接项目进入本次预测。</div><div class="evidence-box"><strong>概算算法</strong>采用同区域同类型项目历史金额中位数，样本数 6，金额区间 ¥3,900–5,600 万。</div><div class="evidence-box"><strong>时间算法</strong>预计开工时间 + 18 天典型滞后期，历史采购周期中位数为 36 天。</div></div><div class="drawer-actions"><button class="btn primary" id="approveBtn">通过审核</button><button class="btn" id="adjustBtn">调整条目</button><button class="btn ghost" id="excludeBtn">标记排除</button></div></aside></div>
+  <div class="modal-backdrop" id="taskModal"><section class="dialog"><div class="dialog-head"><div><h2>新建预测任务</h2><div class="subtitle">设置预测范围、历史样本和算法参数</div></div><button class="close" id="closeTaskModal">×</button></div><div class="dialog-body"><div class="form-grid"><div><label class="form-label required" for="taskName">任务名称</label><input class="form-field" id="taskName" value="2028 年度计划初版预测" /></div><div><label class="form-label required" for="forecastYear">预测年度</label><select class="form-field" id="forecastYear"><option>2027</option><option selected>2028</option><option>2029</option></select></div><div><label class="form-label required" for="cutoffDate">数据截止日</label><input class="form-field" id="cutoffDate" type="date" value="2026-08-20" /></div><div><label class="form-label required" for="sampleYears">历史样本年数</label><select class="form-field" id="sampleYears"><option>1</option><option selected>3</option><option>5</option></select></div><div><label class="form-label" for="projectScope">项目筛选范围</label><select class="form-field" id="projectScope"><option>全部有效在建及新接项目</option><option>仅在建项目</option><option>仅新接项目</option></select></div><div><label class="form-label" for="regionScope">区域范围</label><select class="form-field" id="regionScope"><option>全部授权区域</option><option>华东区域</option><option>华南区域</option><option>西南区域</option></select></div><div><label class="form-label" for="amountMethod">金额估算方式</label><select class="form-field" id="amountMethod"><option>分层中位数估算</option><option>加权平均估算</option><option>品类基准单价估算</option></select></div><div><label class="form-label" for="timeMethod">时间估算方式</label><select class="form-field" id="timeMethod"><option>历史典型滞后期与周期</option><option>采购品类默认周期</option></select></div><div style="grid-column:1/-1"><span class="form-label">增强能力</span><div class="check-row"><label><input type="checkbox" id="includeNew" checked /> 纳入新接项目</label><label><input type="checkbox" id="excludeShare" checked /> 排除股份区域联采中心</label><label><input type="checkbox" id="enableModel" checked /> 启用大模型增强</label></div></div></div><div class="form-error" id="taskError"></div></div><div class="dialog-foot"><button class="btn" id="cancelTaskCreate">取消</button><button class="btn" id="saveTaskDraft">保存草稿</button><button class="btn primary" id="createAndRunTask">创建并运行</button></div></section></div>
+  <div class="modal-backdrop" id="progressModal"><section class="dialog" style="max-width:520px"><div class="dialog-head"><div><h2 id="progressTitle">预测任务运行进度</h2><div class="subtitle" id="progressMeta">规则版本 V1.0.6</div></div><button class="close" id="closeProgress">×</button></div><div class="dialog-body"><div class="task-progress-card"><div class="task-top"><strong id="progressStage">正在准备项目数据</strong><span class="tag orange" id="progressStatus">运行中</span></div><div class="progress" style="margin-top:14px"><i id="progressBar" style="width:12%;background:var(--orange)"></i></div><div class="task-foot"><span id="progressText">校验基础数据与排除规则</span><span id="progressPercent">12%</span></div></div><div class="evidence-box" style="margin:0 20px 20px"><strong>执行顺序</strong>数据准备 → 历史首年识别 → 排除规则 → 金额与时间估算 → 模型增强 → 生成候选结果</div></div><div class="dialog-foot"><button class="btn" id="cancelRunningTask">取消任务</button><button class="btn primary" id="closeProgressDone">后台运行</button></div></section></div>
+  <div class="modal-backdrop" id="modelModal"><aside class="drawer"><div class="drawer-head"><div><h2>模型配置</h2><span class="subtitle">仅由后端调用，密钥不会下发到浏览器</span></div><button class="close" id="closeModel">×</button></div><div class="detail-item" style="margin-bottom:16px"><label>中转站 Base URL</label><input class="field" style="width:100%;margin-top:6px" value="https://your-gateway.example.com/v1" /></div><div class="detail-item" style="margin-bottom:16px"><label>模型 ID</label><input class="field" style="width:100%;margin-top:6px" value="your-model-id" /></div><div class="detail-item" style="margin-bottom:16px"><label>API 密钥引用</label><input class="field" style="width:100%;margin-top:6px" type="password" value="sk-demo-placeholder" /></div><div class="evidence-box"><strong>已启用能力</strong>历史采购内容归一化 · 相似项目推荐 · 预测解释 · 异常检查</div><div class="drawer-actions"><button class="btn primary" id="testModel">测试连接</button><button class="btn" id="saveModel">保存配置</button></div></aside></div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const toast = (message) => { const el = $('#toast'); el.textContent = message; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2200); };
+    const backdrop = $('#backdrop');
+    document.querySelectorAll('.detail').forEach((button) => button.addEventListener('click', () => { $('#drawerTitle').textContent = button.dataset.title; backdrop.classList.add('show'); }));
+    $('#closeDrawer').addEventListener('click', () => backdrop.classList.remove('show'));
+    backdrop.addEventListener('click', (event) => { if (event.target === backdrop) backdrop.classList.remove('show'); });
+    $('#modelNav').addEventListener('click', () => $('#modelModal').classList.add('show'));
+    $('#closeModel').addEventListener('click', () => $('#modelModal').classList.remove('show'));
+    $('#modelModal').addEventListener('click', (event) => { if (event.target.id === 'modelModal') $('#modelModal').classList.remove('show'); });
+    $('#filterBtn').addEventListener('click', () => { const search = $('#search').value.trim().toLowerCase(); const region = $('#region').value; const confidence = $('#confidence').value; const status = $('#status').value; let visible = 0; document.querySelectorAll('#planRows tr').forEach((row) => { const match = (!search || row.dataset.text.includes(search)) && (!region || row.dataset.region === region) && (!confidence || row.dataset.confidence === confidence) && (!status || row.dataset.status === status); row.style.display = match ? '' : 'none'; if (match) visible += 1; }); toast(`筛选完成，匹配 ${visible} 条计划`); });
+    $('#runBtn').addEventListener('click', () => toast('预测任务已提交，正在执行规则计算'));
+    $('#exportBtn').addEventListener('click', () => toast('计划导出任务已生成'));
+    $('#historyBtn').addEventListener('click', () => toast('已打开预测任务记录'));
+    $('#approveBtn').addEventListener('click', () => { backdrop.classList.remove('show'); toast('计划条目已通过审核'); });
+    $('#adjustBtn').addEventListener('click', () => toast('已进入条目调整模式'));
+    $('#excludeBtn').addEventListener('click', () => { backdrop.classList.remove('show'); toast('已标记为排除，保留审计记录'); });
+    $('#testModel').addEventListener('click', () => toast('连接测试成功（演示环境）'));
+    $('#saveModel').addEventListener('click', () => { $('#modelModal').classList.remove('show'); toast('模型配置已保存'); });
+    const taskModal = $('#taskModal');
+    const progressModal = $('#progressModal');
+    let progressTimer;
+    const openTaskModal = () => { $('#taskError').textContent = ''; taskModal.classList.add('show'); };
+    const closeTaskModal = () => taskModal.classList.remove('show');
+    const validateTask = () => {
+      const name = $('#taskName').value.trim();
+      const cutoff = $('#cutoffDate').value;
+      if (!name) return '请输入任务名称';
+      if (!/^20\d{2}$/.test($('#forecastYear').value)) return '预测年度格式不正确';
+      if (!cutoff) return '请选择数据截止日';
+      return '';
+    };
+    const appendTask = (running) => {
+      const name = $('#taskName').value.trim();
+      const year = $('#forecastYear').value;
+      const cutoff = $('#cutoffDate').value;
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${name}<br><span class="muted">刚刚 · 刘润东</span></td><td>${year}</td><td>${cutoff}</td><td>待计算</td><td>V1.0.7</td><td><span class="tag ${running ? 'orange' : 'yellow'}">${running ? '运行中' : '草稿'}</span></td><td><button class="row-action task-progress">查看进度</button> · <button class="row-action task-cancel">取消</button></td>`;
+      $('#taskRows').prepend(row);
+      $('#taskCount').textContent = `共 ${$('#taskRows').children.length + 6} 个任务`;
+      bindTaskActions(row);
+      return { name, year };
+    };
+    const runTask = (task) => {
+      $('#progressTitle').textContent = task.name;
+      $('#progressMeta').textContent = `${task.year} 年度 · 规则版本 V1.0.7`;
+      $('#progressBar').style.width = '12%';
+      $('#progressPercent').textContent = '12%';
+      $('#progressStage').textContent = '正在准备项目数据';
+      $('#progressText').textContent = '校验基础数据与排除规则';
+      $('#progressStatus').textContent = '运行中';
+      $('#progressStatus').className = 'tag orange';
+      progressModal.classList.add('show');
+      let percent = 12;
+      clearInterval(progressTimer);
+      progressTimer = setInterval(() => {
+        percent += 22;
+        const stages = [['正在识别历史首年采购', '匹配同类型项目历史样本'], ['正在计算金额与时间', '生成概算区间和计划周期'], ['正在生成预测候选结果', '合并项目并应用排除规则'], ['预测任务已完成', '已生成候选计划，等待人工审核']];
+        const stage = stages[Math.min(Math.floor((percent - 12) / 22), 3)];
+        $('#progressBar').style.width = `${Math.min(percent, 100)}%`;
+        $('#progressPercent').textContent = `${Math.min(percent, 100)}%`;
+        $('#progressStage').textContent = stage[0];
+        $('#progressText').textContent = stage[1];
+        if (percent >= 100) { clearInterval(progressTimer); $('#progressStatus').textContent = '已完成'; $('#progressStatus').className = 'tag green'; $('#cancelRunningTask').style.display = 'none'; $('#closeProgressDone').textContent = '查看结果'; toast('预测任务已完成，候选结果已生成'); }
+      }, 850);
+    };
+    const bindTaskActions = (scope = document) => {
+      scope.querySelectorAll('.task-progress').forEach((button) => { if (!button.dataset.bound) { button.dataset.bound = '1'; button.addEventListener('click', () => { progressModal.classList.add('show'); }); } });
+      scope.querySelectorAll('.task-result').forEach((button) => { if (!button.dataset.bound) { button.dataset.bound = '1'; button.addEventListener('click', () => switchView('forecast-results')); } });
+      scope.querySelectorAll('.task-rerun').forEach((button) => { if (!button.dataset.bound) { button.dataset.bound = '1'; button.addEventListener('click', () => { toast('任务已复制，正在重新运行'); }); } });
+      scope.querySelectorAll('.task-cancel').forEach((button) => { if (!button.dataset.bound) { button.dataset.bound = '1'; button.addEventListener('click', () => { const row = button.closest('tr'); row.querySelector('.tag').textContent = '已取消'; row.querySelector('.tag').className = 'tag gray'; button.remove(); toast('预测任务已取消'); }); } });
+    };
+    $('#closeTaskModal').addEventListener('click', closeTaskModal);
+    $('#cancelTaskCreate').addEventListener('click', closeTaskModal);
+    taskModal.addEventListener('click', (event) => { if (event.target === taskModal) closeTaskModal(); });
+    $('#newTaskBtn').addEventListener('click', openTaskModal);
+    $('#saveTaskDraft').addEventListener('click', () => { const error = validateTask(); if (error) { $('#taskError').textContent = error; return; } appendTask(false); closeTaskModal(); toast('预测任务草稿已保存'); });
+    $('#createAndRunTask').addEventListener('click', () => { const error = validateTask(); if (error) { $('#taskError').textContent = error; return; } const task = appendTask(true); closeTaskModal(); runTask(task); });
+    $('#closeProgress').addEventListener('click', () => progressModal.classList.remove('show'));
+    $('#closeProgressDone').addEventListener('click', () => { progressModal.classList.remove('show'); if ($('#progressPercent').textContent === '100%') switchView('forecast-results'); });
+    $('#cancelRunningTask').addEventListener('click', () => { clearInterval(progressTimer); progressModal.classList.remove('show'); toast('运行中的预测任务已取消'); });
+    progressModal.addEventListener('click', (event) => { if (event.target === progressModal) progressModal.classList.remove('show'); });
+    bindTaskActions();
+    const viewTitles = { dashboard: '年度预测工作台', 'forecast-tasks': '预测任务', 'forecast-results': '预测结果', 'annual-plans': '年度计划', projects: '在建项目', history: '历史招采', rules: '排除规则', 'master-data': '基础数据', system: '系统管理' };
+    const switchView = (viewId, updateHash = true) => {
+      const target = document.querySelector(`.view[data-view="${viewId}"]`) || document.querySelector('.view[data-view="dashboard"]');
+      const selected = target.dataset.view;
+      document.querySelectorAll('.view').forEach((view) => { view.hidden = view !== target; });
+      document.querySelectorAll('.nav-item[data-view]').forEach((item) => { const active = item.dataset.view === selected; item.classList.toggle('active', active); item.setAttribute('aria-current', active ? 'page' : 'false'); });
+      $('#currentViewTitle').textContent = viewTitles[selected];
+      if (updateHash) history.replaceState(null, '', `#${selected}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    document.querySelectorAll('.nav-item[data-view]').forEach((item) => item.addEventListener('click', () => switchView(item.dataset.view)));
+    document.querySelectorAll('[data-toast]').forEach((button) => button.addEventListener('click', () => toast(button.dataset.toast)));
+    window.addEventListener('hashchange', () => switchView(location.hash.slice(1), false));
+    switchView(location.hash.slice(1) || 'dashboard', false);
+  </script>
+</body>
+</html>

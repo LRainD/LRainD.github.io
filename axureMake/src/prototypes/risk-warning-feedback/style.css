@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+.feedback-admin-page .ant-card {
+  box-shadow: none;
+  border-radius: 4px;
+}
+
+.feedback-filter-card {
+  margin-bottom: 16px;
+}
+
+.feedback-filter-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.feedback-filter-title::before {
+  width: 4px;
+  height: 14px;
+  margin-right: 8px;
+  border-radius: 2px;
+  background: #1677ff;
+  content: '';
+}
+
+.feedback-filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+
+.feedback-filter-form .ant-form-item {
+  margin-right: 24px;
+  margin-bottom: 16px;
+}
+
+.feedback-filter-form .ant-form-item-label > label {
+  font-size: 13px;
+  color: #555;
+}
+
+.feedback-filter-form .ant-input,
+.feedback-filter-form .ant-select-selector,
+.feedback-filter-form .ant-picker {
+  min-height: 32px;
+}
+
+.feedback-filter-actions {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0;
+}
+
+.feedback-admin-page .ant-table-thead > tr > th {
+  background: #fafafa;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.feedback-admin-page .ant-table-tbody > tr > td {
+  white-space: nowrap;
+  font-size: 13px;
+  color: #555;
+}
+
+.feedback-admin-page .ant-table-cell {
+  padding: 14px 12px !important;
+}
+
+.feedback-table-card {
+  overflow: hidden;
+}
+
+.feedback-table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feedback-admin-page .ant-pagination {
+  margin: 16px 24px !important;
+}
+
+.feedback-admin-page .feedback-drawer-item + .feedback-drawer-item {
+  margin-top: 14px;
+}
