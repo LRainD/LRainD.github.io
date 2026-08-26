@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-21T03:28:44.469Z",
+  "updatedAt": "2026-08-23T12:53:31.242Z",
   "prototypes": [
     {
       "id": "folder-1774706974674-5x6tue",
@@ -83,7 +83,7 @@
             {
               "id": "item-prototypes-risk-warning-feedback",
               "kind": "item",
-              "title": "风控预警问题反馈",
+              "title": "预警核查",
               "itemKey": "prototypes/risk-warning-feedback"
             },
             {
@@ -91,6 +91,12 @@
               "kind": "item",
               "title": "风控预警弹窗",
               "itemKey": "prototypes/risk-warning-modal"
+            },
+            {
+              "id": "item-prototypes-digital-compliance-detection",
+              "kind": "item",
+              "title": "数字合规官检测中",
+              "itemKey": "prototypes/digital-compliance-detection"
             }
           ]
         },
@@ -373,12 +379,6 @@
       "kind": "item",
       "title": "招标工作台 - 报名与资审汇总",
       "itemKey": "prototypes/test"
-    },
-    {
-      "id": "item-prototypes-bid-opening-setting",
-      "kind": "item",
-      "title": "开标设置",
-      "itemKey": "prototypes/bid-opening-setting"
     },
     {
       "id": "item-prototypes-bidding-list",

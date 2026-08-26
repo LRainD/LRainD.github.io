@@ -9,10 +9,17 @@
   margin-bottom: 16px;
 }
 
+.feedback-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
 .feedback-filter-title {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
   font-size: 14px;
   font-weight: 600;
   color: #333;
@@ -27,15 +34,36 @@
   content: '';
 }
 
+.feedback-filter-toggle {
+  color: #8c8c8c;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.feedback-filter-toggle:hover {
+  color: #595959;
+}
+
 .feedback-filter-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
+  margin-top: 16px;
+}
+
+.feedback-filter-form .ant-form-item-label {
+  text-align: right;
+  padding-right: 8px;
+  width: 80px;
+  flex: 0 0 80px;
+}
+
+.feedback-filter-form .ant-form-item-control {
+  flex: 1;
+  min-width: 0;
 }
 
 .feedback-filter-form .ant-form-item {
-  margin-right: 24px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .feedback-filter-form .ant-form-item-label > label {
@@ -44,15 +72,28 @@
 }
 
 .feedback-filter-form .ant-input,
+.feedback-filter-form .ant-select,
+.feedback-filter-form .ant-picker {
+  width: 220px !important;
+}
+
+.feedback-filter-form .ant-input,
 .feedback-filter-form .ant-select-selector,
 .feedback-filter-form .ant-picker {
   min-height: 32px;
+  border-radius: 2px;
 }
 
-.feedback-filter-actions {
+.feedback-filter-form .ant-checkbox-wrapper {
+  white-space: nowrap;
+}
+
+.feedback-filter-footer {
   display: flex;
-  align-items: flex-start;
-  padding-top: 0;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed #f0f0f0;
 }
 
 .feedback-admin-page .ant-table-thead > tr > th {

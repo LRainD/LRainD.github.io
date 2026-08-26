@@ -1,5 +1,5 @@
 /**
- * @name 风控预警问题反馈
+ * @name 预警核查
  */
 import React, { useMemo, useState } from 'react';
 import {
@@ -13,9 +13,12 @@ import {
   Space,
   Table,
   Tag,
-  Typography
+  Typography,
+  Row,
+  Col,
+  Checkbox
 } from 'antd';
-import { DownloadOutlined, PaperClipOutlined, SearchOutlined } from '@ant-design/icons';
+import { DownloadOutlined, PaperClipOutlined, DownOutlined, UpOutlined } from '@ant-design/icons';
 import OperationAdminLayout, { DEFAULT_MENU_ITEMS } from '../../components/operation-admin-layout';
 import './style.css';
 
@@ -82,31 +85,51 @@ const menuItems = DEFAULT_MENU_ITEMS.map(item => {
   if (item && typeof item === 'object' && 'key' in item && item.key === 'risk_warning_center') {
     return {
       ...item,
-      children: [...((item.children as any[]) || []), { key: 'business_warning', label: '业务预警' }]
+      children: [
+        { key: 'warning_check', label: '预警核查' },
+        ...((item.children as any[]) || []),
+        { key: 'business_warning', label: '业务预警' }
+      ]
     };
   }
   return item;
 });
-
-const levelColor: Record<string, string> = { 高风险: 'red', 中风险: 'orange', 低风险: 'green' };
 
 const satisfactionColor: Record<Satisfaction, string> = { 满意: 'success', 不满意: 'error', 未评价: 'default' };
 
 const Component = () => {
   const [selectedRow, setSelectedRow] = useState<WarningRow | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [filters, setFilters] = useState({
-    businessName: '',
+    organization: 'all',
+    includeSubOrg: true,
+    businessDomain: '云筑集采',
     businessNo: '',
+    businessName: '',
+    businessType: undefined as string | undefined,
+    businessStage: undefined as string | undefined,
+    operator: '',
+    warningLevel: undefined as string | undefined,
+    warningType: undefined as string | undefined,
+    warningRule: undefined as string | undefined,
+    warningTimeRange: null as any,
     satisfaction: undefined as Satisfaction | undefined,
-    feedbackStatus: undefined as FeedbackStatus | undefined
+    feedbackStatus: undefined as FeedbackStatus | undefined,
+    includeObsolete: false
   });
 
   const dataSource = useMemo(() => feedbackData.filter(row => {
     return (!filters.businessName || row.businessName.includes(filters.businessName))
       && (!filters.businessNo || row.businessNo.includes(filters.businessNo))
       && (!filters.satisfaction || row.satisfaction === filters.satisfaction)
-      && (!filters.feedbackStatus || (filters.feedbackStatus === '是' ? row.feedbacks.length > 0 : row.feedbacks.length === 0));
+      && (!filters.feedbackStatus || (filters.feedbackStatus === '是' ? row.feedbacks.length > 0 : row.feedbacks.length === 0))
+      && (!filters.operator || row.operator.includes(filters.operator))
+      && (!filters.warningLevel || row.warningLevel === filters.warningLevel)
+      && (!filters.warningType || row.warningType === filters.warningType)
+      && (!filters.warningRule || row.warningRule === filters.warningRule)
+      && (!filters.businessStage || row.businessStage === filters.businessStage)
+      && (!filters.businessType || row.businessType === filters.businessType);
   }), [filters]);
 
   const openFeedback = (row: WarningRow) => {
@@ -115,6 +138,7 @@ const Component = () => {
   };
 
   const columns = [
+    { title: '序号', width: 64, fixed: 'left' as const, align: 'center' as const, render: (_: unknown, __: WarningRow, index: number) => index + 1 },
     { title: '业务域', dataIndex: 'businessDomain', width: 92 },
     { title: '业务编号', dataIndex: 'businessNo', width: 136, render: (value: string) => <a>{value}</a> },
     { title: '业务名称', dataIndex: 'businessName', width: 130, ellipsis: true },
@@ -123,7 +147,7 @@ const Component = () => {
     { title: '经办人', dataIndex: 'operator', width: 80 },
     { title: '业务环节', dataIndex: 'businessStage', width: 78 },
     { title: '预警规则', dataIndex: 'warningRule', width: 150, render: (value: string) => <a>{value}</a> },
-    { title: '预警级别', dataIndex: 'warningLevel', width: 84, render: (value: string) => <Tag color={levelColor[value]}>{value}</Tag> },
+    { title: '预警级别', dataIndex: 'warningLevel', width: 84 },
     { title: '预警类型', dataIndex: 'warningType', width: 76 },
     {
       title: '预警时间', dataIndex: 'warningTime', width: 132,
@@ -139,38 +163,194 @@ const Component = () => {
 
   return (
     <OperationAdminLayout
-      activeMenuKey="business_warning"
+      activeMenuKey="warning_check"
       defaultOpenKeys={['risk_warning_center']}
       menuItems={menuItems as any}
       showOrgBar={false}
-      breadcrumbItems={[{ label: '风控预警中心' }, { label: '业务预警', active: true }]}
+      breadcrumbItems={[{ label: '风控预警中心' }, { label: '预警核查', active: true }]}
     >
       <div className="feedback-admin-page">
-        <Card className="feedback-filter-card" bodyStyle={{ padding: '20px 24px' }}>
-          <div className="feedback-filter-title">查询</div>
-          <Form layout="inline" className="feedback-filter-form">
-            <Form.Item label="组织机构"><Select className="w-[200px]" placeholder="全部" options={[{ value: 'all', label: '全部' }, { value: 'southwest', label: '发展公司西南分公司' }]} /></Form.Item>
-            <Form.Item label="业务域"><Select className="w-[200px]" defaultValue="云筑集采" options={[{ value: '云筑集采', label: '云筑集采' }]} /></Form.Item>
-            <Form.Item label="业务编号"><Input className="w-[200px]" placeholder="请输入业务编号" value={filters.businessNo} onChange={e => setFilters({ ...filters, businessNo: e.target.value })} /></Form.Item>
-            <Form.Item label="业务名称"><Input className="w-[200px]" placeholder="请输入业务名称" value={filters.businessName} onChange={e => setFilters({ ...filters, businessName: e.target.value })} /></Form.Item>
-            <Form.Item label="预警级别"><Select className="w-[200px]" placeholder="请选择预警级别" options={[{ value: '高风险', label: '高风险' }, { value: '中风险', label: '中风险' }]} /></Form.Item>
-            <Form.Item label="预警时间"><RangePicker className="w-[200px]" placeholder={['开始日期', '结束日期']} /></Form.Item>
-            <Form.Item label="是否满意"><Select className="w-[200px]" placeholder="全部" allowClear value={filters.satisfaction} onChange={value => setFilters({ ...filters, satisfaction: value })} options={['满意', '不满意', '未评价'].map(value => ({ value, label: value }))} /></Form.Item>
-            <Form.Item label="是否反馈"><Select className="w-[200px]" placeholder="全部" allowClear value={filters.feedbackStatus} onChange={value => setFilters({ ...filters, feedbackStatus: value })} options={['是', '否'].map(value => ({ value, label: value }))} /></Form.Item>
-            <Form.Item className="feedback-filter-actions"><Space size="middle"><Button type="primary" icon={<SearchOutlined />}>查询</Button><Button onClick={() => setFilters({ businessName: '', businessNo: '', satisfaction: undefined, feedbackStatus: undefined })}>重置</Button></Space></Form.Item>
-          </Form>
+        <Card className="feedback-filter-card" styles={{ body: { padding: '16px 24px' } }}>
+          <div className="feedback-filter-header">
+            <div className="feedback-filter-title">查询</div>
+            <div className="feedback-filter-toggle" onClick={() => setIsCollapsed(!isCollapsed)}>
+              {isCollapsed ? <DownOutlined /> : <UpOutlined />}
+            </div>
+          </div>
+          {!isCollapsed && (
+            <Form layout="horizontal" className="feedback-filter-form">
+              <Row gutter={[24, 12]}>
+                {/* 第一行 */}
+                <Col span={8}>
+                  <Form.Item label="组织机构">
+                    <div className="flex items-center gap-2">
+                      <Select
+                        placeholder="全部"
+                        value={filters.organization}
+                        onChange={(val: string) => setFilters({ ...filters, organization: val })}
+                        options={[{ value: 'all', label: '全部' }, { value: 'southwest', label: '发展公司西南分公司' }]}
+                      />
+                      <Checkbox
+                        checked={filters.includeSubOrg}
+                        onChange={(e: any) => setFilters({ ...filters, includeSubOrg: e.target.checked })}
+                        className="whitespace-nowrap text-xs"
+                      >
+                        包含下级
+                      </Checkbox>
+                    </div>
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="业务域">
+                    <Select
+                      value={filters.businessDomain}
+                      onChange={(val: string) => setFilters({ ...filters, businessDomain: val })}
+                      options={[{ value: '云筑集采', label: '云筑集采' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="业务编号">
+                    <Input
+                      placeholder="请输入业务编号"
+                      value={filters.businessNo}
+                      onChange={(e: any) => setFilters({ ...filters, businessNo: e.target.value })}
+                    />
+                  </Form.Item>
+                </Col>
+
+                {/* 第二行 */}
+                <Col span={8}>
+                  <Form.Item label="业务名称">
+                    <Input
+                      placeholder="请输入业务名称"
+                      value={filters.businessName}
+                      onChange={(e: any) => setFilters({ ...filters, businessName: e.target.value })}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="业务类型">
+                    <Select
+                      placeholder="请选择"
+                      value={filters.businessType}
+                      onChange={(val: string) => setFilters({ ...filters, businessType: val })}
+                      options={[{ value: '招投标-非招采购', label: '招投标-非招采购' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="业务环节">
+                    <Select
+                      placeholder="请选择环节"
+                      value={filters.businessStage}
+                      onChange={(val: string) => setFilters({ ...filters, businessStage: val })}
+                      options={[{ value: '均标', label: '均标' }, { value: '发标', label: '发标' }]}
+                    />
+                  </Form.Item>
+                </Col>
+
+                {/* 第三行 */}
+                <Col span={8}>
+                  <Form.Item label="经办人">
+                    <Input
+                      placeholder="请输入经办人名称"
+                      value={filters.operator}
+                      onChange={(e: any) => setFilters({ ...filters, operator: e.target.value })}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="预警级别">
+                    <Select
+                      placeholder="请选择预警级别"
+                      value={filters.warningLevel}
+                      onChange={(val: string) => setFilters({ ...filters, warningLevel: val })}
+                      options={[{ value: '高风险', label: '高风险' }, { value: '中风险', label: '中风险' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="预警类型">
+                    <Select
+                      placeholder="请选择预警类型"
+                      value={filters.warningType}
+                      onChange={(val: string) => setFilters({ ...filters, warningType: val })}
+                      options={[{ value: '拦截', label: '拦截' }, { value: '预警', label: '预警' }]}
+                    />
+                  </Form.Item>
+                </Col>
+
+                {/* 第四行 */}
+                <Col span={8}>
+                  <Form.Item label="预警规则">
+                    <Select
+                      placeholder="请选择预警规则"
+                      value={filters.warningRule}
+                      onChange={(val: string) => setFilters({ ...filters, warningRule: val })}
+                      options={[{ value: '最小有效投标供应商数量', label: '最小有效投标供应商数量' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="预警时间">
+                    <RangePicker
+                      className="w-full"
+                      placeholder={['开始日期', '结束日期']}
+                      value={filters.warningTimeRange}
+                      onChange={(val: any) => setFilters({ ...filters, warningTimeRange: val })}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <div className="flex items-center justify-between h-full pb-3">
+                    <Checkbox
+                      checked={filters.includeObsolete}
+                      onChange={(e: any) => setFilters({ ...filters, includeObsolete: e.target.checked })}
+                      className="text-xs"
+                    >
+                      包含已废标/已废除数据
+                    </Checkbox>
+                    <Space size="middle">
+                      <Button type="primary">查询</Button>
+                      <Button onClick={() => setFilters({
+                        organization: 'all',
+                        includeSubOrg: true,
+                        businessDomain: '云筑集采',
+                        businessNo: '',
+                        businessName: '',
+                        businessType: undefined,
+                        businessStage: undefined,
+                        operator: '',
+                        warningLevel: undefined,
+                        warningType: undefined,
+                        warningRule: undefined,
+                        warningTimeRange: null,
+                        satisfaction: undefined,
+                        feedbackStatus: undefined,
+                        includeObsolete: false
+                      })}>重置</Button>
+                      <Button type="link" className="p-0 text-xs flex items-center gap-1" onClick={() => setIsCollapsed(true)}>
+                        收起 <UpOutlined />
+                      </Button>
+                    </Space>
+                  </div>
+                </Col>
+              </Row>
+            </Form>
+          )}
         </Card>
 
-        <Card className="feedback-table-card" bodyStyle={{ padding: 0 }}>
+        <Card className="feedback-table-card" styles={{ body: { padding: 0 } }}>
           <div className="feedback-table-toolbar">
             <Space><Button type="link" icon={<DownloadOutlined />}>导出</Button><Button size="small">⚙</Button></Space>
             <Text type="secondary" className="text-xs">本页: {dataSource.length}条　总计: 25303条</Text>
           </div>
-          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: total => `共 ${total} 条` }} scroll={{ x: 1800 }} />
+          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: (total: number) => `共 ${total} 条` }} scroll={{ x: 1800 }} />
         </Card>
       </div>
 
-      <Drawer title="问题反馈记录" width={560} open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer title="问题反馈记录" width={560} open={drawerOpen} onClose={() => setDrawerOpen(false)} destroyOnClose>
         {selectedRow && <>
           <div className="mb-5 rounded-sm bg-[#f7f9fc] p-3 text-xs leading-6">
             <div><Text type="secondary">业务编号：</Text>{selectedRow.businessNo}</div>
@@ -178,11 +358,11 @@ const Component = () => {
             <div><Text type="secondary">预警规则：</Text>{selectedRow.warningRule}</div>
           </div>
           <div className="mb-3 font-medium">共 {selectedRow.feedbacks.length} 条反馈记录</div>
-          {selectedRow.feedbacks.map((feedback, index) => (
+          {selectedRow.feedbacks.map((feedback: FeedbackRecord, index: number) => (
             <Card key={feedback.id} size="small" className="feedback-drawer-item" title={<span>反馈 #{selectedRow.feedbacks.length - index}</span>} extra={<Text type="secondary" className="text-xs">{feedback.time}</Text>}>
               <div className="mb-2 text-sm"><Text type="secondary">问题类型：</Text>{feedback.type}</div>
               <div className="mb-2 text-sm"><Text type="secondary">问题说明：</Text>{feedback.description}</div>
-              <div className="text-sm"><Text type="secondary">附件：</Text>{feedback.attachments.length ? feedback.attachments.map(file => <Tag key={file} icon={<PaperClipOutlined />}>{file}</Tag>) : <Text type="secondary">无</Text>}</div>
+              <div className="text-sm"><Text type="secondary">附件：</Text>{feedback.attachments.length ? feedback.attachments.map((file: string) => <Tag key={file} icon={<PaperClipOutlined />}>{file}</Tag>) : <Text type="secondary">无</Text>}</div>
             </Card>
           ))}
         </>}
