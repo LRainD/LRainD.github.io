@@ -133,7 +133,7 @@
 /* 右侧规则列表 */
 .compliance-right-rules {
   flex: 1;
-  max-width: 360px;
+  max-width: 400px;
   max-height: 450px;
   overflow-y: auto;
   padding-right: 8px;
@@ -201,10 +201,12 @@
 }
 
 .status-label {
+  flex: none;
   font-size: 12px;
   font-weight: 500;
   padding: 1px 8px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .status-label.passed {
@@ -226,12 +228,14 @@
 }
 
 .llm-tag {
+  flex: none;
   font-size: 11px;
   background-color: #e6f7ff;
   color: #1890ff;
   padding: 1px 6px;
   border-radius: 4px;
   border: 1px solid #91d5ff;
+  white-space: nowrap;
 }
 
 /* 大模型思考过程容器 */
@@ -288,6 +292,73 @@
   line-height: 1.6;
   white-space: pre-wrap;
   font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+.supplier-thought-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.supplier-thought-item {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #edf0f2;
+}
+
+.supplier-thought-item.is-thinking {
+  border-color: #91d5ff;
+  background-color: #e6f7ff;
+}
+
+.supplier-thought-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.supplier-toggle-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: #6c757d;
+}
+
+.supplier-name {
+  color: #343a40;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.supplier-conclusion {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.supplier-conclusion.passed {
+  color: #389e0d;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+.supplier-conclusion.failed {
+  color: #cf1322;
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+}
+
+.supplier-thought-item .thought-content-box {
+  padding-top: 10px;
 }
 
 /* 状态样式 */

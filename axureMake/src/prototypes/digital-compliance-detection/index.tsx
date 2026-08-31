@@ -8,7 +8,7 @@
  */
 
 import './style.css';
-import React, { useState, useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { Modal, Button } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined, ClockCircleOutlined, DownOutlined, RightOutlined } from '@ant-design/icons';
 import complianceImage from '../../../assets/images/数字合规官检测中.png';
@@ -23,6 +23,17 @@ interface RiskRule {
   status: 'pending' | 'loading' | 'thinking' | 'passed' | 'failed';
   thoughts?: string[]; // 思考过程的完整文本片段
   currentThought?: string; // 当前流式展示的思考文本
+  suppliers?: SupplierThought[];
+  currentSupplierIndex?: number;
+  currentSupplierThought?: string;
+}
+
+interface SupplierThought {
+  id: string;
+  name: string;
+  thoughts: string[];
+  conclusion: 'passed' | 'failed';
+  conclusionText: string;
 }
 
 const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
@@ -37,6 +48,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   // 当前正在执行的规则索引
   const [activeRuleIndex, setActiveRuleIndex] = useState<number>(0);
   const [expandedRuleIds, setExpandedRuleIds] = useState<string[]>([]);
+  const [expandedSupplierIds, setExpandedSupplierIds] = useState<string[]>([]);
 
   // 规则数据源
   const initialRules: RiskRule[] = [
@@ -48,6 +60,52 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     },
     {
       id: 'rule_2',
+      name: '报名文件检测',
+      isLLM: true,
+      status: 'pending',
+      suppliers: [
+        {
+          id: 'supplier_1',
+          name: '华东建设有限公司',
+          thoughts: [
+            '正在核验营业执照、资质证书及安全生产许可证...',
+            '检测完成：资质证书在有效期内，报名材料齐全。',
+            '正在比对法定代表人授权委托书与报名信息...',
+            '检测结论：报名文件符合要求，建议进入后续评审。'
+          ],
+          conclusion: 'passed',
+          conclusionText: '审查结论：已通过'
+        },
+        {
+          id: 'supplier_2',
+          name: '中源机电设备有限公司',
+          thoughts: [
+            '正在识别报名文件中的签章、授权及资质附件...',
+            '分析发现：授权委托书缺少法定代表人签章。',
+            '正在检查项目负责人社保证明与岗位资格证书...',
+            '检测结论：存在1项材料缺失，建议补正后重新提交。'
+          ],
+          conclusion: 'failed',
+          conclusionText: '审查结论：未通过'
+        },
+        {
+          id: 'supplier_3',
+          name: '新城供应链服务有限公司',
+          thoughts: [
+            '正在解析报名承诺函、报价文件及关联证明材料...',
+            '检测完成：文件签署完整，报价文件格式符合要求。',
+            '正在校验联合体协议与成员单位资质信息...',
+            '检测结论：报名文件无异常，可参与本次报名。'
+          ],
+          conclusion: 'passed',
+          conclusionText: '审查结论：已通过'
+        }
+      ],
+      currentSupplierIndex: 0,
+      currentSupplierThought: '',
+    },
+    {
+      id: 'rule_3',
       name: '合同核心条款大模型深度审计',
       isLLM: true,
       status: 'pending',
@@ -61,13 +119,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       currentThought: '',
     },
     {
-      id: 'rule_3',
+      id: 'rule_4',
       name: '关联交易与利益输送排查',
       isLLM: false,
       status: 'pending'
     },
     {
-      id: 'rule_4',
+      id: 'rule_5',
       name: '历史履约信用大模型综合评估',
       isLLM: true,
       status: 'pending',
@@ -87,6 +145,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     setRules(JSON.parse(JSON.stringify(initialRules)));
     setActiveRuleIndex(0);
     setExpandedRuleIds([]);
+    setExpandedSupplierIds([]);
   };
 
   useEffect(() => {
@@ -139,24 +198,59 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     }
 
     // 3. 如果是大模型规则，且进入了 thinking 状态，开始流式展示思考过程
-    if (currentRule.status === 'thinking' && currentRule.thoughts) {
+    if (currentRule.status === 'thinking' && (currentRule.thoughts || currentRule.suppliers)) {
       let thoughtIndex = 0;
       let charIndex = 0;
       let currentText = '';
+      let supplierIndex = 0;
       let timerId: any = null;
+
+      if (currentRule.suppliers?.[supplierIndex]) {
+        const supplierId = currentRule.suppliers[supplierIndex].id;
+        setExpandedSupplierIds(prev => prev.includes(supplierId) ? prev : [...prev, supplierId]);
+      }
 
       const runStream = () => {
         if (!visible) return;
-        
-        const thoughtsList = currentRule.thoughts!;
+        const supplier = currentRule.suppliers?.[supplierIndex];
+        const thoughtsList = supplier ? supplier.thoughts : currentRule.thoughts!;
+
         if (thoughtIndex >= thoughtsList.length) {
+          if (supplier && supplierIndex < currentRule.suppliers!.length - 1) {
+            supplierIndex++;
+            thoughtIndex = 0;
+            charIndex = 0;
+            currentText = '';
+            const nextSupplierId = currentRule.suppliers![supplierIndex].id;
+            setExpandedSupplierIds(prev => prev.includes(nextSupplierId) ? prev : [...prev, nextSupplierId]);
+            setRules(prev => {
+              const newRules = [...prev];
+              if (newRules[activeRuleIndex]) {
+                newRules[activeRuleIndex] = {
+                  ...newRules[activeRuleIndex],
+                  currentSupplierIndex: supplierIndex,
+                  currentSupplierThought: ''
+                };
+              }
+              return newRules;
+            });
+            timerId = setTimeout(runStream, 500);
+            return;
+          }
+
           // 思考过程展示完毕，得出结论
-          const finalStatus = currentRule.id === 'rule_2' ? 'failed' : 'passed';
+          const finalStatus = currentRule.suppliers
+            ? currentRule.suppliers.some(supplier => supplier.conclusion === 'failed') ? 'failed' : 'passed'
+            : currentRule.id === 'rule_3' ? 'failed' : 'passed';
           
           setRules(prev => {
             const newRules = [...prev];
             if (newRules[activeRuleIndex]) {
-              newRules[activeRuleIndex] = { ...newRules[activeRuleIndex], status: finalStatus };
+              newRules[activeRuleIndex] = {
+                ...newRules[activeRuleIndex],
+                status: finalStatus,
+                currentSupplierThought: currentText
+              };
             }
             return newRules;
           });
@@ -172,7 +266,9 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           setRules(prev => {
             const newRules = [...prev];
             if (newRules[activeRuleIndex]) {
-              newRules[activeRuleIndex] = { ...newRules[activeRuleIndex], currentThought: currentText };
+            newRules[activeRuleIndex] = supplier
+              ? { ...newRules[activeRuleIndex], currentSupplierIndex: supplierIndex, currentSupplierThought: currentText }
+              : { ...newRules[activeRuleIndex], currentThought: currentText };
             }
             return newRules;
           });
@@ -201,28 +297,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     }
 
   }, [visible, activeRuleIndex, rules[activeRuleIndex]?.status]); // 移除对 rules 的深度依赖，避免无限循环
-
-  // 辅助方法：更新规则状态
-  const updateRuleStatus = (index: number, status: RiskRule['status']) => {
-    setRules(prev => {
-      const newRules = [...prev];
-      if (newRules[index]) {
-        newRules[index] = { ...newRules[index], status };
-      }
-      return newRules;
-    });
-  };
-
-  // 辅助方法：更新大模型思考文本
-  const updateRuleThought = (index: number, text: string) => {
-    setRules(prev => {
-      const newRules = [...prev];
-      if (newRules[index]) {
-        newRules[index] = { ...newRules[index], currentThought: text };
-      }
-      return newRules;
-    });
-  };
 
   // 暴露给 Axure 的方法
   useImperativeHandle(ref, () => ({
@@ -280,26 +354,64 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
         {/* 规则内容区：大模型思考过程 */}
         {rule.isLLM && (rule.status === 'thinking' || rule.status === 'passed' || rule.status === 'failed') && (() => {
-          const isExpanded = expandedRuleIds.includes(rule.id);
+          const isThinking = rule.status === 'thinking';
+          const isExpanded = isThinking || expandedRuleIds.includes(rule.id);
           return (
             <div className="llm-thought-container">
-              <button
-                type="button"
-                className="thought-toggle"
-                onClick={() => setExpandedRuleIds(prev => isExpanded ? prev.filter(id => id !== rule.id) : [...prev, rule.id])}
-              >
-                {isExpanded ? <DownOutlined /> : <RightOutlined />}
-                <span>{isExpanded ? '收起思考过程' : '查看思考过程'}</span>
-              </button>
+              {!isThinking && (
+                <button
+                  type="button"
+                  className="thought-toggle"
+                  onClick={() => setExpandedRuleIds(prev => isExpanded ? prev.filter(id => id !== rule.id) : [...prev, rule.id])}
+                >
+                  {isExpanded ? <DownOutlined /> : <RightOutlined />}
+                  <span>{isExpanded ? '收起思考过程' : '查看思考过程'}</span>
+                </button>
+              )}
               {isExpanded && (
                 <div className="thought-detail">
                   <div className="thought-header">
                     <span className="thought-dot"></span>
-                    <span>{rule.status === 'thinking' ? 'AI 思考分析中...' : 'AI 思考分析完成'}</span>
+                    <span>{isThinking ? 'AI 思考分析中...' : 'AI 思考分析完成'}</span>
                   </div>
-                  <div className="thought-content-box">
-                    {rule.currentThought || (rule.thoughts && rule.thoughts.join('\n'))}
-                  </div>
+                  {rule.suppliers ? (
+                    <div className="supplier-thought-list">
+                      {rule.suppliers.map((supplier, supplierIndex) => {
+                        const isCurrentSupplier = rule.currentSupplierIndex === supplierIndex;
+                        const isCompletedSupplier = rule.status !== 'thinking' || (rule.currentSupplierIndex ?? 0) > supplierIndex;
+                        const isSupplierExpanded = expandedSupplierIds.includes(supplier.id);
+                        const content = isCurrentSupplier && rule.status === 'thinking'
+                          ? rule.currentSupplierThought
+                          : isCompletedSupplier
+                            ? supplier.thoughts.join('\n')
+                            : '等待检测中...';
+                        return (
+                          <div key={supplier.id} className={`supplier-thought-item ${isCurrentSupplier && isThinking ? 'is-thinking' : ''}`}>
+                            <button
+                              type="button"
+                              className="supplier-thought-toggle"
+                              onClick={() => setExpandedSupplierIds(prev => isSupplierExpanded ? prev.filter(id => id !== supplier.id) : [...prev, supplier.id])}
+                            >
+                              <span className="supplier-toggle-main">
+                                {isSupplierExpanded ? <DownOutlined /> : <RightOutlined />}
+                                <span className="supplier-name">{supplier.name}</span>
+                              </span>
+                              {isCompletedSupplier && (
+                                <span className={`supplier-conclusion ${supplier.conclusion}`}>
+                                  {supplier.conclusion === 'passed' ? '已通过' : '未通过'}
+                                </span>
+                              )}
+                            </button>
+                            {isSupplierExpanded && <div className="thought-content-box">{content}</div>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="thought-content-box">
+                      {rule.currentThought || (rule.thoughts && rule.thoughts.join('\n'))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -332,7 +444,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         footer={null}
         closable={true}
         onCancel={() => setVisible(false)}
-        width={720}
+        width={800}
         centered
         className="compliance-modal"
         mask={{ closable: false }}

@@ -5,10 +5,14 @@ import React, { useMemo, useState } from 'react';
 import {
   Button,
   Card,
+  Collapse,
   DatePicker,
   Drawer,
   Form,
   Input,
+  message,
+  Modal,
+  Popconfirm,
   Select,
   Space,
   Table,
@@ -26,7 +30,9 @@ const { RangePicker } = DatePicker;
 const { Text } = Typography;
 
 type Satisfaction = '满意' | '不满意' | '未评价';
+type SatisfactionFilter = '是' | '否';
 type FeedbackStatus = '是' | '否';
+type DetectionScene = '合规自查' | '合规自查、风控预警' | '风控预警';
 
 interface FeedbackRecord {
   id: string;
@@ -34,6 +40,11 @@ interface FeedbackRecord {
   type: string;
   description: string;
   attachments: string[];
+}
+
+interface ReviewSupplier {
+  supplierName: string;
+  reasoning: string;
 }
 
 interface WarningRow {
@@ -47,28 +58,37 @@ interface WarningRow {
   businessStage: string;
   warningRule: string;
   warningLevel: string;
+  detectionScene: DetectionScene;
   warningType: string;
   warningTime: string;
+  currentData: string;
+  releaseStatus: '已解除' | '未解除';
+  reviewBasis?: string;
+  reviewSuppliers?: ReviewSupplier[];
   satisfaction: Satisfaction;
   feedbacks: FeedbackRecord[];
 }
 
 const feedbackData: WarningRow[] = [
   {
-    id: '1', businessDomain: '云筑集采', businessNo: 'cscec202608013000396247', businessName: '一局发展四川间...', businessType: '招投标-非招采购', organization: '发展公司西南分公司', operator: '许必展', businessStage: '均标', warningRule: '最小有效投标供应商数量', warningLevel: '高风险', warningType: '拦截', warningTime: '2026-08-16 22:43:05', satisfaction: '不满意',
+    id: '5', businessDomain: '云筑集采', businessNo: 'cscec20260826000081234', businessName: '华东分公司办公楼...', businessType: '招投标-公开招标', organization: '华东分公司', operator: '张明', businessStage: '报名', warningRule: '报名附件检测', warningLevel: '高风险', detectionScene: '合规自查', warningType: '预警', warningTime: '2026-08-26 10:18:36', currentData: '不合格附件：3份', releaseStatus: '未解除', reviewBasis: '【审查范围】系统对报名供应商提交的营业执照、资质证书及业绩证明进行解析与核验。\n【核验结果】发现 3 家供应商的附件存在资质等级不符、业绩证明缺失或证照已过期情形。\n【判定结果】报名附件未完全满足招标公告要求，触发报名附件检测预警。', reviewSuppliers: [{ supplierName: 'sup101（中建某某建设有限公司）', reasoning: '【营业执照】有效。\n【资质证书】实际上传资质为建筑工程施工总承包二级，未满足公告要求的一级资质。' }, { supplierName: 'sup105（北京某某装饰工程有限公司）', reasoning: '【营业执照】有效。\n【业绩证明】未提供近三年同类项目业绩证明材料。' }, { supplierName: 'sup203（上海某某实业发展有限公司）', reasoning: '【安全生产许可证】已于 2026 年 6 月 30 日到期，当前处于失效状态。' }], satisfaction: '未评价',
+    feedbacks: []
+  },
+  {
+    id: '1', businessDomain: '云筑集采', businessNo: 'cscec202608013000396247', businessName: '一局发展四川间...', businessType: '招投标-非招采购', organization: '发展公司西南分公司', operator: '许必展', businessStage: '均标', warningRule: '最小有效投标供应商数量', warningLevel: '高风险', detectionScene: '合规自查、风控预警', warningType: '拦截', warningTime: '2026-08-16 22:43:05', currentData: '有效投标供应商：2家', releaseStatus: '未解除', satisfaction: '不满意',
     feedbacks: [
       { id: 'f-11', time: '2026-08-16 22:45:18', type: '预警信息不准确', description: '该项目为专项采购，已有审批记录，供应商数量符合实际业务要求。', attachments: ['专项采购审批单.pdf'] },
       { id: 'f-12', time: '2026-08-16 22:49:36', type: '处置建议不合理', description: '建议增加专项采购场景的豁免说明入口，避免重复提交材料。', attachments: [] }
     ]
   },
   {
-    id: '2', businessDomain: '云筑集采', businessNo: '2021-13-CC037-000000207', businessName: '二局三华中标看...', businessType: '合同', organization: '中建二局三公司华中分公司', operator: '王馨阳', businessStage: '合同', warningRule: '合同总额超招标预算', warningLevel: '中风险', warningType: '预警', warningTime: '2026-08-16 22:29:44', satisfaction: '满意',
+    id: '2', businessDomain: '云筑集采', businessNo: '2021-13-CC037-000000207', businessName: '二局三华中标看...', businessType: '合同', organization: '中建二局三公司华中分公司', operator: '王馨阳', businessStage: '合同', warningRule: '合同总额超招标预算', warningLevel: '中风险', detectionScene: '风控预警', warningType: '预警', warningTime: '2026-08-16 22:29:44', currentData: '合同金额：1,286万元', releaseStatus: '已解除', satisfaction: '满意',
     feedbacks: [
       { id: 'f-21', time: '2026-08-16 22:31:03', type: '其他问题', description: '预警内容清晰，已按提示完成复核。', attachments: [] }
     ]
   },
   {
-    id: '3', businessDomain: '云筑集采', businessNo: 'cscec20260804000065984', businessName: '广安人民医院医...', businessType: '招投标-非招采购', organization: '华西分公司', operator: '董洁方', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', warningType: '拦截', warningTime: '2026-08-16 22:15:48', satisfaction: '不满意',
+    id: '3', businessDomain: '云筑集采', businessNo: 'cscec20260804000065984', businessName: '广安人民医院医...', businessType: '招投标-非招采购', organization: '华西分公司', operator: '董洁方', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', detectionScene: '合规自查、风控预警', warningType: '拦截', warningTime: '2026-08-16 22:15:48', currentData: '报价时长：18小时', releaseStatus: '未解除', satisfaction: '不满意',
     feedbacks: [
       { id: 'f-31', time: '2026-08-16 22:19:42', type: '数据同步延迟', description: '采购计划已调整，但预警仍显示旧的报价时间，请协助核实。', attachments: ['计划调整截图.png', '采购计划说明.docx'] },
       { id: 'f-32', time: '2026-08-16 22:25:10', type: '规则逻辑有误', description: '紧急采购不适用该报价时长规则，建议按照采购方式区分处理。', attachments: [] },
@@ -76,7 +96,7 @@ const feedbackData: WarningRow[] = [
     ]
   },
   {
-    id: '4', businessDomain: '云筑集采', businessNo: 'cscec202608040000201590', businessName: '潍坊公交新能源...', businessType: '招投标-非招采购', organization: '科工湖北公司', operator: '胡臣', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', warningType: '拦截', warningTime: '2026-08-16 22:07:44', satisfaction: '未评价',
+    id: '4', businessDomain: '云筑集采', businessNo: 'cscec202608040000201590', businessName: '潍坊公交新能源...', businessType: '招投标-非招采购', organization: '科工湖北公司', operator: '胡臣', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', detectionScene: '风控预警', warningType: '拦截', warningTime: '2026-08-16 22:07:44', currentData: '报价时长：24小时', releaseStatus: '已解除', satisfaction: '未评价',
     feedbacks: []
   }
 ];
@@ -98,8 +118,10 @@ const menuItems = DEFAULT_MENU_ITEMS.map(item => {
 const satisfactionColor: Record<Satisfaction, string> = { 满意: 'success', 不满意: 'error', 未评价: 'default' };
 
 const Component = () => {
+  const [warningRows, setWarningRows] = useState(feedbackData);
   const [selectedRow, setSelectedRow] = useState<WarningRow | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [reviewBasisRow, setReviewBasisRow] = useState<WarningRow | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filters, setFilters] = useState({
     organization: 'all',
@@ -114,15 +136,15 @@ const Component = () => {
     warningType: undefined as string | undefined,
     warningRule: undefined as string | undefined,
     warningTimeRange: null as any,
-    satisfaction: undefined as Satisfaction | undefined,
+    satisfaction: undefined as SatisfactionFilter | undefined,
     feedbackStatus: undefined as FeedbackStatus | undefined,
     includeObsolete: false
   });
 
-  const dataSource = useMemo(() => feedbackData.filter(row => {
+  const dataSource = useMemo(() => warningRows.filter(row => {
     return (!filters.businessName || row.businessName.includes(filters.businessName))
       && (!filters.businessNo || row.businessNo.includes(filters.businessNo))
-      && (!filters.satisfaction || row.satisfaction === filters.satisfaction)
+      && (!filters.satisfaction || (filters.satisfaction === '是' ? row.satisfaction === '满意' : row.satisfaction === '不满意'))
       && (!filters.feedbackStatus || (filters.feedbackStatus === '是' ? row.feedbacks.length > 0 : row.feedbacks.length === 0))
       && (!filters.operator || row.operator.includes(filters.operator))
       && (!filters.warningLevel || row.warningLevel === filters.warningLevel)
@@ -130,17 +152,22 @@ const Component = () => {
       && (!filters.warningRule || row.warningRule === filters.warningRule)
       && (!filters.businessStage || row.businessStage === filters.businessStage)
       && (!filters.businessType || row.businessType === filters.businessType);
-  }), [filters]);
+  }), [filters, warningRows]);
 
   const openFeedback = (row: WarningRow) => {
     setSelectedRow(row);
     setDrawerOpen(true);
   };
 
+  const handleReleaseRisk = (row: WarningRow) => {
+    setWarningRows(rows => rows.map(item => item.id === row.id ? { ...item, releaseStatus: '已解除' } : item));
+    message.success('解除成功');
+  };
+
   const columns = [
     { title: '序号', width: 64, fixed: 'left' as const, align: 'center' as const, render: (_: unknown, __: WarningRow, index: number) => index + 1 },
     { title: '业务域', dataIndex: 'businessDomain', width: 92 },
-    { title: '业务编号', dataIndex: 'businessNo', width: 136, render: (value: string) => <a>{value}</a> },
+    { title: '业务编号', dataIndex: 'businessNo', width: 190, render: (value: string) => <a>{value}</a> },
     { title: '业务名称', dataIndex: 'businessName', width: 130, ellipsis: true },
     { title: '业务类型', dataIndex: 'businessType', width: 140 },
     { title: '组织机构', dataIndex: 'organization', width: 150, ellipsis: true },
@@ -148,7 +175,11 @@ const Component = () => {
     { title: '业务环节', dataIndex: 'businessStage', width: 78 },
     { title: '预警规则', dataIndex: 'warningRule', width: 150, render: (value: string) => <a>{value}</a> },
     { title: '预警级别', dataIndex: 'warningLevel', width: 84 },
+    { title: '检测场景', dataIndex: 'detectionScene', width: 150 },
     { title: '预警类型', dataIndex: 'warningType', width: 76 },
+    { title: '当前数据', dataIndex: 'currentData', width: 150, ellipsis: true },
+    { title: '预警解除状态', dataIndex: 'releaseStatus', width: 112 },
+    { title: '审查依据', width: 90, align: 'center' as const, render: (_: unknown, row: WarningRow) => row.reviewBasis ? <Button type="link" size="small" onClick={() => setReviewBasisRow(row)}>查看依据</Button> : '-' },
     {
       title: '预警时间', dataIndex: 'warningTime', width: 132,
       render: (value: string) => <span>{value.replace(' ', '\n')}</span>
@@ -156,8 +187,22 @@ const Component = () => {
     { title: '是否满意', dataIndex: 'satisfaction', width: 90, render: (value: Satisfaction) => <Tag color={satisfactionColor[value]}>{value}</Tag> },
     { title: '反馈次数', width: 82, render: (_: unknown, row: WarningRow) => row.feedbacks.length },
     {
-      title: '操作', fixed: 'right' as const, width: 126,
-      render: (_: unknown, row: WarningRow) => <Button type="link" size="small" disabled={!row.feedbacks.length} onClick={() => openFeedback(row)}>查看问题反馈</Button>
+      title: '操作', fixed: 'right' as const, width: 186,
+      render: (_: unknown, row: WarningRow) => (
+        <Space size="small">
+          <Button type="link" size="small" disabled={!row.feedbacks.length} onClick={() => openFeedback(row)}>查看问题反馈</Button>
+          <Popconfirm
+            title="确认解除风险"
+            description="解除后该预警将标记为已解除，是否继续？"
+            onConfirm={() => handleReleaseRisk(row)}
+            okText="确认"
+            cancelText="取消"
+            placement="topRight"
+          >
+            <Button type="link" size="small" disabled={row.releaseStatus === '已解除'}>解除风险</Button>
+          </Popconfirm>
+        </Space>
+      )
     }
   ];
 
@@ -303,6 +348,28 @@ const Component = () => {
                   </Form.Item>
                 </Col>
                 <Col span={8}>
+                  <Form.Item label="是否满意">
+                    <Select
+                      placeholder="请选择"
+                      allowClear
+                      value={filters.satisfaction}
+                      onChange={(val: SatisfactionFilter | undefined) => setFilters({ ...filters, satisfaction: val })}
+                      options={[{ value: '是', label: '是' }, { value: '否', label: '否' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
+                  <Form.Item label="是否反馈">
+                    <Select
+                      placeholder="请选择"
+                      allowClear
+                      value={filters.feedbackStatus}
+                      onChange={(val: FeedbackStatus | undefined) => setFilters({ ...filters, feedbackStatus: val })}
+                      options={[{ value: '是', label: '是' }, { value: '否', label: '否' }]}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col span={8}>
                   <div className="flex items-center justify-between h-full pb-3">
                     <Checkbox
                       checked={filters.includeObsolete}
@@ -346,7 +413,7 @@ const Component = () => {
             <Space><Button type="link" icon={<DownloadOutlined />}>导出</Button><Button size="small">⚙</Button></Space>
             <Text type="secondary" className="text-xs">本页: {dataSource.length}条　总计: 25303条</Text>
           </div>
-          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: (total: number) => `共 ${total} 条` }} scroll={{ x: 1800 }} />
+          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: (total: number) => `共 ${total} 条` }} scroll={{ x: 2100 }} />
         </Card>
       </div>
 
@@ -367,6 +434,19 @@ const Component = () => {
           ))}
         </>}
       </Drawer>
+
+      <Modal title="审查依据" open={Boolean(reviewBasisRow)} onCancel={() => setReviewBasisRow(null)} footer={<Button type="primary" onClick={() => setReviewBasisRow(null)}>关闭</Button>} width={reviewBasisRow?.reviewSuppliers ? 750 : 500} destroyOnHidden>
+        {reviewBasisRow && (reviewBasisRow.reviewSuppliers ? (
+          <Collapse
+            defaultActiveKey={['0']}
+            items={reviewBasisRow.reviewSuppliers.map((supplier, index) => ({
+              key: String(index),
+              label: supplier.supplierName,
+              children: <div className="whitespace-pre-wrap text-sm leading-6">{supplier.reasoning}</div>
+            }))}
+          />
+        ) : <div className="whitespace-pre-wrap text-sm leading-6">{reviewBasisRow.reviewBasis}</div>)}
+      </Modal>
     </OperationAdminLayout>
   );
 };

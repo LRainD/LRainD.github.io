@@ -1,0 +1,1027 @@
+{
+  "schema": "ppt-master.native-structure.v1",
+  "source": {
+    "name": "云智采-采购(1).pptx",
+    "templateFile": "source_template.pptx",
+    "sha256": "a8e7157f925cd2be46684cb84252864ca9102b3e2dfea75d3db8919ca7547f1d"
+  },
+  "slideSize": {
+    "width_emu": 12192000,
+    "height_emu": 6858000,
+    "width_px": 1280,
+    "height_px": 720
+  },
+  "strategy": {
+    "preservationEligible": true,
+    "reusableStructureDetected": true,
+    "recommendedMode": "preserve",
+    "recommendationScope": "source-structure-assessment",
+    "templateOutputMode": "template",
+    "downstreamTemplateAdherence": "strategist-confirmed-explicit-structure",
+    "hasMultipleMasters": false,
+    "reasonCodes": [
+      "source-master-layout-contract-is-reusable"
+    ]
+  },
+  "masters": [
+    {
+      "key": "master_01",
+      "name": "slideMaster1",
+      "packagePart": "ppt/slideMasters/slideMaster1.xml",
+      "themePart": "ppt/theme/theme1.xml",
+      "theme": {
+        "colors": {
+          "dk1": "#3C3C3C",
+          "lt1": "#F9F9F9",
+          "dk2": "#505050",
+          "lt2": "#F7F7F7",
+          "accent1": "#0071CB",
+          "accent2": "#0071CB",
+          "accent3": "#0071CB",
+          "accent4": "#0071CB",
+          "accent5": "#0071CB",
+          "accent6": "#0071CB",
+          "hlink": "#5AA2DB",
+          "folHlink": "#5AA2DB"
+        },
+        "fonts": {
+          "majorLatin": "HarmonyOS Sans SC Black",
+          "minorLatin": "HarmonyOS Sans SC Light",
+          "minorEastAsia": "HarmonyOS Sans SC Light"
+        }
+      },
+      "backgroundAsset": "image6.jpeg",
+      "imageAssets": [
+        "image6.jpeg"
+      ],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "layoutKeys": [
+        "layout_01",
+        "layout_02",
+        "layout_03",
+        "layout_04",
+        "layout_05",
+        "layout_06",
+        "layout_07",
+        "layout_08",
+        "layout_09",
+        "layout_10",
+        "layout_11"
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "key": "layout_01",
+      "name": "标题幻灯片",
+      "type": null,
+      "packagePart": "ppt/slideLayouts/slideLayout1.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [
+        "image1.png"
+      ],
+      "shapeImageAssets": [
+        "image1.png"
+      ],
+      "drawableShapeCount": 1,
+      "placeholders": [],
+      "usedBySlides": [],
+      "svgFile": "layout_01_slideLayout1.svg"
+    },
+    {
+      "key": "layout_02",
+      "name": "自定义版式",
+      "type": null,
+      "packagePart": "ppt/slideLayouts/slideLayout2.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "pic",
+          "idx": "10",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "4",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 720
+          },
+          "textSamples": []
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_02_slideLayout2.svg"
+    },
+    {
+      "key": "layout_03",
+      "name": "1_自定义版式",
+      "type": null,
+      "packagePart": "ppt/slideLayouts/slideLayout3.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "pic",
+          "idx": "10",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "4",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 60,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "11",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "5",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 258,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "12",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "6",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 456,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "13",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "7",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 654,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "14",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "8",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 852,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "15",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "9",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 1050,
+            "y": 73,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "16",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "10",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 60,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "17",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "11",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 258,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "18",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "12",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 456,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "19",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "13",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 654,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "20",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "14",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 852,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "21",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "15",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 1050,
+            "y": 202,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "22",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "16",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 60,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "23",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "17",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 258,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "24",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "18",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 456,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "25",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "19",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 654,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "26",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "20",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 852,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "27",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "21",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 1050,
+            "y": 331,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "28",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "34",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 60,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "29",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "35",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 258,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "30",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "36",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 456,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "31",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "37",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 654,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "32",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "38",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 852,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        },
+        {
+          "type": "pic",
+          "idx": "33",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "picture",
+          "shapeId": "39",
+          "shapeName": "图片占位符 3",
+          "geometry": {
+            "x": 1050,
+            "y": 460,
+            "width": 169,
+            "height": 95
+          },
+          "textSamples": []
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_03_slideLayout3.svg"
+    },
+    {
+      "key": "layout_04",
+      "name": "空白",
+      "type": "blank",
+      "packagePart": "ppt/slideLayouts/slideLayout4.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "dt",
+          "idx": "10",
+          "size": "half",
+          "orient": null,
+          "semanticRole": "date",
+          "shapeId": "1048659",
+          "shapeName": "Date Placeholder 1",
+          "geometry": {
+            "x": 88,
+            "y": 667,
+            "width": 288,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "ftr",
+          "idx": "11",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "footer",
+          "shapeId": "1048660",
+          "shapeName": "Footer Placeholder 2",
+          "geometry": {
+            "x": 424,
+            "y": 667,
+            "width": 432,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "sldNum",
+          "idx": "12",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "slide-number",
+          "shapeId": "1048661",
+          "shapeName": "Slide Number Placeholder 3",
+          "geometry": {
+            "x": 904,
+            "y": 667,
+            "width": 288,
+            "height": 38
+          },
+          "textSamples": []
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_04_slideLayout4.svg"
+    },
+    {
+      "key": "layout_05",
+      "name": "标题与项目符号",
+      "type": "tx",
+      "packagePart": "ppt/slideLayouts/slideLayout5.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [
+        "image2.png",
+        "image3.tiff",
+        "image4.png"
+      ],
+      "shapeImageAssets": [
+        "image2.png",
+        "image3.tiff",
+        "image4.png"
+      ],
+      "drawableShapeCount": 4,
+      "placeholders": [
+        {
+          "type": "sldNum",
+          "idx": "2",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "slide-number",
+          "shapeId": "36",
+          "shapeName": "幻灯片编号",
+          "geometry": {
+            "x": 630,
+            "y": 687,
+            "width": 20,
+            "height": 20
+          },
+          "textSamples": []
+        },
+        {
+          "type": "title",
+          "idx": null,
+          "size": null,
+          "orient": null,
+          "semanticRole": "title",
+          "shapeId": "79",
+          "shapeName": "议程标题",
+          "geometry": {
+            "x": 63,
+            "y": 94,
+            "width": 1153,
+            "height": 75
+          },
+          "textSamples": [
+            "标题"
+          ]
+        },
+        {
+          "type": "body",
+          "idx": "21",
+          "size": null,
+          "orient": null,
+          "semanticRole": "body",
+          "shapeId": "81",
+          "shapeName": "正文级别 1…",
+          "geometry": {
+            "x": 63,
+            "y": 202,
+            "width": 1153,
+            "height": 454
+          },
+          "textSamples": [
+            "正文"
+          ]
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_05_slideLayout5.svg"
+    },
+    {
+      "key": "layout_06",
+      "name": "节标题",
+      "type": "secHead",
+      "packagePart": "ppt/slideLayouts/slideLayout6.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "title",
+          "idx": null,
+          "size": null,
+          "orient": null,
+          "semanticRole": "title",
+          "shapeId": "1049399",
+          "shapeName": "Title 1",
+          "geometry": {
+            "x": 87,
+            "y": 180,
+            "width": 1104,
+            "height": 300
+          },
+          "textSamples": [
+            "单击此处编辑母版标题样式"
+          ]
+        },
+        {
+          "type": "body",
+          "idx": "1",
+          "size": null,
+          "orient": null,
+          "semanticRole": "body",
+          "shapeId": "1049400",
+          "shapeName": "Text Placeholder 2",
+          "geometry": {
+            "x": 87,
+            "y": 482,
+            "width": 1104,
+            "height": 158
+          },
+          "textSamples": [
+            "单击此处编辑母版文本样式"
+          ]
+        },
+        {
+          "type": "dt",
+          "idx": "10",
+          "size": "half",
+          "orient": null,
+          "semanticRole": "date",
+          "shapeId": "1049401",
+          "shapeName": "Date Placeholder 3",
+          "geometry": {
+            "x": 88,
+            "y": 667,
+            "width": 288,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "ftr",
+          "idx": "11",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "footer",
+          "shapeId": "1049402",
+          "shapeName": "Footer Placeholder 4",
+          "geometry": {
+            "x": 424,
+            "y": 667,
+            "width": 432,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "sldNum",
+          "idx": "12",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "slide-number",
+          "shapeId": "1049403",
+          "shapeName": "Slide Number Placeholder 5",
+          "geometry": {
+            "x": 904,
+            "y": 667,
+            "width": 288,
+            "height": 38
+          },
+          "textSamples": []
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_06_slideLayout6.svg"
+    },
+    {
+      "key": "layout_07",
+      "name": "2_仅标题",
+      "type": null,
+      "packagePart": "ppt/slideLayouts/slideLayout7.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 1,
+      "placeholders": [],
+      "usedBySlides": [],
+      "svgFile": "layout_07_slideLayout7.svg"
+    },
+    {
+      "key": "layout_08",
+      "name": "标题和内容",
+      "type": "obj",
+      "packagePart": "ppt/slideLayouts/slideLayout8.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "title",
+          "idx": null,
+          "size": null,
+          "orient": null,
+          "semanticRole": "title",
+          "shapeId": "2",
+          "shapeName": "标题 1",
+          "geometry": {
+            "x": 64,
+            "y": 64,
+            "width": 1152,
+            "height": 74
+          },
+          "textSamples": [
+            "单击此处编辑母版标题样式"
+          ]
+        },
+        {
+          "type": null,
+          "idx": "1",
+          "size": null,
+          "orient": null,
+          "semanticRole": "object",
+          "shapeId": "3",
+          "shapeName": "内容占位符 2",
+          "geometry": {
+            "x": 64,
+            "y": 156,
+            "width": 1152,
+            "height": 500
+          },
+          "textSamples": [
+            "单击此处编辑母版文本样式",
+            "第二级"
+          ]
+        },
+        {
+          "type": "dt",
+          "idx": "10",
+          "size": "half",
+          "orient": null,
+          "semanticRole": "date",
+          "shapeId": "4",
+          "shapeName": "日期占位符 3",
+          "geometry": {
+            "x": 64,
+            "y": 663,
+            "width": 283,
+            "height": 33
+          },
+          "textSamples": []
+        },
+        {
+          "type": "ftr",
+          "idx": "11",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "footer",
+          "shapeId": "5",
+          "shapeName": "页脚占位符 4",
+          "geometry": {
+            "x": 432,
+            "y": 663,
+            "width": 416,
+            "height": 33
+          },
+          "textSamples": []
+        },
+        {
+          "type": "sldNum",
+          "idx": "12",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "slide-number",
+          "shapeId": "6",
+          "shapeName": "灯片编号占位符 5",
+          "geometry": {
+            "x": 932,
+            "y": 663,
+            "width": 283,
+            "height": 33
+          },
+          "textSamples": []
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_08_slideLayout8.svg"
+    },
+    {
+      "key": "layout_09",
+      "name": "仅标题",
+      "type": "titleOnly",
+      "packagePart": "ppt/slideLayouts/slideLayout9.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [
+        {
+          "type": "title",
+          "idx": null,
+          "size": null,
+          "orient": null,
+          "semanticRole": "title",
+          "shapeId": "2",
+          "shapeName": "标题 1",
+          "geometry": {
+            "x": 88,
+            "y": 38,
+            "width": 1104,
+            "height": 139
+          },
+          "textSamples": [
+            "单击此处编辑母版标题样式"
+          ]
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_09_slideLayout9.svg"
+    },
+    {
+      "key": "layout_10",
+      "name": "正文",
+      "type": null,
+      "packagePart": "ppt/slideLayouts/slideLayout10.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [
+        "image5.png"
+      ],
+      "shapeImageAssets": [
+        "image5.png"
+      ],
+      "drawableShapeCount": 2,
+      "placeholders": [
+        {
+          "type": "ftr",
+          "idx": "3",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "footer",
+          "shapeId": "9",
+          "shapeName": "页脚占位符 4",
+          "geometry": {
+            "x": 437,
+            "y": 673,
+            "width": 405,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "sldNum",
+          "idx": "4",
+          "size": "quarter",
+          "orient": null,
+          "semanticRole": "slide-number",
+          "shapeId": "10",
+          "shapeName": "灯片编号占位符 5",
+          "geometry": {
+            "x": 931,
+            "y": 673,
+            "width": 299,
+            "height": 38
+          },
+          "textSamples": []
+        },
+        {
+          "type": "title",
+          "idx": null,
+          "size": null,
+          "orient": null,
+          "semanticRole": "title",
+          "shapeId": "4",
+          "shapeName": "标题 3",
+          "geometry": {
+            "x": 22,
+            "y": 30,
+            "width": 407,
+            "height": 45
+          },
+          "textSamples": [
+            "单击此处编辑母版标题样式"
+          ]
+        }
+      ],
+      "usedBySlides": [],
+      "svgFile": "layout_10_slideLayout10.svg"
+    },
+    {
+      "key": "layout_11",
+      "name": "Title Slide",
+      "type": "title",
+      "packagePart": "ppt/slideLayouts/slideLayout11.xml",
+      "masterKey": "master_01",
+      "showMasterShapes": true,
+      "backgroundAsset": null,
+      "imageAssets": [],
+      "shapeImageAssets": [],
+      "drawableShapeCount": 0,
+      "placeholders": [],
+      "usedBySlides": [
+        1,
+        2
+      ],
+      "svgFile": "layout_11_slideLayout11.svg"
+    }
+  ],
+  "slides": [
+    {
+      "index": 1,
+      "pageType": "cover_candidate",
+      "layoutKey": "layout_11",
+      "masterKey": "master_01",
+      "showInheritedShapes": true,
+      "placeholders": [],
+      "layeredSvgFile": "slide_01.svg",
+      "flatSvgFile": null
+    },
+    {
+      "index": 2,
+      "pageType": "ending_candidate",
+      "layoutKey": "layout_11",
+      "masterKey": "master_01",
+      "showInheritedShapes": true,
+      "placeholders": [],
+      "layeredSvgFile": "slide_02.svg",
+      "flatSvgFile": null
+    }
+  ]
+}
