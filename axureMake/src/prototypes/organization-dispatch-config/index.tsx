@@ -26,7 +26,9 @@ import {
   InputNumber,
   TreeSelect,
   Popconfirm,
-  Descriptions
+  Descriptions,
+  Row,
+  Col
 } from 'antd';
 import {
   SearchOutlined,
@@ -127,6 +129,9 @@ interface ConfigRecord {
   selfRecallHours?: number;
   mutualAutoRecall: boolean;
   mutualRecallHours?: number;
+  selfAppealHours?: number;
+  mutualAppealHours?: number;
+  auditAppealHours?: number;
   updatedBy: string;
   updatedTime: string;
 }
@@ -142,6 +147,9 @@ const initialDataSource: ConfigRecord[] = [
     selfAutoRecall: true,
     selfRecallHours: 72,
     mutualAutoRecall: false,
+    selfAppealHours: 48,
+    mutualAppealHours: 72,
+    auditAppealHours: 120,
     updatedBy: 'zhanghegui',
     updatedTime: '2026-08-20 10:00:00'
   },
@@ -155,6 +163,9 @@ const initialDataSource: ConfigRecord[] = [
     selfAutoRecall: false,
     mutualAutoRecall: true,
     mutualRecallHours: 48,
+    selfAppealHours: 48,
+    mutualAppealHours: 72,
+    auditAppealHours: 120,
     updatedBy: 'admin',
     updatedTime: '2026-08-22 11:15:00'
   },
@@ -170,6 +181,9 @@ const initialDataSource: ConfigRecord[] = [
     selfRecallHours: 48,
     mutualAutoRecall: true,
     mutualRecallHours: 72,
+    selfAppealHours: 24,
+    mutualAppealHours: 48,
+    auditAppealHours: 72,
     updatedBy: 'wangzhuanjia',
     updatedTime: '2026-08-25 09:45:00'
   },
@@ -182,6 +196,9 @@ const initialDataSource: ConfigRecord[] = [
     mutualDispatchMode: 'manual',
     selfAutoRecall: false,
     mutualAutoRecall: false,
+    selfAppealHours: 48,
+    mutualAppealHours: 72,
+    auditAppealHours: 120,
     updatedBy: 'admin',
     updatedTime: '2026-08-28 16:20:00'
   }
@@ -253,7 +270,10 @@ export default function OrganizationDispatchConfig() {
         selfAutoRecall: record.selfAutoRecall,
         selfRecallHours: record.selfRecallHours,
         mutualAutoRecall: record.mutualAutoRecall,
-        mutualRecallHours: record.mutualRecallHours
+        mutualRecallHours: record.mutualRecallHours,
+        selfAppealHours: record.selfAppealHours,
+        mutualAppealHours: record.mutualAppealHours,
+        auditAppealHours: record.auditAppealHours
       });
     } else {
       setEditingRecord(null);
@@ -264,7 +284,10 @@ export default function OrganizationDispatchConfig() {
         mutualDispatchMode: 'manual',
         mutualTemplateId: undefined,
         selfAutoRecall: false,
-        mutualAutoRecall: false
+        mutualAutoRecall: false,
+        selfAppealHours: 48,
+        mutualAppealHours: 72,
+        auditAppealHours: 120
       });
     }
     setIsModalOpen(true);
@@ -285,7 +308,7 @@ export default function OrganizationDispatchConfig() {
       Modal.confirm({
         title: '确认保存配置？',
         icon: <ExclamationCircleOutlined />,
-        content: '配置变更仅影响配置生效后新生成的自查、互查任务，不追溯已派发的历史任务。',
+        content: '配置变更仅影响配置生效后新生成的自查、互查、稽查任务，不追溯已派发的历史任务。',
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
@@ -302,6 +325,9 @@ export default function OrganizationDispatchConfig() {
             selfRecallHours: values.selfAutoRecall ? values.selfRecallHours : undefined,
             mutualAutoRecall: values.mutualAutoRecall,
             mutualRecallHours: values.mutualAutoRecall ? values.mutualRecallHours : undefined,
+            selfAppealHours: values.selfAppealHours,
+            mutualAppealHours: values.mutualAppealHours,
+            auditAppealHours: values.auditAppealHours,
             updatedBy: 'admin',
             updatedTime: new Date().toISOString().replace('T', ' ').substring(0, 19)
           };
@@ -393,6 +419,18 @@ export default function OrganizationDispatchConfig() {
       )
     },
     {
+      title: '可申诉时间',
+      key: 'appealHours',
+      width: 180,
+      render: (_: any, record: ConfigRecord) => (
+        <Descriptions className="recall-description" size="small" column={1} colon={false}>
+          <Descriptions.Item label="自查">{record.selfAppealHours ? `${record.selfAppealHours}小时` : '未配置'}</Descriptions.Item>
+          <Descriptions.Item label="互查">{record.mutualAppealHours ? `${record.mutualAppealHours}小时` : '未配置'}</Descriptions.Item>
+          <Descriptions.Item label="稽查">{record.auditAppealHours ? `${record.auditAppealHours}小时` : '未配置'}</Descriptions.Item>
+        </Descriptions>
+      )
+    },
+    {
       title: '更新人',
       dataIndex: 'updatedBy',
       key: 'updatedBy',
@@ -431,74 +469,85 @@ export default function OrganizationDispatchConfig() {
   return (
     <CentralizedProcurementLayout activeMenuKey="organization-dispatch-config">
       <div className="dispatch-config-container">
-        {/* 面包屑 */}
-        <div className="breadcrumb-area">
-          <Breadcrumb>
-            <Breadcrumb.Item>首页</Breadcrumb.Item>
-            <Breadcrumb.Item>招标采购</Breadcrumb.Item>
-            <Breadcrumb.Item>一单一检</Breadcrumb.Item>
-            <Breadcrumb.Item>组织业务配置</Breadcrumb.Item>
-          </Breadcrumb>
+        <div className="breadcrumb-bar dispatch-config-breadcrumb-bar">
+          <Breadcrumb items={[
+            { title: '首页' },
+            { title: '招标采购' },
+            { title: '一单一检' },
+            { title: '组织业务配置' }
+          ]} />
         </div>
 
-        {/* 查询区域 */}
-        <div className="filter-card">
-          <Form form={searchForm} layout="inline" onFinish={handleSearch}>
-            <Form.Item name="orgName" label="组织名称">
-              <Input placeholder="请输入组织名称" allowClear style={{ width: 200 }} />
-            </Form.Item>
-            <Form.Item name="selfDispatchMode" label="自查派发">
-              <Select
-                placeholder="全部"
-                allowClear
-                style={{ width: 150 }}
-                options={[
-                  { value: 'auto', label: '自动派发' },
-                  { value: 'manual', label: '人工指定' }
-                ]}
-              />
-            </Form.Item>
-            <Form.Item name="mutualDispatchMode" label="互查派发">
-              <Select
-                placeholder="全部"
-                allowClear
-                style={{ width: 150 }}
-                options={[
-                  { value: 'auto', label: '自动派发' },
-                  { value: 'manual', label: '人工指定' }
-                ]}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Space>
-                <Button type="primary" icon={<SearchOutlined />} htmlType="submit">
-                  查询
-                </Button>
-                <Button icon={<ReloadOutlined />} onClick={handleReset}>
-                  重置
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </div>
-
-        {/* 数据表格区域 */}
-        <div className="table-card">
-          <div className="table-toolbar">
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>
-              新增配置
-            </Button>
+        <div className="content-wrapper">
+          <div className="filter-card">
+            <div className="filter-title">查询条件</div>
+            <Form form={searchForm} layout="inline" onFinish={handleSearch}>
+              <Row className="filter-form" gutter={[16, 16]}>
+                <Col span={6}>
+                  <div className="filter-item">
+                    <span className="filter-label">组织名称：</span>
+                    <Form.Item name="orgName">
+                      <Input placeholder="请输入" allowClear />
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <div className="filter-item">
+                    <span className="filter-label">自查派发：</span>
+                    <Form.Item name="selfDispatchMode">
+                      <Select
+                        placeholder="请选择"
+                        allowClear
+                        options={[
+                          { value: 'auto', label: '自动派发' },
+                          { value: 'manual', label: '人工指定' }
+                        ]}
+                      />
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <div className="filter-item">
+                    <span className="filter-label">互查派发：</span>
+                    <Form.Item name="mutualDispatchMode">
+                      <Select
+                        placeholder="请选择"
+                        allowClear
+                        options={[
+                          { value: 'auto', label: '自动派发' },
+                          { value: 'manual', label: '人工指定' }
+                        ]}
+                      />
+                    </Form.Item>
+                  </div>
+                </Col>
+                <Col span={6}>
+                  <Space className="filter-actions">
+                    <Button type="primary" icon={<SearchOutlined />} htmlType="submit">查询</Button>
+                    <Button icon={<ReloadOutlined />} onClick={handleReset}>重置</Button>
+                  </Space>
+                </Col>
+              </Row>
+            </Form>
           </div>
-          <Table
-            columns={columns}
-            dataSource={filteredData}
-            rowKey="id"
-            pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条记录` }}
-            size="middle"
-          />
+
+          <div className="table-card">
+            <div className="table-toolbar">
+              <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>
+                新增配置
+              </Button>
+            </div>
+            <Table
+              columns={columns}
+              dataSource={filteredData}
+              rowKey="id"
+              scroll={{ x: 1500 }}
+              pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条记录` }}
+              size="middle"
+            />
+          </div>
         </div>
 
-        {/* 新增/编辑配置弹窗 */}
         <Modal
           title={editingRecord ? '编辑组织业务配置' : '新增组织业务配置'}
           open={isModalOpen}
@@ -630,10 +679,46 @@ export default function OrganizationDispatchConfig() {
               </Form.Item>
             )}
 
+            <Divider style={{ margin: '16px 0' }} />
+
+            <Form.Item
+              name="selfAppealHours"
+              label="自查可申诉时间 (小时)"
+              rules={[
+                { required: true, message: '请输入自查可申诉时间' },
+                { type: 'number', min: 1, message: '时限必须大于0' }
+              ]}
+            >
+              <InputNumber min={1} addonAfter="小时" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="mutualAppealHours"
+              label="互查可申诉时间 (小时)"
+              rules={[
+                { required: true, message: '请输入互查可申诉时间' },
+                { type: 'number', min: 1, message: '时限必须大于0' }
+              ]}
+            >
+              <InputNumber min={1} addonAfter="小时" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="auditAppealHours"
+              label="稽查可申诉时间 (小时)"
+              rules={[
+                { required: true, message: '请输入稽查可申诉时间' },
+                { type: 'number', min: 1, message: '时限必须大于0' }
+              ]}
+            >
+              <InputNumber min={1} addonAfter="小时" style={{ width: '100%' }} />
+            </Form.Item>
+            <div className="form-item-desc">
+              检查结论生成后，在对应时限内可提交申诉；超出时限后不再受理。
+            </div>
+
             <div className="modal-tips-box">
               <InfoCircleOutlined className="tips-icon" />
               <div className="tips-content">
-                配置变更仅影响配置生效后新生成的自查、互查任务，不追溯已派发的历史任务。
+                配置变更仅影响配置生效后新生成的自查、互查、稽查任务，不追溯已派发的历史任务。
               </div>
             </div>
           </Form>

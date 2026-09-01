@@ -20,16 +20,22 @@ import {
   Col,
   message,
   Descriptions,
-  Modal
+  Modal,
+  InputNumber,
+  Alert,
+  Divider
 } from 'antd';
 import {
   SearchOutlined,
   ReloadOutlined,
   ClockCircleOutlined,
   UserOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  InfoCircleOutlined,
+  QuestionCircleOutlined
 } from '@ant-design/icons';
 import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
+import TopActionBar from '../../components/top-action-bar';
 import './style.css';
 
 // --- Mock Data ---
@@ -117,10 +123,10 @@ const mockContractSeedData = [
     riskLevel: '低',
     genTime: '2026-09-01 11:00',
     template: '中建四局园林绿化模板 V1.1',
-    status: '互查待派发',
+    status: '已自查',
     timeLeft: '4天',
     mode: '自动派发',
-    recentRecord: '人工发起互查批次创建'
+    recentRecord: '自查合规，待进入互查抽取批次'
   },
   {
     key: '5',
@@ -268,17 +274,34 @@ const mockContractStatusSamples = [
   { key: '19', status: '互查待复核', contractName: '某新能源厂房组件采购合同', bidName: '某新能源厂房组件采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '秦二一', procurementAgent: '葛婷', riskLevel: '中', timeLeft: '5天', recentRecord: '互查处置完成，等待复核' },
   { key: '20', status: '互查复核不通过', contractName: '某商业街改造项目石材采购合同', bidName: '某商业街改造项目石材采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '尤二二', procurementAgent: '阮飞', riskLevel: '中', timeLeft: '1天', recentRecord: '互查复核未通过，已退回重新处理' },
   { key: '21', status: '互查结论申诉中', contractName: '某市政道路项目沥青采购合同', bidName: '某市政道路项目沥青采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '施二三', procurementAgent: '郝静', riskLevel: '低', timeLeft: '4天', recentRecord: '互查结论已提交申诉，等待处理' },
-  { key: '22', status: '稽查待派发', contractName: '某会展中心装饰工程采购合同', bidName: '某会展中心装饰工程采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '张二四', procurementAgent: '吴迪', riskLevel: '高', timeLeft: '2天', recentRecord: '稽查批次已创建，等待人工指派' },
+  { key: '22', status: '已互查', contractName: '某会展中心装饰工程采购合同', bidName: '某会展中心装饰工程采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '张二四', procurementAgent: '吴迪', riskLevel: '高', timeLeft: '2天', recentRecord: '互查合规，待进入稽查抽取批次' },
   { key: '23', status: '稽查待处理', contractName: '某医疗园区净化工程采购合同', bidName: '某医疗园区净化工程采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '孔二五', procurementAgent: '郑琳', riskLevel: '中', timeLeft: '3天', recentRecord: '稽查任务已派发，等待稽查专家处理' },
   { key: '24', status: '稽查回退审批中', contractName: '某体育场改造项目座椅采购合同', bidName: '某体育场改造项目座椅采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '严二六', procurementAgent: '谢宇', riskLevel: '低', timeLeft: '2天', recentRecord: '已提交稽查回退审批，等待审批人处理' },
   { key: '25', status: '稽查待处置', contractName: '某港口码头项目护舷采购合同', bidName: '某港口码头项目护舷采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '华二七', procurementAgent: '吕薇', riskLevel: '高', timeLeft: '1天', recentRecord: '稽查发现问题，等待经办人处置' },
   { key: '26', status: '稽查待复核', contractName: '某科研楼实验设备采购合同', bidName: '某科研楼实验设备采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '金二八', procurementAgent: '魏峰', riskLevel: '中', timeLeft: '4天', recentRecord: '稽查处置完成，等待复核' },
   { key: '27', status: '稽查复核不通过', contractName: '某住宅项目保温材料采购合同', bidName: '某住宅项目保温材料采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '陶二九', procurementAgent: '冉婷', riskLevel: '中', timeLeft: '2天', recentRecord: '稽查复核未通过，已退回重新处理' },
-  { key: '28', status: '稽查结论申诉中', contractName: '某水利枢纽项目阀门采购合同', bidName: '某水利枢纽项目阀门采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '姜三十', procurementAgent: '史晨', riskLevel: '高', timeLeft: '5天', recentRecord: '稽查结论已提交申诉，等待处理' }
+  { key: '28', status: '稽查结论申诉中', contractName: '某水利枢纽项目阀门采购合同', bidName: '某水利枢纽项目阀门采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '姜三十', procurementAgent: '史晨', riskLevel: '高', timeLeft: '5天', recentRecord: '稽查结论已提交申诉，等待处理' },
+  { key: '29', status: '互查已收回', contractName: '某城市综合体幕墙工程采购合同', bidName: '某城市综合体幕墙工程采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '范三一', procurementAgent: '谭雪', riskLevel: '中', timeLeft: '2天', recentRecord: '原互查办理人任务已收回，等待调整派发' },
+  { key: '30', status: '稽查已收回', contractName: '某轨道交通供电设备采购合同', bidName: '某轨道交通供电设备采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '魏三二', procurementAgent: '乔安', riskLevel: '高', timeLeft: '3天', recentRecord: '原稽查办理人任务已收回，等待调整派发' },
+  { key: '31', status: '已自查', contractName: '某总部基地幕墙材料采购合同', bidName: '某总部基地幕墙材料采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '吴三三', procurementAgent: '周扬', riskLevel: '高', timeLeft: '—', recentRecord: '自查合规，待进入互查抽取批次' },
+  { key: '32', status: '已自查', contractName: '某机场航站楼机电设备采购合同', bidName: '某机场航站楼机电设备采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '郑三四', procurementAgent: '方琳', riskLevel: '中', timeLeft: '—', recentRecord: '自查问题已闭环，待进入互查抽取批次' },
+  { key: '33', status: '已自查', contractName: '某智慧园区弱电系统采购合同', bidName: '某智慧园区弱电系统采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '钱三五', procurementAgent: '杜航', riskLevel: '高', timeLeft: '—', recentRecord: '自查合规，待进入互查抽取批次' },
+  { key: '34', status: '已自查', contractName: '某综合医院电梯设备采购合同', bidName: '某综合医院电梯设备采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '孙三六', procurementAgent: '何蕾', riskLevel: '低', timeLeft: '—', recentRecord: '自查问题已闭环，待进入互查抽取批次' },
+  { key: '35', status: '已自查', contractName: '某城市更新项目铝合金门窗采购合同', bidName: '某城市更新项目铝合金门窗采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '李三七', procurementAgent: '罗欣', riskLevel: '中', timeLeft: '—', recentRecord: '自查合规，待进入互查抽取批次' },
+  { key: '36', status: '已自查', contractName: '某科研中心实验室家具采购合同', bidName: '某科研中心实验室家具采购招标', org: '中建四局一公司', orgId: 'org_001', agent: '周三八', procurementAgent: '高阳', riskLevel: '高', timeLeft: '—', recentRecord: '自查问题已闭环，待进入互查抽取批次' },
+  { key: '37', status: '已自查', contractName: '某滨海新区市政管网采购合同', bidName: '某滨海新区市政管网采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '王三九', procurementAgent: '许宁', riskLevel: '高', timeLeft: '4天', recentRecord: '自查合规，待进入互查抽取批次' },
+  { key: '38', status: '已自查', contractName: '某产业园消防设备采购合同', bidName: '某产业园消防设备采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '赵四十', procurementAgent: '沈洁', riskLevel: '中', timeLeft: '4天', recentRecord: '自查合规，待进入互查抽取批次' },
+  { key: '39', status: '自查待派发', contractName: '某高铁站房装饰材料采购合同', bidName: '某高铁站房装饰材料采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '陈四一', procurementAgent: '冯凯', riskLevel: '高', timeLeft: '2天', recentRecord: '自动派发失败，转人工派发' },
+  { key: '40', status: '自查待派发', contractName: '某文旅综合体照明设备采购合同', bidName: '某文旅综合体照明设备采购招标', org: '中建四局三公司', orgId: 'org_003', agent: '褚四二', procurementAgent: '马静', riskLevel: '中', timeLeft: '3天', recentRecord: '任务已生成，等待合规专员指派' },
+  { key: '41', status: '已互查', contractName: '某数据中心机柜设备采购合同', bidName: '某数据中心机柜设备采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '卫四三', procurementAgent: '蒋楠', riskLevel: '高', timeLeft: '3天', recentRecord: '互查合规，待进入稽查抽取批次' },
+  { key: '42', status: '已互查', contractName: '某高速服务区污水处理设备采购合同', bidName: '某高速服务区污水处理设备采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '沈四四', procurementAgent: '秦川', riskLevel: '中', timeLeft: '5天', recentRecord: '互查合规，待进入稽查抽取批次' }
 ];
 
 const mockContracts = [
-  ...mockContractSeedData,
+  ...mockContractSeedData.map((contract) => ({
+    ...contract,
+    templateId: contract.status.includes('自查') ? 'tpl_2' : 'tpl_1'
+  })),
   ...mockContractStatusSamples.map((sample) => ({
     ...sample,
     bidNo: `cscec202608${sample.key.padStart(2, '0')}000000${sample.key.padStart(4, '0')}`,
@@ -289,6 +312,7 @@ const mockContracts = [
     project: `${sample.contractName.replace('合同', '')}项目`,
     genTime: '2026-09-01 12:00',
     template: '一局普通合同检查模板 V1.0',
+    templateId: sample.status.includes('自查') ? 'tpl_2' : 'tpl_1',
     mode: '人工指定'
   }))
 ];
@@ -414,6 +438,42 @@ const mockPersonnel = [
     activeCount: 1,
     nearTimeoutCount: 0,
     isRecommended: true
+  },
+  {
+    id: 'user_011',
+    name: '郭专家',
+    account: 'guo_zj',
+    org: '中建四局二公司',
+    qualOrg: '中建四局一公司',
+    type: '合规专家',
+    pendingCount: 2,
+    activeCount: 1,
+    nearTimeoutCount: 0,
+    isRecommended: false
+  },
+  {
+    id: 'user_012',
+    name: '冯专家',
+    account: 'feng_zj',
+    org: '中建四局三公司',
+    qualOrg: '中建四局一公司',
+    type: '合规专家',
+    pendingCount: 1,
+    activeCount: 0,
+    nearTimeoutCount: 0,
+    isRecommended: true
+  },
+  {
+    id: 'user_013',
+    name: '曹专家',
+    account: 'cao_zj',
+    org: '中建四局二公司',
+    qualOrg: '中建四局一公司',
+    type: '合规专家',
+    pendingCount: 3,
+    activeCount: 0,
+    nearTimeoutCount: 1,
+    isRecommended: false
   }
 ];
 
@@ -513,6 +573,12 @@ const mockCheckTemplates = [
   }
 ];
 
+const adjustmentStatuses = [
+  '自查待处理', '自查中', '自查已收回',
+  '互查待处理', '互查中', '互查已收回',
+  '稽查待处理', '稽查中', '稽查已收回'
+];
+
 const TaskDispatch: React.FC = () => {
   const [activeTab, setActiveTab] = useState('self');
   const [activeStatusTab, setActiveStatusTab] = useState('all');
@@ -520,9 +586,20 @@ const TaskDispatch: React.FC = () => {
   const [isAssignmentPageOpen, setIsAssignmentPageOpen] = useState(false);
   const [selectedPersonnel, setSelectedPersonnel] = useState<string | null>(null);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+  const [assignmentMode, setAssignmentMode] = useState<'dispatch' | 'adjust'>('dispatch');
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [templateKeyword, setTemplateKeyword] = useState('');
   const [pendingTemplateId, setPendingTemplateId] = useState<string | null>(null);
+  const [isProportionalModalOpen, setIsProportionalModalOpen] = useState(false);
+  const [extractRatio, setExtractRatio] = useState(100);
+  const [proportionalTemplateId, setProportionalTemplateId] = useState<string | undefined>(undefined);
+  const [distributionWeights, setDistributionWeights] = useState<Record<string, number>>({
+    user_002: 30,
+    user_007: 25,
+    user_011: 20,
+    user_012: 15,
+    user_013: 10
+  });
 
   // 筛选状态
   const [bidNoFilter, setBidNoFilter] = useState('');
@@ -560,10 +637,10 @@ const TaskDispatch: React.FC = () => {
     if (activeTab === 'mutual') {
       return [
         { value: '已自查', label: '已自查' },
-        { value: '互查待派发', label: '互查待派发' },
         { value: '互查待处理', label: '互查待处理' },
         { value: '互查中', label: '互查中' },
         { value: '互查回退审批中', label: '互查回退审批中' },
+        { value: '互查已收回', label: '互查已收回' },
         { value: '互查待处置', label: '互查待处置' },
         { value: '互查待复核', label: '互查待复核' },
         { value: '互查复核不通过', label: '互查复核不通过' },
@@ -573,10 +650,10 @@ const TaskDispatch: React.FC = () => {
     if (activeTab === 'audit') {
       return [
         { value: '已互查', label: '已互查' },
-        { value: '稽查待派发', label: '稽查待派发' },
         { value: '稽查待处理', label: '稽查待处理' },
         { value: '稽查中', label: '稽查中' },
         { value: '稽查回退审批中', label: '稽查回退审批中' },
+        { value: '稽查已收回', label: '稽查已收回' },
         { value: '稽查待处置', label: '稽查待处置' },
         { value: '稽查待复核', label: '稽查待复核' },
         { value: '稽查复核不通过', label: '稽查复核不通过' },
@@ -595,20 +672,21 @@ const TaskDispatch: React.FC = () => {
 
     const selectedStatuses = selectedRowKeys.map(key => mockContracts.find(c => c.key === key)?.status);
     const canOperateStatuses = [
-      '已自查', '已互查', '自查待派发', '互查待派发', '稽查待派发',
-      '自查待处理', '自查中', '自查回退审批中', '自查已收回', '自查待处置', '自查待复核', '自查复核不通过', '自查结论申诉中',
-      '互查待处理', '互查中', '互查回退审批中', '互查待处置', '互查待复核', '互查复核不通过', '互查结论申诉中',
-      '稽查待处理', '稽查中', '稽查回退审批中', '稽查待处置', '稽查待复核', '稽查复核不通过', '稽查结论申诉中'
+      '已自查', '已互查', '自查待派发',
+      ...adjustmentStatuses
     ];
     if (selectedStatuses.some(status => !status || !canOperateStatuses.includes(status))) {
       message.warning('当前选中的任务不支持发起或派发操作');
       return;
     }
 
-    const hasMixedOperation = selectedStatuses.some(status => ['已自查', '已互查'].includes(status as string))
-      && selectedStatuses.some(status => ['自查待派发', '互查待派发', '稽查待派发'].includes(status as string));
-    if (hasMixedOperation) {
-      message.warning('待发起任务与待派发任务不可合并操作');
+    const operationTypes = new Set(selectedStatuses.map(status => {
+      if (['已自查', '已互查'].includes(status as string)) return 'initiate';
+      if (status === '自查待派发') return 'assign';
+      return 'adjust';
+    }));
+    if (operationTypes.size > 1) {
+      message.warning('不同派发操作类型不可合并操作');
       return;
     }
     
@@ -624,8 +702,17 @@ const TaskDispatch: React.FC = () => {
       return;
     }
 
+    const selectedContracts = mockContracts.filter(contract => selectedRowKeys.includes(contract.key));
+    const isAdjustment = selectedStatuses.every(status => adjustmentStatuses.includes(status as string));
+    const templateIds = [...new Set(selectedContracts.map(contract => contract.templateId))];
+    if (isAdjustment && templateIds.length > 1) {
+      message.warning('批量调整派发仅支持原检查项模板相同的任务');
+      return;
+    }
+
     setSelectedPersonnel(null);
-    setSelectedTemplateId(null);
+    setSelectedTemplateId(isAdjustment ? templateIds[0] : null);
+    setAssignmentMode(isAdjustment ? 'adjust' : 'dispatch');
     setIsAssignmentPageOpen(true);
   };
 
@@ -645,12 +732,84 @@ const TaskDispatch: React.FC = () => {
     setSelectedRowKeys([]);
     setSelectedPersonnel(null);
     setSelectedTemplateId(null);
+    setAssignmentMode('dispatch');
   };
 
   const handleBackToList = () => {
     setIsAssignmentPageOpen(false);
     setSelectedPersonnel(null);
     setSelectedTemplateId(null);
+    setAssignmentMode('dispatch');
+  };
+
+  const getProportionalPreview = () => {
+    const candidates = mockPersonnel.filter(person => (
+      person.type === '合规专家'
+      && selectedContracts.every(contract => person.org !== contract.org)
+      && (distributionWeights[person.id] || 0) > 0
+    ));
+    const totalWeight = candidates.reduce((sum, person) => sum + (distributionWeights[person.id] || 0), 0);
+    const extractCount = Math.ceil(selectedContracts.length * extractRatio / 100);
+    const extractedContracts = selectedContracts.slice(0, extractCount);
+    const preview = candidates.map(person => {
+      const ratio = totalWeight ? (distributionWeights[person.id] || 0) / totalWeight : 0;
+      const exact = extractedContracts.length * ratio;
+      return {
+        ...person,
+        ratio,
+        exact,
+        assigned: Math.floor(exact)
+      };
+    });
+    let remaining = extractedContracts.length - preview.reduce((sum, person) => sum + person.assigned, 0);
+    [...preview]
+      .sort((a, b) => (b.exact - Math.floor(b.exact)) - (a.exact - Math.floor(a.exact)) || a.pendingCount - b.pendingCount)
+      .forEach(person => {
+        if (remaining > 0) {
+          person.assigned += 1;
+          remaining -= 1;
+        }
+      });
+    const assignmentQueue = preview.flatMap(person => Array.from({ length: person.assigned }, () => person));
+    return {
+      candidates: preview,
+      extractedContracts,
+      assignments: extractedContracts.map((contract, index) => ({ contract, person: assignmentQueue[index] })),
+      totalWeight
+    };
+  };
+
+  const openProportionalDispatch = () => {
+    const selectedContracts = mockContracts.filter(contract => selectedRowKeys.includes(contract.key));
+    if (!selectedContracts.length) {
+      message.warning('请先勾选需要发起互查的合同');
+      return;
+    }
+    if (selectedContracts.some(contract => contract.status !== '已自查')) {
+      message.warning('按比例派发仅支持“已自查”的互查候选合同');
+      return;
+    }
+    setProportionalTemplateId(undefined);
+    setIsProportionalModalOpen(true);
+  };
+
+  const handleProportionalConfirm = () => {
+    const preview = getProportionalPreview();
+    if (!preview.totalWeight) {
+      message.warning('请至少为一名合规专家设置大于 0 的派发比例');
+      return;
+    }
+    if (!preview.extractedContracts.length) {
+      message.warning('当前抽取比例未产生可派发任务');
+      return;
+    }
+    if (!proportionalTemplateId) {
+      message.warning('请选择检查项模板');
+      return;
+    }
+    message.success(`已按配置比例完成 ${preview.extractedContracts.length} 份合同的互查派发预览，并生成批次结果。`);
+    setIsProportionalModalOpen(false);
+    setSelectedRowKeys([]);
   };
 
   const columns = [
@@ -661,27 +820,6 @@ const TaskDispatch: React.FC = () => {
       align: 'center' as const,
       fixed: 'left' as const,
       render: (_: any, __: any, index: number) => index + 1
-    },
-    {
-      title: '招标/采购编号',
-      dataIndex: 'bidNo',
-      key: 'bidNo',
-      width: 220,
-      render: (text: string) => (
-        <span style={{ fontFamily: 'monospace', color: '#1890ff' }}>{text}</span>
-      )
-    },
-    {
-      title: '招标/采购名称',
-      dataIndex: 'bidName',
-      key: 'bidName',
-      width: 250,
-      ellipsis: true,
-      render: (text: string) => (
-        <Tooltip title={text}>
-          <span style={{ fontWeight: 500 }}>{text}</span>
-        </Tooltip>
-      )
     },
     {
       title: '合同编号',
@@ -705,19 +843,46 @@ const TaskDispatch: React.FC = () => {
       )
     },
     {
-      title: '招采经办人',
-      key: 'procurementAgent',
-      width: 150,
-      render: (_: any, record: any) => `${record.procurementAgent}（${record.procurementAgentAccount}）`
-    },
-    {
       title: '合同经办人',
       key: 'contractAgent',
       width: 150,
       render: (_: any, record: any) => `${record.agent}（${record.contractAgentAccount}）`
     },
     {
-      title: '当前状态/阶段',
+      title: '合同所属组织',
+      dataIndex: 'org',
+      key: 'org',
+      width: 150
+    },
+    {
+      title: '招标/采购编号',
+      dataIndex: 'bidNo',
+      key: 'bidNo',
+      width: 220,
+      render: (text: string) => (
+        <span style={{ fontFamily: 'monospace', color: '#1890ff' }}>{text}</span>
+      )
+    },
+    {
+      title: '招标/采购名称',
+      dataIndex: 'bidName',
+      key: 'bidName',
+      width: 250,
+      ellipsis: true,
+      render: (text: string) => (
+        <Tooltip title={text}>
+          <span style={{ fontWeight: 500 }}>{text}</span>
+        </Tooltip>
+      )
+    },
+    {
+      title: '招采经办人',
+      key: 'procurementAgent',
+      width: 150,
+      render: (_: any, record: any) => `${record.procurementAgent}（${record.procurementAgentAccount}）`
+    },
+    {
+      title: '当前状态',
       key: 'status',
       width: 150,
       render: (_: any, record: any) => (
@@ -737,22 +902,19 @@ const TaskDispatch: React.FC = () => {
       )
     },
     {
-      title: '合同所属组织',
-      dataIndex: 'org',
-      key: 'org',
-      width: 150
-    },
-    {
       title: '剩余时限',
-      dataIndex: 'timeLeft',
       key: 'timeLeft',
       width: 120,
-      render: (timeLeft: string) => (
-        <Space>
-          <ClockCircleOutlined style={{ color: '#faad14' }} />
-          <span>{timeLeft}</span>
-        </Space>
-      )
+      render: (_: any, record: any) => {
+        const isProcessing = ['自查待处理', '自查中', '互查待处理', '互查中', '稽查待处理', '稽查中'].includes(record.status);
+
+        return isProcessing ? (
+          <Space>
+            <ClockCircleOutlined style={{ color: '#faad14' }} />
+            <span>{record.timeLeft}</span>
+          </Space>
+        ) : <span>—</span>;
+      }
     },
     {
       title: '派发模式',
@@ -770,15 +932,16 @@ const TaskDispatch: React.FC = () => {
       fixed: 'right' as const,
       render: (_: any, record: any) => {
         const canInitiate = record.status === '已自查' || record.status === '已互查';
-        const canAssign = record.status === '自查待派发' || record.status === '互查待派发' || record.status === '稽查待派发';
-        const canAdjust = !canInitiate && !canAssign && record.status !== '已稽查';
+        const canAssign = record.status === '自查待派发';
+        const canAdjust = adjustmentStatuses.includes(record.status);
         if (!canInitiate && !canAssign && !canAdjust) return <span>—</span>;
         return (
           <Space>
             <Button type="link" size="small" onClick={() => {
               setSelectedRowKeys([record.key]);
               setSelectedPersonnel(null);
-              setSelectedTemplateId(null);
+              setSelectedTemplateId(canAdjust ? record.templateId : null);
+              setAssignmentMode(canAdjust ? 'adjust' : 'dispatch');
               setIsAssignmentPageOpen(true);
             }}>
               {canInitiate ? '人工指派' : canAssign ? '人工指派' : '调整派发'}
@@ -797,9 +960,9 @@ const TaskDispatch: React.FC = () => {
     if (activeTab === 'audit') tabMatch = c.status.includes('稽查') || c.status === '已互查' || c.status === '已稽查';
     if (!tabMatch) return false;
 
-    const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '互查待派发' : '稽查待派发';
+    const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '已自查' : '已互查';
     if (activeStatusTab === 'pending' && c.status !== pendingStatus) return false;
-    if (activeStatusTab === 'dispatched' && (c.status === pendingStatus || c.status === '已自查' || c.status === '已互查')) return false;
+    if (activeStatusTab === 'dispatched' && (c.status === '自查待派发' || c.status === '已自查' || c.status === '已互查')) return false;
 
     // 2. 筛选条件过滤
     if (bidNoFilter && !c.bidNo.toLowerCase().includes(bidNoFilter.toLowerCase())) return false;
@@ -821,16 +984,19 @@ const TaskDispatch: React.FC = () => {
         ? contract.status.includes('互查') || contract.status === '已自查'
         : contract.status.includes('稽查') || contract.status === '已互查' || contract.status === '已稽查';
     if (!typeMatches) return false;
-    const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '互查待派发' : '稽查待派发';
+    const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '已自查' : '已互查';
     if (statusTab === 'pending') return contract.status === pendingStatus;
-    if (statusTab === 'dispatched') return contract.status !== pendingStatus && contract.status !== '已自查' && contract.status !== '已互查';
+    if (statusTab === 'dispatched') return contract.status !== '自查待派发' && contract.status !== '已自查' && contract.status !== '已互查';
     return true;
   }).length;
 
   const rowSelection = {
     selectedRowKeys,
     getCheckboxProps: (record: any) => ({
-      disabled: record.status === '已稽查'
+      disabled: ![
+        '已自查', '已互查', '自查待派发',
+        ...adjustmentStatuses
+      ].includes(record.status)
     }),
     onChange: (keys: React.Key[]) => setSelectedRowKeys(keys)
   };
@@ -849,6 +1015,7 @@ const TaskDispatch: React.FC = () => {
     if (activeTab === 'mutual') return person.type === '合规专家';
     return person.type === '稽查专家';
   });
+  const proportionalPreview = getProportionalPreview();
 
   const personnelColumns = [
     {
@@ -866,7 +1033,7 @@ const TaskDispatch: React.FC = () => {
     },
     { title: '账号', dataIndex: 'account', key: 'account', width: 140 },
     { title: '人员类型', dataIndex: 'type', key: 'type', width: 130, render: (type: string) => <Tag color="blue">{type}</Tag> },
-    { title: '所属组织', dataIndex: 'org', key: 'org', width: 180 },
+    { title: '账号所属组织', dataIndex: 'org', key: 'org', width: 180 },
     { title: '资格所属组织', dataIndex: 'qualOrg', key: 'qualOrg', width: 180 },
     { title: '待办任务', dataIndex: 'pendingCount', key: 'pendingCount', align: 'center' as const, width: 110 },
     { title: '执行中', dataIndex: 'activeCount', key: 'activeCount', align: 'center' as const, width: 100 },
@@ -1035,11 +1202,11 @@ const TaskDispatch: React.FC = () => {
           <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={handleDispatch}>
             {selectedRowKeys.some(key => ['已自查', '已互查'].includes(mockContracts.find(c => c.key === key)?.status || ''))
               ? '批量派发'
-              : selectedRowKeys.some(key => ['自查待派发', '互查待派发', '稽查待派发'].includes(mockContracts.find(c => c.key === key)?.status || ''))
+              : selectedRowKeys.some(key => mockContracts.find(c => c.key === key)?.status === '自查待派发')
                 ? '批量人工指派'
                 : '批量调整派发'} ({selectedRowKeys.length})
           </Button>
-          {activeTab === 'mutual' && <Button disabled={selectedRowKeys.length === 0}>系统自动规则抽取</Button>}
+          {activeTab === 'mutual' && <Button disabled={selectedRowKeys.length === 0} onClick={openProportionalDispatch}>系统自动规则抽取</Button>}
         </Space>
       </div>
       <Table
@@ -1099,13 +1266,15 @@ const TaskDispatch: React.FC = () => {
 
         {isAssignmentPageOpen && (
           <div className="assignment-page">
-            <div className="assignment-page-header">
-              <h2 className="page-title">人工指派</h2>
-              <Space>
+            <TopActionBar
+              title={assignmentMode === 'adjust' ? '调整派发' : '人工指派'}
+              actions={(
+                <Space>
                 <Button onClick={handleBackToList}>取消</Button>
-                <Button type="primary" icon={<CheckCircleOutlined />} onClick={handleConfirmDispatch}>确认指派并流转</Button>
-              </Space>
-            </div>
+                <Button type="primary" icon={<CheckCircleOutlined />} onClick={handleConfirmDispatch}>{assignmentMode === 'adjust' ? '确认调整并流转' : '确认指派并流转'}</Button>
+                </Space>
+              )}
+            />
 
             <Card className="assignment-section" title="所选合同单据" extra={<Tag color="blue">已选 {selectedContracts.length} 份</Tag>}>
               <Table
@@ -1121,17 +1290,18 @@ const TaskDispatch: React.FC = () => {
             <Card
               className="assignment-section"
               title="检查项模板"
-              extra={<Tag color="blue">仅展示适用于{checkType}且已发布的版本</Tag>}
+              extra={<Tag color="blue">{assignmentMode === 'adjust' ? '调整派发沿用原模板版本' : `仅展示适用于${checkType}且已发布的版本`}</Tag>}
             >
               <Space>
-                <Button type="primary" onClick={() => {
+                {assignmentMode === 'dispatch' && <Button type="primary" onClick={() => {
                   setPendingTemplateId(selectedTemplateId);
                   setTemplateKeyword('');
                   setIsTemplateModalOpen(true);
                 }}>
                   {selectedCheckTemplate ? '重新选择检查项模板' : '选择检查项模板'}
-                </Button>
+                </Button>}
                 {selectedCheckTemplate && <span>{selectedCheckTemplate.name}</span>}
+                {assignmentMode === 'adjust' && <Tag color="gold">已锁定</Tag>}
               </Space>
               {selectedCheckTemplate && (
                 <Descriptions className="contract-summary" size="small" column={1} bordered>
@@ -1215,8 +1385,54 @@ const TaskDispatch: React.FC = () => {
                 }}
               />
             </Modal>
+
           </div>
         )}
+        <Modal
+          title="系统自动规则抽取与按比例派发"
+          open={isProportionalModalOpen}
+          width={1080}
+          onCancel={() => setIsProportionalModalOpen(false)}
+          onOk={handleProportionalConfirm}
+          okText="确认生成派发批次"
+          cancelText="取消"
+        >
+          <Alert type="info" showIcon icon={<InfoCircleOutlined />} message="按比例派发会将本次抽取的合同按专家配置权重分配；比例不必相加为 100%，系统会自动归一化，并用最大余数法补齐整数任务数。" style={{ marginBottom: 20 }} />
+          <Row gutter={16} className="proportional-summary">
+            <Col span={8}><div className="proportional-metric"><span>候选合同</span><strong>{selectedContracts.length} 份</strong></div></Col>
+            <Col span={8}><div className="proportional-metric"><span>抽取比例</span><strong>{extractRatio}%</strong></div></Col>
+            <Col span={8}><div className="proportional-metric"><span>预计派发</span><strong>{proportionalPreview.extractedContracts.length} 份</strong></div></Col>
+          </Row>
+          <div className="proportional-controls"><span>本次抽取比例：</span><InputNumber min={1} max={100} value={extractRatio} onChange={(value) => setExtractRatio(Number(value) || 1)} addonAfter="%" /></div>
+          <Divider orientation="left">检查项模板</Divider>
+          <div className="proportional-template-selector">
+            <span>检查项模板：</span>
+            <Select
+              placeholder="请选择适用于互查的检查项模板"
+              value={proportionalTemplateId}
+              onChange={setProportionalTemplateId}
+              options={availableCheckTemplates.map(template => ({ value: template.id, label: `${template.name} ${template.version}` }))}
+              style={{ width: 360 }}
+            />
+          </div>
+          <Divider orientation="left">专家派发比例 <Button type="primary" size="small" onClick={() => message.success(`已按当前比例完成 ${proportionalPreview.extractedContracts.length} 份合同的抽取预览`)}>抽取 <Tooltip title="系统先按本次抽取比例从已勾选合同中依次抽取任务；再将专家配置权重归一化，按“抽取数量 × 个人权重 ÷ 权重总和”计算理论任务数。先分配整数部分，剩余任务按小数余数从高到低补齐；余数相同则优先分配给当前待办量较低的专家。"><QuestionCircleOutlined /></Tooltip></Button></Divider>
+          <Table size="small" rowKey="id" pagination={false} dataSource={proportionalPreview.candidates} columns={[
+            { title: '合规专家', key: 'name', render: (_: unknown, record: any) => `${record.name}（${record.account}）` },
+            { title: '账号所属组织', dataIndex: 'org', key: 'org' },
+            { title: '当前待办', dataIndex: 'pendingCount', key: 'pendingCount', align: 'center' as const },
+            { title: '配置权重', key: 'weight', render: (_: unknown, record: any) => <InputNumber min={0} value={distributionWeights[record.id] || 0} onChange={(value) => setDistributionWeights({ ...distributionWeights, [record.id]: Number(value) || 0 })} /> },
+            { title: '归一后占比', key: 'ratio', render: (_: unknown, record: any) => `${(record.ratio * 100).toFixed(1)}%` },
+            { title: '预计派发', key: 'assigned', render: (_: unknown, record: any) => <Tag color="blue">{record.assigned} 份</Tag> }
+          ]} />
+          <Divider orientation="left">派发结果预览</Divider>
+          <Table size="small" rowKey={({ contract }: any) => contract.key} pagination={{ pageSize: 5, showTotal: total => `共 ${total} 份抽中合同` }} dataSource={proportionalPreview.assignments} columns={[
+            { title: '合同编号', key: 'contractNo', render: (_: unknown, record: any) => record.contract.contractNo },
+            { title: '合同名称', key: 'contractName', ellipsis: true, render: (_: unknown, record: any) => record.contract.contractName },
+            { title: '所属合同组织', key: 'org', render: (_: unknown, record: any) => record.contract.org },
+            { title: '目标专家', key: 'person', render: (_: unknown, record: any) => `${record.person?.name || '—'}（${record.person?.account || '—'}）` },
+            { title: '回避校验', key: 'avoidance', render: () => <Tag color="green">跨单位通过</Tag> }
+          ]} />
+        </Modal>
       </div>
     </CentralizedProcurementLayout>
   );

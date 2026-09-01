@@ -153,24 +153,6 @@
   margin: -24px;
 }
 
-.assignment-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  min-height: 76px;
-  margin-bottom: 16px;
-  padding: 0 24px;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.assignment-page-header .page-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-}
-
 .assignment-section {
   margin: 0 24px 16px;
   border-radius: 4px;
@@ -180,10 +162,48 @@
   margin-top: 16px;
 }
 
-@media (max-width: 768px) {
-  .assignment-page-header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 16px 24px;
-  }
+.proportional-summary {
+  margin-bottom: 16px;
+}
+
+.proportional-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 4px;
+  background: #f5faff;
+}
+
+.proportional-metric span {
+  color: #8c8c8c;
+  font-size: 13px;
+}
+
+.proportional-metric strong {
+  color: #1677ff;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.proportional-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #e6f4ff;
+  border-radius: 4px;
+  background: #fafcff;
+}
+
+.proportional-template-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 4px;
+}
+
+.proportional-hint {
+  color: #8c8c8c;
+  font-size: 13px;
 }

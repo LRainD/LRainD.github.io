@@ -34,7 +34,6 @@ import {
   ExportOutlined,
   SearchOutlined,
   ReloadOutlined,
-  UserOutlined,
   InboxOutlined,
   DownloadOutlined,
   FileTextOutlined,
@@ -258,10 +257,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       key: 'name',
       width: 150,
       render: (text: string, record: any) => (
-        <Space>
-          <UserOutlined style={{ color: '#1890ff' }} />
-          <span>{text} ({record.account})</span>
-        </Space>
+        <span>{text} ({record.account})</span>
       )
     },
     {
@@ -406,7 +402,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                         />
                       </div>
                     </Col>
-                    <Col span={12}>
+                    <Col span={18}>
                       <Space className="filter-actions">
                         <Button type="primary" icon={<SearchOutlined />} htmlType="submit">查询</Button>
                         <Button icon={<ReloadOutlined />} onClick={handleReset}>重置</Button>
@@ -460,7 +456,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               form={form}
               layout="vertical"
               onFinish={onFinish}
-              style={{ maxWidth: 800, margin: '24px auto' }}
+              className="personnel-qualification-form"
             >
               <div className="form-section-title">人员基本信息</div>
               <Space size={24} align="start" style={{ width: '100%' }}>
@@ -508,7 +504,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 <Input.TextArea rows={4} placeholder="请输入备注信息" />
               </Form.Item>
 
-              <Form.Item style={{ marginTop: 40, textAlign: 'center' }}>
+              <Form.Item className="personnel-qualification-actions">
                 <Space size={16}>
                   <Button type="primary" htmlType="submit" size="large" style={{ width: 120 }}>保存</Button>
                   <Button onClick={goList} size="large" style={{ width: 120 }}>取消</Button>

@@ -56,12 +56,20 @@
 | 数字合规官配置 | `/prototypes/digital-compliance-officer/` | 数字合规官配置管理，统一运营后台风格 |
 | Ant Design 参考 | `/prototypes/ref-antd/` | Ant Design 组件参考示例 |
 | App 首页参考 | `/prototypes/ref-app-home/` | 移动端首页参考示例 |
+| 派发任务管理 | `/prototypes/task-dispatch/` | 一单一检任务的筛选、派发与状态管理 |
+| 组织业务配置 | `/prototypes/organization-dispatch-config/` | 按组织维护自查与互查派发配置 |
+| 我的任务 | `/prototypes/my-tasks/` | 查看和处理个人待办任务 |
+| 检查任务详情 | `/prototypes/task-execution/` | 执行检查、整改、复核与查看流转记录 |
 
 ### 7.2 页面级规格文档
 
 - 规则配置页面：`/src/prototypes/rule-config/spec.md`
 - Ant Design 参考：`/src/prototypes/ref-antd/spec.md`
 - App 首页参考：`/src/prototypes/ref-app-home/spec.md`
+- 派发任务管理：`/src/prototypes/task-dispatch/spec.md`
+- 组织业务配置：`/src/prototypes/organization-dispatch-config/spec.md`
+- 我的任务：`/src/prototypes/my-tasks/spec.md`
+- 检查任务详情：`/src/prototypes/task-execution/spec.md`
 
 ### 7.3 需求文档
 
@@ -121,6 +129,12 @@
 - 标签左对齐，宽度 120px
 - 单选/复选横向排列
 - 分组使用分割线区分
+
+**列表筛选卡片**：
+- 页面内容区内边距使用 24px，背景使用 #f0f2f5
+- 筛选卡片使用白色背景、4px 圆角、16px 下边距与 24px 内容留白
+- 内联筛选表单可自动换行，行间距保持 16px，筛选项横向间距保持 24px
+- 查询与重置按钮保持同组展示，不改变字段、查询逻辑或交互语义
 
 ### 9.2 风控规则配置模式
 

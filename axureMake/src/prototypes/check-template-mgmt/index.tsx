@@ -75,25 +75,40 @@ const STAGE_OPTIONS = [
 
 const ORGANIZATION_TREE = [
   {
-    title: '中建一局集团',
-    value: '中建一局集团',
+    title: '中国建筑股份有限公司',
+    value: '中国建筑股份有限公司',
     children: [
-      { title: '一公司', value: '一公司' },
-      { title: '二公司', value: '二公司' },
-      { title: '建设发展公司', value: '建设发展公司' },
+      {
+        title: '中国建筑第四工程局有限公司',
+        value: '中国建筑第四工程局有限公司',
+        children: [
+          { title: '第一建设有限公司', value: '中建四局第一建设有限公司' },
+          { title: '第二建设有限公司', value: '中建四局第二建设有限公司' },
+          { title: '安装工程有限公司', value: '中建四局安装工程有限公司' },
+          { title: '建设发展有限公司', value: '中建四局建设发展有限公司' },
+        ],
+      },
+      {
+        title: '中国建筑第二工程局有限公司',
+        value: '中国建筑第二工程局有限公司',
+        children: [
+          { title: '北京分公司', value: '中建二局北京分公司' },
+          { title: '华东分公司', value: '中建二局华东分公司' },
+        ],
+      },
+      {
+        title: '中国建筑第三工程局有限公司',
+        value: '中国建筑第三工程局有限公司',
+        children: [
+          { title: '总承包公司', value: '中建三局总承包公司' },
+          { title: '基础设施公司', value: '中建三局基础设施公司' },
+        ],
+      },
     ],
   },
 ];
 
 const CHECK_TYPE_OPTIONS = ['自查', '互查', '稽查'].map(value => ({ label: value, value }));
-
-const PURCHASE_CATEGORY_OPTIONS = ['物资', '劳务分包', '专业分包', '专业服务', '租赁', '设备'].map(value => ({ label: value, value }));
-
-const PROCUREMENT_TYPE_OPTIONS = ['招标采购', '集中采购', '区域联采', '战略采购', '分散采购', '自行采购', '委托采购'].map(value => ({ label: value, value }));
-
-const PROCUREMENT_METHOD_OPTIONS = ['公开招标', '邀请招标', '询价采购', '竞争性谈判', '单一来源', '紧急采购'].map(value => ({ label: value, value }));
-
-const CONTRACT_TYPE_OPTIONS = ['采购合同', '框架协议', '执行合同'].map(value => ({ label: value, value }));
 
 const SYSTEM_RULE_OPTIONS = [
   { label: '投标时间过短', value: 'rule_bidding_duration_check' },
@@ -108,12 +123,8 @@ const getSystemRuleLabel = (rule: string) => (
 
 const createScopeConfig = (types: string[] = ['自查']) => ({
   id: `scope_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-  organizations: ['中建一局集团'],
+  organizations: ['中国建筑第四工程局有限公司'],
   checkTypes: types,
-  purchaseCategories: [],
-  procurementTypes: [],
-  procurementMethods: [],
-  contractTypes: [],
 });
 
 const getTemplateTypes = (scopeConfigs: any[] = [], fallbackTypes: string[] = []) => {
@@ -126,7 +137,7 @@ const getTemplateTypes = (scopeConfigs: any[] = [], fallbackTypes: string[] = []
 const initialTemplates = [
   {
     id: 'tpl_1',
-    name: '一局普通合同检查模板',
+    name: '四局普通合同检查模板',
     version: 'V1.0',
     types: ['自查', '互查', '稽查'],
     status: '已发布', // 已发布, 草稿, 已停用
@@ -135,7 +146,7 @@ const initialTemplates = [
     effectiveTime: '2026-01-01 00:00:00',
     updateTime: '2026-08-20 10:00:00',
     updater: 'admin',
-    remark: '适用于一局范围内所有普通合同的合规性检查，包含约标、发标、合同签订等阶段。',
+    remark: '适用于四局范围内所有普通合同的合规性检查，包含约标、发标、合同签订等阶段。',
     items: [
       {
         id: 'item_1_1_1',
@@ -325,8 +336,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       });
       copy.scopeConfigs = (copy.scopeConfigs || [createScopeConfig(copy.types)]).map((scope: any) => ({
         ...scope,
-        organizations: scope.organizations || (scope.organization ? [scope.organization] : ['中建一局集团']),
-        contractTypes: scope.contractTypes || []
+        organizations: scope.organizations || (scope.organization ? [scope.organization] : ['中国建筑第四工程局有限公司']),
       }));
       copy.types = getTemplateTypes(copy.scopeConfigs, copy.types);
       setEditingTemplate(copy);
@@ -361,29 +371,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const handleCopy = useCallback((template: any) => {
     const newTpl = JSON.parse(JSON.stringify(template));
     newTpl.id = 'tpl_' + Date.now();
-    newTpl.name = `${template.name} - 副本`;
     newTpl.version = 'V1.0 (草稿)';
     newTpl.status = '草稿';
     newTpl.effectiveTime = '-';
     newTpl.updateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
     newTpl.updater = 'admin';
-    setTemplates([newTpl, ...templates]);
-    message.success('复制成功，已生成新草稿');
-  }, [templates]);
-
-  const handleCreateNewVersion = useCallback((template: any) => {
-    const newTpl = JSON.parse(JSON.stringify(template));
-    const currentVer = parseFloat(template.version.replace('V', ''));
-    const nextVer = (currentVer + 0.1).toFixed(1);
-    newTpl.id = 'tpl_' + Date.now();
-    newTpl.version = `V${nextVer} (草稿)`;
-    newTpl.status = '草稿';
-    newTpl.effectiveTime = '-';
-    newTpl.updateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
-    newTpl.updater = 'admin';
-    setTemplates([newTpl, ...templates]);
-    message.success(`已基于 ${template.version} 创建新版本草稿 V${nextVer}`);
-  }, [templates]);
+    goForm(newTpl);
+  }, [goForm]);
 
   const handleStop = useCallback((id: string) => {
     setTemplates(templates.map(t => t.id === id ? { ...t, status: '已停用' } : t));
@@ -505,6 +499,14 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
       };
 
+      const hasDuplicateName = templates.some(template => (
+        template.id !== updatedTpl.id && template.name.trim() === updatedTpl.name.trim()
+      ));
+      if (hasDuplicateName) {
+        message.error('模板名称重复，请修改后再保存');
+        return;
+      }
+
       const exists = templates.some(t => t.id === updatedTpl.id);
       if (exists) {
         setTemplates(templates.map(t => t.id === updatedTpl.id ? updatedTpl : t));
@@ -518,9 +520,18 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
   // 发布校验与发布
   const handlePublishTemplate = (tpl: any) => {
+    const publishTemplate = (template: any) => {
+      const hasDuplicateName = templates.some(item => (
+        item.id !== template.id && item.name.trim() === template.name.trim()
+      ));
+      if (hasDuplicateName) {
+        message.error('模板名称重复，请修改后再提交');
+        return;
+      }
+
     // 校验规则：
     // 1. 必须至少存在一个检查项
-    if (!tpl.items || tpl.items.length === 0) {
+    if (!template.items || template.items.length === 0) {
       Modal.error({
         title: '发布校验失败',
         icon: <ExclamationCircleOutlined style={{ color: '#ff4d4f' }} />,
@@ -531,7 +542,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
     const errors: string[] = [];
     // 2. 系统识别项发布前必须关联具体的系统规则
-    tpl.items?.forEach((i: any) => {
+    template.items?.forEach((i: any) => {
       if (i.type === '系统识别' && !i.systemRule) {
         errors.push(`系统识别项 [${i.name}] 缺少具体系统规则配置`);
       }
@@ -559,19 +570,41 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       content: `发布后将更新模板状态为“已发布”`,
       onOk: () => {
         const publishedTpl = {
-          ...tpl,
+          ...template,
           status: '已发布',
-          version: tpl.version.replace(' (草稿)', ''),
+          version: template.version.replace(' (草稿)', ''),
           effectiveTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
           updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
         };
-        setTemplates(templates.map(t => t.id === tpl.id ? publishedTpl : t));
+        const exists = templates.some(item => item.id === template.id);
+        setTemplates(exists
+          ? templates.map(item => item.id === template.id ? publishedTpl : item)
+          : [publishedTpl, ...templates]
+        );
         message.success('模板发布成功！');
         if (view !== 'list') {
           goList();
         }
       }
     });
+    };
+
+    if (view === 'form') {
+      form.validateFields().then(values => {
+        publishTemplate({
+          ...tpl,
+          name: values.name,
+          remark: values.remark,
+          types: getTemplateTypes(tpl.scopeConfigs, tpl.types),
+          itemCount: tpl.items?.length || 0,
+          systemItemCount: tpl.items?.filter((item: any) => item.type === '系统识别').length || 0,
+          updateTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
+        });
+      });
+      return;
+    }
+
+    publishTemplate(tpl);
   };
 
   // --- Expose actions ---
@@ -597,13 +630,27 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       key: 'name',
       width: 250,
       render: (text: string, record: any) => (
-        <div>
-          <div style={{ fontWeight: 500, color: '#1890ff', cursor: 'pointer' }} onClick={() => goPreview(record)}>
-            {text}
-          </div>
-          <div style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)', marginTop: 4 }}>{record.remark || '暂无描述'}</div>
-        </div>
+        <div style={{ fontWeight: 500, color: '#1890ff', cursor: 'pointer' }} onClick={() => goPreview(record)}>{text}</div>
       )
+    },
+    {
+      title: '模板说明/适用范围',
+      dataIndex: 'remark',
+      key: 'remark',
+      width: 280,
+      render: (remark: string) => <span className="template-remark-cell">{remark || '暂无描述'}</span>
+    },
+    {
+      title: '适用组织',
+      key: 'organizations',
+      width: 220,
+      render: (_: any, record: any) => {
+        const organizations = Array.from(new Set(
+          (record.scopeConfigs || []).flatMap((scope: any) => scope.organizations || [])
+        )) as string[];
+        const displayOrganizations = organizations.length > 0 ? organizations : ['中国建筑第四工程局有限公司'];
+        return <span className="template-organization-cell">{displayOrganizations.join('、')}</span>;
+      }
     },
     {
       title: '适用检查类型',
@@ -685,7 +732,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           )}
           {record.status === '已发布' && (
             <>
-              <a onClick={() => handleCreateNewVersion(record)}>创建新版本</a>
               <Popconfirm title="确定停用该模板吗？停用后新任务将无法匹配此模板。" onConfirm={() => handleStop(record.id)}>
                 <a style={{ color: '#faad14' }}>停用</a>
               </Popconfirm>
@@ -693,7 +739,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           )}
           {record.status === '已停用' && (
             <>
-              <a onClick={() => handleCopy(record)}>复制为新草稿</a>
+              <a onClick={() => handleCopy(record)}>复制</a>
               <Popconfirm title="确定删除该停用模板吗？" onConfirm={() => handleDelete(record.id)}>
                 <a style={{ color: '#ff4d4f' }}>删除</a>
               </Popconfirm>
@@ -724,7 +770,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <div className="content-wrapper">
               <div className="filter-card" style={{ background: '#fff', padding: 24, borderRadius: 8, marginBottom: 16, border: '1px solid #f0f0f0' }}>
                 <div className="filter-title" style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>查询条件</div>
-                <Form layout="inline" onFinish={handleSearch}>
+                <Form className="template-filter-form" layout="inline" onFinish={handleSearch}>
                   <Form.Item label="模板名称">
                     <Input placeholder="请输入" style={{ width: 200 }} />
                   </Form.Item>
@@ -755,7 +801,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   <Form.Item label="生效时间">
                     <RangePicker style={{ width: 240 }} />
                   </Form.Item>
-                  <Form.Item>
+                  <Form.Item className="template-filter-actions">
                     <Space>
                       <Button type="primary" icon={<SearchOutlined />} htmlType="submit">查询</Button>
                       <Button icon={<ReloadOutlined />} onClick={handleReset}>重置</Button>
@@ -775,7 +821,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                   columns={columns}
                   dataSource={templates}
                   rowKey="id"
-                  scroll={{ x: 1300 }}
+                  scroll={{ x: 1800 }}
                   pagination={{
                     showTotal: (total) => `共 ${total} 条记录`,
                     showSizeChanger: true,
@@ -826,7 +872,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                       rules={[{ required: true, message: '请输入模板名称' }]}
                       style={{ width: 'calc(50% - 12px)' }}
                     >
-                      <Input placeholder="例如：一局普通合同检查模板" />
+                      <Input placeholder="例如：四局普通合同检查模板" />
                     </Form.Item>
                     <Form.Item
                       label="模板说明/适用范围"
@@ -846,7 +892,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                     pagination={false}
                     bordered
                     size="middle"
-                    scroll={{ x: 1180 }}
                     locale={{ emptyText: '暂无适用范围配置' }}
                   >
                     <Table.Column
@@ -876,66 +921,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                           options={CHECK_TYPE_OPTIONS}
                           placeholder="请选择检查类型"
                           onChange={(val) => handleUpdateScopeConfig(record.id, 'checkTypes', val)}
-                          style={{ width: '100%' }}
-                        />
-                      )}
-                    />
-                    <Table.Column
-                      title="采购品类"
-                      dataIndex="purchaseCategories"
-                      width={210}
-                      render={(value, record: any) => (
-                        <Select
-                          mode="multiple"
-                          value={value}
-                          options={PURCHASE_CATEGORY_OPTIONS}
-                          placeholder="请选择采购品类"
-                          onChange={(val) => handleUpdateScopeConfig(record.id, 'purchaseCategories', val)}
-                          style={{ width: '100%' }}
-                        />
-                      )}
-                    />
-                    <Table.Column
-                      title="采购类型&组织形式"
-                      dataIndex="procurementTypes"
-                      width={230}
-                      render={(value, record: any) => (
-                        <Select
-                          mode="multiple"
-                          value={value}
-                          options={PROCUREMENT_TYPE_OPTIONS}
-                          placeholder="请选择采购类型&组织形式"
-                          onChange={(val) => handleUpdateScopeConfig(record.id, 'procurementTypes', val)}
-                          style={{ width: '100%' }}
-                        />
-                      )}
-                    />
-                    <Table.Column
-                      title="招标方式&采购方式"
-                      dataIndex="procurementMethods"
-                      width={230}
-                      render={(value, record: any) => (
-                        <Select
-                          mode="multiple"
-                          value={value}
-                          options={PROCUREMENT_METHOD_OPTIONS}
-                          placeholder="请选择招标方式&采购方式"
-                          onChange={(val) => handleUpdateScopeConfig(record.id, 'procurementMethods', val)}
-                          style={{ width: '100%' }}
-                        />
-                      )}
-                    />
-                    <Table.Column
-                      title="合同类型"
-                      dataIndex="contractTypes"
-                      width={190}
-                      render={(value, record: any) => (
-                        <Select
-                          mode="multiple"
-                          value={value}
-                          options={CONTRACT_TYPE_OPTIONS}
-                          placeholder="请选择合同类型"
-                          onChange={(val) => handleUpdateScopeConfig(record.id, 'contractTypes', val)}
                           style={{ width: '100%' }}
                         />
                       )}

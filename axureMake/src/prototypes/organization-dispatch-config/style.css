@@ -1,11 +1,18 @@
 .dispatch-config-container {
-  padding: 20px;
   background-color: #f0f2f5;
   min-height: 100%;
+  padding: 0 0 28px;
 }
 
-.dispatch-config-container .breadcrumb-area {
-  margin-bottom: 16px;
+.dispatch-config-container .dispatch-config-breadcrumb-bar {
+  padding: 8px 24px 20px;
+  background: transparent;
+}
+
+.dispatch-config-container .content-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
 }
 
 .dispatch-config-container .page-header {
@@ -41,19 +48,84 @@
 
 .dispatch-config-container .filter-card {
   margin-bottom: 16px;
+  padding: 24px;
   background: #fff;
+  border: 1px solid #d9d9d9;
   border-radius: 4px;
+}
+
+.dispatch-config-container .filter-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dispatch-config-container .filter-title::before {
+  width: 4px;
+  height: 16px;
+  margin-right: 8px;
+  border-radius: 2px;
+  background: #1890ff;
+  content: '';
+}
+
+.dispatch-config-container .filter-form {
+  width: 100%;
+  row-gap: 16px;
+}
+
+.dispatch-config-container .filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dispatch-config-container .filter-label {
+  flex: 0 0 auto;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.dispatch-config-container .filter-item .ant-form-item {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.dispatch-config-container .filter-item .ant-form-item-control,
+.dispatch-config-container .filter-item .ant-form-item-control-input,
+.dispatch-config-container .filter-item .ant-form-item-control-input-content,
+.dispatch-config-container .filter-item .ant-input,
+.dispatch-config-container .filter-item .ant-select {
+  width: 100%;
+}
+
+.dispatch-config-container .filter-actions {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 .dispatch-config-container .table-card {
   background: #fff;
   border-radius: 4px;
+  border: 1px solid #f0f0f0;
+  padding: 24px;
 }
 
 .dispatch-config-container .table-toolbar {
-  margin-bottom: 16px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.dispatch-config-container .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 500;
 }
 
 .dispatch-config-container .form-item-desc {

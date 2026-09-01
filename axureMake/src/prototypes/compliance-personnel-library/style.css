@@ -113,6 +113,16 @@
   margin-bottom: 24px;
 }
 
+.compliance-personnel-page .personnel-qualification-form {
+  max-width: 800px;
+  margin: 24px 0;
+}
+
+.compliance-personnel-page .personnel-qualification-actions {
+  margin-top: 40px;
+  text-align: left;
+}
+
 .compliance-personnel-page .import-modal-content {
   padding: 8px 0;
 }

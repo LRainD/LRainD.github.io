@@ -141,7 +141,9 @@ const TaskExecution: React.FC = () => {
           width: 260,
           render: (_: unknown, record: CheckItem) => {
             const round = record.rounds[index];
-            if (isCurrentRectification && record.result === '不合规') return <TextArea value={rectificationDrafts[record.key]} onChange={event => setRectificationDrafts(current => ({ ...current, [record.key]: event.target.value }))} rows={2} placeholder="请填写本轮整改说明" />;
+            const latestRound = record.rounds[record.rounds.length - 1];
+            const needsNextRectification = record.result === '不合规' && latestRound?.reviewResult !== '通过';
+            if (isCurrentRectification && needsNextRectification) return <TextArea value={rectificationDrafts[record.key]} onChange={event => setRectificationDrafts(current => ({ ...current, [record.key]: event.target.value }))} rows={2} placeholder="请填写本轮整改说明" />;
             return <span>{round?.content || '-'}</span>;
           }
         },
@@ -151,7 +153,9 @@ const TaskExecution: React.FC = () => {
           width: 180,
           render: (_: unknown, record: CheckItem) => {
             const round = record.rounds[index];
-            if (isCurrentRectification && record.result === '不合规') return <Upload showUploadList={false} beforeUpload={file => { setRectificationAttachments(current => ({ ...current, [record.key]: file.name })); return false; }}><Button icon={<UploadOutlined />}>{rectificationAttachments[record.key] || '添加附件'}</Button></Upload>;
+            const latestRound = record.rounds[record.rounds.length - 1];
+            const needsNextRectification = record.result === '不合规' && latestRound?.reviewResult !== '通过';
+            if (isCurrentRectification && needsNextRectification) return <Upload showUploadList={false} beforeUpload={file => { setRectificationAttachments(current => ({ ...current, [record.key]: file.name })); return false; }}><Button icon={<UploadOutlined />}>{rectificationAttachments[record.key] || '添加附件'}</Button></Upload>;
             return round?.attachments.length ? <Space direction="vertical" size={0}>{round.attachments.map(file => <Button key={file} type="link" icon={<PaperClipOutlined />}>{file}</Button>)}</Space> : <span>-</span>;
           }
         },

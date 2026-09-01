@@ -50,6 +50,21 @@
   border-radius: 2px;
 }
 
+.check-template-mgmt-page .template-filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 16px;
+}
+
+.check-template-mgmt-page .template-filter-form .ant-form-item-label > label {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.check-template-mgmt-page .template-filter-actions {
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .check-template-mgmt-page .table-toolbar {
   display: flex;
   justify-content: space-between;
@@ -60,6 +75,13 @@
 .check-template-mgmt-page .ant-table-thead > tr > th {
   background: #fafafa;
   font-weight: 500;
+}
+
+.check-template-mgmt-page .template-remark-cell,
+.check-template-mgmt-page .template-organization-cell {
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 /* 阶段与配置的分栏 */
