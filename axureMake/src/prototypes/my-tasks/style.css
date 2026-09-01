@@ -1,0 +1,67 @@
+.my-tasks-page {
+  padding: 24px;
+  background-color: #f5f7fa;
+  min-height: 100%;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin-top: 12px;
+  margin-bottom: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.search-card {
+  margin-bottom: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.search-filters {
+  display: flex;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+}
+
+.filter-label {
+  margin-right: 8px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.list-card {
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.list-card :global(.ant-card-body) {
+  padding-top: 0;
+}
+
+.task-tabs {
+  margin-bottom: 16px;
+}
+
+.task-tabs :global(.ant-tabs-nav) {
+  margin-bottom: 0;
+}
+
+/* 超时预警样式 */
+.overdue-text {
+  color: #ff4d4f;
+  font-weight: 500;
+}
+
+/* 表格行悬浮效果 */
+.ant-table-row:hover {
+  cursor: pointer;
+}

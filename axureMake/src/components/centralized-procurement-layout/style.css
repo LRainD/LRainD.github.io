@@ -1,0 +1,433 @@
+/* 集采工作台通用布局样式 */
+
+.centralized-procurement-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 顶部导航栏 */
+.top-header {
+  height: 56px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.org-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  flex: 1;
+  max-width: 300px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.lang-flag {
+  font-size: 16px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-link {
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+
+.nav-link:hover {
+  color: #1890ff;
+}
+
+.nav-link.highlight {
+  color: #ff4d4f;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-icon {
+  position: relative;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.action-icon .icon {
+  width: 20px;
+  height: 20px;
+  color: #666;
+}
+
+.badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 8px;
+  line-height: 14px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.username {
+  font-size: 14px;
+  color: #666;
+}
+
+.icon-small {
+  width: 16px;
+  height: 16px;
+}
+
+/* 主容器 */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* 侧边栏 */
+.sidebar {
+  width: 200px;
+  background: #3a7fc3;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed {
+  width: 64px;
+}
+
+.sidebar-menu {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.sidebar.collapsed .menu-item {
+  flex-direction: column;
+  padding: 8px 4px;
+  gap: 4px;
+}
+
+.menu-item:hover, .menu-item.active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .menu-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.menu-text {
+  display: inline;
+}
+
+.sidebar.collapsed .menu-text {
+  display: none;
+}
+
+.menu-text-collapsed {
+  display: none;
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sidebar.collapsed .menu-text-collapsed {
+  display: block;
+}
+
+/* 菜单组样式 */
+.menu-group {
+  margin: 4px 0;
+}
+
+.menu-group-title {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.3s;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.sidebar.collapsed .menu-group-title {
+  flex-direction: column;
+  padding: 8px 4px;
+  gap: 4px;
+}
+
+.menu-group.active .menu-group-title,
+.menu-group-title:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.arrow-icon {
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  transition: transform 0.3s;
+}
+
+.sidebar.collapsed .arrow-icon {
+  display: none;
+}
+
+/* 子菜单样式 */
+.sub-menu {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+}
+
+.sidebar.collapsed .sub-menu {
+  display: none;
+}
+
+.sub-menu-item {
+  padding: 10px 16px 10px 46px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.sub-menu-item.has-three-level {
+  padding-right: 12px;
+}
+
+.sub-menu-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.three-level-arrow {
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 8px;
+  transition: transform 0.2s;
+}
+
+.sub-menu-item:hover .three-level-arrow {
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.sub-menu-item:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sub-menu-item.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.2);
+  border-left: 3px solid #fff;
+}
+
+/* 三级悬浮面板样式 */
+.three-level-panel-portal {
+  padding-left: 0;
+}
+
+.three-level-panel-content {
+  background: #ffffff;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  border-right: 1px solid #f0f0f0;
+  width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.three-level-item {
+  padding: 12px 24px;
+  font-size: 14px;
+  color: #333333;
+  cursor: pointer;
+  background: #ffffff;
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: slideInAndFade 0.3s forwards ease;
+  transition: all 0.2s;
+}
+
+.three-level-item:hover {
+  color: #1890ff;
+  background: #f0f7ff;
+}
+
+.three-level-item.active {
+  color: #1890ff;
+  background: #e6f7ff;
+  font-weight: 500;
+}
+
+@keyframes slideInAndFade {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 侧边栏收起按钮 */
+.sidebar-collapse {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.sidebar-collapse:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar.collapsed .sidebar-collapse .menu-text {
+  display: none;
+}
+
+/* 主内容区 */
+.main-content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 24px;
+  background: #f0f2f5;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 64px;
+  }
+
+  .sidebar .menu-text,
+  .sidebar .sub-menu {
+    display: none;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}

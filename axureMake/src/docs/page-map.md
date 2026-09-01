@@ -44,6 +44,8 @@
 | 工商关联规则配置 | `/prototypes/solution-relation-rule-config/` | 运营后台解决方案配置，支持工商关联规则参数设置 | `-` |
 | Ant Design 参考 | `/prototypes/ref-antd/` | Ant Design 组件参考示例 | `ref-antd/spec.md` |
 | App 首页参考 | `/prototypes/ref-app-home/` | 移动端首页参考示例 | `ref-app-home/spec.md` |
+| 我的任务 | `/prototypes/my-tasks/` | 统一承载检查执行、整改、复核与历史任务查看 | `my-tasks/spec.md` |
+| 检查任务详情 | `/prototypes/task-execution/` | 承载单次任务的检查执行、整改、复核和流转记录查看 | `task-execution/spec.md` |
 
 ## 3. 页面访问地址
 
@@ -56,6 +58,9 @@
 
 ## 4. 待开发页面
 
+- [x] 派发任务管理 /prototypes/task-dispatch/
+- [x] 我的任务 /prototypes/my-tasks/
+- [x] 检查任务详情 /prototypes/task-execution/
 - [ ] 仪表盘数据概览
 - [ ] 采购计划管理
 - [ ] 采购执行
@@ -64,5 +69,4 @@
 - [ ] 风控概览
 - [ ] 机构管理
 - [ ] 用户管理
-
 

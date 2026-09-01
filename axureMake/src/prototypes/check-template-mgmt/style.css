@@ -1,0 +1,268 @@
+/* check-template-mgmt style */
+
+.check-template-mgmt-page {
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.check-template-mgmt-page .content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.check-template-mgmt-page .template-form-breadcrumb {
+  padding: 0 0 12px;
+  background: transparent;
+}
+
+.check-template-mgmt-page .template-detail-header {
+  min-height: 60px;
+  padding: 0 32px;
+  margin: 0 -24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.check-template-mgmt-page .template-detail-header-title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.check-template-mgmt-page .template-detail-header-actions {
+  display: flex;
+  align-items: center;
+}
+
+.check-template-mgmt-page .template-detail-content {
+  background: #fff;
+  padding: 24px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .check-template-mgmt-page .template-detail-header {
+    min-height: auto;
+    padding: 16px 20px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .check-template-mgmt-page .template-detail-header-actions {
+    flex-wrap: wrap;
+  }
+}
+
+.check-template-mgmt-page .filter-card {
+  margin-bottom: 16px;
+  border-radius: 2px;
+}
+
+.check-template-mgmt-page .filter-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.check-template-mgmt-page .filter-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: #1890ff;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.check-template-mgmt-page .table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.check-template-mgmt-page .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 500;
+}
+
+/* 阶段与配置的分栏 */
+.template-edit-layout {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.template-left-pane {
+  width: 25%;
+  background: #fff;
+  border-radius: 2px;
+  border: 1px solid #f0f0f0;
+}
+
+.template-right-pane {
+  width: 75%;
+}
+
+.pane-header {
+  padding: 12px 16px;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stage-list {
+  padding: 8px 0;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.stage-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+  font-size: 14px;
+  border-left: 3px solid transparent;
+}
+
+.stage-item:hover {
+  background-color: #f5f5f5;
+}
+
+.stage-item.active {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border-left-color: #1890ff;
+  font-weight: 500;
+}
+
+.stage-item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage-item-actions {
+  display: none;
+  gap: 8px;
+}
+
+.stage-item:hover .stage-item-actions {
+  display: flex;
+}
+
+.stage-drag-handle {
+  cursor: grab;
+  color: rgba(0, 0, 0, 0.25);
+  margin-right: 8px;
+}
+
+.stage-drag-handle:active {
+  cursor: grabbing;
+}
+
+.form-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.scope-config-table .ant-table-cell {
+  vertical-align: top;
+}
+
+.scope-config-table .ant-select-selection-overflow {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.scope-config-add {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 4px;
+}
+
+/* 预览视图样式 */
+.preview-title-bar {
+  background: #fff;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+  border-radius: 2px;
+}
+
+.preview-template-info {
+  display: flex;
+  gap: 32px;
+  margin-top: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+}
+
+.preview-template-info strong {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: normal;
+}
+
+.preview-stage-section {
+  background: #fff;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  border: 1px solid #f0f0f0;
+}
+
+.preview-stage-header {
+  padding: 12px 16px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 500;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-stage-header::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 14px;
+  background-color: #1890ff;
+  border-radius: 1px;
+}
+
+/* 表单编辑 */
+.item-drag-cell {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.25);
+  cursor: grab;
+}
+
+.item-drag-cell:active {
+  cursor: grabbing;
+}

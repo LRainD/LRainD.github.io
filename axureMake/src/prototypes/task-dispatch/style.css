@@ -1,0 +1,189 @@
+/* 派发任务样式 */
+.task-dispatch-page {
+  padding: 24px;
+  background-color: #f0f2f5;
+  min-height: 100%;
+}
+
+.page-header {
+  margin-bottom: 16px;
+}
+
+.page-title {
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.search-card {
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border-color: #d9d9d9;
+}
+
+.search-filters .filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.search-filters .filter-label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.search-filters .ant-input-affix-wrapper,
+.search-filters .ant-select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.search-filters .ant-input-affix-wrapper,
+.search-filters .ant-select-selector {
+  border-color: #d9d9d9 !important;
+}
+
+.search-filters .ant-input-affix-wrapper:hover,
+.search-filters .ant-select:hover .ant-select-selector {
+  border-color: #4096ff !important;
+}
+
+.list-card {
+  border-radius: 4px;
+}
+
+.task-tabs .ant-tabs-nav {
+  margin-bottom: 16px;
+}
+
+/* 抽屉样式优化 */
+.dispatch-drawer .ant-drawer-body {
+  padding: 24px;
+}
+
+.drawer-section {
+  margin-bottom: 24px;
+}
+
+.drawer-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-left: 8px;
+  border-left: 4px solid #1890ff;
+  line-height: 1;
+}
+
+.candidate-list-card {
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 8px;
+}
+
+.candidate-list-card:hover {
+  border-color: #40a9ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+}
+
+.candidate-list-card.selected {
+  border-color: #1890ff;
+  background-color: #e6f7ff;
+}
+
+.candidate-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.candidate-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.candidate-org {
+  color: #8c8c8c;
+  font-size: 12px;
+}
+
+.candidate-metrics {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #595959;
+}
+
+.metric-item span {
+  font-weight: 600;
+  color: #262626;
+}
+
+/* 批次日志面板样式 */
+.batch-log-timeline {
+  padding: 16px 8px;
+}
+
+.log-item-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.log-item-title {
+  font-weight: 600;
+}
+
+.log-item-time {
+  color: #bfbfbf;
+  font-size: 12px;
+}
+
+.log-item-content {
+  color: #595959;
+}
+
+.assignment-page {
+  margin: -24px;
+}
+
+.assignment-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 76px;
+  margin-bottom: 16px;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.assignment-page-header .page-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.assignment-section {
+  margin: 0 24px 16px;
+  border-radius: 4px;
+}
+
+.contract-summary {
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .assignment-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 24px;
+  }
+}

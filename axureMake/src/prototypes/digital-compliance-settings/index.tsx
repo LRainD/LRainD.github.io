@@ -11,25 +11,9 @@
 
 import React, { useState, useCallback, useImperativeHandle, forwardRef } from 'react';
 import {
-  Search,
-  Bell,
-  ChevronDown,
-  Plus,
   Edit3,
-  Trash2,
-  Home,
-  ShoppingCart,
-  FileText,
-  BarChart3,
-  Users,
   Shield,
-  PanelLeftClose,
-  PanelLeft,
-  HelpCircle,
-  Settings,
-  UserCheck,
-  CheckCircle,
-  X
+  UserCheck
 } from 'lucide-react';
 import {
   Button,
@@ -38,28 +22,17 @@ import {
   Form,
   Select,
   message,
-  Popconfirm,
-  Tag,
   Space,
   Card,
-  Input,
-  TreeSelect,
-  Checkbox
+  TreeSelect
 } from 'antd';
 import type {
-  KeyDesc,
-  DataDesc,
-  ConfigItem,
-  Action,
-  EventItem,
   AxureProps,
   AxureHandle
 } from '../../common/axure-types';
 
-import logoImage from '../../../assets/media/集采工作台logo图标.png';
+import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
 import './style.css';
-
-const { Option } = Select;
 
 // --- Mock Data ---
 
@@ -131,7 +104,7 @@ const initialData = [
 // --- Component ---
 
 const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
-  const { eventList = [], actionList = [], varList = [], configList = [], dataList = [] } = props;
+  const { eventList = [] } = props;
 
   // State
   const [dataSource, setDataSource] = useState(initialData);
@@ -139,25 +112,24 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const [modalType, setModalType] = useState<'add' | 'edit'>('add');
   const [editingRecord, setEditingRecord] = useState<any>(null);
   const [form] = Form.useForm();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [searchOrg, setSearchOrg] = useState<string | undefined>(undefined);
-  const [includeChildren, setIncludeChildren] = useState(true);
+  const [searchOrg] = useState<string | undefined>(undefined);
+  const [includeChildren] = useState(true);
 
   // 检查用户是否有权限访问此页面
   const hasPermission = currentUser.isAdmin;
 
   // Helper: Get org title from value
   const getOrgTitle = (value: string) => {
-    const allNodes = treeData.flatMap(d => [d, ...(d.children || [])]);
-    return allNodes.find(n => n.value === value)?.title || value;
+    const allNodes = treeData.flatMap((d: any) => [d, ...(d.children || [])]);
+    return allNodes.find((n: any) => n.value === value)?.title || value;
   };
 
   // Handlers
   const handleDelete = useCallback((id: string) => {
-    setDataSource(dataSource.filter(item => item.id !== id));
+    setDataSource(dataSource.filter((item: any) => item.id !== id));
     message.success('删除成功');
 
-    const event = eventList.find(e => e.name === 'onConfigDelete');
+    const event = eventList.find((e: any) => e.name === 'onConfigDelete');
     if (event) {
       console.log('Trigger event:', event.name, { id });
     }
@@ -189,7 +161,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
     if (modalType === 'add') {
       // 检查组织是否已存在配置
-      if (dataSource.some(item => item.orgValue === values.orgName)) {
+      if (dataSource.some((item: any) => item.orgValue === values.orgName)) {
         message.error('该组织已存在合规人员配置，请勿重复添加');
         return;
       }
@@ -217,12 +189,12 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       setDataSource([newRecord, ...dataSource]);
       message.success('保存成功');
 
-      const event = eventList.find(e => e.name === 'onConfigAdd');
+      const event = eventList.find((e: any) => e.name === 'onConfigAdd');
       if (event) {
         console.log('Trigger event:', event.name, { record: newRecord });
       }
     } else {
-      const newData = dataSource.map(item => {
+      const newData = dataSource.map((item: any) => {
         if (item.id === editingRecord.id) {
           return {
             ...item,
@@ -244,7 +216,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       setDataSource(newData);
       message.success('更新成功');
 
-      const event = eventList.find(e => e.name === 'onConfigEdit');
+      const event = eventList.find((e: any) => e.name === 'onConfigEdit');
       if (event) {
         console.log('Trigger event:', event.name, { record: editingRecord });
       }
@@ -263,7 +235,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           openModal('add');
           break;
         case 'openEditModal':
-          const record = dataSource.find(item => item.id === params?.id);
+          const record = dataSource.find((item: any) => item.id === params?.id);
           if (record) openModal('edit', record);
           break;
         default:
@@ -317,7 +289,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   ];
 
   // Filter data
-  const filteredData = dataSource.filter(item => {
+  const filteredData = dataSource.filter((item: any) => {
     if (!searchOrg) return true;
     if (includeChildren) {
       // 简化处理：只匹配当前组织
@@ -340,228 +312,101 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   }
 
   return (
-    <div className="digital-compliance-settings">
-      {/* 顶部导航栏 */}
-      <header className="top-header">
-        <div className="header-left">
-          <div className="logo">
-            <img src={logoImage} alt="集采工作台" className="logo-img" />
-          </div>
-        </div>
-        <div className="header-center">
-          <div className="org-selector">
-            <span>测试组织-股...</span>
-            <ChevronDown className="icon-small" />
-          </div>
-          <div className="search-box">
-            <Search className="icon-small" />
-            <input type="text" placeholder="支持通过关键字搜索菜单" />
-          </div>
-        </div>
-        <div className="header-right">
-          <div className="lang-selector">
-            <span className="lang-flag">🇨🇳</span>
-            <span>简体中文</span>
-            <ChevronDown className="icon-small" />
-          </div>
-          <div className="nav-links">
-            <span className="nav-link">云筑首页</span>
-            <span className="nav-link">寻源工作台</span>
-            <span className="nav-link highlight">发布招募需求</span>
-            <span className="nav-link">切换新版</span>
-          </div>
-          <div className="header-actions">
-            <div className="action-icon">
-              <HelpCircle className="icon" />
-            </div>
-            <div className="action-icon">
-              <Bell className="icon" />
-              <span className="badge">99+</span>
-            </div>
-            <div className="user-info">
-              <span className="username">{currentUser.name}</span>
-              <ChevronDown className="icon-small" />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="main-container">
-        {/* 左侧侧边栏 */}
-        <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
-          <div className="sidebar-menu">
-            <div className="menu-item">
-              <Home className="menu-icon" />
-              <span className="menu-text">首页</span>
-              <span className="menu-text-collapsed">首页</span>
-            </div>
-            <div className="menu-item">
-              <ShoppingCart className="menu-icon" />
-              <span className="menu-text">验收货</span>
-              <span className="menu-text-collapsed">验收</span>
-            </div>
-            <div className="menu-item">
-              <BarChart3 className="menu-icon" />
-              <span className="menu-text">数据服务</span>
-              <span className="menu-text-collapsed">数据</span>
-            </div>
-            <div className="menu-item">
-              <Users className="menu-icon" />
-              <span className="menu-text">互助宝</span>
-              <span className="menu-text-collapsed">互助</span>
-            </div>
-            <div className="menu-item">
-              <FileText className="menu-icon" />
-              <span className="menu-text">资产管理</span>
-              <span className="menu-text-collapsed">资产</span>
-            </div>
-            <div className="menu-item">
-              <ShoppingCart className="menu-icon" />
-              <span className="menu-text">物资管理</span>
-              <span className="menu-text-collapsed">物资</span>
-            </div>
-            <div className="menu-item">
-              <FileText className="menu-icon" />
-              <span className="menu-text">物资设备管理系统</span>
-              <span className="menu-text-collapsed">设备</span>
-            </div>
-            <div className="menu-item">
-              <FileText className="menu-icon" />
-              <span className="menu-text">工程局发券</span>
-              <span className="menu-text-collapsed">发券</span>
-            </div>
-            <div className="menu-item">
-              <Home className="menu-icon" />
-              <span className="menu-text">云筑学苑</span>
-              <span className="menu-text-collapsed">学苑</span>
-            </div>
-            <div className="menu-item">
-              <Users className="menu-icon" />
-              <span className="menu-text">云筑峰会</span>
-              <span className="menu-text-collapsed">峰会</span>
-            </div>
-            <div className="menu-item">
-              <BarChart3 className="menu-icon" />
-              <span className="menu-text">价格库</span>
-              <span className="menu-text-collapsed">价格</span>
-            </div>
-            <div className={`menu-group active ${sidebarCollapsed ? 'collapsed' : ''}`}>
-              <div className="menu-group-title">
-                <Shield className="menu-icon" />
-                <span className="menu-text">风控预警中心</span>
-                <span className="menu-text-collapsed">风控</span>
-                <ChevronDown className="arrow-icon" />
-              </div>
-              <div className="sub-menu">
-                <div className="sub-menu-item">业务预警监控</div>
-                <div className="sub-menu-item">风控预警明细</div>
-                <div className="sub-menu-item">风控预警汇总</div>
-                <div className="sub-menu-item">风控预警看板</div>
-                <div className="sub-menu-item active">合规官设置</div>
-              </div>
-            </div>
-          </div>
-          <div className="sidebar-collapse" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
-            {sidebarCollapsed ? <PanelLeft className="icon" /> : <PanelLeftClose className="icon" />}
-            <span className="menu-text">收起菜单</span>
-          </div>
-        </aside>
-
-        {/* 主内容区 */}
-        <main className="main-content">
-          {/* 面包屑 */}
-          <div className="breadcrumb">
-            <span>风控预警中心</span>
-            <span className="separator">&gt;</span>
-            <span className="current">合规官设置</span>
-          </div>
-
-          {/* 数据表格 */}
-          <Card>
-            <div className="table-toolbar">
-              <div className="toolbar-left">
-                <span className="toolbar-title">合规人员配置列表</span>
-              </div>
-            </div>
-            <Table
-              columns={columns}
-              dataSource={filteredData}
-              rowKey="id"
-              pagination={{
-                total: filteredData.length,
-                showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`,
-                defaultPageSize: 10,
-                showSizeChanger: true,
-                showQuickJumper: true,
-              }}
-              scroll={{ x: 1000 }}
-            />
-          </Card>
-
-          {/* 新增/编辑/查看弹窗 */}
-          <Modal
-            title={modalType === 'add' ? '新增合规人员配置' : modalType === 'view' ? '查看合规人员配置' : '编辑合规人员配置'}
-            open={isModalOpen}
-            onCancel={closeModal}
-            footer={null}
-            width={560}
-            destroyOnClose
-          >
-            <Form
-              form={form}
-              layout="vertical"
-              onFinish={onFinish}
-              style={{ marginTop: 24 }}
-            >
-              <Form.Item
-                label="选择组织"
-                name="orgName"
-                rules={[{ required: true, message: '请选择组织' }]}
-              >
-                <TreeSelect
-                  treeData={treeData}
-                  placeholder="请选择组织"
-                  treeDefaultExpandAll
-                  disabled={modalType === 'edit' || modalType === 'view'}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="合规人员"
-                name="compliancePersonnel"
-                rules={[{ required: true, message: '请至少选择一名合规人员' }]}
-              >
-                <Select
-                  mode="multiple"
-                  placeholder="请选择合规人员"
-                  options={personnelOptions}
-                  disabled={modalType === 'view'}
-                  style={{ width: '100%' }}
-                  optionRender={(option) => (
-                    <Space>
-                      <UserCheck size={14} />
-                      {option.label}
-                    </Space>
-                  )}
-                />
-              </Form.Item>
-
-              <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-                <Space>
-                  <Button onClick={closeModal}>{modalType === 'view' ? '关闭' : '取消'}</Button>
-                  {modalType !== 'view' && (
-                    <Button type="primary" htmlType="submit">
-                      {modalType === 'edit' ? '提交' : '保存'}
-                    </Button>
-                  )}
-                </Space>
-              </Form.Item>
-            </Form>
-          </Modal>
-        </main>
+    <CentralizedProcurementLayout
+      username={currentUser.name}
+      activeMenuKey="compliance-settings"
+    >
+      {/* 面包屑 */}
+      <div className="breadcrumb">
+        <span>风控预警中心</span>
+        <span className="separator">&gt;</span>
+        <span className="current">合规官设置</span>
       </div>
-    </div>
+
+      {/* 数据表格 */}
+      <Card>
+        <div className="table-toolbar">
+          <div className="toolbar-left">
+            <span className="toolbar-title">合规人员配置列表</span>
+          </div>
+        </div>
+        <Table
+          columns={columns}
+          dataSource={filteredData}
+          rowKey="id"
+          pagination={{
+            total: filteredData.length,
+            showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`,
+            defaultPageSize: 10,
+            showSizeChanger: true,
+            showQuickJumper: true,
+          }}
+          scroll={{ x: 1000 }}
+        />
+      </Card>
+
+      {/* 新增/编辑/查看弹窗 */}
+      <Modal
+        title={modalType === 'add' ? '新增合规人员配置' : modalType === 'view' ? '查看合规人员配置' : '编辑合规人员配置'}
+        open={isModalOpen}
+        onCancel={closeModal}
+        footer={null}
+        width={560}
+        destroyOnClose
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          style={{ marginTop: 24 }}
+        >
+          <Form.Item
+            label="选择组织"
+            name="orgName"
+            rules={[{ required: true, message: '请选择组织' }]}
+          >
+            <TreeSelect
+              treeData={treeData}
+              placeholder="请选择组织"
+              treeDefaultExpandAll
+              disabled={modalType === 'edit' || modalType === 'view'}
+              style={{ width: '100%' }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="合规人员"
+            name="compliancePersonnel"
+            rules={[{ required: true, message: '请至少选择一名合规人员' }]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="请选择合规人员"
+              options={personnelOptions}
+              disabled={modalType === 'view'}
+              style={{ width: '100%' }}
+              optionRender={(option) => (
+                <Space>
+                  <UserCheck size={14} />
+                  {option.label}
+                </Space>
+              )}
+            />
+          </Form.Item>
+
+          <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
+            <Space>
+              <Button onClick={closeModal}>{modalType === 'view' ? '关闭' : '取消'}</Button>
+              {modalType !== 'view' && (
+                <Button type="primary" htmlType="submit">
+                  {modalType === 'edit' ? '提交' : '保存'}
+                </Button>
+              )}
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </CentralizedProcurementLayout>
   );
 });
 

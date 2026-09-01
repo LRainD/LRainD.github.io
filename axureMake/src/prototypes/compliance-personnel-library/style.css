@@ -1,0 +1,164 @@
+.compliance-personnel-page {
+  min-height: 100%;
+  background-color: #f0f2f5;
+  padding: 0 0 28px;
+}
+
+.compliance-personnel-page .compliance-breadcrumb-bar {
+  padding: 8px 24px 20px;
+  background: transparent;
+}
+
+.compliance-personnel-page .content-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px 24px 24px;
+}
+
+.compliance-personnel-page .filter-card {
+  background: #fff;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.compliance-personnel-page .filter-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.compliance-personnel-page .filter-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: #1890ff;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.compliance-personnel-page .filter-form {
+  width: 100%;
+  row-gap: 16px;
+}
+
+.compliance-personnel-page .filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.compliance-personnel-page .filter-label {
+  flex: 0 0 auto;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.compliance-personnel-page .filter-item .ant-input,
+.compliance-personnel-page .filter-item .ant-select,
+.compliance-personnel-page .filter-item .ant-tree-select {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.compliance-personnel-page .filter-actions {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.compliance-personnel-page .data-card,
+.compliance-personnel-page .form-card {
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #f0f0f0;
+}
+
+.compliance-personnel-page .data-card {
+  padding: 24px;
+}
+
+.compliance-personnel-page .table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.compliance-personnel-page .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 500;
+}
+
+.compliance-personnel-page .form-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.compliance-personnel-page .form-card {
+  padding: 28px 32px;
+}
+
+.compliance-personnel-page .form-card .ant-form-item {
+  margin-bottom: 24px;
+}
+
+.compliance-personnel-page .import-modal-content {
+  padding: 8px 0;
+}
+
+.compliance-personnel-page .template-download {
+  margin-bottom: 24px;
+  padding: 12px 16px;
+  background: #f6faff;
+  border: 1px solid #e6f7ff;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.compliance-personnel-page .upload-area {
+  border: 1px dashed #d9d9d9;
+  border-radius: 2px;
+  padding: 40px 0;
+  text-align: center;
+  background: #fafafa;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.compliance-personnel-page .upload-area:hover {
+  border-color: #1890ff;
+}
+
+.compliance-personnel-page .upload-icon {
+  font-size: 48px;
+  color: #1890ff;
+  margin-bottom: 16px;
+}
+
+.compliance-personnel-page .error-list {
+  margin-top: 24px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.compliance-personnel-page .error-item {
+  padding: 8px 12px;
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #f5222d;
+}

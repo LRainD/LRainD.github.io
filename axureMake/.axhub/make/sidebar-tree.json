@@ -1,7 +1,44 @@
 {
   "version": 1,
-  "updatedAt": "2026-08-23T12:53:31.242Z",
+  "updatedAt": "2026-09-01T01:22:22.379Z",
   "prototypes": [
+    {
+      "id": "folder-1788162914038-rbpmlq",
+      "kind": "folder",
+      "title": "一单一检",
+      "children": [
+        {
+          "id": "item-prototypes-organization-dispatch-config",
+          "kind": "item",
+          "title": "组织业务配置",
+          "itemKey": "prototypes/organization-dispatch-config"
+        },
+        {
+          "id": "item-prototypes-compliance-personnel-library",
+          "kind": "item",
+          "title": "合规人员库",
+          "itemKey": "prototypes/compliance-personnel-library"
+        },
+        {
+          "id": "item-prototypes-my-tasks",
+          "kind": "item",
+          "title": "我的任务",
+          "itemKey": "prototypes/my-tasks"
+        },
+        {
+          "id": "item-prototypes-task-dispatch",
+          "kind": "item",
+          "title": "派发任务",
+          "itemKey": "prototypes/task-dispatch"
+        },
+        {
+          "id": "item-prototypes-check-template-mgmt",
+          "kind": "item",
+          "title": "检查模板列表与编辑",
+          "itemKey": "prototypes/check-template-mgmt"
+        }
+      ]
+    },
     {
       "id": "folder-1774706974674-5x6tue",
       "kind": "folder",
@@ -536,6 +573,12 @@
     }
   ],
   "components": [
+    {
+      "id": "item-components-centralized-procurement-layout",
+      "kind": "item",
+      "title": "centralized procurement layout",
+      "itemKey": "components/centralized-procurement-layout"
+    },
     {
       "id": "item-components-file-assistant-modal",
       "kind": "item",
