@@ -80,3 +80,13 @@
   color: #faad14;
   font-size: 14px;
 }
+
+.dispatch-config-container .recall-description .ant-descriptions-item,
+.dispatch-config-container .template-description .ant-descriptions-item {
+  padding-bottom: 2px;
+}
+
+.dispatch-config-container .recall-description .ant-descriptions-item-label,
+.dispatch-config-container .template-description .ant-descriptions-item-label {
+  color: rgba(0, 0, 0, 0.45);
+}

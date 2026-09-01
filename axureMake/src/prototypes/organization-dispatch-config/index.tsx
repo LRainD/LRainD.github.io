@@ -8,7 +8,7 @@
  */
 
 import './style.css';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Form,
   Radio,
@@ -18,16 +18,15 @@ import {
   Tag,
   message,
   Input,
-  Card,
   Breadcrumb,
   Modal,
-  Tooltip,
   Divider,
   Select,
   Switch,
   InputNumber,
   TreeSelect,
-  Popconfirm
+  Popconfirm,
+  Descriptions
 } from 'antd';
 import {
   SearchOutlined,
@@ -35,7 +34,6 @@ import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  SettingOutlined,
   ExclamationCircleOutlined,
   InfoCircleOutlined
 } from '@ant-design/icons';
@@ -85,13 +83,50 @@ const treeData = [
   }
 ];
 
+const templateOptions = [
+  {
+    value: 'tpl_1',
+    label: '一局普通合同检查模板（V1.0）',
+    checkTypes: ['self', 'mutual'],
+    effectiveTime: '2026-01-01 00:00:00'
+  },
+  {
+    value: 'tpl_2',
+    label: '采购合同专项检查模板（V2.0）',
+    checkTypes: ['self'],
+    effectiveTime: '2026-06-01 00:00:00'
+  },
+  {
+    value: 'tpl_3',
+    label: '跨单位互查检查模板（V1.2）',
+    checkTypes: ['mutual'],
+    effectiveTime: '2026-07-15 00:00:00'
+  }
+];
+
+const getTemplateOptions = (checkType: 'self' | 'mutual') => templateOptions
+  .filter(template => template.checkTypes.includes(checkType))
+  .map(template => ({
+    value: template.value,
+    label: template.label
+  }));
+
+const getTemplateLabel = (templateId?: string) => (
+  templateOptions.find(template => template.value === templateId)?.label || '-'
+);
+
 interface ConfigRecord {
   id: string;
   orgKey: string;
   orgName: string;
-  dispatchMode: 'auto' | 'manual';
-  autoRecall: boolean;
-  recallHours?: number;
+  selfDispatchMode: 'auto' | 'manual';
+  selfTemplateId?: string;
+  mutualDispatchMode: 'auto' | 'manual';
+  mutualTemplateId?: string;
+  selfAutoRecall: boolean;
+  selfRecallHours?: number;
+  mutualAutoRecall: boolean;
+  mutualRecallHours?: number;
   updatedBy: string;
   updatedTime: string;
 }
@@ -101,9 +136,12 @@ const initialDataSource: ConfigRecord[] = [
     id: '1',
     orgKey: 'org_cscec_1',
     orgName: '中建一局',
-    dispatchMode: 'auto',
-    autoRecall: true,
-    recallHours: 72,
+    selfDispatchMode: 'auto',
+    selfTemplateId: 'tpl_1',
+    mutualDispatchMode: 'manual',
+    selfAutoRecall: true,
+    selfRecallHours: 72,
+    mutualAutoRecall: false,
     updatedBy: 'zhanghegui',
     updatedTime: '2026-08-20 10:00:00'
   },
@@ -111,8 +149,12 @@ const initialDataSource: ConfigRecord[] = [
     id: '2',
     orgKey: 'org_cscec_1_1',
     orgName: '一局一公司',
-    dispatchMode: 'manual',
-    autoRecall: false,
+    selfDispatchMode: 'manual',
+    mutualDispatchMode: 'auto',
+    mutualTemplateId: 'tpl_3',
+    selfAutoRecall: false,
+    mutualAutoRecall: true,
+    mutualRecallHours: 48,
     updatedBy: 'admin',
     updatedTime: '2026-08-22 11:15:00'
   },
@@ -120,9 +162,14 @@ const initialDataSource: ConfigRecord[] = [
     id: '3',
     orgKey: 'org_cscec_1_2',
     orgName: '一局二公司',
-    dispatchMode: 'auto',
-    autoRecall: true,
-    recallHours: 48,
+    selfDispatchMode: 'auto',
+    selfTemplateId: 'tpl_2',
+    mutualDispatchMode: 'auto',
+    mutualTemplateId: 'tpl_3',
+    selfAutoRecall: true,
+    selfRecallHours: 48,
+    mutualAutoRecall: true,
+    mutualRecallHours: 72,
     updatedBy: 'wangzhuanjia',
     updatedTime: '2026-08-25 09:45:00'
   },
@@ -130,8 +177,11 @@ const initialDataSource: ConfigRecord[] = [
     id: '4',
     orgKey: 'org_cscec_4',
     orgName: '中建四局',
-    dispatchMode: 'auto',
-    autoRecall: false,
+    selfDispatchMode: 'auto',
+    selfTemplateId: 'tpl_1',
+    mutualDispatchMode: 'manual',
+    selfAutoRecall: false,
+    mutualAutoRecall: false,
     updatedBy: 'admin',
     updatedTime: '2026-08-28 16:20:00'
   }
@@ -144,7 +194,10 @@ export default function OrganizationDispatchConfig() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<ConfigRecord | null>(null);
   const [filterParams, setFilterParams] = useState<any>({});
-  const [isRecallEnabled, setIsRecallEnabled] = useState(false);
+  const selfDispatchMode = Form.useWatch('selfDispatchMode', modalForm);
+  const mutualDispatchMode = Form.useWatch('mutualDispatchMode', modalForm);
+  const isSelfRecallEnabled = Form.useWatch('selfAutoRecall', modalForm);
+  const isMutualRecallEnabled = Form.useWatch('mutualAutoRecall', modalForm);
 
   // 扁平化组织树，方便查找节点名称
   const flatOrgMap = useMemo(() => {
@@ -167,12 +220,11 @@ export default function OrganizationDispatchConfig() {
       if (filterParams.orgName && !item.orgName.toLowerCase().includes(filterParams.orgName.toLowerCase())) {
         return false;
       }
-      if (filterParams.dispatchMode && item.dispatchMode !== filterParams.dispatchMode) {
+      if (filterParams.selfDispatchMode && item.selfDispatchMode !== filterParams.selfDispatchMode) {
         return false;
       }
-      if (filterParams.autoRecall !== undefined) {
-        if (filterParams.autoRecall === 'enabled' && !item.autoRecall) return false;
-        if (filterParams.autoRecall === 'disabled' && item.autoRecall) return false;
+      if (filterParams.mutualDispatchMode && item.mutualDispatchMode !== filterParams.mutualDispatchMode) {
+        return false;
       }
       return true;
     });
@@ -192,20 +244,27 @@ export default function OrganizationDispatchConfig() {
   const openModal = (record?: ConfigRecord) => {
     if (record) {
       setEditingRecord(record);
-      setIsRecallEnabled(record.autoRecall);
       modalForm.setFieldsValue({
         orgKey: record.orgKey,
-        dispatchMode: record.dispatchMode,
-        autoRecall: record.autoRecall,
-        recallHours: record.recallHours
+        selfDispatchMode: record.selfDispatchMode,
+        selfTemplateId: record.selfTemplateId,
+        mutualDispatchMode: record.mutualDispatchMode,
+        mutualTemplateId: record.mutualTemplateId,
+        selfAutoRecall: record.selfAutoRecall,
+        selfRecallHours: record.selfRecallHours,
+        mutualAutoRecall: record.mutualAutoRecall,
+        mutualRecallHours: record.mutualRecallHours
       });
     } else {
       setEditingRecord(null);
-      setIsRecallEnabled(false);
       modalForm.resetFields();
       modalForm.setFieldsValue({
-        dispatchMode: 'manual',
-        autoRecall: false
+        selfDispatchMode: 'manual',
+        selfTemplateId: undefined,
+        mutualDispatchMode: 'manual',
+        mutualTemplateId: undefined,
+        selfAutoRecall: false,
+        mutualAutoRecall: false
       });
     }
     setIsModalOpen(true);
@@ -226,7 +285,7 @@ export default function OrganizationDispatchConfig() {
       Modal.confirm({
         title: '确认保存配置？',
         icon: <ExclamationCircleOutlined />,
-        content: '配置变更仅影响配置生效后新生成的自查任务，不追溯已派发的历史任务。',
+        content: '配置变更仅影响配置生效后新生成的自查、互查任务，不追溯已派发的历史任务。',
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
@@ -235,9 +294,14 @@ export default function OrganizationDispatchConfig() {
             id: editingRecord ? editingRecord.id : Date.now().toString(),
             orgKey: values.orgKey,
             orgName,
-            dispatchMode: values.dispatchMode,
-            autoRecall: values.autoRecall,
-            recallHours: values.autoRecall ? values.recallHours : undefined,
+            selfDispatchMode: values.selfDispatchMode,
+            selfTemplateId: values.selfDispatchMode === 'auto' ? values.selfTemplateId : undefined,
+            mutualDispatchMode: values.mutualDispatchMode,
+            mutualTemplateId: values.mutualDispatchMode === 'auto' ? values.mutualTemplateId : undefined,
+            selfAutoRecall: values.selfAutoRecall,
+            selfRecallHours: values.selfAutoRecall ? values.selfRecallHours : undefined,
+            mutualAutoRecall: values.mutualAutoRecall,
+            mutualRecallHours: values.mutualAutoRecall ? values.mutualRecallHours : undefined,
             updatedBy: 'admin',
             updatedTime: new Date().toISOString().replace('T', ' ').substring(0, 19)
           };
@@ -278,8 +342,34 @@ export default function OrganizationDispatchConfig() {
     },
     {
       title: '自查派发模式',
-      dataIndex: 'dispatchMode',
-      key: 'dispatchMode',
+      dataIndex: 'selfDispatchMode',
+      key: 'selfDispatchMode',
+      width: 150,
+      render: (mode: 'auto' | 'manual') => (
+        <Tag color={mode === 'auto' ? 'blue' : 'orange'}>
+          {mode === 'auto' ? '自动派发' : '人工指定'}
+        </Tag>
+      )
+    },
+    {
+      title: '自动派发模板',
+      key: 'dispatchTemplate',
+      width: 260,
+      render: (_: any, record: ConfigRecord) => (
+        <Descriptions className="template-description" size="small" column={1} colon={false}>
+          <Descriptions.Item label="自查">
+            {record.selfDispatchMode === 'auto' ? getTemplateLabel(record.selfTemplateId) : '人工指定，无需配置'}
+          </Descriptions.Item>
+          <Descriptions.Item label="互查">
+            {record.mutualDispatchMode === 'auto' ? getTemplateLabel(record.mutualTemplateId) : '人工指定，无需配置'}
+          </Descriptions.Item>
+        </Descriptions>
+      )
+    },
+    {
+      title: '互查派发模式',
+      dataIndex: 'mutualDispatchMode',
+      key: 'mutualDispatchMode',
       width: 150,
       render: (mode: 'auto' | 'manual') => (
         <Tag color={mode === 'auto' ? 'blue' : 'orange'}>
@@ -289,21 +379,18 @@ export default function OrganizationDispatchConfig() {
     },
     {
       title: '超时自动收回',
-      dataIndex: 'autoRecall',
       key: 'autoRecall',
-      width: 150,
-      render: (enabled: boolean) => (
-        <Tag color={enabled ? 'success' : 'default'}>
-          {enabled ? '已启用' : '已禁用'}
-        </Tag>
+      width: 240,
+      render: (_: any, record: ConfigRecord) => (
+        <Descriptions className="recall-description" size="small" column={1} colon={false}>
+          <Descriptions.Item label="自查">
+            {record.selfAutoRecall ? `已启用${record.selfRecallHours ? `（${record.selfRecallHours}小时）` : ''}` : '已禁用'}
+          </Descriptions.Item>
+          <Descriptions.Item label="互查">
+            {record.mutualAutoRecall ? `已启用${record.mutualRecallHours ? `（${record.mutualRecallHours}小时）` : ''}` : '已禁用'}
+          </Descriptions.Item>
+        </Descriptions>
       )
-    },
-    {
-      title: '收回时限 (小时)',
-      dataIndex: 'recallHours',
-      key: 'recallHours',
-      width: 150,
-      render: (hours?: number) => hours ? `${hours} 小时` : '-'
     },
     {
       title: '更新人',
@@ -355,22 +442,32 @@ export default function OrganizationDispatchConfig() {
         </div>
 
         {/* 查询区域 */}
-        <Card className="filter-card" size="small">
+        <div className="filter-card">
           <Form form={searchForm} layout="inline" onFinish={handleSearch}>
             <Form.Item name="orgName" label="组织名称">
               <Input placeholder="请输入组织名称" allowClear style={{ width: 200 }} />
             </Form.Item>
-            <Form.Item name="dispatchMode" label="派发模式">
-              <Select placeholder="全部" allowClear style={{ width: 150 }}>
-                <Select.Option value="auto">自动派发</Select.Option>
-                <Select.Option value="manual">人工指定</Select.Option>
-              </Select>
+            <Form.Item name="selfDispatchMode" label="自查派发">
+              <Select
+                placeholder="全部"
+                allowClear
+                style={{ width: 150 }}
+                options={[
+                  { value: 'auto', label: '自动派发' },
+                  { value: 'manual', label: '人工指定' }
+                ]}
+              />
             </Form.Item>
-            <Form.Item name="autoRecall" label="超时自动收回">
-              <Select placeholder="全部" allowClear style={{ width: 150 }}>
-                <Select.Option value="enabled">已启用</Select.Option>
-                <Select.Option value="disabled">已禁用</Select.Option>
-              </Select>
+            <Form.Item name="mutualDispatchMode" label="互查派发">
+              <Select
+                placeholder="全部"
+                allowClear
+                style={{ width: 150 }}
+                options={[
+                  { value: 'auto', label: '自动派发' },
+                  { value: 'manual', label: '人工指定' }
+                ]}
+              />
             </Form.Item>
             <Form.Item>
               <Space>
@@ -383,10 +480,10 @@ export default function OrganizationDispatchConfig() {
               </Space>
             </Form.Item>
           </Form>
-        </Card>
+        </div>
 
         {/* 数据表格区域 */}
-        <Card className="table-card" size="small">
+        <div className="table-card">
           <div className="table-toolbar">
             <Button type="primary" icon={<PlusOutlined />} onClick={() => openModal()}>
               新增配置
@@ -399,7 +496,7 @@ export default function OrganizationDispatchConfig() {
             pagination={{ pageSize: 10, showTotal: (total) => `共 ${total} 条记录` }}
             size="middle"
           />
-        </Card>
+        </div>
 
         {/* 新增/编辑配置弹窗 */}
         <Modal
@@ -407,7 +504,7 @@ export default function OrganizationDispatchConfig() {
           open={isModalOpen}
           onOk={handleSave}
           onCancel={() => setIsModalOpen(false)}
-          width={600}
+          width={680}
           destroyOnClose
         >
           <Form
@@ -430,7 +527,7 @@ export default function OrganizationDispatchConfig() {
             </Form.Item>
 
             <Form.Item
-              name="dispatchMode"
+              name="selfDispatchMode"
               label="自查派发模式"
               rules={[{ required: true, message: '请选择自查派发模式' }]}
             >
@@ -440,28 +537,89 @@ export default function OrganizationDispatchConfig() {
               </Radio.Group>
             </Form.Item>
             <div className="form-item-desc">
-              {modalForm.getFieldValue('dispatchMode') === 'auto' 
+              {selfDispatchMode === 'auto'
                 ? '自动派发：系统自动从该组织的合规专员库中，按待办量均衡派发任务。' 
                 : '人工指定：系统生成“待派发”任务，由单位供应链负责人手动指定合规专员。'}
             </div>
-
-            <Divider style={{ margin: '16px 0' }} />
-
+            {selfDispatchMode === 'auto' && (
+              <Form.Item
+                name="selfTemplateId"
+                label="自查自动派发模板"
+                rules={[{ required: true, message: '请选择自查自动派发模板' }]}
+              >
+                <Select
+                  placeholder="请选择已发布且适用于自查的模板"
+                  options={getTemplateOptions('self')}
+                />
+              </Form.Item>
+            )}
             <Form.Item
-              name="autoRecall"
-              label="超时自动收回"
+              name="selfAutoRecall"
+              label="自查超时自动收回"
               valuePropName="checked"
             >
-              <Switch onChange={(checked) => setIsRecallEnabled(checked)} />
+              <Switch />
             </Form.Item>
             <div className="form-item-desc">
               开启后，自查任务超过配置时限未办结将被系统自动收回，并按所属组织派发模式重新处理。
             </div>
-
-            {isRecallEnabled && (
+            {isSelfRecallEnabled && (
               <Form.Item
-                name="recallHours"
-                label="收回时限 (小时)"
+                name="selfRecallHours"
+                label="自查收回时限 (小时)"
+                rules={[
+                  { required: true, message: '请输入收回时限' },
+                  { type: 'number', min: 1, message: '时限必须大于0' }
+                ]}
+                style={{ marginTop: 12 }}
+              >
+                <InputNumber min={1} addonAfter="小时" style={{ width: '100%' }} />
+              </Form.Item>
+            )}
+
+            <Divider style={{ margin: '16px 0' }} />
+
+            <Form.Item
+              name="mutualDispatchMode"
+              label="互查派发模式"
+              rules={[{ required: true, message: '请选择互查派发模式' }]}
+            >
+              <Radio.Group>
+                <Radio value="auto">自动派发</Radio>
+                <Radio value="manual">人工指定</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <div className="form-item-desc">
+              {mutualDispatchMode === 'auto'
+                ? '自动派发：系统从符合跨单位回避规则的合规专家中，按待办量均衡派发任务。'
+                : '人工指定：系统生成“待派发”任务，由具备互查派发权限的人员指定合规专家。'}
+            </div>
+            {mutualDispatchMode === 'auto' && (
+              <Form.Item
+                name="mutualTemplateId"
+                label="互查自动派发模板"
+                rules={[{ required: true, message: '请选择互查自动派发模板' }]}
+              >
+                <Select
+                  placeholder="请选择已发布且适用于互查的模板"
+                  options={getTemplateOptions('mutual')}
+                />
+              </Form.Item>
+            )}
+            <Form.Item
+              name="mutualAutoRecall"
+              label="互查超时自动收回"
+              valuePropName="checked"
+            >
+              <Switch />
+            </Form.Item>
+            <div className="form-item-desc">
+              开启后，互查任务超过配置时限未办结将被系统自动收回，并按所属组织派发模式重新处理。
+            </div>
+            {isMutualRecallEnabled && (
+              <Form.Item
+                name="mutualRecallHours"
+                label="互查收回时限 (小时)"
                 rules={[
                   { required: true, message: '请输入收回时限' },
                   { type: 'number', min: 1, message: '时限必须大于0' }
@@ -475,7 +633,7 @@ export default function OrganizationDispatchConfig() {
             <div className="modal-tips-box">
               <InfoCircleOutlined className="tips-icon" />
               <div className="tips-content">
-                配置变更仅影响配置生效后新生成的自查任务，不追溯已派发的历史任务。
+                配置变更仅影响配置生效后新生成的自查、互查任务，不追溯已派发的历史任务。
               </div>
             </div>
           </Form>

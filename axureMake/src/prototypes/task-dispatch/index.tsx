@@ -12,7 +12,6 @@ import {
   Button,
   Input,
   Select,
-  DatePicker,
   Breadcrumb,
   Card,
   Tooltip,
@@ -28,13 +27,10 @@ import {
   ReloadOutlined,
   ClockCircleOutlined,
   UserOutlined,
-  CheckCircleOutlined,
-  ArrowLeftOutlined
+  CheckCircleOutlined
 } from '@ant-design/icons';
 import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
 import './style.css';
-
-const { RangePicker } = DatePicker;
 
 // --- Mock Data ---
 const mockContractSeedData = [
@@ -99,7 +95,7 @@ const mockContractSeedData = [
     riskLevel: '高',
     genTime: '2026-08-31 16:00',
     template: '中建四局机电分包模板 V2.0',
-    status: '待互查',
+    status: '已自查',
     timeLeft: '5天',
     mode: '人工指定',
     recentRecord: '自查合规，自动准入互查'
@@ -143,7 +139,7 @@ const mockContractSeedData = [
     riskLevel: '高',
     genTime: '2026-08-30 14:00',
     template: '中建四局地基基础专项模板 V1.5',
-    status: '待稽查',
+    status: '已互查',
     timeLeft: '7天',
     mode: '人工指定',
     recentRecord: '互查闭环，符合稽查准入'
@@ -253,7 +249,7 @@ const mockContractSeedData = [
     riskLevel: '高',
     genTime: '2026-08-28 11:00',
     template: '中建四局防腐涂料采购模板 V1.2',
-    status: '检查已完成',
+    status: '已稽查',
     timeLeft: '已办结',
     mode: '自动派发',
     recentRecord: '稽查全部闭环，检查流程已完成'
@@ -421,36 +417,6 @@ const mockPersonnel = [
   }
 ];
 
-// 模拟批次/派发历史记录
-const mockBatchRecords = [
-  {
-    id: 'BATCH-20260901-001',
-    type: '自查',
-    creator: '单位供应链负责人A',
-    createTime: '2026-09-01 10:15:30',
-    org: '中建四局一公司',
-    method: '人工指定',
-    candidateCount: 1,
-    successCount: 1,
-    failedCount: 0,
-    status: '全部成功',
-    updateTime: '2026-09-01 10:16:12'
-  },
-  {
-    id: 'BATCH-20260901-002',
-    type: '互查',
-    creator: '局管理员B',
-    createTime: '2026-09-01 09:45:10',
-    org: '局总部',
-    method: '按比例随机抽取 (30%)',
-    candidateCount: 10,
-    successCount: 3,
-    failedCount: 0,
-    status: '全部成功',
-    updateTime: '2026-09-01 09:47:00'
-  }
-];
-
 const mockCheckTemplates = [
   {
     id: 'tpl_1',
@@ -593,7 +559,7 @@ const TaskDispatch: React.FC = () => {
     }
     if (activeTab === 'mutual') {
       return [
-        { value: '待互查', label: '待互查' },
+        { value: '已自查', label: '已自查' },
         { value: '互查待派发', label: '互查待派发' },
         { value: '互查待处理', label: '互查待处理' },
         { value: '互查中', label: '互查中' },
@@ -606,7 +572,7 @@ const TaskDispatch: React.FC = () => {
     }
     if (activeTab === 'audit') {
       return [
-        { value: '待稽查', label: '待稽查' },
+        { value: '已互查', label: '已互查' },
         { value: '稽查待派发', label: '稽查待派发' },
         { value: '稽查待处理', label: '稽查待处理' },
         { value: '稽查中', label: '稽查中' },
@@ -615,7 +581,7 @@ const TaskDispatch: React.FC = () => {
         { value: '稽查待复核', label: '稽查待复核' },
         { value: '稽查复核不通过', label: '稽查复核不通过' },
         { value: '稽查结论申诉中', label: '稽查结论申诉中' },
-        { value: '检查已完成', label: '检查已完成' },
+        { value: '已稽查', label: '已稽查' },
       ];
     }
     return [];
@@ -629,7 +595,7 @@ const TaskDispatch: React.FC = () => {
 
     const selectedStatuses = selectedRowKeys.map(key => mockContracts.find(c => c.key === key)?.status);
     const canOperateStatuses = [
-      '待互查', '待稽查', '自查待派发', '互查待派发', '稽查待派发',
+      '已自查', '已互查', '自查待派发', '互查待派发', '稽查待派发',
       '自查待处理', '自查中', '自查回退审批中', '自查已收回', '自查待处置', '自查待复核', '自查复核不通过', '自查结论申诉中',
       '互查待处理', '互查中', '互查回退审批中', '互查待处置', '互查待复核', '互查复核不通过', '互查结论申诉中',
       '稽查待处理', '稽查中', '稽查回退审批中', '稽查待处置', '稽查待复核', '稽查复核不通过', '稽查结论申诉中'
@@ -639,7 +605,7 @@ const TaskDispatch: React.FC = () => {
       return;
     }
 
-    const hasMixedOperation = selectedStatuses.some(status => ['待互查', '待稽查'].includes(status as string))
+    const hasMixedOperation = selectedStatuses.some(status => ['已自查', '已互查'].includes(status as string))
       && selectedStatuses.some(status => ['自查待派发', '互查待派发', '稽查待派发'].includes(status as string));
     if (hasMixedOperation) {
       message.warning('待发起任务与待派发任务不可合并操作');
@@ -803,9 +769,9 @@ const TaskDispatch: React.FC = () => {
       width: 120,
       fixed: 'right' as const,
       render: (_: any, record: any) => {
-        const canInitiate = record.status === '待互查' || record.status === '待稽查';
+        const canInitiate = record.status === '已自查' || record.status === '已互查';
         const canAssign = record.status === '自查待派发' || record.status === '互查待派发' || record.status === '稽查待派发';
-        const canAdjust = !canInitiate && !canAssign && record.status !== '检查已完成';
+        const canAdjust = !canInitiate && !canAssign && record.status !== '已稽查';
         if (!canInitiate && !canAssign && !canAdjust) return <span>—</span>;
         return (
           <Space>
@@ -823,79 +789,17 @@ const TaskDispatch: React.FC = () => {
     }
   ];
 
-  const batchColumns = [
-    {
-      title: '序号',
-      key: 'index',
-      width: 70,
-      align: 'center' as const,
-      render: (_: any, __: any, index: number) => index + 1
-    },
-    {
-      title: '批次编号',
-      dataIndex: 'id',
-      key: 'id',
-      width: 180
-    },
-    {
-      title: '检查类型',
-      dataIndex: 'type',
-      key: 'type',
-      width: 100,
-      render: (type: string) => <Tag color={type === '自查' ? 'blue' : 'orange'}>{type}</Tag>
-    },
-    {
-      title: '发起人',
-      dataIndex: 'creator',
-      key: 'creator',
-      width: 150
-    },
-    {
-      title: '所属组织',
-      dataIndex: 'org',
-      key: 'org',
-      width: 150
-    },
-    {
-      title: '抽取模式',
-      dataIndex: 'method',
-      key: 'method',
-      width: 180
-    },
-    {
-      title: '总候选/成功/失败',
-      key: 'metrics',
-      width: 180,
-      render: (_: any, record: any) => (
-        <span>{record.candidateCount} / <span style={{ color: '#52c41a' }}>{record.successCount}</span> / <span style={{ color: '#ff4d4f' }}>{record.failedCount}</span></span>
-      )
-    },
-    {
-      title: '批次状态',
-      dataIndex: 'status',
-      key: 'status',
-      width: 120,
-      render: (status: string) => <Badge status={status === '全部成功' ? 'success' : 'warning'} text={status} />
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-      width: 180
-    }
-  ];
-
   const filteredContracts = mockContracts.filter(c => {
     // 1. 页签过滤
     let tabMatch = false;
     if (activeTab === 'self') tabMatch = c.status.includes('自查');
-    if (activeTab === 'mutual') tabMatch = c.status.includes('互查') || c.status === '待互查';
-    if (activeTab === 'audit') tabMatch = c.status.includes('稽查') || c.status === '待稽查' || c.status === '检查已完成';
+    if (activeTab === 'mutual') tabMatch = c.status.includes('互查') || c.status === '已自查';
+    if (activeTab === 'audit') tabMatch = c.status.includes('稽查') || c.status === '已互查' || c.status === '已稽查';
     if (!tabMatch) return false;
 
     const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '互查待派发' : '稽查待派发';
     if (activeStatusTab === 'pending' && c.status !== pendingStatus) return false;
-    if (activeStatusTab === 'dispatched' && (c.status === pendingStatus || c.status === '待互查' || c.status === '待稽查')) return false;
+    if (activeStatusTab === 'dispatched' && (c.status === pendingStatus || c.status === '已自查' || c.status === '已互查')) return false;
 
     // 2. 筛选条件过滤
     if (bidNoFilter && !c.bidNo.toLowerCase().includes(bidNoFilter.toLowerCase())) return false;
@@ -914,19 +818,19 @@ const TaskDispatch: React.FC = () => {
     const typeMatches = activeTab === 'self'
       ? contract.status.includes('自查')
       : activeTab === 'mutual'
-        ? contract.status.includes('互查') || contract.status === '待互查'
-        : contract.status.includes('稽查') || contract.status === '待稽查' || contract.status === '检查已完成';
+        ? contract.status.includes('互查') || contract.status === '已自查'
+        : contract.status.includes('稽查') || contract.status === '已互查' || contract.status === '已稽查';
     if (!typeMatches) return false;
     const pendingStatus = activeTab === 'self' ? '自查待派发' : activeTab === 'mutual' ? '互查待派发' : '稽查待派发';
     if (statusTab === 'pending') return contract.status === pendingStatus;
-    if (statusTab === 'dispatched') return contract.status !== pendingStatus && contract.status !== '待互查' && contract.status !== '待稽查';
+    if (statusTab === 'dispatched') return contract.status !== pendingStatus && contract.status !== '已自查' && contract.status !== '已互查';
     return true;
   }).length;
 
   const rowSelection = {
     selectedRowKeys,
     getCheckboxProps: (record: any) => ({
-      disabled: record.status === '检查已完成'
+      disabled: record.status === '已稽查'
     }),
     onChange: (keys: React.Key[]) => setSelectedRowKeys(keys)
   };
@@ -1011,14 +915,7 @@ const TaskDispatch: React.FC = () => {
       dataIndex: 'risk',
       key: 'risk',
       width: 100,
-      render: (risk: string) => <Tag color={risk === '高' ? 'red' : risk === '中' ? 'orange' : 'green'}>{risk}</Tag>
-    },
-    {
-      title: '必检',
-      dataIndex: 'required',
-      key: 'required',
-      width: 80,
-      render: (required: boolean) => required ? <Tag color="red">必检</Tag> : <Tag>选检</Tag>
+      render: (risk: string) => <Tag color={risk === '高' ? 'red' : risk === '中' ? 'orange' : 'green'}>{`${risk}风险`}</Tag>
     }
   ];
 
@@ -1136,7 +1033,7 @@ const TaskDispatch: React.FC = () => {
       <div style={{ marginBottom: 16 }}>
         <Space>
           <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={handleDispatch}>
-            {selectedRowKeys.some(key => ['待互查', '待稽查'].includes(mockContracts.find(c => c.key === key)?.status || ''))
+            {selectedRowKeys.some(key => ['已自查', '已互查'].includes(mockContracts.find(c => c.key === key)?.status || ''))
               ? '批量派发'
               : selectedRowKeys.some(key => ['自查待派发', '互查待派发', '稽查待派发'].includes(mockContracts.find(c => c.key === key)?.status || ''))
                 ? '批量人工指派'
@@ -1194,24 +1091,6 @@ const TaskDispatch: React.FC = () => {
                 key: 'audit', 
                 label: '稽查任务发起/派发',
                 children: renderDispatchContent()
-              },
-              { 
-                key: 'records', 
-                label: '派发及批次历史记录',
-                children: (
-                  <>
-                    {renderFilter()}
-                    <Table
-                      columns={batchColumns}
-                      dataSource={mockBatchRecords}
-                      rowKey="id"
-                      pagination={{
-                        total: mockBatchRecords.length,
-                        pageSize: 10
-                      }}
-                    />
-                  </>
-                )
               }
             ]}
           />
@@ -1237,13 +1116,6 @@ const TaskDispatch: React.FC = () => {
                 scroll={{ x: 1300 }}
                 size="middle"
               />
-              {selectedContracts.length === 1 && (
-                <Descriptions className="contract-summary" size="small" column={3} bordered>
-                  <Descriptions.Item label="项目名称">{selectedContracts[0].project}</Descriptions.Item>
-                  <Descriptions.Item label="原任务模板">{selectedContracts[0].template}</Descriptions.Item>
-                <Descriptions.Item label="合同经办人">{selectedContracts[0].agent}（{selectedContracts[0].contractAgentAccount}）</Descriptions.Item>
-                </Descriptions>
-              )}
             </Card>
 
             <Card

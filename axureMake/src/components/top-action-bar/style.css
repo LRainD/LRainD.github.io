@@ -1,0 +1,39 @@
+.top-action-bar {
+  min-height: 60px;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: -16px;
+  z-index: 20;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.top-action-bar-title {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.top-action-bar-actions {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .top-action-bar {
+    min-height: auto;
+    padding: 16px 20px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .top-action-bar-actions {
+    flex-wrap: wrap;
+  }
+}

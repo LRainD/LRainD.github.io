@@ -109,15 +109,32 @@ const mockTasks = [
     id: 'TASK-20260901-009', type: '稽查', bidNo: 'cscec202608290000004859', bidName: '某轨道交通项目盾构机租赁采购招标', contractName: '某轨道交通项目盾构机租赁采购合同', contractNo: 'HT-2026-009', reviewCompleteTime: '2026-08-29 10:00:00', status: '稽查待处理', pendingAction: '执行检查', issueCount: 0, timeLeft: '3天 0小时', isOverdue: false, updateTime: '2026-09-01 08:30:00'
   },
   {
-    id: 'TASK-20260901-010', type: '稽查', bidNo: 'cscec202608280000004860', bidName: '某市政道路沥青采购招标', contractName: '某市政道路沥青采购合同', contractNo: 'HT-2026-010', reviewCompleteTime: '2026-08-28 15:20:00', status: '检查已完成', pendingAction: '查看任务记录', issueCount: 0, timeLeft: '-', isOverdue: false, updateTime: '2026-08-31 17:10:00'
+    id: 'TASK-20260901-010', type: '稽查', bidNo: 'cscec202608280000004860', bidName: '某市政道路沥青采购招标', contractName: '某市政道路沥青采购合同', contractNo: 'HT-2026-010', reviewCompleteTime: '2026-08-28 15:20:00', status: '已稽查', pendingAction: '查看任务记录', issueCount: 0, timeLeft: '-', isOverdue: false, updateTime: '2026-08-31 17:10:00'
   }
 ];
 
-const taskStatuses = [
-  '自查待派发', '自查待处理', '自查中', '自查回退审批中', '自查已收回', '自查待处置', '自查待复核', '自查复核不通过', '自查申诉中', '待互查',
-  '互查待派发', '互查待处理', '互查中', '互查回退审批中', '互查待处置', '互查待复核', '互查复核不通过', '互查申诉中', '待稽查',
-  '稽查待派发', '稽查待处理', '稽查中', '稽查回退审批中', '稽查待处置', '稽查待复核', '稽查复核不通过', '稽查申诉中', '检查已完成'
-];
+const taskStatusesByType = {
+  自查: ['自查待派发', '自查待处理', '自查中', '自查回退审批中', '自查已收回', '自查待处置', '自查待复核', '自查复核不通过', '自查申诉中', '已自查'],
+  互查: ['互查待派发', '互查待处理', '互查中', '互查回退审批中', '互查待处置', '互查待复核', '互查复核不通过', '互查申诉中', '已互查'],
+  稽查: ['稽查待派发', '稽查待处理', '稽查中', '稽查回退审批中', '稽查待处置', '稽查待复核', '稽查复核不通过', '稽查申诉中', '已稽查']
+};
+
+const statusTabLabels = {
+  all: '全部',
+  inspection: '待检查',
+  review: '待复核',
+  rectification: '待整改',
+  appeal: '待处理申诉'
+};
+
+const getStatusTabStatuses = (type: keyof typeof taskStatusesByType, statusTab: keyof typeof statusTabLabels) => {
+  const statuses = taskStatusesByType[type];
+  if (statusTab === 'inspection') return statuses.filter(status => status === `${type}待处理` || status === `${type}中`);
+  if (statusTab === 'review') return statuses.filter(status => status === `${type}待复核`);
+  if (statusTab === 'rectification') return statuses.filter(status => status === `${type}待处置` || status === `${type}复核不通过`);
+  if (statusTab === 'appeal') return statuses.filter(status => status === `${type}申诉中`);
+  return statuses;
+};
 
 const getTaskAction = (status: string) => {
   if (['自查待处理', '自查中', '互查待处理', '互查中', '稽查待处理', '稽查中'].includes(status)) return '检查';
@@ -128,6 +145,11 @@ const getTaskAction = (status: string) => {
 
 const MyTasks: React.FC = () => {
   const [activeTab, setActiveTab] = useState('self');
+  const [activeStatusTabs, setActiveStatusTabs] = useState({
+    self: 'all',
+    mutual: 'all',
+    audit: 'all'
+  });
 
   // 实际生效的筛选条件（针对各页签分别管理其筛选状态）
   const [filterValues, setFilterValues] = useState({
@@ -218,6 +240,28 @@ const MyTasks: React.FC = () => {
 
   const currentSearchState = getSearchState(activeTab);
   const currentFilter = filterValues[activeTab as keyof typeof filterValues] || filterValues.self;
+  const currentType = activeTab === 'self' ? '自查' : activeTab === 'mutual' ? '互查' : '稽查';
+  const currentStatusTab = activeStatusTabs[activeTab as keyof typeof activeStatusTabs] as keyof typeof statusTabLabels;
+  const statusTabStatuses = getStatusTabStatuses(currentType, currentStatusTab);
+  const filteredTasks = mockTasks.filter(t => {
+    if (t.type !== currentType) return false;
+    if (currentStatusTab !== 'all' && !statusTabStatuses.includes(t.status)) return false;
+    if (currentFilter.id && !t.id.toLowerCase().includes(currentFilter.id.toLowerCase())) return false;
+    if (currentFilter.bidNo && !t.bidNo.toLowerCase().includes(currentFilter.bidNo.toLowerCase())) return false;
+    if (currentFilter.bidName && !t.bidName.toLowerCase().includes(currentFilter.bidName.toLowerCase())) return false;
+    if (currentFilter.contractName && !t.contractName.toLowerCase().includes(currentFilter.contractName.toLowerCase())) return false;
+    if (currentFilter.contractNo && !t.contractNo.toLowerCase().includes(currentFilter.contractNo.toLowerCase())) return false;
+    if (currentFilter.status && t.status !== currentFilter.status) return false;
+    if (currentFilter.dateRange && currentFilter.dateRange[0] && currentFilter.dateRange[1]) {
+      const updateDate = new Date(t.updateTime);
+      const startDate = currentFilter.dateRange[0].toDate();
+      const endDate = currentFilter.dateRange[1].toDate();
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+      if (updateDate < startDate || updateDate > endDate) return false;
+    }
+    return true;
+  });
 
   const handleTaskAction = (record: typeof mockTasks[number]) => {
     const action = getTaskAction(record.status);
@@ -292,7 +336,7 @@ const MyTasks: React.FC = () => {
         if (status.endsWith('待处理') || status.endsWith('中')) color = 'processing';
         if (status.includes('待处置') || status.includes('复核不通过')) color = 'warning';
         if (status.includes('申诉') || status.includes('回退')) color = 'error';
-        if (['待互查', '待稽查', '检查已完成'].includes(status)) color = 'success';
+        if (['已自查', '已互查', '已稽查'].includes(status)) color = 'success';
         return <Badge status={color as any} text={status} />;
       }
     },
@@ -423,7 +467,7 @@ const MyTasks: React.FC = () => {
                             allowClear
                             value={currentSearchState.status}
                             onChange={(val: string | undefined) => updateSearchState(activeTab, 'status', val)}
-                            options={taskStatuses.map(status => ({ value: status, label: status }))}
+                            options={taskStatusesByType[currentType].map(status => ({ value: status, label: status }))}
                           />
                         </div>
                         <div className="filter-item">
@@ -441,49 +485,21 @@ const MyTasks: React.FC = () => {
                         </Space>
                       </Space>
                     </div>
+                    <Tabs
+                      activeKey={currentStatusTab}
+                      onChange={(key) => setActiveStatusTabs(prev => ({ ...prev, [activeTab]: key }))}
+                      items={(Object.keys(statusTabLabels) as Array<keyof typeof statusTabLabels>).map(key => ({
+                        key,
+                        label: `${statusTabLabels[key]} (${key === 'all' ? mockTasks.filter(task => task.type === currentType).length : mockTasks.filter(task => task.type === currentType && getStatusTabStatuses(currentType, key).includes(task.status)).length})`
+                      }))}
+                    />
                     <Table 
                       columns={columns} 
-                      dataSource={mockTasks.filter(t => {
-                        // 1. 页签类型过滤
-                        if (activeTab === 'self' && t.type !== '自查') return false;
-                        if (activeTab === 'mutual' && t.type !== '互查') return false;
-                        if (activeTab === 'audit' && t.type !== '稽查') return false;
-
-                        // 2. 任务编号过滤
-                        if (currentFilter.id && !t.id.toLowerCase().includes(currentFilter.id.toLowerCase())) return false;
-
-                        // 3. 招标采购编号过滤
-                        if (currentFilter.bidNo && !t.bidNo.toLowerCase().includes(currentFilter.bidNo.toLowerCase())) return false;
-
-                        // 4. 招标采购名称过滤
-                        if (currentFilter.bidName && !t.bidName.toLowerCase().includes(currentFilter.bidName.toLowerCase())) return false;
-
-                        // 5. 合同名称过滤
-                        if (currentFilter.contractName && !t.contractName.toLowerCase().includes(currentFilter.contractName.toLowerCase())) return false;
-
-                        // 6. 合同编号过滤
-                        if (currentFilter.contractNo && !t.contractNo.toLowerCase().includes(currentFilter.contractNo.toLowerCase())) return false;
-
-                        // 7. 任务状态过滤
-                        if (currentFilter.status && t.status !== currentFilter.status) return false;
-
-                        // 8. 日期时间段过滤
-                        if (currentFilter.dateRange && currentFilter.dateRange[0] && currentFilter.dateRange[1]) {
-                          const updateDate = new Date(t.updateTime);
-                          const startDate = currentFilter.dateRange[0].toDate();
-                          const endDate = currentFilter.dateRange[1].toDate();
-                          // 统一置为 00:00:00 / 23:59:59 提高容错性
-                          startDate.setHours(0, 0, 0, 0);
-                          endDate.setHours(23, 59, 59, 999);
-                          if (updateDate < startDate || updateDate > endDate) return false;
-                        }
-
-                        return true;
-                      })} 
+                      dataSource={filteredTasks}
                       rowKey="id"
                       scroll={{ x: 1850 }}
                       pagination={{
-                        total: mockTasks.filter(t => t.type === (activeTab === 'self' ? '自查' : activeTab === 'mutual' ? '互查' : '稽查')).length,
+                        total: filteredTasks.length,
                         pageSize: 10,
                         showSizeChanger: true,
                         showQuickJumper: true,

@@ -49,6 +49,7 @@ import type {
 } from '../../common/axure-types';
 
 import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
+import TopActionBar from '../../components/top-action-bar';
 
 const { RangePicker } = DatePicker;
 
@@ -798,16 +799,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               ]} />
             </div>
 
-            <div className="template-detail-header">
-              <div className="template-detail-header-title">
-                    {editingTemplate.id.startsWith('tpl_1') || editingTemplate.id.startsWith('tpl_2') || editingTemplate.id.startsWith('tpl_3') ? '编辑检查模板' : '新增检查模板'}
-              </div>
-              <Space className="template-detail-header-actions">
-                <Button onClick={handleSaveTemplate}>保存草稿</Button>
-                <Button type="primary" onClick={() => handlePublishTemplate(editingTemplate)}>发布</Button>
-                <Button onClick={goList}>取消</Button>
-              </Space>
-            </div>
+            <TopActionBar
+              className="template-detail-header"
+              title={editingTemplate.id.startsWith('tpl_1') || editingTemplate.id.startsWith('tpl_2') || editingTemplate.id.startsWith('tpl_3') ? '编辑检查模板' : '新增检查模板'}
+              actions={(
+                <Space className="template-detail-header-actions">
+                  <Button onClick={handleSaveTemplate}>保存草稿</Button>
+                  <Button type="primary" onClick={() => handlePublishTemplate(editingTemplate)}>发布</Button>
+                  <Button onClick={goList}>取消</Button>
+                </Space>
+              )}
+            />
 
             <div className="content-wrapper">
               <div className="template-detail-content">
