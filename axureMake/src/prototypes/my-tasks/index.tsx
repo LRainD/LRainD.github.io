@@ -178,8 +178,10 @@ const mockTasks = (Object.entries(taskStatusesByType) as Array<[keyof typeof tas
       type,
       bidNo: `cscec202608${String(31 - (sequence % 4)).padStart(2, '0')}000000${String(4850 + sequence).padStart(4, '0')}`,
       bidName: `${['办公楼建设项目钢材采购', '高速公路工程水泥供应采购', '大型场馆机电安装分包', '商业综合体消防工程采购'][sequence % 4]}招标`,
+      bidManager: ['陈浩', '刘洋', '赵欣', '孙悦'][sequence % 4],
       contractName: `${['办公楼建设项目钢材采购', '高速公路工程水泥供应采购', '大型场馆机电安装分包', '商业综合体消防工程采购'][sequence % 4]}合同`,
       contractNo: `HT-2026-${String(sequence).padStart(3, '0')}`,
+      contractManager: ['周晨', '吴桐', '许宁', '郑凯'][sequence % 4],
       reviewCompleteTime: `2026-08-${String(31 - (sequence % 5)).padStart(2, '0')} ${String(9 + (sequence % 8)).padStart(2, '0')}:00:00`,
       inspector: getInspector(type),
       checkCompletedAt: hasUnqualifiedResult ? dayjs().subtract(status.includes('复核不通过') ? 4 : 2, 'day').subtract(sequence, 'minute').format('YYYY-MM-DD HH:mm:ss') : '-',
@@ -202,8 +204,10 @@ const simulatedAppealPassTask = {
   type: '自查' as const,
   bidNo: 'cscec202608310000004880',
   bidName: '重点办公楼建设项目钢材采购招标',
+  bidManager: '陈浩',
   contractName: '模拟申诉通过',
   contractNo: 'HT-2026-030',
+  contractManager: '周晨',
   reviewCompleteTime: '2026-08-31 15:00:00',
   inspector: getInspector('自查'),
   checkCompletedAt: '2026-08-31 10:20:00',
@@ -975,6 +979,25 @@ const MyTasks: React.FC = () => {
       }
     },
     {
+      title: '合同名称',
+      dataIndex: 'contractName',
+      key: 'contractName',
+      width: 250,
+      ellipsis: true,
+    },
+    {
+      title: '合同编号',
+      dataIndex: 'contractNo',
+      key: 'contractNo',
+      width: 150,
+    },
+    {
+      title: '合同经办人',
+      dataIndex: 'contractManager',
+      key: 'contractManager',
+      width: 130,
+    },
+    {
       title: '招标/采购编号',
       dataIndex: 'bidNo',
       key: 'bidNo',
@@ -988,17 +1011,16 @@ const MyTasks: React.FC = () => {
       ellipsis: true,
     },
     {
-      title: '合同名称',
-      dataIndex: 'contractName',
-      key: 'contractName',
-      width: 250,
-      ellipsis: true,
+      title: '招标/采购经办人',
+      dataIndex: 'bidManager',
+      key: 'bidManager',
+      width: 150,
     },
     {
-      title: '合同编号',
-      dataIndex: 'contractNo',
-      key: 'contractNo',
-      width: 150,
+      title: '检查人',
+      dataIndex: 'inspector',
+      key: 'inspector',
+      width: 170,
     },
     {
       title: '评审完成时间',
@@ -1274,7 +1296,7 @@ const MyTasks: React.FC = () => {
                       columns={columns} 
                       dataSource={filteredTasks}
                       rowKey="id"
-                      scroll={{ x: 2070 }}
+                      scroll={{ x: 'max-content' }}
                       pagination={{
                         total: filteredTasks.length,
                         pageSize: 10,

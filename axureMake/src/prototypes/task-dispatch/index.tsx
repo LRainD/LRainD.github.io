@@ -297,13 +297,27 @@ const mockContractStatusSamples = [
   { key: '42', status: '已互查', contractName: '某高速服务区污水处理设备采购合同', bidName: '某高速服务区污水处理设备采购招标', org: '中建四局二公司', orgId: 'org_002', agent: '沈四四', procurementAgent: '秦川', riskLevel: '中', timeLeft: '5天', recentRecord: '互查合规，待进入稽查抽取批次' }
 ];
 
+const inspectorPools = {
+  self: ['张专员（zhang_zy）', '陈专员（chen_zy）', '刘专员（liu_zy）', '周专员（zhou_zy）'],
+  mutual: ['李专家（li_zj）', '孙专家（sun_zj）', '郭专家（guo_zj）', '冯专家（feng_zj）'],
+  audit: ['王稽查（wang_jc）', '何稽查（he_jc）']
+};
+
+const getInspector = (status: string, key: string) => {
+  if (status === '自查待派发' || status === '已自查' || status === '已互查') return '—';
+  const pool = status.includes('稽查') ? inspectorPools.audit : status.includes('互查') ? inspectorPools.mutual : inspectorPools.self;
+  return pool[(Number(key) - 1) % pool.length];
+};
+
 const mockContracts = [
   ...mockContractSeedData.map((contract) => ({
     ...contract,
+    inspector: getInspector(contract.status, contract.key),
     templateId: contract.status.includes('自查') ? 'tpl_2' : 'tpl_1'
   })),
   ...mockContractStatusSamples.map((sample) => ({
     ...sample,
+    inspector: getInspector(sample.status, sample.key),
     bidNo: `cscec202608${sample.key.padStart(2, '0')}000000${sample.key.padStart(4, '0')}`,
     contractNo: `HT-2026-${sample.key.padStart(3, '0')}`,
     reviewTime: '2026-08-30 14:00:00',
@@ -947,6 +961,12 @@ const TaskDispatch: React.FC = () => {
       render: (_: any, record: any) => `${record.procurementAgent}（${record.procurementAgentAccount}）`
     },
     {
+      title: '检查人',
+      dataIndex: 'inspector',
+      key: 'inspector',
+      width: 180
+    },
+    {
       title: '当前状态',
       key: 'status',
       width: 150,
@@ -1279,7 +1299,7 @@ const TaskDispatch: React.FC = () => {
         columns={columns}
         dataSource={filteredContracts}
         rowKey="key"
-        scroll={{ x: 2100 }}
+        scroll={{ x: 2280 }}
         pagination={{ total: filteredContracts.length, pageSize: 10, showTotal: (total) => `共 ${total} 条符合条件任务` }}
       />
     </>
