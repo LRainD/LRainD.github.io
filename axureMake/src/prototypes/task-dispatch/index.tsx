@@ -474,6 +474,66 @@ const mockPersonnel = [
     activeCount: 0,
     nearTimeoutCount: 1,
     isRecommended: false
+  },
+  {
+    id: 'user_014',
+    name: '梁专家',
+    account: 'liang_zj',
+    org: '中建四局总部',
+    qualOrg: '中建四局',
+    type: '合规专家',
+    pendingCount: 0,
+    activeCount: 1,
+    nearTimeoutCount: 0,
+    isRecommended: true
+  },
+  {
+    id: 'user_015',
+    name: '郑专家',
+    account: 'zheng_zj',
+    org: '中建四局五公司',
+    qualOrg: '中建四局',
+    type: '合规专家',
+    pendingCount: 1,
+    activeCount: 0,
+    nearTimeoutCount: 0,
+    isRecommended: true
+  },
+  {
+    id: 'user_016',
+    name: '许专家',
+    account: 'xu_zj',
+    org: '中建四局六公司',
+    qualOrg: '中建四局',
+    type: '合规专家',
+    pendingCount: 2,
+    activeCount: 1,
+    nearTimeoutCount: 0,
+    isRecommended: false
+  },
+  {
+    id: 'user_017',
+    name: '唐专家',
+    account: 'tang_zj',
+    org: '中建四局投资公司',
+    qualOrg: '中建四局',
+    type: '合规专家',
+    pendingCount: 1,
+    activeCount: 2,
+    nearTimeoutCount: 1,
+    isRecommended: false
+  },
+  {
+    id: 'user_018',
+    name: '宋专家',
+    account: 'song_zj',
+    org: '中建四局安装公司',
+    qualOrg: '中建四局',
+    type: '合规专家',
+    pendingCount: 0,
+    activeCount: 0,
+    nearTimeoutCount: 0,
+    isRecommended: true
   }
 ];
 
@@ -598,7 +658,12 @@ const TaskDispatch: React.FC = () => {
     user_007: 25,
     user_011: 20,
     user_012: 15,
-    user_013: 10
+    user_013: 10,
+    user_014: 30,
+    user_015: 25,
+    user_016: 20,
+    user_017: 15,
+    user_018: 10
   });
 
   // 筛选状态

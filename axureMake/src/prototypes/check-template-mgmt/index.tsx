@@ -10,6 +10,7 @@
 import './style.css';
 import React, { useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import {
+  Alert,
   Form,
   Input,
   Button,
@@ -25,7 +26,8 @@ import {
   Modal,
   Radio,
   Tooltip,
-  Cascader
+  Cascader,
+  Upload
 } from 'antd';
 import {
   PlusOutlined,
@@ -39,7 +41,8 @@ import {
   CheckCircleOutlined,
   MenuOutlined,
   InfoCircleOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  UploadOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
@@ -158,7 +161,6 @@ const initialTemplates = [
         required: true,
         status: true,
         remarkRule: '不合规时必填',
-        fileRule: '不合规时必填',
         systemRule: 'rule_procurement_association'
       },
       {
@@ -170,8 +172,7 @@ const initialTemplates = [
         risk: '中',
         required: true,
         status: true,
-        remarkRule: '非必填',
-        fileRule: '始终必填'
+        remarkRule: '非必填'
       },
       {
         id: 'item_1_2_1',
@@ -183,7 +184,6 @@ const initialTemplates = [
         required: true,
         status: true,
         remarkRule: '不合规时必填',
-        fileRule: '非必填',
         systemRule: 'rule_bidding_duration_check'
       },
       {
@@ -195,8 +195,7 @@ const initialTemplates = [
         risk: '高',
         required: true,
         status: true,
-        remarkRule: '不合规时必填',
-        fileRule: '不合规时必填'
+        remarkRule: '不合规时必填'
       },
       {
         id: 'item_1_3_1',
@@ -207,8 +206,7 @@ const initialTemplates = [
         risk: '高',
         required: true,
         status: true,
-        remarkRule: '始终必填',
-        fileRule: '始终必填'
+        remarkRule: '始终必填'
       },
       {
         id: 'item_1_3_2',
@@ -219,21 +217,8 @@ const initialTemplates = [
         risk: '高',
         required: true,
         status: true,
-        remarkRule: '不合规时必填',
-        fileRule: '非必填'
+        remarkRule: '不合规时必填'
       },
-      {
-        id: 'item_1_3_3',
-        stage: ['合同阶段'],
-        name: '采购前置共享事项引用',
-        standard: '引用采购项目前置审批结果，如采购方案审批、单一来源论证等。',
-        type: '共享引用',
-        risk: '低',
-        required: false,
-        status: true,
-        remarkRule: '非必填',
-        fileRule: '非必填'
-      }
     ]
   },
   {
@@ -258,8 +243,7 @@ const initialTemplates = [
         risk: '高',
         required: true,
         status: true,
-        remarkRule: '始终必填',
-        fileRule: '始终必填'
+        remarkRule: '始终必填'
       },
       {
         id: 'item_2_2_1',
@@ -270,8 +254,7 @@ const initialTemplates = [
         risk: '高',
         required: true,
         status: true,
-        remarkRule: '不合规时必填',
-        fileRule: '始终必填'
+        remarkRule: '不合规时必填'
       }
     ]
   },
@@ -298,7 +281,6 @@ const initialTemplates = [
         required: true,
         status: true,
         remarkRule: '不合规时必填',
-        fileRule: '非必填',
         systemRule: 'rule_framework_duration_check'
       }
     ]
@@ -309,6 +291,11 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const [view, setView] = useState<'list' | 'form' | 'preview'>('list');
   const [templates, setTemplates] = useState(initialTemplates);
   const [editingTemplate, setEditingTemplate] = useState<any>(null);
+  const [previewSystemCalculationStatus, setPreviewSystemCalculationStatus] = useState<'idle' | 'calculating' | 'completed'>('idle');
+  const [previewSystemResults, setPreviewSystemResults] = useState<Record<string, string>>({});
+  const [previewManualResults, setPreviewManualResults] = useState<Record<string, string>>({});
+  const [previewRemarks, setPreviewRemarks] = useState<Record<string, string>>({});
+  const [previewAttachments, setPreviewAttachments] = useState<Record<string, string>>({});
   const [form] = Form.useForm();
 
   // --- 列表页操作 ---
@@ -365,8 +352,23 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
   const goPreview = useCallback((template: any) => {
     setEditingTemplate(template);
+    setPreviewSystemCalculationStatus('idle');
+    setPreviewSystemResults({});
+    setPreviewManualResults({});
+    setPreviewRemarks({});
+    setPreviewAttachments({});
     setView('preview');
   }, []);
+
+  const handlePreviewSystemCalculation = useCallback(() => {
+    const systemItems = (editingTemplate?.items || []).filter((item: any) => item.status !== false && item.type === '系统识别');
+    setPreviewSystemCalculationStatus('calculating');
+    window.setTimeout(() => {
+      setPreviewSystemResults(Object.fromEntries(systemItems.map((item: any) => [item.id, '合规'])));
+      setPreviewSystemCalculationStatus('completed');
+      message.success(`已完成 ${systemItems.length} 个系统识别项的计算`);
+    }, 1200);
+  }, [editingTemplate]);
 
   const handleCopy = useCallback((template: any) => {
     const newTpl = JSON.parse(JSON.stringify(template));
@@ -402,8 +404,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       risk: '中',
       required: true,
       status: true,
-      remarkRule: '不合规时必填',
-      fileRule: '非必填'
+      remarkRule: '不合规时必填'
     };
     setEditingTemplate({
       ...editingTemplate,
@@ -1127,107 +1128,45 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
             <div className="content-wrapper" style={{ paddingBottom: 40 }}>
               <div style={{ background: '#fff', padding: 24, borderRadius: 8, border: '1px solid #f0f0f0', marginBottom: 16 }}>
-                <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>模拟执行视图 (所见即所得)</div>
-                <div style={{ padding: '12px 16px', background: '#f6faff', border: '1px solid #e6f7ff', borderRadius: 2, marginBottom: 24, fontSize: 13, color: 'rgba(0,0,0,0.65)' }}>
-                  <InfoCircleOutlined style={{ color: '#1890ff', marginRight: 8 }} />
-                  提示：以下为该模板在“我的任务 &gt; 检查执行”页面中的实际渲染效果。判定结果、备注和附件控件仅作交互演示，不保存数据。
-                </div>
-
+                <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 16 }}>检查执行</div>
+                <Alert
+                  className="task-execution-alert"
+                  type="info"
+                  showIcon
+                  message="以下为模板在“我的任务 > 检查执行”中的实际基础检查视图，交互仅用于预览，不保存任务数据。"
+                  action={(() => {
+                    const systemCount = (editingTemplate.items || []).filter((item: any) => item.status !== false && item.type === '系统识别').length;
+                    return systemCount > 0 ? <Button type="primary" size="small" loading={previewSystemCalculationStatus === 'calculating'} disabled={previewSystemCalculationStatus === 'completed'} onClick={handlePreviewSystemCalculation}>{previewSystemCalculationStatus === 'completed' ? '系统识别已完成' : '计算系统识别项'}</Button> : null;
+                  })()}
+                />
+                {(editingTemplate.items || []).some((item: any) => item.status !== false && item.type === '系统识别') && <Alert className="task-execution-alert" type="info" showIcon message="系统识别项需统一计算，人工检查项由检查人判定。" />}
                 <Table
-                  dataSource={editingTemplate.items || []}
+                  dataSource={(editingTemplate.items || []).filter((item: any) => item.status !== false)}
                   rowKey="id"
                   pagination={false}
                   bordered
                   size="middle"
+                  scroll={{ x: 1850 }}
                 >
-                  <Table.Column
-                    title="序号"
-                    key="index"
-                    width={60}
-                    render={(_, __, idx) => idx + 1}
-                  />
-                  <Table.Column
-                    title="检查阶段"
-                    dataIndex="stage"
-                    key="stage"
-                    width={150}
-                    render={(stage: string[]) => stage ? stage[stage.length - 1] : '/'}
-                  />
-                  <Table.Column
-                    title="检查项"
-                    dataIndex="name"
-                    key="name"
-                    width={220}
-                    render={(text, record: any) => (
-                      <Space direction="vertical" size={0}>
-                        <span style={{ fontWeight: 500 }}>
-                          {text}
-                        </span>
-                        <Space size={4} style={{ marginTop: 4 }}>
-                          <Tag color={record.type === '系统识别' ? 'cyan' : 'blue'} size="small">
-                            {record.type}
-                          </Tag>
-                          <Tag color={record.risk === '高' ? 'red' : record.risk === '中' ? 'orange' : 'green'} size="small">
-                            {record.risk}风险
-                          </Tag>
-                        </Space>
-                      </Space>
-                    )}
-                  />
-                  <Table.Column
-                    title="检查标准"
-                    dataIndex="standard"
-                    key="standard"
-                    width={300}
-                    render={(text) => <span style={{ color: 'rgba(0,0,0,0.65)', fontSize: 13 }}>{text || '/'}</span>}
-                  />
-                  <Table.Column
-                    title="判定结果"
-                    key="result"
-                    width={180}
-                    render={(_, record: any) => {
-                      if (record.type === '系统识别') {
-                        return (
-                          <Space direction="vertical" size={4}>
-                            <Button size="small" type="dashed">发起系统检测</Button>
-                            <span style={{ fontSize: 12, color: 'rgba(0,0,0,0.45)' }}>能力标识: {record.systemRule}</span>
-                          </Space>
-                        );
-                      }
-                      return (
-                        <Radio.Group size="small">
-                          <Radio.Button value="pass">合规</Radio.Button>
-                          <Radio.Button value="fail">不合规</Radio.Button>
-                        </Radio.Group>
-                      );
-                    }}
-                  />
-                  <Table.Column
-                    title="检查备注"
-                    key="remark"
-                    width={200}
-                    render={(_, record: any) => (
-                      <Input 
-                        placeholder={
-                          record.remarkRule === '始终必填' ? '必填' : 
-                          record.remarkRule === '不合规时必填' ? '不合规时必填' : '选填'
-                        } 
-                      />
-                    )}
-                  />
-                  <Table.Column
-                    title="检查附件"
-                    key="file"
-                    width={150}
-                    render={(_, record: any) => (
-                      <Button size="small" icon={<PlusOutlined />}>
-                        {record.fileRule === '始终必填' ? '上传(必填)' : '上传'}
-                      </Button>
-                    )}
-                  />
+                  <Table.Column title="序号" key="index" width={70} align="center" render={(_, __, idx) => idx + 1} />
+                  <Table.Column title="检查阶段" dataIndex="stage" key="stage" width={190} render={(stage: string[]) => stage?.join(' - ') || '/'} />
+                  <Table.Column title="检查项" dataIndex="name" key="name" width={180} />
+                  <Table.Column title="检查方式" dataIndex="type" key="type" width={110} render={(type: string) => <Tag color={type === '系统识别' ? 'blue' : 'default'}>{type}</Tag>} />
+                  <Table.Column title="检查标准" dataIndex="standard" key="standard" width={310} render={(text) => <span>{text || '/'}</span>} />
+                  <Table.Column title={<><span className="task-required-mark">*</span>判定结果</>} key="result" width={180} render={(_, record: any) => {
+                    if (record.type === '系统识别') {
+                      const result = previewSystemResults[record.id];
+                      if (previewSystemCalculationStatus === 'idle') return <Tag>待计算</Tag>;
+                      if (previewSystemCalculationStatus === 'calculating') return <Tag color="processing">计算中</Tag>;
+                      return <Tag color={result === '不合规' ? 'error' : 'success'}>{result}</Tag>;
+                    }
+                    return <Radio.Group value={previewManualResults[record.id]} onChange={event => setPreviewManualResults(current => ({ ...current, [record.id]: event.target.value }))}><Radio value="合规">合规</Radio><Radio value="不合规">不合规</Radio></Radio.Group>;
+                  }} />
+                  <Table.Column title="检查备注" key="remark" width={260} render={(_, record: any) => record.type === '人工检查' ? <Input.TextArea value={previewRemarks[record.id]} onChange={event => setPreviewRemarks(current => ({ ...current, [record.id]: event.target.value }))} rows={2} placeholder={record.remarkRule === '始终必填' ? '必填' : record.remarkRule === '不合规时必填' ? '不合规时必填' : '请输入'} /> : <span>{previewSystemCalculationStatus === 'completed' ? '系统识别完成' : '等待系统计算'}</span>} />
+                  <Table.Column title="检查附件" key="attachment" width={180} render={(_, record: any) => <Upload showUploadList={false} beforeUpload={file => { setPreviewAttachments(current => ({ ...current, [record.id]: file.name })); return false; }}><Button icon={<UploadOutlined />}>{previewAttachments[record.id] || '添加附件'}</Button></Upload>} />
                 </Table>
 
-                {(!editingTemplate.items || editingTemplate.items.length === 0) && (
+                {(!editingTemplate.items || editingTemplate.items.filter((item: any) => item.status !== false).length === 0) && (
                   <div style={{ padding: '40px 0', textAlign: 'center', color: 'rgba(0,0,0,0.25)' }}>
                     该模板暂无检查项，无法预览效果。
                   </div>
