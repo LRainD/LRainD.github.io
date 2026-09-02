@@ -1,6 +1,11 @@
 /**
  * @name 派发任务
  * @description 统一承载自查、互查、稽查的待派发和待发起数据，以及人员选择、批量派发、派发调整和批次结果；三类任务分别执行各自的准入、候选和回避规则。
+ * @mode axure
+ *
+ * 参考资料：
+ * - /rules/development-guide.md
+ * - /skills/axure-export-workflow/SKILL.md
  */
 
 import React, { useState } from 'react';
@@ -653,7 +658,7 @@ const adjustmentStatuses = [
   '稽查待处理', '稽查中', '稽查已收回'
 ];
 
-const TaskDispatch: React.FC = () => {
+const Component: React.FC = () => {
   const [activeTab, setActiveTab] = useState('self');
   const [activeStatusTab, setActiveStatusTab] = useState('all');
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -1523,4 +1528,4 @@ const TaskDispatch: React.FC = () => {
   );
 };
 
-export default TaskDispatch;
+export default Component;

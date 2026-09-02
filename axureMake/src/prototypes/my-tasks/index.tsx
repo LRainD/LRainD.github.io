@@ -1,6 +1,10 @@
 /**
  * @name 我的任务
  * @description 集采工作台核心办理入口，统一承载检查执行、不合规处置、整改复核和申诉处理任务。
+ * @mode axure
+ *
+ * 参考资料：
+ * - /skills/axure-export-workflow/SKILL.md
  */
 
 import React, { useEffect, useMemo, useState } from 'react';
@@ -374,7 +378,7 @@ const completedBidCheckItemsByTask: Record<string, CompletedBidCheckItem[]> = {
   ]
 };
 
-const MyTasks: React.FC = () => {
+const Component: React.FC = () => {
   const [activeTab, setActiveTab] = useState('self');
   const [currentTime, setCurrentTime] = useState(() => dayjs());
   const [tasks, setTasks] = useState(allMockTasks);
@@ -1318,4 +1322,4 @@ const MyTasks: React.FC = () => {
   );
 };
 
-export default MyTasks;
+export default Component;

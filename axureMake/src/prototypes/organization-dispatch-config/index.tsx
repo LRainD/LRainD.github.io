@@ -204,7 +204,7 @@ const initialDataSource: ConfigRecord[] = [
   }
 ];
 
-export default function OrganizationDispatchConfig() {
+export default function Component() {
   const [dataSource, setDataSource] = useState<ConfigRecord[]>(initialDataSource);
   const [searchForm] = Form.useForm();
   const [modalForm] = Form.useForm();
