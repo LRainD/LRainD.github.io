@@ -1,0 +1,28 @@
+{
+  "schema": "ppt-master.source_to_md.profile.v1",
+  "converter": "ppt_to_md.py",
+  "conversion_type": "pptx",
+  "source": {
+    "path": "研发应用成果组-数字合规官-答辩.pptx",
+    "name": "研发应用成果组-数字合规官-答辩.pptx",
+    "suffix": ".pptx",
+    "kind": "file",
+    "exists": true,
+    "size_bytes": 48032265
+  },
+  "outputs": {
+    "markdown": "研发应用成果组-数字合规官-答辩.md",
+    "asset_dir": "研发应用成果组-数字合规官-答辩_files",
+    "image_manifest": "研发应用成果组-数字合规官-答辩_files/image_manifest.json",
+    "image_count": 146
+  },
+  "markdown": {
+    "line_count": 3132,
+    "char_count": 30239,
+    "heading_count": 60,
+    "table_count": 0,
+    "image_ref_count": 175,
+    "link_count": 0
+  },
+  "warnings": []
+}
