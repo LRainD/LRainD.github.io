@@ -121,6 +121,9 @@ const Component = () => {
   const [warningRows, setWarningRows] = useState(feedbackData);
   const [selectedRow, setSelectedRow] = useState<WarningRow | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [feedbackStatus, setFeedbackStatus] = useState<string | undefined>(undefined);
+  const [traceIdRow, setTraceIdRow] = useState<WarningRow | null>(null);
+  const [traceId, setTraceId] = useState('');
   const [reviewBasisRow, setReviewBasisRow] = useState<WarningRow | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filters, setFilters] = useState({
@@ -156,12 +159,29 @@ const Component = () => {
 
   const openFeedback = (row: WarningRow) => {
     setSelectedRow(row);
+    setFeedbackStatus(undefined);
     setDrawerOpen(true);
+  };
+
+  const handleSubmitFeedback = () => {
+    if (!feedbackStatus) {
+      message.warning('请先选择当前状态');
+      return;
+    }
+    message.success('提交成功');
+    setDrawerOpen(false);
   };
 
   const handleReleaseRisk = (row: WarningRow) => {
     setWarningRows(rows => rows.map(item => item.id === row.id ? { ...item, releaseStatus: '已解除' } : item));
     message.success('解除成功');
+  };
+
+  const openTraceId = (row: WarningRow) => {
+    const chars = '0123456789abcdef';
+    const genTraceId = () => Array.from({ length: 32 }, () => chars[Math.floor(Math.random() * 16)]).join('');
+    setTraceIdRow(row);
+    setTraceId(genTraceId());
   };
 
   const columns = [
@@ -186,6 +206,10 @@ const Component = () => {
     },
     { title: '是否满意', dataIndex: 'satisfaction', width: 90, render: (value: Satisfaction) => <Tag color={satisfactionColor[value]}>{value}</Tag> },
     { title: '反馈次数', width: 82, render: (_: unknown, row: WarningRow) => row.feedbacks.length },
+    {
+      title: 'tid', width: 90, align: 'center' as const,
+      render: (_: unknown, row: WarningRow) => <Button type="link" size="small" onClick={() => openTraceId(row)}>查看tid</Button>
+    },
     {
       title: '操作', fixed: 'right' as const, width: 186,
       render: (_: unknown, row: WarningRow) => (
@@ -417,7 +441,18 @@ const Component = () => {
         </Card>
       </div>
 
-      <Drawer title="问题反馈记录" width={560} open={drawerOpen} onClose={() => setDrawerOpen(false)} destroyOnClose>
+      <Drawer
+        title="问题反馈记录"
+        width={560}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        destroyOnClose
+        footer={
+          <div className="flex justify-end">
+            <Button type="primary" onClick={handleSubmitFeedback}>提交</Button>
+          </div>
+        }
+      >
         {selectedRow && <>
           <div className="mb-5 rounded-sm bg-[#f7f9fc] p-3 text-xs leading-6">
             <div><Text type="secondary">业务编号：</Text>{selectedRow.businessNo}</div>
@@ -432,8 +467,25 @@ const Component = () => {
               <div className="text-sm"><Text type="secondary">附件：</Text>{feedback.attachments.length ? feedback.attachments.map((file: string) => <Tag key={file} icon={<PaperClipOutlined />}>{file}</Tag>) : <Text type="secondary">无</Text>}</div>
             </Card>
           ))}
+          <div className="mt-5 flex items-center border-t border-[#f0f0f0] pt-4">
+            <span className="text-sm text-[#555]" style={{ width: 80, textAlign: 'right', paddingRight: 8 }}>当前状态</span>
+            <Select
+              placeholder="请选择"
+              style={{ width: 200 }}
+              value={feedbackStatus}
+              onChange={(val: string) => setFeedbackStatus(val)}
+              options={[{ value: '已记录', label: '已记录' }, { value: '已评审', label: '已评审' }, { value: '已处理', label: '已处理' }]}
+            />
+          </div>
         </>}
       </Drawer>
+
+      <Modal title="TID 详情" open={Boolean(traceIdRow)} onCancel={() => setTraceIdRow(null)} footer={<Button type="primary" onClick={() => setTraceIdRow(null)}>关闭</Button>} width={560} destroyOnHidden>
+        {traceIdRow && <>
+          <div className="mb-2 text-sm"><Text type="secondary">TraceID：</Text></div>
+          <div className="rounded-sm bg-[#f7f9fc] p-3 font-mono text-xs leading-6 break-all">{traceId}</div>
+        </>}
+      </Modal>
 
       <Modal title="审查依据" open={Boolean(reviewBasisRow)} onCancel={() => setReviewBasisRow(null)} footer={<Button type="primary" onClick={() => setReviewBasisRow(null)}>关闭</Button>} width={reviewBasisRow?.reviewSuppliers ? 750 : 500} destroyOnHidden>
         {reviewBasisRow && (reviewBasisRow.reviewSuppliers ? (

@@ -74,7 +74,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             '检测结论：报名文件符合要求，建议进入后续评审。'
           ],
           conclusion: 'passed',
-          conclusionText: '审查结论：已通过'
+          conclusionText: '审查结论：检测完成'
         },
         {
           id: 'supplier_2',
@@ -86,7 +86,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             '检测结论：存在1项材料缺失，建议补正后重新提交。'
           ],
           conclusion: 'failed',
-          conclusionText: '审查结论：未通过'
+          conclusionText: '审查结论：检测完成'
         },
         {
           id: 'supplier_3',
@@ -98,7 +98,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             '检测结论：报名文件无异常，可参与本次报名。'
           ],
           conclusion: 'passed',
-          conclusionText: '审查结论：已通过'
+          conclusionText: '审查结论：检测完成'
         }
       ],
       currentSupplierIndex: 0,
@@ -327,14 +327,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     let icon = <ClockCircleOutlined className="rule-icon-pending" />;
     let statusLabel = null;
 
-    if (rule.status === 'passed') {
+    if (rule.status === 'passed' || rule.status === 'failed') {
       statusClass = 'rule-passed';
       icon = <CheckCircleOutlined className="rule-icon-passed" />;
-      statusLabel = <span className="status-label passed">已通过</span>;
-    } else if (rule.status === 'failed') {
-      statusClass = 'rule-failed';
-      icon = <CloseCircleOutlined className="rule-icon-failed" />;
-      statusLabel = <span className="status-label failed">未通过</span>;
+      statusLabel = <span className="status-label passed">检测完成</span>;
     } else if (rule.status === 'loading' || rule.status === 'thinking') {
       statusClass = 'rule-active';
       icon = <LoadingOutlined className="rule-icon-active" spin />;
@@ -397,8 +393,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                                 <span className="supplier-name">{supplier.name}</span>
                               </span>
                               {isCompletedSupplier && (
-                                <span className={`supplier-conclusion ${supplier.conclusion}`}>
-                                  {supplier.conclusion === 'passed' ? '已通过' : '未通过'}
+                                <span className="supplier-conclusion passed">
+                                  检测完成
                                 </span>
                               )}
                             </button>

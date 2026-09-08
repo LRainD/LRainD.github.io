@@ -1,7 +1,7 @@
 /**
  * @name 风控预警弹窗
  */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   AlertCircle, 
   X, 
@@ -188,6 +188,26 @@ const Component: React.FC = () => {
   // 新增状态：折叠面板展开项（针对分供商维度）
   const [expandedSuppliers, setExpandedSuppliers] = useState<number[]>([0]);
 
+  // 新增状态：新手引导 (Tour Guide)
+  const [guideStep, setGuideStep] = useState<number>(() => {
+    // 检查本地缓存是否设置了“不再提示”
+    const skipGuide = localStorage.getItem('risk_warning_guide_skip');
+    return skipGuide === 'true' ? -1 : 1; // -1 表示不显示引导，1 表示第一步，2 表示第二步
+  });
+  const [dontShowAgain, setDontShowAgain] = useState<boolean>(false);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+
+  // 引导激活时自动滚动到最右侧
+  useEffect(() => {
+    if (isOpen && guideStep > 0 && tableContainerRef.current) {
+      const container = tableContainerRef.current;
+      container.scrollTo({
+        left: container.scrollWidth,
+        behavior: 'smooth'
+      });
+    }
+  }, [isOpen, guideStep]);
+
   const showToast = (message: string) => {
     setToast(message);
     setTimeout(() => setToast(null), 2000);
@@ -223,6 +243,21 @@ const Component: React.FC = () => {
   const handleOpenReasoning = (item: RiskItem) => {
     setExpandedSuppliers([0]); // 默认展开第一个
     setReasoningModal({ isOpen: true, item });
+  };
+
+  const handleCloseGuide = () => {
+    if (dontShowAgain) {
+      localStorage.setItem('risk_warning_guide_skip', 'true');
+    }
+    setGuideStep(-1);
+  };
+
+  const handleNextGuide = () => {
+    if (guideStep === 1) {
+      setGuideStep(2);
+    } else {
+      handleCloseGuide();
+    }
   };
 
   const selectedCount = data.filter(item => item.selected).length;
@@ -325,7 +360,10 @@ const Component: React.FC = () => {
                 </button>
               </div>
 
-              <div className="overflow-x-auto border border-gray-200 rounded-sm">
+              <div 
+                ref={tableContainerRef}
+                className="overflow-x-auto border border-gray-200 rounded-sm"
+              >
                 <table className="risk-table">
                   <thead>
                     <tr>
@@ -411,28 +449,98 @@ const Component: React.FC = () => {
                           )}
                         </td>
                         <td>
-                          <div className="flex items-center gap-2">
-                            <button 
-                              onClick={() => handleSatisfaction(item.id, 'like')}
-                              className={`feedback-icon-btn ${item.satisfaction === 'like' ? 'active-like' : 'text-text-tertiary'}`}
-                              title="满意"
-                            >
-                              <ThumbsUp className={`w-4 h-4 ${item.satisfaction === 'like' ? 'fill-current' : ''}`} />
-                            </button>
-                            <button 
-                              onClick={() => handleSatisfaction(item.id, 'dislike')}
-                              className={`feedback-icon-btn ${item.satisfaction === 'dislike' ? 'active-dislike' : 'text-text-tertiary'}`}
-                              title="不满意"
-                            >
-                              <ThumbsDown className={`w-4 h-4 ${item.satisfaction === 'dislike' ? 'fill-current' : ''}`} />
-                            </button>
-                            <button 
-                              onClick={() => setFeedbackModal({ isOpen: true, itemId: item.id })}
-                              className="flex items-center gap-0.5 text-primary hover:underline text-xs ml-1"
-                            >
-                              <MessageSquare className="w-3 h-3" />
-                              反馈
-                            </button>
+                          <div className="flex items-center gap-2 relative">
+                            {/* 点赞点踩引导高亮容器 */}
+                            <div className={`flex items-center gap-2 ${isOpen && guideStep === 1 && item.id === 1 ? 'relative z-[100002] bg-white p-1 rounded-sm shadow-md border border-primary/30' : ''}`}>
+                              <button 
+                                onClick={() => handleSatisfaction(item.id, 'like')}
+                                className={`feedback-icon-btn ${item.satisfaction === 'like' ? 'active-like' : 'text-text-tertiary'}`}
+                                title="满意"
+                              >
+                                <ThumbsUp className={`w-4 h-4 ${item.satisfaction === 'like' ? 'fill-current' : ''}`} />
+                              </button>
+                              <button 
+                                onClick={() => handleSatisfaction(item.id, 'dislike')}
+                                className={`feedback-icon-btn ${item.satisfaction === 'dislike' ? 'active-dislike' : 'text-text-tertiary'}`}
+                                title="不满意"
+                              >
+                                <ThumbsDown className={`w-4 h-4 ${item.satisfaction === 'dislike' ? 'fill-current' : ''}`} />
+                              </button>
+                            </div>
+
+                            {/* 问题反馈引导高亮容器 */}
+                            <div className={`${isOpen && guideStep === 2 && item.id === 1 ? 'relative z-[100002] bg-white px-2 py-1 rounded-sm shadow-md border border-primary/30 flex items-center' : ''}`}>
+                              <button 
+                                onClick={() => setFeedbackModal({ isOpen: true, itemId: item.id })}
+                                className="flex items-center gap-0.5 text-primary hover:underline text-xs ml-1"
+                              >
+                                <MessageSquare className="w-3 h-3" />
+                                反馈
+                              </button>
+                            </div>
+
+                            {/* 新手引导漫游气泡 */}
+                            {isOpen && item.id === 1 && guideStep > 0 && (
+                              <div 
+                                className={`absolute bg-white text-text rounded-md shadow-2xl border border-gray-100 p-4 w-[280px] z-[100003] guide-bubble-step-${guideStep}`}
+                                style={{
+                                  top: '100%',
+                                  left: guideStep === 1 ? '-100px' : '-180px',
+                                  marginTop: '12px'
+                                }}
+                              >
+                                {/* 气泡小三角 */}
+                                <div 
+                                  className="absolute w-3 h-3 bg-white border-t border-l border-gray-100 transform rotate-45"
+                                  style={{
+                                    top: '-6px',
+                                    left: guideStep === 1 ? '135px' : '215px'
+                                  }}
+                                />
+                                
+                                <div className="flex items-center gap-2 mb-1.5">
+                                  <span className="w-5 h-5 rounded-full bg-primary text-white text-xs flex items-center justify-center font-bold">
+                                    {guideStep}
+                                  </span>
+                                  <span className="font-bold text-sm text-gray-800">
+                                    {guideStep === 1 ? '点赞/点踩评价' : '问题反馈'}
+                                  </span>
+                                </div>
+                                
+                                <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                                  {guideStep === 1 
+                                    ? '您可以对预警结果进行“满意”或“不满意”评价，帮助我们持续优化预警准确性。' 
+                                    : '如果预警信息有误或有改进建议，点击“反馈”即可提交详细问题。'}
+                                </p>
+                                
+                                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                                  <label className="flex items-center gap-1.5 cursor-pointer select-none">
+                                    <input 
+                                      type="checkbox" 
+                                      checked={dontShowAgain}
+                                      onChange={(e) => setDontShowAgain(e.target.checked)}
+                                      className="rounded-sm border-gray-300 text-primary focus:ring-primary w-3 h-3"
+                                    />
+                                    <span className="text-[11px] text-gray-500">不再提示</span>
+                                  </label>
+                                  
+                                  <div className="flex items-center gap-2">
+                                    <button 
+                                      onClick={handleCloseGuide}
+                                      className="text-[11px] text-gray-400 hover:text-gray-600 px-2 py-1"
+                                    >
+                                      跳过
+                                    </button>
+                                    <button 
+                                      onClick={handleNextGuide}
+                                      className="bg-primary text-white text-[11px] font-medium px-3 py-1 rounded-sm hover:bg-blue-600 transition-colors"
+                                    >
+                                      {guideStep === 1 ? '下一步' : '我知道了'}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -463,6 +571,14 @@ const Component: React.FC = () => {
               </div>
             </div>
           </div>
+          
+          {/* 新手引导全局遮罩 */}
+           {guideStep > 0 && (
+             <div 
+               className="fixed inset-0 bg-black/60 z-[100001] transition-opacity duration-300"
+               onClick={handleCloseGuide}
+             />
+           )}
         </div>
       )}
 
