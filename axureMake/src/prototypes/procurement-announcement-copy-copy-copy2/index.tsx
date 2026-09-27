@@ -62,6 +62,7 @@ import {
 } from 'lucide-react';
 import { Table, Switch, Radio, Tree, Select } from 'antd';
 import type { TreeDataNode } from 'antd';
+import StepBar from '../../components/step-bar';
 import './style.css';
 
 const Component = () => {
@@ -603,51 +604,10 @@ const Component = () => {
             </div>
 
             {/* 步骤条 */}
-            <div className="bg-white dark:bg-gray-800 rounded-sm mb-4 border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="step-container">
-                <div className="step-item active">采购发起</div>
-                <div className="step-item">采购响应</div>
-                <div className="step-item">文件开启</div>
-                <div className="step-item">采购评审</div>
-                <div className="step-item">采购成交</div>
-              </div>
-              <div className="sub-step-container">
-                <div className="sub-step-items">
-                  <div className="sub-step-item">
-                    <span className="sub-step-label active">采购基本信息</span>
-                    <div className="sub-step-dot completed">
-                      <Check className="w-3 h-3 text-white stroke-[3]" />
-                    </div>
-                  </div>
-                  <div className="sub-step-item">
-                    <span className="sub-step-label active">编制采购清单</span>
-                    <div className="sub-step-dot completed">
-                      <Check className="w-3 h-3 text-white stroke-[3]" />
-                    </div>
-                  </div>
-                  <div className="sub-step-item">
-                    <span className="sub-step-label current">编制采购(资格预审)公告</span>
-                    <div className="sub-step-dot current"></div>
-                  </div>
-                  <div className="sub-step-item">
-                    <span className="sub-step-label">发布采购(资格预审)公告</span>
-                    <div className="sub-step-dot"></div>
-                  </div>
-                  <div className="sub-step-item">
-                    <span className="sub-step-label">报名与资审汇总</span>
-                    <div className="sub-step-dot"></div>
-                  </div>
-                  <div className="sub-step-item">
-                    <span className="sub-step-label">资审结果通知</span>
-                    <div className="sub-step-dot"></div>
-                  </div>
-                </div>
-                <div className="sub-step-line-container">
-                  <div className="sub-step-line active" style={{ flex: '0 0 40%' }}></div>
-                  <div className="sub-step-line"></div>
-                </div>
-              </div>
-            </div>
+            <StepBar
+              currentMainStep="采购发起"
+              currentSubStep="编制采购(资格预审)公告"
+            />
 
             {/* 编制采购公告 */}
             <div className="bg-white dark:bg-gray-800 rounded shadow-sm mb-4 border border-gray-200 dark:border-gray-700">

@@ -94,7 +94,8 @@ export const DEFAULT_SIDEBAR_ITEMS: MenuItem[] = [
       { key: 'risk-detail', label: '风控预警明细' },
       { key: 'risk-summary', label: '风控预警汇总' },
       { key: 'risk-dashboard', label: '风控预警看板' },
-      { key: 'compliance-settings', label: '合规官设置', active: true }
+      { key: 'compliance-settings', label: '合规官设置', active: true },
+      { key: 'negative-enterprise-list', label: '负面企业清单' }
     ]
   }
 ];
@@ -106,6 +107,8 @@ export interface CentralizedProcurementLayoutProps {
   activeMenuKey?: string;
   /** 自定义左侧菜单项 */
   sidebarItems?: MenuItem[];
+  /** 默认展开的菜单组 key 列表 */
+  defaultOpenGroupKeys?: string[];
   /** 菜单项点击回调 */
   onMenuClick?: (key: string) => void;
   /** 子菜单项点击回调 */
@@ -121,6 +124,7 @@ const Component = function CentralizedProcurementLayout(props: CentralizedProcur
     username = 'jctest1',
     activeMenuKey = 'my-tasks',
     sidebarItems = DEFAULT_SIDEBAR_ITEMS,
+    defaultOpenGroupKeys = ['bidding-procurement'],
     onMenuClick,
     onSubMenuClick,
     onThreeLevelMenuClick,
@@ -128,7 +132,7 @@ const Component = function CentralizedProcurementLayout(props: CentralizedProcur
   } = props;
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [openGroupKeys, setOpenGroupKeys] = useState<string[]>(['bidding-procurement']);
+  const [openGroupKeys, setOpenGroupKeys] = useState<string[]>(defaultOpenGroupKeys);
   const [hoveredSubMenu, setHoveredSubMenu] = useState<{
     parentKey: string;
     subKey: string;

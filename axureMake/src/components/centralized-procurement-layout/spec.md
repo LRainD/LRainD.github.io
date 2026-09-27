@@ -15,6 +15,7 @@
 | `username` | `string` | `'jctest1'` | 当前登录用户名 |
 | `activeMenuKey` | `string` | `'compliance-settings'` | 当前选中的菜单项 key 值 |
 | `sidebarItems` | `MenuItem[]` | `DEFAULT_SIDEBAR_ITEMS` | 自定义左侧侧边栏菜单列表配置 |
+| `defaultOpenGroupKeys` | `string[]` | `['bidding-procurement']` | 初始展开的菜单组 key 列表 |
 | `onMenuClick` | `(key: string) => void` | - | 单级菜单项点击时的事件回调 |
 | `onSubMenuClick` | `(key: string, parentKey: string) => void` | - | 菜单组子项点击时的事件回调 |
 | `children` | `React.ReactNode` | - | 主体区展示的内容组件 |

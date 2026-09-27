@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* 负面企业清单页面样式 */
+
+/* 面包屑 */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #999;
+}
+
+.breadcrumb span:not(.current) {
+  cursor: pointer;
+}
+
+.breadcrumb span:not(.current):hover {
+  color: #3a7fc3;
+}
+
+.breadcrumb .separator {
+  color: #ccc;
+  margin: 0 6px;
+  font-size: 12px;
+}
+
+.breadcrumb .current {
+  color: #333;
+}
+
+/* 查询区域 */
+.search-card {
+  margin-bottom: 16px;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 12px;
+}
+
+.search-form .ant-form-item {
+  margin-bottom: 0;
+  margin-inline-end: 24px;
+}
+
+.search-actions {
+  margin-inline-end: 0 !important;
+  margin-left: auto;
+}
+
+/* 表格工具栏 */
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.toolbar-count {
+  font-size: 12px;
+  color: #999;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 导入弹窗说明 */
+.import-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f6f9fd;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 20px;
+  color: #666;
+}
+
+/* 导入模板预览（模拟 Excel 表格） */
+.excel-preview {
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.excel-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #f3f7f3;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.excel-file-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1d6f42;
+}
+
+.excel-sheet {
+  overflow-x: auto;
+  background: #fff;
+}
+
+.excel-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 12px;
+  color: #333;
+}
+
+.excel-table th,
+.excel-table td {
+  border: 1px solid #d9d9d9;
+  padding: 6px 8px;
+  text-align: left;
+  font-weight: 400;
+  line-height: 18px;
+  word-break: break-all;
+}
+
+.excel-table .excel-row-no {
+  width: 40px;
+  min-width: 40px;
+  background: #f5f5f5;
+  color: #999;
+  text-align: center;
+}
+
+.excel-col-letter-row th {
+  padding: 2px 0;
+  background: #f5f5f5;
+  color: #999;
+  font-size: 11px;
+  text-align: center;
+}
+
+.excel-col-letter-row .excel-row-no {
+  background: #ececec;
+}
+
+.excel-header-row th {
+  background: #e8f2e8;
+  color: #1d6f42;
+  font-weight: 600;
+}
+
+.excel-header-row .excel-row-no {
+  background: #f5f5f5;
+  color: #999;
+  font-weight: 400;
+}
+
+.excel-required {
+  margin-left: 2px;
+  color: #f5222d;
+}
+
+.excel-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: #fafafa;
+  border-top: 1px solid #e0e0e0;
+  font-size: 12px;
+  line-height: 18px;
+  color: #8c8c8c;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .search-form .ant-form-item {
+    margin-inline-end: 0;
+    width: 100%;
+  }
+
+  .search-actions {
+    margin-left: 0;
+  }
+
+  .table-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
