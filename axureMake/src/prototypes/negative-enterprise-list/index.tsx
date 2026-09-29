@@ -306,7 +306,11 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       } else {
         setEditingRecord(null);
         form.resetFields();
-        form.setFieldsValue({ source: '人工录入', organization: '中建一局' });
+        form.setFieldsValue({
+          source: '人工录入',
+          organization: '中建一局',
+          includeDate: dayjs(),
+        });
       }
       setIsModalOpen(true);
     },
@@ -431,6 +435,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     { title: '列入来源', dataIndex: 'source', key: 'source', width: 120 },
     { title: '列入组织', dataIndex: 'organization', key: 'organization', width: 120 },
     { title: '列入日期', dataIndex: 'includeDate', key: 'includeDate', width: 120 },
+    { title: '列入人', dataIndex: 'creator', key: 'creator', width: 140 },
     { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', width: 180 },
     { title: '更新人', dataIndex: 'updater', key: 'updater', width: 120 },
     {
@@ -541,7 +546,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             showSizeChanger: true,
             showQuickJumper: true,
           }}
-          scroll={{ x: 1250 }}
+          scroll={{ x: 1390 }}
         />
       </Card>
 
@@ -596,7 +601,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <Select
               placeholder="请选择列入来源"
               options={sourceOptions}
-              disabled={modalType === 'view'}
+              disabled={modalType !== 'edit'}
             />
           </Form.Item>
 
@@ -621,7 +626,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               placeholder="请选择列入日期"
               format="YYYY-MM-DD"
               style={{ width: '100%' }}
-              disabled={modalType === 'view'}
+              disabled={modalType !== 'edit'}
             />
           </Form.Item>
 

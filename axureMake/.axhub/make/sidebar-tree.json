@@ -1,18 +1,25 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-23T10:49:42.966Z",
+  "updatedAt": "2026-09-29T01:24:33.482Z",
   "prototypes": [
     {
-      "id": "item-prototypes-registration-review-summary",
-      "kind": "item",
-      "title": "registration review summary",
-      "itemKey": "prototypes/registration-review-summary"
-    },
-    {
-      "id": "item-prototypes-negative-enterprise-list",
-      "kind": "item",
-      "title": "负面企业清单",
-      "itemKey": "prototypes/negative-enterprise-list"
+      "id": "folder-1790645030471-rnd61y",
+      "kind": "folder",
+      "title": "中建安装分供商",
+      "children": [
+        {
+          "id": "item-prototypes-negative-enterprise-list",
+          "kind": "item",
+          "title": "负面企业清单",
+          "itemKey": "prototypes/negative-enterprise-list"
+        },
+        {
+          "id": "item-prototypes-registration-review-summary",
+          "kind": "item",
+          "title": "报名及资审汇总",
+          "itemKey": "prototypes/registration-review-summary"
+        }
+      ]
     },
     {
       "id": "item-prototypes-supplier-credit-detail",
@@ -597,6 +604,12 @@
     }
   ],
   "components": [
+    {
+      "id": "item-components-compliance-modal",
+      "kind": "item",
+      "title": "compliance modal",
+      "itemKey": "components/compliance-modal"
+    },
     {
       "id": "item-components-step-bar",
       "kind": "item",
