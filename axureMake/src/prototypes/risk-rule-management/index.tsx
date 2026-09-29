@@ -1,3 +1,6 @@
+/**
+ * @name 风控规则模板
+ */
 import React, { useState } from 'react';
 import OperationAdminLayout from '@/components/operation-admin-layout';
 import {
@@ -244,16 +247,8 @@ const Component = function RuleManagementPage() {
       parentOrg="平台"
     >
       <div className="rule-config-container bg-white" style={{ minHeight: 'calc(100vh - 120px)' }}>
-        {/* 顶部线型导航与组织下拉 */}
+        {/* 顶部线型导航与 Tab */}
         <div className="mb-4 p-4 pb-0">
-          <div className="border-b pb-4 mb-4">
-            <Select
-              defaultValue="测试组织-股份公司"
-              style={{ width: 240 }}
-              options={[{ label: '测试组织-股份公司', value: '测试组织-股份公司' }]}
-            />
-          </div>
-          
           <div className="flex gap-2">
             {['云筑集采', '云筑商城', '云筑劳务', '云筑金服'].map((name, i) => (
               <div
@@ -270,59 +265,63 @@ const Component = function RuleManagementPage() {
           </div>
         </div>
 
-        <div className="flex gap-4">
-          {/* 左侧规则树 */}
-          <div className="w-80 border border-gray-200 rounded p-2 bg-white" style={{ minWidth: 280 }}>
-            <Input
-              prefix={<SearchOutlined style={{ color: '#ccc' }} />}
-              placeholder="输入规则名称"
-              className="mb-2"
-            />
-            <Tree
-              defaultExpandAll
-              selectedKeys={[selectedRuleKey]}
-              onSelect={(keys) => keys.length && setSelectedRuleKey(keys[0] as string)}
-              treeData={fullRuleTreeData.map(group => ({
-                title: <span className="font-bold text-gray-800 text-sm">{group.title}</span>,
-                key: group.key,
-                children: group.children.map(item => ({
-                  key: item.key,
-                  title: (
-                    <div className="flex items-center text-xs py-0.5" style={{ lineHeight: '20px' }}>
-                      <span
-                        className="px-1 mr-1 rounded"
-                        style={{
-                          fontSize: 10,
-                          backgroundColor: item.type === '股' ? '#fff0f6' : item.type === '局' ? '#fff7e6' : '#feffe6',
-                          color: item.type === '股' ? '#eb2f96' : item.type === '局' ? '#fa8c16' : '#a0d911',
-                          border: `1px solid ${item.type === '股' ? '#ffadd2' : item.type === '局' ? '#ffd591' : '#eaff8f'}`
-                        }}
-                      >
-                        {item.type}
-                      </span>
-                      <span
-                        className="px-1 mr-1 rounded"
-                        style={{
-                          fontSize: 10,
-                          backgroundColor: item.status === '启' ? '#f6ffed' : '#fff1f0',
-                          color: item.status === '启' ? '#52c41a' : '#ff4d4f',
-                          border: `1px solid ${item.status === '启' ? '#b7eb8f' : '#ffa39e'}`
-                        }}
-                      >
-                        {item.status}
-                      </span>
-                      {renderIcon(item.iconType)}
-                      <span className="truncate flex-1 text-gray-700">{item.title}</span>
-                      {item.isGuest && (
-                        <span className="ml-1 px-1 text-blue-500 bg-blue-50 rounded" style={{ fontSize: 10 }}>
-                          客
+        <div className="flex gap-4 items-stretch">
+          {/* 左侧规则树：外层仅负责与右侧等高，内部绝对定位，展开树不会撑高页面 */}
+          <div className="relative w-80 flex-shrink-0 self-stretch" style={{ minWidth: 280, minHeight: 'calc(100vh - 160px)' }}>
+            <div className="absolute inset-0 border border-gray-200 rounded p-2 bg-white flex flex-col overflow-hidden">
+              <Input
+                prefix={<SearchOutlined style={{ color: '#ccc' }} />}
+                placeholder="输入规则名称"
+                className="mb-2"
+              />
+              <div className="flex-1 overflow-y-auto pr-1">
+                <Tree
+                defaultExpandAll
+                selectedKeys={[selectedRuleKey]}
+                onSelect={(keys) => keys.length && setSelectedRuleKey(keys[0] as string)}
+                treeData={fullRuleTreeData.map(group => ({
+                  title: <span className="font-bold text-gray-800 text-sm">{group.title}</span>,
+                  key: group.key,
+                  children: group.children.map(item => ({
+                    key: item.key,
+                    title: (
+                      <div className="flex items-center text-xs py-0.5" style={{ lineHeight: '20px' }}>
+                        <span
+                          className="px-1 mr-1 rounded"
+                          style={{
+                            fontSize: 10,
+                            backgroundColor: item.type === '股' ? '#fff0f6' : item.type === '局' ? '#fff7e6' : '#feffe6',
+                            color: item.type === '股' ? '#eb2f96' : item.type === '局' ? '#fa8c16' : '#a0d911',
+                            border: `1px solid ${item.type === '股' ? '#ffadd2' : item.type === '局' ? '#ffd591' : '#eaff8f'}`
+                          }}
+                        >
+                          {item.type}
                         </span>
-                      )}
-                    </div>
-                  )
-                }))
-              }))}
-            />
+                        <span
+                          className="px-1 mr-1 rounded"
+                          style={{
+                            fontSize: 10,
+                            backgroundColor: item.status === '启' ? '#f6ffed' : '#fff1f0',
+                            color: item.status === '启' ? '#52c41a' : '#ff4d4f',
+                            border: `1px solid ${item.status === '启' ? '#b7eb8f' : '#ffa39e'}`
+                          }}
+                        >
+                          {item.status}
+                        </span>
+                        {renderIcon(item.iconType)}
+                        <span className="truncate flex-1 text-gray-700">{item.title}</span>
+                        {item.isGuest && (
+                          <span className="ml-1 px-1 text-blue-500 bg-blue-50 rounded" style={{ fontSize: 10 }}>
+                            客
+                          </span>
+                        )}
+                      </div>
+                    )
+                  }))
+                }))}
+              />
+              </div>
+            </div>
           </div>
           
           {/* 右侧内容 */}
