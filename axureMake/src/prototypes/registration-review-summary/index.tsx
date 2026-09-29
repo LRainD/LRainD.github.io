@@ -22,15 +22,18 @@ import {
   RefreshCw,
   CheckCircle
 } from 'lucide-react';
+import complianceOfficerIcon from '../../../assets/picture/数字合规官.png';
 import { Button, Input, Select, Radio, Checkbox, Table, Breadcrumb, Popover } from 'antd';
 import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
 import StepBar from '../../components/step-bar';
 import ComplianceModal, { ComplianceHandle } from '../../components/compliance-modal';
+import { AIAssistantPanel } from '../../components/ai-assistant-panel';
 import { SUPPLIERS, RISK_DATA, ATTACH_SUPPORT_FORMAT } from './mock';
 import './style.css';
 
 const Component = () => {
   const complianceRef = useRef<ComplianceHandle>(null);
+  const [isAIPanelOpen, setIsAIPanelOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'summary' | 'vest-detail'>('summary');
   const [reportFormat, setReportFormat] = useState('template');
   const [publicity, setPublicity] = useState('public');
@@ -344,11 +347,26 @@ const Component = () => {
           </div>
 
           {/* 步骤条 */}
-          <StepBar
-            className="rrs-step-bar"
-            currentMainStep="采购发起"
-            currentSubStep="报名与资审汇总"
-          />
+      <StepBar
+        className="rrs-step-bar"
+        currentMainStep="采购发起"
+        currentSubStep="报名与资审汇总"
+        subSteps={[
+          '采购基本信息',
+          '编制采购清单',
+          '编制采购(资格预审)公告',
+          '发布采购(资格预审)公告',
+          '提交审批',
+          '报名与资审汇总',
+          '资审结果通知'
+        ]}
+        onSubStepChange={(_, step) => {
+          const label = typeof step === 'string' ? step : step.label;
+          if (label === '提交审批') {
+            complianceRef.current?.showRiskWarning();
+          }
+        }}
+      />
 
           {/* 报名与资审汇总 */}
           <div className="rrs-card">
@@ -788,20 +806,18 @@ const Component = () => {
 
       {/* 右侧悬浮助手 */}
       {viewMode === 'summary' && (
-        <div className="rrs-side-helper">
-          <div className="rrs-helper-item">
-            <Headset size={18} />
-            <span>联系客服</span>
-          </div>
-          <div className="rrs-helper-item">
-            <UserCog size={18} />
-            <span>权限助手</span>
-          </div>
-          <div className="rrs-helper-item">
-            <Smartphone size={18} />
-            <span>掌上作业</span>
-          </div>
-        </div>
+        <AIAssistantPanel
+          isOpen={isAIPanelOpen}
+          onOpen={() => setIsAIPanelOpen(true)}
+          onClose={() => setIsAIPanelOpen(false)}
+          onRiskNodeClick={(nodeKey) => {
+            if (nodeKey === 'registration-summary') {
+              complianceRef.current?.showRiskWarning();
+            } else if (nodeKey === 'list') {
+              setViewMode('summary');
+            }
+          }}
+        />
       )}
     </CentralizedProcurementLayout>
   );

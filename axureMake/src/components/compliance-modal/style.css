@@ -323,7 +323,7 @@
 
 /* 风控预警结果弹窗样式 */
 .risk-warning-modal-overlay {
-  @apply fixed inset-0 bg-black/45 z-[1000] flex items-center justify-center p-4;
+  @apply fixed inset-0 bg-black/45 z-[2000] flex items-center justify-center p-4;
 }
 
 .risk-warning-modal-container {
@@ -399,7 +399,7 @@
 }
 
 .feedback-modal-overlay {
-  @apply fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4;
+  @apply fixed inset-0 bg-black/60 z-[2001] flex items-center justify-center p-4;
 }
 
 .feedback-modal-container {

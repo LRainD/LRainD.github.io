@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-29T01:24:33.482Z",
+  "updatedAt": "2026-09-29T02:01:22.071Z",
   "prototypes": [
     {
       "id": "folder-1790645030471-rnd61y",
@@ -604,6 +604,12 @@
     }
   ],
   "components": [
+    {
+      "id": "item-components-ai-assistant-panel",
+      "kind": "item",
+      "title": "ai assistant panel",
+      "itemKey": "components/ai-assistant-panel"
+    },
     {
       "id": "item-components-compliance-modal",
       "kind": "item",
