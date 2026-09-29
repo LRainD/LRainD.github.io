@@ -1,0 +1,12 @@
+.rule-config-container {
+  background: #fff;
+  min-height: 80vh;
+}
+
+.ant-radio-group {
+  margin-left: 12px;
+}
+
+.ant-checkbox-group {
+  margin-left: 12px;
+}

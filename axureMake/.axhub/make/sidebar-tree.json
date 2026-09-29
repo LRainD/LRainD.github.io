@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-29T02:01:22.071Z",
+  "updatedAt": "2026-09-29T06:18:55.242Z",
   "prototypes": [
     {
       "id": "folder-1790645030471-rnd61y",
@@ -121,6 +121,12 @@
               "kind": "item",
               "title": "supplier-risk-detail",
               "itemKey": "prototypes/supplier-risk-detail"
+            },
+            {
+              "id": "item-prototypes-risk-rule-management",
+              "kind": "item",
+              "title": "risk-rule-management",
+              "itemKey": "prototypes/risk-rule-management"
             }
           ]
         },
@@ -167,12 +173,6 @@
               "itemKey": "prototypes/digital-compliance-detection"
             }
           ]
-        },
-        {
-          "id": "folder-1787282893624-crpbes",
-          "kind": "folder",
-          "title": "思维链优化迭代",
-          "children": []
         }
       ]
     },
