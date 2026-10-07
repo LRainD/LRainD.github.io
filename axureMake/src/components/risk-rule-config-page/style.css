@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* 风控规则配置页样式 */
+.rule-config-container {
+  background: #fff;
+  min-height: 80vh;
+}
+
+/* 配置项中单选/多选组与左侧文字标签保持间距（仅作用于本组件内） */
+.rule-config-container .ant-radio-group {
+  margin-left: 12px;
+}
+
+.rule-config-container .ant-checkbox-group {
+  margin-left: 12px;
+}
