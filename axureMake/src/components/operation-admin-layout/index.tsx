@@ -127,13 +127,15 @@ const Component = function OperationAdminLayout(props: OperationAdminLayoutProps
           <img src={logoImage} alt="运营后台logo" className="operation-admin-logo-icon" />
           {!collapsed && <span className="operation-admin-logo-text">集采运营后台</span>}
         </div>
-        <Menu
-          mode="inline"
-          selectedKeys={[activeMenuKey]}
-          defaultOpenKeys={defaultOpenKeys}
-          items={menuItems}
-          className="operation-admin-menu"
-        />
+        <div className="operation-admin-menu-wrapper">
+          <Menu
+            mode="inline"
+            selectedKeys={[activeMenuKey]}
+            defaultOpenKeys={defaultOpenKeys}
+            items={menuItems}
+            className="operation-admin-menu"
+          />
+        </div>
         <div className="operation-admin-collapse" onClick={() => setCollapsed(!collapsed)}>
           {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
         </div>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-29T10:05:32.000Z",
+  "updatedAt": "2026-10-08T08:49:44.623Z",
   "prototypes": [
     {
       "id": "folder-1790645030471-rnd61y",
@@ -79,6 +79,12 @@
           "kind": "item",
           "title": "检查任务详情",
           "itemKey": "prototypes/task-execution"
+        },
+        {
+          "id": "item-prototypes-rule-management",
+          "kind": "item",
+          "title": "规则管理",
+          "itemKey": "prototypes/rule-management"
         }
       ]
     },
@@ -137,7 +143,7 @@
             {
               "id": "item-prototypes-risk-rule-management",
               "kind": "item",
-              "title": "risk-rule-management",
+              "title": "风控规则模板",
               "itemKey": "prototypes/risk-rule-management"
             }
           ]
@@ -185,6 +191,12 @@
               "itemKey": "prototypes/digital-compliance-detection"
             }
           ]
+        },
+        {
+          "id": "folder-1791449376058-pysi0e",
+          "kind": "folder",
+          "title": "数字合规官10月",
+          "children": []
         }
       ]
     },
@@ -266,6 +278,12 @@
               "kind": "item",
               "title": "报名信息弹窗 第二版",
               "itemKey": "prototypes/registration-info-modal-copy"
+            },
+            {
+              "id": "item-prototypes-registration-info-modal-copy-copy2",
+              "kind": "item",
+              "title": "报名信息弹窗 第二版 副本2",
+              "itemKey": "prototypes/registration-info-modal-copy-copy2"
             }
           ]
         },

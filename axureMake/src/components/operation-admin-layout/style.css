@@ -10,6 +10,9 @@
 .operation-admin-sider {
   background: #fff !important;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .operation-admin-logo {
@@ -34,9 +37,14 @@
   white-space: nowrap;
 }
 
+.operation-admin-menu-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .operation-admin-menu {
   border-right: none;
-  padding-top: 8px;
 }
 
 .operation-admin-menu .ant-menu-item {
@@ -94,11 +102,14 @@
   margin-right: 8px;
 }
 
+.operation-admin-sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
 .operation-admin-collapse {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   cursor: pointer;
   padding: 8px;
   color: #999;
@@ -115,6 +126,10 @@
 /* 主布局 */
 .operation-admin-main {
   background: #f0f2f5;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* 顶部导航栏 */
@@ -190,10 +205,20 @@
   color: #999;
 }
 
+.operation-admin-menu-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.operation-admin-menu-wrapper::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 2px;
+}
+
 /* 主内容区 */
 .operation-admin-content {
   padding: 16px;
-  overflow: auto;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .operation-admin-content-inner {

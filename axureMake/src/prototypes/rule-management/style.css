@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+.rule-mgmt-container {
+  padding: 0;
+}
+
+/* 查询区域 Card 样式 */
+.rule-query-card {
+  background: #fff;
+  margin-bottom: 16px;
+  border: 1px solid #e8e8e8;
+}
+
+.query-card-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.query-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-blue-bar {
+  width: 4px;
+  height: 16px;
+  background: #1890ff;
+  border-radius: 2px;
+}
+
+.title-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.query-collapse-trigger {
+  cursor: pointer;
+  color: #999;
+}
+
+.query-card-body {
+  padding: 16px;
+}
+
+.query-form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.custom-date-range-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.date-separator {
+  color: #999;
+}
+
+.date-icon {
+  margin-left: 4px;
+  font-size: 14px;
+}
+
+.query-form-actions {
+  grid-column: span 4;
+  text-align: right;
+  margin-top: 8px;
+}
+
+.btn-search {
+  margin-right: 8px;
+}
+
+/* 规则数据列表 Card */
+.rule-list-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+}
+
+.rule-list-toolbar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.setting-icon-box {
+  cursor: pointer;
+  color: #666;
+}
+
+.add-rule-btn {
+  cursor: pointer;
+  color: #1890ff;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* 表格样式 */
+.rule-management-table .ant-table-thead > tr > th {
+  background: #fafafa;
+  font-weight: 600;
+}
+
+.remark-text-cell {
+  max-width: 280px;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.remark-text-collapsed {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 22px;
+  max-height: 44px;
+}
+
+.remark-text-expanded {
+  line-height: 22px;
+}
+
+.remark-toggle-btn {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #1890ff;
+  cursor: pointer;
+  line-height: 22px;
+}
+
+.table-action-links {
+  display: flex;
+  gap: 8px;
+}
+
+.action-link-blue {
+  color: #1890ff;
+}
+
+.action-link-red {
+  color: #ff4d4f;
+}
+
+/* 分页样式 */
+.rule-list-pagination {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ==================== 新增页面视图专属样式 ==================== */
+.add-form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 24px;
+  row-gap: 8px;
+}
+
+.form-item-required .ant-form-item-label > label::before {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+}
+
+.add-page-footer-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0 16px 0;
+}
+
+.btn-confirm-submit {
+  width: 88px;
+  height: 36px;
+  font-size: 14px;
+}
