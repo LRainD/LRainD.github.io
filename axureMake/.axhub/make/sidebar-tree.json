@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T08:49:44.623Z",
+  "updatedAt": "2026-10-08T08:59:23.814Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-winner-annual-report-insurance-check",
+      "kind": "item",
+      "title": "winner annual report insurance check",
+      "itemKey": "prototypes/winner-annual-report-insurance-check"
+    },
     {
       "id": "folder-1790645030471-rnd61y",
       "kind": "folder",

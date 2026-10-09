@@ -17,8 +17,6 @@ import {
   DatePicker,
   Pagination,
   Empty,
-  TreeSelect,
-  Checkbox,
   Cascader
 } from 'antd';
 import {
@@ -28,7 +26,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { mockRuleData, type RuleRecord, orgTreeData, checkStageOptions } from './mock';
+import { mockRuleData, type RuleRecord, checkStageOptions } from './mock';
 import './style.css';
 
 const { RangePicker } = DatePicker;
@@ -101,13 +99,6 @@ const Component: React.FC = () => {
       key: 'checkType',
       width: 90,
       render: (val) => (val === 'manual' ? '人工检查' : '系统识别')
-    },
-    {
-      title: '适用组织',
-      dataIndex: 'organization',
-      key: 'organization',
-      width: 150,
-      render: (organization, record) => (record.checkType === 'system' ? '-' : organization || '-')
     },
     {
       title: '检查标准',
@@ -272,10 +263,6 @@ const Component: React.FC = () => {
                         />
                       </Form.Item>
 
-                      <Form.Item label="适用组织" name="organization">
-                        <Input placeholder="请输入适用组织" allowClear />
-                      </Form.Item>
-
                       <Form.Item label="业务域" name="businessDomain">
                         <Select
                           defaultValue="yunjucai"
@@ -399,18 +386,6 @@ const Component: React.FC = () => {
                             { label: '人工检查', value: 'manual' }
                           ]}
                         />
-                      </Form.Item>
-
-                      <Form.Item label="适用组织" name="organization" required className="form-item-required">
-                        <Space.Compact style={{ width: '100%' }}>
-                          <TreeSelect
-                            style={{ width: '100%' }}
-                            placeholder="请选择"
-                            treeData={orgTreeData}
-                            treeDefaultExpandAll
-                          />
-                          <Checkbox style={{ marginLeft: 8, whiteSpace: 'nowrap' }}>包含下级</Checkbox>
-                        </Space.Compact>
                       </Form.Item>
 
                       <Form.Item label="业务域" name="domain" required className="form-item-required">

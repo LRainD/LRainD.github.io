@@ -77,16 +77,18 @@ export const checkStageOptions = [
     value: 'zhaobiao',
     label: '招标/采购阶段',
     children: [
-      { value: 'yuebiao', label: '约标阶段' },
-      { value: 'fabiao', label: '发标阶段' },
-      { value: 'kaibiao', label: '开标阶段' },
-      { value: 'pingbiao', label: '评标阶段' },
-      { value: 'dingbiao', label: '定标阶段' }
+      { value: 'caigoushenqing', label: '采购申请阶段' },
+      { value: 'yuebiao', label: '约标/发起阶段' },
+      { value: 'fabiao', label: '发标/响应阶段' },
+      { value: 'kaibiao', label: '开标/开启阶段' },
+      { value: 'pingbiao', label: '评标/评审阶段' },
+      { value: 'dingbiao', label: '定标/成交阶段' }
     ]
   },
   {
     value: 'hetong',
-    label: '合同阶段'
+    label: '合同阶段',
+    children: [{ value: 'hetongqianding', label: '合同签署' }]
   }
 ];
 
