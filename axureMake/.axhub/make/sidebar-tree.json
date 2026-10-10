@@ -1,13 +1,7 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T08:59:23.814Z",
+  "updatedAt": "2026-10-09T07:13:25.969Z",
   "prototypes": [
-    {
-      "id": "item-prototypes-winner-annual-report-insurance-check",
-      "kind": "item",
-      "title": "winner annual report insurance check",
-      "itemKey": "prototypes/winner-annual-report-insurance-check"
-    },
     {
       "id": "folder-1790645030471-rnd61y",
       "kind": "folder",
@@ -202,7 +196,26 @@
           "id": "folder-1791449376058-pysi0e",
           "kind": "folder",
           "title": "数字合规官10月",
-          "children": []
+          "children": [
+            {
+              "id": "item-prototypes-winner-annual-report-insurance-check",
+              "kind": "item",
+              "title": "中标人最新公示年报参保人数过少",
+              "itemKey": "prototypes/winner-annual-report-insurance-check"
+            },
+            {
+              "id": "item-prototypes-winner-establish-date-to-bid-date-check",
+              "kind": "item",
+              "title": "中标人成立日期到开标日期过短",
+              "itemKey": "prototypes/winner-establish-date-to-bid-date-check"
+            },
+            {
+              "id": "item-prototypes-supplier-establish-date-too-short",
+              "kind": "item",
+              "title": "分供商成立日期过短",
+              "itemKey": "prototypes/supplier-establish-date-too-short"
+            }
+          ]
         }
       ]
     },

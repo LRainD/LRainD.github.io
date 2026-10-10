@@ -1,6 +1,6 @@
 /**
- * @name 中标人最新公示年报参保人数过少
- * @description 风控预警中心-分供商规则：校验中标人最新公示年报的参保人数是否过少。
+ * @name 分供商最新公示年报参保人数过少
+ * @description 风控预警中心-分供商规则：校验分供商最新公示年报的参保人数是否过少。
  *              整页复用组件 src/components/risk-rule-config-page，本页只提供规则名称、规则说明、配置项与 2 个规则专有列。
  * @reference 规则截图：中标人最新公示年报参保人数过少
  */
@@ -69,7 +69,7 @@ const treeData = DEFAULT_RULE_TREE.map(group =>
         ...group,
         children: [
           ...group.children,
-          { title: '中标人最新公示年报参保人数过少', key: 'winner_insurance_check', type: '股', status: '启', isGuest: true, iconType: 'red' as const }
+          { title: '分供商最新公示年报参保人数过少', key: 'winner_insurance_check', type: '股', status: '启', isGuest: true, iconType: 'red' as const }
         ]
       }
     : group
@@ -78,8 +78,8 @@ const treeData = DEFAULT_RULE_TREE.map(group =>
 const Component = function WinnerAnnualReportInsuranceCheckPage() {
   return (
     <RiskRuleConfigPage
-      ruleName="中标人最新公示年报参保人数过少"
-      ruleDescription="校验中标人最新公示年报的参保人数，低于最低参保人数将会预警/拦截 数据来源：启信宝"
+      ruleName="分供商最新公示年报参保人数过少"
+      ruleDescription="校验分供商最新公示年报的参保人数，低于最低参保人数将会预警/拦截 数据来源：启信宝"
       defaultRuleEnabled
       config={config}
       extraColumns={extraColumns}
