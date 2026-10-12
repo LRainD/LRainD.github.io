@@ -20,7 +20,9 @@ import {
   Eye,
   Upload as UploadIcon,
   Download,
-  FileSpreadsheet
+  FileSpreadsheet,
+  CircleCheck,
+  CircleX
 } from 'lucide-react';
 import {
   Button,
@@ -34,7 +36,11 @@ import {
   Space,
   Card,
   Upload,
-  Popconfirm
+  Checkbox,
+  Popconfirm,
+  Spin,
+  Row,
+  Col
 } from 'antd';
 import type {
   AxureProps,
@@ -42,7 +48,9 @@ import type {
   EventItem
 } from '../../common/axure-types';
 
-import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
+import OperationAdminLayout, {
+  DEFAULT_MENU_ITEMS
+} from '../../components/operation-admin-layout';
 import './style.css';
 
 const { TextArea } = Input;
@@ -54,63 +62,126 @@ const currentUser = {
   name: 'jctest1',
 };
 
-// 列入来源选项
+// 录入来源选项
 const sourceOptions = [
   { label: '外部数据同步', value: '外部数据同步' },
   { label: '人工录入', value: '人工录入' },
-  { label: '系统检测', value: '系统检测' },
 ];
 
 // 组织机构选项
 const organizationOptions = [
-  { label: '中建一局', value: '中建一局' },
-  { label: '中建二局', value: '中建二局' },
-  { label: '中建三局', value: '中建三局' },
-  { label: '中建四局', value: '中建四局' },
-  { label: '中建八局', value: '中建八局' },
+  { label: '中建五洲工程装备有限公司', value: '中建五洲工程装备有限公司' },
+  { label: '南京华建检测技术有限公司', value: '南京华建检测技术有限公司' },
+  { label: '中建安装集团有限公司华北分公司', value: '中建安装集团有限公司华北分公司' },
+  { label: '中建安装集团有限公司国际工程分公司', value: '中建安装集团有限公司国际工程分公司' },
+  { label: '中建安装集团有限公司南方分公司', value: '中建安装集团有限公司南方分公司' },
+  { label: '中建安装集团有限公司上海分公司', value: '中建安装集团有限公司上海分公司' },
+  { label: '中建安装集团有限公司西安分公司', value: '中建安装集团有限公司西安分公司' },
 ];
+
+const controlCategoryMap: Record<string, string> = {
+  第2种管控情形: '云筑网总部禁用分供商',
+  第3种管控情形: '评价不合格分供商',
+  第4种管控情形: '合作不良',
+  第5种管控情形: '涉诉涉裁风险分供商',
+  第6种管控情形: '过程履约评价不良分供商',
+  第7种管控情形: '报名关联行为分供商',
+  第8种管控情形: '结算失信分供商',
+  第9种管控情形: '人力专项排查分供商',
+  第10种管控情形: '纪巡审认定违规分供商',
+};
+
+const controlSituationOptions = [
+  ...Array.from({ length: 10 }, (_, index) => {
+    const value = `第${index + 1}种管控情形`;
+    return { label: value, value };
+  }),
+  { label: '其他管控情形', value: '其他管控情形' },
+];
+
+const menuItems = DEFAULT_MENU_ITEMS.map((item) => {
+  if (item && typeof item === 'object' && 'key' in item && item.key === 'risk_warning_center') {
+    return {
+      ...item,
+      children: [
+        ...((item.children as any[]) || []),
+        { key: 'negative_enterprise_list', label: '负面企业清单' },
+      ],
+    };
+  }
+  return item;
+});
 
 // 导入模板列定义（用于模板下载预览）
 const TEMPLATE_COLUMNS = [
-  { key: 'enterpriseName', title: '企业名称', required: true, width: 190 },
-  { key: 'creditCode', title: '统一社会信用代码', required: true, width: 175 },
-  { key: 'source', title: '列入来源', required: true, width: 105 },
-  { key: 'organization', title: '列入组织', required: true, width: 105 },
-  { key: 'includeDate', title: '列入日期', required: true, width: 100 },
-  { key: 'reason', title: '列入原因', required: true, width: 210 },
-  { key: 'remark', title: '备注', required: false, width: 120 },
+  { key: 'serialNumber', title: '序号', required: false, width: 70 },
+  { key: 'organization', title: '列入组织', required: true, width: 180 },
+  { key: 'controlSituation', title: '管控情形', required: true, width: 150 },
+  { key: 'controlCategory', title: '管控类别', required: false, width: 200 },
+  { key: 'enterpriseName', title: '分供商名称', required: true, width: 190 },
+  { key: 'creditCode', title: '统一社会信用代码（非必填）', required: false, width: 210 },
+  { key: 'reason', title: '列入原因', required: false, width: 210 },
+  { key: 'involvedPerson', title: '涉及人员', required: false, width: 120 },
+  { key: 'contact', title: '涉及人员联系方式', required: false, width: 160 },
+  { key: 'effectiveTime', title: '生效时间', required: false, width: 110 },
+  { key: 'endTime', title: '结束时间', required: false, width: 110 },
+  { key: 'remark', title: '备注', required: false, width: 160 },
 ];
 
 // 导入模板示例数据
 const TEMPLATE_SAMPLE_ROWS = [
   {
+    serialNumber: 1,
     enterpriseName: '中建云筑建材贸易有限公司',
     creditCode: '91110108MA01W2XY3K',
-    source: '外部数据同步',
-    organization: '中建一局',
-    includeDate: '2026-03-12',
+    organization: '中建五洲工程装备有限公司',
+    controlSituation: '第2种管控情形',
+    controlCategory: '云筑网总部禁用分供商',
+    effectiveTime: '2026-03-12',
+    endTime: '2027-03-11',
     reason: '被列为失信被执行人，未履行生效法律文书确定的义务',
-    remark: '来源：中国执行信息公开网',
+    involvedPerson: '张伟',
+    contact: '138****2106',
+    remark: '已完成信用修复',
   },
   {
+    serialNumber: 2,
     enterpriseName: '江苏宏图建设集团有限公司',
     creditCode: '91320100704917283X',
-    source: '外部数据同步',
-    organization: '中建二局',
-    includeDate: '2026-02-08',
+    organization: '南京华建检测技术有限公司',
+    controlSituation: '第3种管控情形',
+    controlCategory: '评价不合格分供商',
+    effectiveTime: '2026-02-08',
+    endTime: '长期',
     reason: '存在重大税收违法失信行为',
+    involvedPerson: '李明',
+    contact: '139****5278',
     remark: '',
   },
   {
+    serialNumber: 3,
     enterpriseName: '河北诚信劳务分包有限公司',
     creditCode: '91130105782011564M',
-    source: '系统检测',
-    organization: '中建三局',
-    includeDate: '2026-05-19',
+    organization: '中建安装集团有限公司华北分公司',
+    controlSituation: '第4种管控情形',
+    controlCategory: '合作不良',
+    effectiveTime: '2026-05-19',
+    endTime: '2026-11-18',
     reason: '近一年内 3 次中标后无故放弃中标资格',
+    involvedPerson: '王强',
+    contact: '136****8093',
     remark: '',
   },
 ];
+
+const IMPORT_PREVIEW_COLUMNS = TEMPLATE_COLUMNS.map((column) => ({
+  title: column.required ? (
+    <span><span className="excel-required">*</span>{column.title}</span>
+  ) : column.title,
+  dataIndex: column.key,
+  key: column.key,
+  width: column.width,
+}));
 
 // 初始负面企业清单数据
 const initialData = [
@@ -119,10 +190,16 @@ const initialData = [
     enterpriseName: '中建云筑建材贸易有限公司',
     creditCode: '91110108MA01W2XY3K',
     source: '外部数据同步',
-    organization: '中建一局',
+    organization: '中建五洲工程装备有限公司',
+    controlSituation: '第2种管控情形',
+    controlCategory: '云筑网总部禁用分供商',
     includeDate: '2026-03-12',
+    effectiveTime: '2026-03-12',
+    endTime: '2027-03-11',
+    isLongTerm: false,
+    attachments: ['失信信息公示.pdf'],
     reason: '企业被列为失信被执行人，未履行生效法律文书确定的义务',
-    remark: '来源：中国执行信息公开网',
+    remark: '已完成信用修复',
     creator: '系统同步',
     updater: 'jctest1',
     createTime: '2026-03-12 08:30:00',
@@ -133,8 +210,14 @@ const initialData = [
     enterpriseName: '江苏宏图建设集团有限公司',
     creditCode: '91320100704917283X',
     source: '外部数据同步',
-    organization: '中建二局',
+    organization: '南京华建检测技术有限公司',
+    controlSituation: '第3种管控情形',
+    controlCategory: '评价不合格分供商',
     includeDate: '2026-02-08',
+    effectiveTime: '2026-02-08',
+    endTime: '',
+    isLongTerm: true,
+    attachments: ['税务风险说明.docx'],
     reason: '存在重大税收违法失信行为，被税务部门列入黑名单',
     remark: '长期有效，需人工复核后移出',
     creator: '系统同步',
@@ -146,9 +229,15 @@ const initialData = [
     id: '3',
     enterpriseName: '河北诚信劳务分包有限公司',
     creditCode: '91130105782011564M',
-    source: '系统检测',
-    organization: '中建三局',
+    source: '人工录入',
+    organization: '中建安装集团有限公司华北分公司',
+    controlSituation: '第4种管控情形',
+    controlCategory: '合作不良',
     includeDate: '2026-05-19',
+    effectiveTime: '2026-05-19',
+    endTime: '2026-11-18',
+    isLongTerm: false,
+    attachments: [],
     reason: '近一年内发生 3 次中标后无故放弃中标资格',
     remark: '',
     creator: 'jctest1',
@@ -161,8 +250,14 @@ const initialData = [
     enterpriseName: '山东金鼎工程机械租赁有限公司',
     creditCode: '91370100MA3D5K9L2P',
     source: '人工录入',
-    organization: '中建四局',
+    organization: '中建安装集团有限公司国际工程分公司',
+    controlSituation: '第5种管控情形',
+    controlCategory: '涉诉涉裁风险分供商',
     includeDate: '2026-01-15',
+    effectiveTime: '2026-01-15',
+    endTime: '2027-01-14',
+    isLongTerm: false,
+    attachments: ['行政处罚决定书.pdf'],
     reason: '因安全生产责任事故被主管部门行政处罚',
     remark: '处罚决定书编号：鲁建安监〔2026〕012 号',
     creator: '王管理(wangguanli)',
@@ -175,8 +270,14 @@ const initialData = [
     enterpriseName: '北京华信电力设备有限公司',
     creditCode: '91110105MA01Y7QR8T',
     source: '外部数据同步',
-    organization: '中建八局',
+    organization: '中建安装集团有限公司南方分公司',
+    controlSituation: '第6种管控情形',
+    controlCategory: '过程履约评价不良分供商',
     includeDate: '2025-11-06',
+    effectiveTime: '2025-11-06',
+    endTime: '',
+    isLongTerm: true,
+    attachments: ['案件核查记录.pdf'],
     reason: '存在向评标专家行贿的犯罪记录',
     remark: '企业已完成整改并通过复核',
     creator: '系统同步',
@@ -189,8 +290,14 @@ const initialData = [
     enterpriseName: '深圳市恒泰消防工程有限公司',
     creditCode: '91440300MA5EK3M4X7',
     source: '外部数据同步',
-    organization: '中建八局',
+    organization: '中建安装集团有限公司上海分公司',
+    controlSituation: '第7种管控情形',
+    controlCategory: '报名关联行为分供商',
     includeDate: '2025-12-24',
+    effectiveTime: '2025-12-24',
+    endTime: '2026-12-23',
+    isLongTerm: false,
+    attachments: [],
     reason: '被市场监管部门列入严重违法失信企业名单',
     remark: '',
     creator: '系统同步',
@@ -202,6 +309,30 @@ const initialData = [
 
 // --- Component ---
 
+// 结束时间输入：勾选「长期」后不设置具体结束时间
+const EndTimeField = ({ value, onChange, disabled }: any) => {
+  const isLongTerm = value === '长期';
+  return (
+    <Space align="center" size={8}>
+      <DatePicker
+        format="YYYY-MM-DD"
+        style={{ width: 320 }}
+        value={isLongTerm || !value ? undefined : value}
+        onChange={(val: any) => onChange?.(val)}
+        disabled={disabled || isLongTerm}
+        placeholder="请选择结束时间"
+      />
+      <Checkbox
+        checked={isLongTerm}
+        disabled={disabled}
+        onChange={(e) => onChange?.(e.target.checked ? '长期' : undefined)}
+      >
+        长期
+      </Checkbox>
+    </Space>
+  );
+};
+
 const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const { eventList = [] } = props as AxureProps & { eventList?: EventItem[] };
 
@@ -211,25 +342,20 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | 'view'>('add');
   const [editingRecord, setEditingRecord] = useState<any>(null);
+  const [attachmentFileList, setAttachmentFileList] = useState<any[]>([]);
+  const [isAttachmentOpen, setIsAttachmentOpen] = useState(false);
+  const [previewAttachments, setPreviewAttachments] = useState<string[]>([]);
   const [isImportOpen, setIsImportOpen] = useState(false);
-  const [importFileList, setImportFileList] = useState<any[]>([]);
+  const [importStatus, setImportStatus] = useState<'idle' | 'loading' | 'success' | 'failure'>('idle');
+  const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
+  const [importPreviewKeyword, setImportPreviewKeyword] = useState('');
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
   const [form] = Form.useForm();
   const [searchForm] = Form.useForm();
+  const [importPreviewForm] = Form.useForm();
+  const selectedControlSituation = Form.useWatch('controlSituation', form);
 
-  // Helper: 生成 "YYYY-MM-DD HH:mm:ss" 格式的当前时间
-  const getCurrentTime = () =>
-    new Date()
-      .toLocaleString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-      })
-      .replace(/\//g, '-');
+  const getCurrentTime = () => dayjs().format('YYYY-MM-DD');
 
   // 查询
   const handleSearch = useCallback(() => {
@@ -257,24 +383,50 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
   // 导入清单
   const openImportModal = useCallback(() => {
-    setImportFileList([]);
+    setImportStatus('idle');
     setIsImportOpen(true);
   }, []);
 
   const closeImportModal = useCallback(() => {
     setIsImportOpen(false);
-    setImportFileList([]);
+    setImportStatus('idle');
   }, []);
 
+  const startImportLoading = useCallback(() => {
+    setImportStatus('loading');
+  }, []);
+
+  const handleImportSuccess = useCallback(() => {
+    setImportStatus('success');
+  }, []);
+
+  const openImportPreview = useCallback(() => {
+    importPreviewForm.resetFields();
+    setImportPreviewKeyword('');
+    setIsImportPreviewOpen(true);
+  }, [importPreviewForm]);
+
+  const handleImportPreviewSearch = useCallback(() => {
+    setImportPreviewKeyword(importPreviewForm.getFieldValue('enterpriseName')?.trim() || '');
+  }, [importPreviewForm]);
+
+  const handleImportPreviewReset = useCallback(() => {
+    importPreviewForm.resetFields();
+    setImportPreviewKeyword('');
+  }, [importPreviewForm]);
+
   const handleImportConfirm = useCallback(() => {
-    if (importFileList.length === 0) {
-      message.warning('请先选择需要导入的文件');
-      return;
-    }
-    message.success('导入任务已提交，系统正在解析校验，请稍后刷新列表查看结果');
-    setIsImportOpen(false);
-    setImportFileList([]);
-  }, [importFileList]);
+    message.success('导入成功');
+    closeImportModal();
+  }, [closeImportModal]);
+
+  const handleImportFailure = useCallback(() => {
+    setImportStatus('failure');
+  }, []);
+
+  const handleDownloadFailure = useCallback(() => {
+    message.success('失败原因下载中：负面企业清单导入失败原因.xlsx');
+  }, []);
 
   const handleDownloadTemplate = useCallback(() => {
     message.success('模板下载中：负面企业清单导入模板.xlsx');
@@ -299,16 +451,28 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           creditCode: record.creditCode,
           source: record.source,
           organization: record.organization,
+          controlSituation: record.controlSituation,
+          controlCategory: record.controlCategory,
           includeDate: record.includeDate ? dayjs(record.includeDate) : undefined,
+          effectiveTime: record.effectiveTime ? dayjs(record.effectiveTime) : undefined,
+          endTime: record.isLongTerm ? '长期' : record.endTime ? dayjs(record.endTime) : undefined,
           reason: record.reason,
           remark: record.remark,
         });
+        setAttachmentFileList(
+          (record.attachments || []).map((name: string, index: number) => ({
+            uid: `${record.id}-${index}`,
+            name,
+            status: 'done',
+          }))
+        );
       } else {
         setEditingRecord(null);
+        setAttachmentFileList([]);
         form.resetFields();
         form.setFieldsValue({
           source: '人工录入',
-          organization: '中建一局',
+          organization: '中建五洲工程装备有限公司',
           includeDate: dayjs(),
         });
       }
@@ -320,16 +484,34 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     setEditingRecord(null);
+    setAttachmentFileList([]);
     form.resetFields();
   }, [form]);
+
+  const openAttachmentModal = useCallback((attachments: string[]) => {
+    setPreviewAttachments(attachments);
+    setIsAttachmentOpen(true);
+  }, []);
 
   const onFinish = useCallback(
     (values: any) => {
       const currentTime = getCurrentTime();
+      const isLongTerm = values.endTime === '长期';
       const commonFields = {
         source: values.source,
         organization: values.organization,
+        controlSituation: values.controlSituation,
+        controlCategory: values.controlCategory,
         includeDate: values.includeDate ? dayjs(values.includeDate).format('YYYY-MM-DD') : '',
+        effectiveTime: values.effectiveTime
+          ? dayjs(values.effectiveTime).format('YYYY-MM-DD')
+          : '',
+        endTime:
+          isLongTerm || !values.endTime
+            ? ''
+            : dayjs(values.endTime).format('YYYY-MM-DD'),
+        isLongTerm,
+        attachments: attachmentFileList.map((file) => file.name),
         reason: values.reason,
         remark: values.remark || '',
       };
@@ -380,7 +562,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       }
       closeModal();
     },
-    [modalType, dataSource, editingRecord, eventList, closeModal]
+    [modalType, dataSource, editingRecord, eventList, attachmentFileList, closeModal]
   );
 
   // Expose actions via ref
@@ -432,9 +614,30 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       width: 240,
     },
     { title: '统一社会信用代码', dataIndex: 'creditCode', key: 'creditCode', width: 200 },
-    { title: '列入来源', dataIndex: 'source', key: 'source', width: 120 },
+    { title: '录入来源', dataIndex: 'source', key: 'source', width: 120 },
     { title: '列入组织', dataIndex: 'organization', key: 'organization', width: 120 },
+    { title: '管控情形', dataIndex: 'controlSituation', key: 'controlSituation', width: 150 },
+    { title: '管控类别', dataIndex: 'controlCategory', key: 'controlCategory', width: 220 },
     { title: '列入日期', dataIndex: 'includeDate', key: 'includeDate', width: 120 },
+    { title: '生效日期', dataIndex: 'effectiveTime', key: 'effectiveTime', width: 120 },
+    {
+      title: '结束日期',
+      key: 'endTime',
+      width: 180,
+      render: (_: any, record: any) => (record.isLongTerm ? '长期' : record.endTime || ''),
+    },
+    {
+      title: '附件',
+      dataIndex: 'attachments',
+      key: 'attachments',
+      width: 110,
+      render: (attachments: string[]) =>
+        attachments?.length ? (
+          <Button type="link" size="small" onClick={() => openAttachmentModal(attachments)}>
+            查看附件
+          </Button>
+        ) : '-',
+    },
     { title: '列入人', dataIndex: 'creator', key: 'creator', width: 140 },
     { title: '更新时间', dataIndex: 'updateTime', key: 'updateTime', width: 180 },
     { title: '更新人', dataIndex: 'updater', key: 'updater', width: 120 },
@@ -481,43 +684,167 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     if (organizationFilter && item.organization !== organizationFilter) {
       return false;
     }
+    if (filters.controlSituation && item.controlSituation !== filters.controlSituation) {
+      return false;
+    }
+    const creditCodeKeyword = String(filters.creditCode || '').trim().toLowerCase();
+    if (creditCodeKeyword && !item.creditCode.toLowerCase().includes(creditCodeKeyword)) {
+      return false;
+    }
+    // 日期范围过滤（YYYY-MM-DD 字符串可直接比较；长期记录无结束日期，筛结束日期时不计入）
+    const includeDateRange = filters.includeDateRange;
+    if (includeDateRange?.length === 2) {
+      const d = item.includeDate;
+      if (!d || d < includeDateRange[0].format('YYYY-MM-DD') || d > includeDateRange[1].format('YYYY-MM-DD')) {
+        return false;
+      }
+    }
+    const effectiveTimeRange = filters.effectiveTimeRange;
+    if (effectiveTimeRange?.length === 2) {
+      const d = item.effectiveTime;
+      if (!d || d < effectiveTimeRange[0].format('YYYY-MM-DD') || d > effectiveTimeRange[1].format('YYYY-MM-DD')) {
+        return false;
+      }
+    }
+    const endTimeRange = filters.endTimeRange;
+    if (endTimeRange?.length === 2) {
+      const d = item.endTime;
+      if (!d || d < endTimeRange[0].format('YYYY-MM-DD') || d > endTimeRange[1].format('YYYY-MM-DD')) {
+        return false;
+      }
+    }
+    // 更新时间范围（精确到时分秒）
+    const updateTimeRange = filters.updateTimeRange;
+    if (updateTimeRange?.length === 2) {
+      const t = item.updateTime;
+      if (!t || dayjs(t).isBefore(updateTimeRange[0]) || dayjs(t).isAfter(updateTimeRange[1])) {
+        return false;
+      }
+    }
+    const creatorKeyword = String(filters.creator || '').trim().toLowerCase();
+    if (creatorKeyword && !String(item.creator || '').toLowerCase().includes(creatorKeyword)) {
+      return false;
+    }
+    const updaterKeyword = String(filters.updater || '').trim().toLowerCase();
+    if (updaterKeyword && !String(item.updater || '').toLowerCase().includes(updaterKeyword)) {
+      return false;
+    }
     return true;
   });
 
-  return (
-    <CentralizedProcurementLayout
-      username={currentUser.name}
-      activeMenuKey="negative-enterprise-list"
-      defaultOpenGroupKeys={['risk-control']}
-    >
-      {/* 面包屑 */}
-      <div className="breadcrumb">
-        <span>风控预警中心</span>
-        <span className="separator">&gt;</span>
-        <span className="current">负面企业清单</span>
-      </div>
+  const filteredImportPreviewData = TEMPLATE_SAMPLE_ROWS.filter((item) =>
+    item.enterpriseName.toLowerCase().includes(importPreviewKeyword.toLowerCase())
+  );
 
+  return (
+    <OperationAdminLayout
+      activeMenuKey="negative_enterprise_list"
+      defaultOpenKeys={['risk_warning_center']}
+      menuItems={menuItems as any}
+      showOrgBar={false}
+      breadcrumbItems={[
+        { label: '风控预警中心' },
+        { label: '负面企业清单', active: true },
+      ]}
+    >
       {/* 查询区域 */}
-      <Card className="search-card" size="small">
-        <Form form={searchForm} layout="inline" className="search-form">
-          <Form.Item label="企业关键字" name="keyword">
-            <Input placeholder="请输入企业名称或统一社会信用代码" allowClear style={{ width: 300 }} />
-          </Form.Item>
-          <Form.Item label="列入组织" name="organization">
-            <Select placeholder="请选择列入组织" allowClear style={{ width: 160 }} options={organizationOptions} />
-          </Form.Item>
-          <Form.Item className="search-actions">
-            <Space>
-              <Button type="primary" icon={<Search size={14} />} onClick={handleSearch}>
-                查询
-              </Button>
-              <Button icon={<RotateCcw size={14} />} onClick={handleResetSearch}>
-                重置
-              </Button>
-            </Space>
-          </Form.Item>
+      <div className="filter-card">
+        <div className="filter-title">查询条件</div>
+        <Form form={searchForm} layout="inline" onFinish={handleSearch}>
+          <Row className="filter-form" gutter={[16, 16]}>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">企业关键字：</span>
+                <Form.Item name="keyword" noStyle>
+                  <Input placeholder="请输入企业名称" allowClear />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">统一社会信用代码：</span>
+                <Form.Item name="creditCode" noStyle>
+                  <Input placeholder="请输入统一社会信用代码" allowClear />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">列入组织：</span>
+                <Form.Item name="organization" noStyle>
+                  <Select placeholder="请选择列入组织" allowClear options={organizationOptions} />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">管控情形：</span>
+                <Form.Item name="controlSituation" noStyle>
+                  <Select placeholder="请选择管控情形" allowClear options={controlSituationOptions} />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">列入日期：</span>
+                <Form.Item name="includeDateRange" noStyle>
+                  <DatePicker.RangePicker />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">生效日期：</span>
+                <Form.Item name="effectiveTimeRange" noStyle>
+                  <DatePicker.RangePicker />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">结束日期：</span>
+                <Form.Item name="endTimeRange" noStyle>
+                  <DatePicker.RangePicker />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">更新时间：</span>
+                <Form.Item name="updateTimeRange" noStyle>
+                  <DatePicker.RangePicker showTime />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">列入人：</span>
+                <Form.Item name="creator" noStyle>
+                  <Input placeholder="请输入列入人" allowClear />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className="filter-item">
+                <span className="filter-label">更新人：</span>
+                <Form.Item name="updater" noStyle>
+                  <Input placeholder="请输入更新人" allowClear />
+                </Form.Item>
+              </div>
+            </Col>
+            <Col span={24}>
+              <Space className="filter-actions">
+                <Button type="primary" htmlType="submit" icon={<Search size={14} />} onClick={handleSearch}>
+                  查询
+                </Button>
+                <Button icon={<RotateCcw size={14} />} onClick={handleResetSearch}>
+                  重置
+                </Button>
+              </Space>
+            </Col>
+          </Row>
         </Form>
-      </Card>
+      </div>
 
       {/* 数据表格 */}
       <Card>
@@ -546,11 +873,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             showSizeChanger: true,
             showQuickJumper: true,
           }}
-          scroll={{ x: 1390 }}
+          scroll={{ x: 2380 }}
         />
       </Card>
 
-      {/* 新增/编辑/查看弹窗 */}
       <Modal
         title={
           modalType === 'add'
@@ -562,7 +888,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         open={isModalOpen}
         onCancel={closeModal}
         footer={null}
-        width={620}
+        width={680}
         destroyOnHidden
       >
         <Form form={form} layout="vertical" onFinish={onFinish} style={{ marginTop: 24 }}>
@@ -594,12 +920,12 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           </Form.Item>
 
           <Form.Item
-            label="列入来源"
+            label="录入来源"
             name="source"
-            rules={[{ required: true, message: '请选择列入来源' }]}
+            rules={[{ required: true, message: '请选择录入来源' }]}
           >
             <Select
-              placeholder="请选择列入来源"
+              placeholder="请选择录入来源"
               options={sourceOptions}
               disabled={modalType !== 'edit'}
             />
@@ -618,6 +944,43 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           </Form.Item>
 
           <Form.Item
+            label="管控情形"
+            name="controlSituation"
+            rules={[{ required: true, message: '请选择管控情形' }]}
+          >
+            <Select
+              placeholder="请选择管控情形"
+              options={controlSituationOptions}
+              disabled={modalType === 'view'}
+              onChange={(value) => {
+                form.setFieldValue('controlCategory', controlCategoryMap[value]);
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="管控类别"
+            name="controlCategory"
+            rules={
+              selectedControlSituation && selectedControlSituation !== '第1种管控情形'
+                ? [{ required: true, message: '请输入管控类别' }]
+                : []
+            }
+          >
+            <Input
+              placeholder={
+                selectedControlSituation === '第1种管控情形'
+                  ? '待确认'
+                  : selectedControlSituation === '其他管控情形'
+                    ? '请输入管控类别'
+                    : '选择管控情形后自动带出'
+              }
+              disabled={modalType === 'view' || selectedControlSituation !== '其他管控情形'}
+              maxLength={100}
+            />
+          </Form.Item>
+
+          <Form.Item
             label="列入日期"
             name="includeDate"
             rules={[{ required: true, message: '请选择列入日期' }]}
@@ -628,6 +991,27 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               style={{ width: '100%' }}
               disabled={modalType !== 'edit'}
             />
+          </Form.Item>
+
+          <Form.Item
+            label="生效日期"
+            name="effectiveTime"
+            rules={[{ required: true, message: '请选择生效日期' }]}
+          >
+            <DatePicker
+              placeholder="请选择生效日期"
+              format="YYYY-MM-DD"
+              style={{ width: '100%' }}
+              disabled={modalType === 'view'}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="结束日期"
+            name="endTime"
+            rules={[{ required: true, message: '请选择结束日期，或勾选「长期」' }]}
+          >
+            <EndTimeField disabled={modalType === 'view'} />
           </Form.Item>
 
           <Form.Item
@@ -654,6 +1038,20 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             />
           </Form.Item>
 
+          <Form.Item label="附件">
+            <Upload
+              multiple
+              fileList={attachmentFileList}
+              beforeUpload={() => false}
+              onChange={({ fileList }) => setAttachmentFileList(fileList)}
+              disabled={modalType === 'view'}
+            >
+              {modalType !== 'view' && (
+                <Button icon={<UploadIcon size={14} />}>上传附件</Button>
+              )}
+            </Upload>
+          </Form.Item>
+
           <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
             <Space>
               <Button onClick={closeModal}>{modalType === 'view' ? '关闭' : '取消'}</Button>
@@ -667,38 +1065,134 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         </Form>
       </Modal>
 
+      <Modal
+        title="附件列表"
+        open={isAttachmentOpen}
+        onCancel={() => setIsAttachmentOpen(false)}
+        footer={
+          <Button onClick={() => setIsAttachmentOpen(false)}>关闭</Button>
+        }
+        width={520}
+        destroyOnHidden
+      >
+        <div className="attachment-list">
+          {previewAttachments.map((name, index) => (
+            <Button
+              key={`${name}-${index}`}
+              type="link"
+              icon={<Download size={14} />}
+              onClick={() => message.success(`开始下载：${name}`)}
+            >
+              {name}
+            </Button>
+          ))}
+        </div>
+      </Modal>
+
       {/* 导入弹窗 */}
       <Modal
         title="导入负面企业清单"
         open={isImportOpen}
         onCancel={closeImportModal}
-        onOk={handleImportConfirm}
-        okText="确认导入"
-        cancelText="取消"
+        footer={
+          <Space>
+            <Button onClick={closeImportModal}>关闭</Button>
+            {importStatus === 'success' && (
+              <Popconfirm
+                title="确认导入"
+                description="建议点击预览查看后确认导入。"
+                okText="确认导入"
+                cancelText="取消"
+                onConfirm={handleImportConfirm}
+              >
+                <Button type="primary">确认导入</Button>
+              </Popconfirm>
+            )}
+          </Space>
+        }
         width={560}
         destroyOnHidden
       >
         <div className="import-tip">
           <span>1、请先下载导入模板，按模板要求填写企业信息后再上传；</span>
-          <span>2、支持 .xlsx / .xls / .csv 格式，单次最多导入 500 条；</span>
-          <span>3、统一社会信用代码重复的数据将被自动跳过，不覆盖已有记录。</span>
+          <span>3、请注意！导入不会校验重复数据，请谨慎操作，避免重复导入过多数据。</span>
         </div>
-        <Upload.Dragger
-          accept=".xlsx,.xls,.csv"
-          maxCount={1}
-          fileList={importFileList}
-          beforeUpload={() => false}
-          onChange={({ fileList }) => setImportFileList(fileList)}
-        >
-          <p className="ant-upload-drag-icon">
-            <UploadIcon size={28} color="#3a7fc3" />
-          </p>
-          <p className="ant-upload-text">点击或拖拽文件到此区域上传</p>
-          <p className="ant-upload-hint">仅支持单个文件，文件大小不超过 10MB</p>
-        </Upload.Dragger>
-        <Button type="link" icon={<Download size={14} />} onClick={openTemplatePreview}>
-          下载导入模板
-        </Button>
+        <div className="import-template-action">
+          <Button type="link" icon={<Download size={14} />} onClick={openTemplatePreview}>
+            下载导入模板
+          </Button>
+        </div>
+
+        {importStatus === 'success' && (
+          <div className="import-result import-result-success">
+            <CircleCheck size={40} />
+            <strong>校验成功</strong>
+            <span>本次共校验通过 3 条数据</span>
+            <Button className="import-preview-button" type="primary" size="small" onClick={openImportPreview}>
+              预览
+            </Button>
+          </div>
+        )}
+
+        {importStatus === 'failure' && (
+          <div className="import-result import-result-failure">
+            <CircleX size={40} />
+            <strong>导入失败</strong>
+            <span>文件中存在不符合要求的数据，请下载失败原因查看</span>
+            <Button type="link" size="small" icon={<Download size={14} />} onClick={handleDownloadFailure}>
+              下载失败原因
+            </Button>
+          </div>
+        )}
+
+        {(importStatus === 'idle' || importStatus === 'failure') && (
+          <button type="button" className="import-upload-box" onClick={startImportLoading}>
+            <UploadIcon size={28} />
+            <span className="import-upload-title">点击或拖拽文件到此区域上传</span>
+            <span className="import-upload-hint">仅支持单个文件，文件大小不超过 10MB</span>
+          </button>
+        )}
+
+        {importStatus === 'loading' && (
+          <div className="import-loading">
+            <Spin size="large" />
+            <strong>文件上传解析中...</strong>
+            <span>请稍候，正在读取导入数据</span>
+            <Space size={8}>
+              <Button size="small" type="primary" onClick={handleImportSuccess}>成功</Button>
+              <Button size="small" danger onClick={handleImportFailure}>失败</Button>
+            </Space>
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        title="导入数据预览"
+        open={isImportPreviewOpen}
+        onCancel={() => setIsImportPreviewOpen(false)}
+        footer={<Button onClick={() => setIsImportPreviewOpen(false)}>关闭</Button>}
+        width={1200}
+        destroyOnHidden
+      >
+        <Form form={importPreviewForm} layout="inline" className="import-preview-filter">
+          <Form.Item label="分供商名称" name="enterpriseName">
+            <Input placeholder="请输入分供商名称" allowClear style={{ width: 260 }} />
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Button type="primary" icon={<Search size={14} />} onClick={handleImportPreviewSearch}>查询</Button>
+              <Button icon={<RotateCcw size={14} />} onClick={handleImportPreviewReset}>重置</Button>
+            </Space>
+          </Form.Item>
+        </Form>
+        <Table
+          columns={IMPORT_PREVIEW_COLUMNS}
+          dataSource={filteredImportPreviewData}
+          rowKey="serialNumber"
+          pagination={false}
+          size="small"
+          scroll={{ x: 1770 }}
+        />
       </Modal>
 
       {/* 导入模板预览弹窗（模拟下载到的 Excel 内容） */}
@@ -763,13 +1257,14 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <span>
               带 <span className="excel-required">*</span> 的列为必填项；
             </span>
-            <span>「列入来源」仅可填写：外部数据同步 / 人工录入 / 系统检测；</span>
+            <span>「录入来源」仅可填写：外部数据同步 / 人工录入；</span>
             <span>「列入日期」格式为 YYYY-MM-DD，如 2026-03-12；</span>
+            <span>「生效日期」「结束日期」格式为 YYYY-MM-DD，如 2026-03-12；结束日期可填写「长期」；</span>
             <span>请勿修改模板表头，第 1 行为表头行，示例数据请在导入前删除。</span>
           </div>
         </div>
       </Modal>
-    </CentralizedProcurementLayout>
+    </OperationAdminLayout>
   );
 });
 

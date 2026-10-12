@@ -2,54 +2,67 @@
 
 /* 负面企业清单页面样式 */
 
-/* 面包屑 */
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  margin-bottom: 16px;
-  font-size: 12px;
-  color: #999;
-}
-
-.breadcrumb span:not(.current) {
-  cursor: pointer;
-}
-
-.breadcrumb span:not(.current):hover {
-  color: #3a7fc3;
-}
-
-.breadcrumb .separator {
-  color: #ccc;
-  margin: 0 6px;
-  font-size: 12px;
-}
-
-.breadcrumb .current {
-  color: #333;
-}
-
 /* 查询区域 */
-.search-card {
+.filter-card {
+  background: #fff;
+  padding: 24px;
+  margin-bottom: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.filter-title {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
   margin-bottom: 16px;
 }
 
-.search-form {
+.filter-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: #1890ff;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+.filter-form {
+  width: 100%;
+}
+
+.filter-item {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  row-gap: 12px;
+  gap: 8px;
+  min-width: 0;
 }
 
-.search-form .ant-form-item {
+.filter-label {
+  flex: 0 0 auto;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.filter-item .ant-input,
+.filter-item .ant-select,
+.filter-item .ant-picker {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.filter-item .ant-form-item {
+  flex: 1 1 auto;
+  min-width: 0;
   margin-bottom: 0;
-  margin-inline-end: 24px;
 }
 
-.search-actions {
-  margin-inline-end: 0 !important;
-  margin-left: auto;
+.filter-actions {
+  width: 100%;
+  justify-content: flex-end;
 }
 
 /* 表格工具栏 */
@@ -83,6 +96,13 @@
   gap: 8px;
 }
 
+.attachment-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
 /* 导入弹窗说明 */
 .import-tip {
   display: flex;
@@ -95,6 +115,91 @@
   font-size: 12px;
   line-height: 20px;
   color: #666;
+}
+
+.import-template-action {
+  margin-bottom: 8px;
+}
+
+.import-upload-box {
+  display: flex;
+  width: 100%;
+  min-height: 180px;
+  padding: 28px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  background: #fafafa;
+  color: #3a7fc3;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.import-upload-box:hover {
+  border-color: #1677ff;
+  background: #f5f9ff;
+}
+
+.import-upload-title {
+  font-size: 14px;
+  color: #262626;
+}
+
+.import-upload-hint {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.import-loading,
+.import-result {
+  display: flex;
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background: #fafafa;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.import-loading strong,
+.import-result strong {
+  font-size: 16px;
+  color: #262626;
+}
+
+.import-loading span,
+.import-result span {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.import-result-success > svg {
+  color: #52c41a;
+}
+
+.import-result .import-preview-button,
+.import-result .import-preview-button span {
+  color: #fff;
+}
+
+.import-preview-filter {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.import-result-failure {
+  margin-bottom: 12px;
+}
+
+.import-result-failure > svg {
+  color: #ff4d4f;
 }
 
 /* 导入模板预览（模拟 Excel 表格） */
@@ -192,13 +297,13 @@
 
 /* 响应式适配 */
 @media (max-width: 768px) {
-  .search-form .ant-form-item {
-    margin-inline-end: 0;
-    width: 100%;
+  .filter-item {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .search-actions {
-    margin-left: 0;
+  .filter-actions {
+    justify-content: flex-start;
   }
 
   .table-toolbar {
