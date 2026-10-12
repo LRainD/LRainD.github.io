@@ -1,0 +1,3 @@
+@import "tailwindcss";
+
+/* 页面样式已复用组件 src/components/risk-rule-config-page，本文件仅保留 Tailwind 入口 */

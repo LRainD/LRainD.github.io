@@ -11,9 +11,8 @@ import RiskRuleConfigPage, { DEFAULT_RULE_TREE } from '@/components/risk-rule-co
 import './style.css';
 
 const CHECK_STAGE_OPTIONS = [
-  { label: '报名截止', value: '报名截止' },
-  { label: '报价截止', value: '报价截止' },
-  { label: '编制成交/定标报告', value: '编制成交/定标报告' }
+  { label: '报名资审', value: '报名资审' },
+  { label: '定标/成交报告', value: '定标/成交报告' }
 ];
 
 // 规则配置项默认值
@@ -41,7 +40,7 @@ const extraColumns: ColumnsType<any> = [
         mode="multiple"
         placeholder="请选择校验阶段"
         style={{ width: '100%' }}
-        defaultValue={['报名截止']}
+        defaultValue={['报名资审']}
         options={CHECK_STAGE_OPTIONS}
       />
     )

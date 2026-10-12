@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T07:13:25.969Z",
+  "updatedAt": "2026-10-10T04:07:32.798Z",
   "prototypes": [
     {
       "id": "folder-1790645030471-rnd61y",
@@ -214,6 +214,36 @@
               "kind": "item",
               "title": "分供商成立日期过短",
               "itemKey": "prototypes/supplier-establish-date-too-short"
+            },
+            {
+              "id": "item-prototypes-deal-unit-not-in-sub-library-check",
+              "kind": "item",
+              "title": "成交单位未在本下级库内",
+              "itemKey": "prototypes/deal-unit-not-in-sub-library-check"
+            },
+            {
+              "id": "item-prototypes-public-procurement-limit-check",
+              "kind": "item",
+              "title": "达到公开采购限额，未按要求进行公开和公示",
+              "itemKey": "prototypes/public-procurement-limit-check"
+            },
+            {
+              "id": "item-prototypes-supplier-cancelled-before-contract-check",
+              "kind": "item",
+              "title": "分供商在合同签订前已注销",
+              "itemKey": "prototypes/supplier-cancelled-before-contract-check"
+            },
+            {
+              "id": "item-prototypes-supplier-cancelled-during-bidding-check",
+              "kind": "item",
+              "title": "分供商在招采过程中已注销",
+              "itemKey": "prototypes/supplier-cancelled-during-bidding-check"
+            },
+            {
+              "id": "item-prototypes-supplier-inspection-report-check",
+              "kind": "item",
+              "title": "分供商是否存在有效考察报告",
+              "itemKey": "prototypes/supplier-inspection-report-check"
             }
           ]
         }

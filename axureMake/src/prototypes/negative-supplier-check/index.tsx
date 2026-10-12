@@ -51,12 +51,13 @@ const extraColumns: ColumnsType<any> = [
   {
     title: requiredTitle('校验阶段'),
     key: 'checkStage',
-    width: 180,
+    width: 260,
     render: () => (
       <Select
+        mode="multiple"
         placeholder="请选择校验阶段"
         style={{ width: '100%' }}
-        defaultValue="报名资审"
+        defaultValue={['报名资审']}
         options={CHECK_STAGE_OPTIONS}
       />
     )
@@ -103,7 +104,7 @@ const Component = function NegativeSupplierCheckPage() {
       extraColumns={extraColumns}
       treeData={treeData}
       defaultSelectedRuleKey="supplier_negative_check"
-      tableScrollX={1950}
+      tableScrollX={2030}
     />
   );
 };
