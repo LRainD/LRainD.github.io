@@ -92,11 +92,23 @@ const controlCategoryMap: Record<string, string> = {
 };
 
 const controlSituationOptions = [
-  ...Array.from({ length: 10 }, (_, index) => {
-    const value = `第${index + 1}种管控情形`;
+  ...Array.from({ length: 9 }, (_, index) => {
+    const value = `第${index + 2}种管控情形`;
     return { label: value, value };
   }),
   { label: '其他管控情形', value: '其他管控情形' },
+];
+
+// 模拟企业信息库（新增时按企业名称或统一社会信用代码查询企业）
+const enterpriseRegistry = [
+  { enterpriseName: '中建云筑建材贸易有限公司', creditCode: '91110108MA01W2XY3K' },
+  { enterpriseName: '江苏宏图建设集团有限公司', creditCode: '91320100704917283X' },
+  { enterpriseName: '河北诚信劳务分包有限公司', creditCode: '91130105782011564M' },
+  { enterpriseName: '山东金鼎工程机械租赁有限公司', creditCode: '91370100MA3D5K9L2P' },
+  { enterpriseName: '北京华信电力设备有限公司', creditCode: '91110105MA01Y7QR8T' },
+  { enterpriseName: '深圳市恒泰消防工程有限公司', creditCode: '91440300MA5EK3M4X7' },
+  { enterpriseName: '中建八局第一建设有限公司', creditCode: '91370100MA3B8H2K5D' },
+  { enterpriseName: '青岛海纳电气工程有限公司', creditCode: '91370200MA3P7Q6R9W' },
 ];
 
 const menuItems = DEFAULT_MENU_ITEMS.map((item) => {
@@ -118,13 +130,13 @@ const TEMPLATE_COLUMNS = [
   { key: 'organization', title: '列入组织', required: true, width: 180 },
   { key: 'controlSituation', title: '管控情形', required: true, width: 150 },
   { key: 'controlCategory', title: '管控类别', required: false, width: 200 },
-  { key: 'enterpriseName', title: '分供商名称', required: true, width: 190 },
+  { key: 'enterpriseName', title: '企业名称', required: true, width: 190 },
   { key: 'creditCode', title: '统一社会信用代码（非必填）', required: false, width: 210 },
-  { key: 'reason', title: '列入原因', required: false, width: 210 },
+  { key: 'reason', title: '列入原因', required: true, width: 210 },
   { key: 'involvedPerson', title: '涉及人员', required: false, width: 120 },
   { key: 'contact', title: '涉及人员联系方式', required: false, width: 160 },
-  { key: 'effectiveTime', title: '生效时间', required: false, width: 110 },
-  { key: 'endTime', title: '结束时间', required: false, width: 110 },
+  { key: 'effectiveTime', title: '生效时间', required: true, width: 110 },
+  { key: 'endTime', title: '结束时间', required: true, width: 110 },
   { key: 'remark', title: '备注', required: false, width: 160 },
 ];
 
@@ -309,6 +321,9 @@ const initialData = [
 
 // --- Component ---
 
+// 单个企业最多可上传的附件数量
+const MAX_ATTACHMENT_COUNT = 20;
+
 // 结束时间输入：勾选「长期」后不设置具体结束时间
 const EndTimeField = ({ value, onChange, disabled }: any) => {
   const isLongTerm = value === '长期';
@@ -424,6 +439,12 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     setImportStatus('failure');
   }, []);
 
+  // 上传文件不是规定的导入模板：仅轻提示，不提供失败原因下载
+  const handleInvalidTemplate = useCallback(() => {
+    message.error('导入模板不正确，请下载标准导入模板后重新上传');
+    setImportStatus('idle');
+  }, []);
+
   const handleDownloadFailure = useCallback(() => {
     message.success('失败原因下载中：负面企业清单导入失败原因.xlsx');
   }, []);
@@ -493,6 +514,53 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     setIsAttachmentOpen(true);
   }, []);
 
+  // 手动修改企业名称或统一社会信用代码时，清空另一项，避免两项信息不一致
+  const handleEnterpriseFieldChange = useCallback(
+    (field: 'enterpriseName' | 'creditCode') => {
+      const otherField = field === 'enterpriseName' ? 'creditCode' : 'enterpriseName';
+      if (form.getFieldValue(otherField)) {
+        form.setFieldValue(otherField, '');
+      }
+    },
+    [form]
+  );
+
+  // 按企业名称或统一社会信用代码查询企业信息，并带出另一项
+  const handleQueryEnterprise = useCallback(
+    (field: 'enterpriseName' | 'creditCode') => {
+      const name = (form.getFieldValue('enterpriseName') || '').trim();
+      const code = (form.getFieldValue('creditCode') || '').trim();
+      const keyword = field === 'enterpriseName' ? name : code;
+
+      if (!keyword) {
+        message.warning(
+          field === 'enterpriseName'
+            ? '请先输入企业名称或统一社会信用代码'
+            : '请先输入统一社会信用代码或企业名称'
+        );
+        return;
+      }
+
+      const matched = enterpriseRegistry.find((item) =>
+        field === 'enterpriseName'
+          ? item.enterpriseName.includes(keyword)
+          : item.creditCode.toUpperCase() === keyword.toUpperCase()
+      );
+
+      if (!matched) {
+        message.error('未查询到该企业信息，请核对企业名称或统一社会信用代码');
+        return;
+      }
+
+      form.setFieldsValue({
+        enterpriseName: matched.enterpriseName,
+        creditCode: matched.creditCode,
+      });
+      message.success('已查询到企业信息，已自动带出企业名称和统一社会信用代码');
+    },
+    [form]
+  );
+
   const onFinish = useCallback(
     (values: any) => {
       const currentTime = getCurrentTime();
@@ -518,7 +586,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
       if (modalType === 'add') {
         // 校验统一社会信用代码是否已存在
-        if (dataSource.some((item: any) => item.creditCode === values.creditCode)) {
+        if (
+          values.creditCode &&
+          dataSource.some((item: any) => item.creditCode === values.creditCode)
+        ) {
           message.error('该统一社会信用代码已存在负面清单中，请勿重复添加');
           return;
         }
@@ -898,9 +969,19 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             rules={[{ required: true, message: '请输入企业名称' }]}
           >
             <Input
-              placeholder="请输入企业全称"
+              placeholder="请输入企业全称，或填写统一社会信用代码后查询"
               disabled={modalType !== 'add'}
               maxLength={100}
+              onChange={() => handleEnterpriseFieldChange('enterpriseName')}
+              suffix={
+                modalType === 'add' ? (
+                  <Search
+                    size={16}
+                    className="enterprise-query-icon"
+                    onClick={() => handleQueryEnterprise('enterpriseName')}
+                  />
+                ) : undefined
+              }
             />
           </Form.Item>
 
@@ -908,14 +989,23 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             label="统一社会信用代码"
             name="creditCode"
             rules={[
-              { required: true, message: '请输入统一社会信用代码' },
               { pattern: /^[0-9A-Z]{18}$/, message: '统一社会信用代码为 18 位数字或大写字母' },
             ]}
           >
             <Input
-              placeholder="请输入 18 位统一社会信用代码"
+              placeholder="请输入 18 位统一社会信用代码，或填写企业名称后查询"
               disabled={modalType !== 'add'}
               maxLength={18}
+              onChange={() => handleEnterpriseFieldChange('creditCode')}
+              suffix={
+                modalType === 'add' ? (
+                  <Search
+                    size={16}
+                    className="enterprise-query-icon"
+                    onClick={() => handleQueryEnterprise('creditCode')}
+                  />
+                ) : undefined
+              }
             />
           </Form.Item>
 
@@ -924,11 +1014,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             name="source"
             rules={[{ required: true, message: '请选择录入来源' }]}
           >
-            <Select
-              placeholder="请选择录入来源"
-              options={sourceOptions}
-              disabled={modalType !== 'edit'}
-            />
+            <Select placeholder="请选择录入来源" options={sourceOptions} disabled />
           </Form.Item>
 
           <Form.Item
@@ -962,18 +1048,16 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             label="管控类别"
             name="controlCategory"
             rules={
-              selectedControlSituation && selectedControlSituation !== '第1种管控情形'
+              selectedControlSituation
                 ? [{ required: true, message: '请输入管控类别' }]
                 : []
             }
           >
             <Input
               placeholder={
-                selectedControlSituation === '第1种管控情形'
-                  ? '待确认'
-                  : selectedControlSituation === '其他管控情形'
-                    ? '请输入管控类别'
-                    : '选择管控情形后自动带出'
+                selectedControlSituation === '其他管控情形'
+                  ? '请输入管控类别'
+                  : '选择管控情形后自动带出'
               }
               disabled={modalType === 'view' || selectedControlSituation !== '其他管控情形'}
               maxLength={100}
@@ -989,14 +1073,27 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               placeholder="请选择列入日期"
               format="YYYY-MM-DD"
               style={{ width: '100%' }}
-              disabled={modalType !== 'edit'}
+              disabled
             />
           </Form.Item>
 
           <Form.Item
             label="生效日期"
             name="effectiveTime"
-            rules={[{ required: true, message: '请选择生效日期' }]}
+            dependencies={['endTime']}
+            rules={[
+              { required: true, message: '请选择生效日期' },
+              ({ getFieldValue }) => ({
+                validator: (_, value) => {
+                  const end = getFieldValue('endTime');
+                  if (!value || !end || end === '长期') return Promise.resolve();
+                  if (dayjs(end).isBefore(dayjs(value), 'day')) {
+                    return Promise.reject(new Error('结束日期不得早于生效日期'));
+                  }
+                  return Promise.resolve();
+                },
+              }),
+            ]}
           >
             <DatePicker
               placeholder="请选择生效日期"
@@ -1009,7 +1106,20 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           <Form.Item
             label="结束日期"
             name="endTime"
-            rules={[{ required: true, message: '请选择结束日期，或勾选「长期」' }]}
+            dependencies={['effectiveTime']}
+            rules={[
+              { required: true, message: '请选择结束日期，或勾选「长期」' },
+              ({ getFieldValue }) => ({
+                validator: (_, value) => {
+                  const effective = getFieldValue('effectiveTime');
+                  if (!value || value === '长期' || !effective) return Promise.resolve();
+                  if (dayjs(value).isBefore(dayjs(effective), 'day')) {
+                    return Promise.reject(new Error('结束日期不得早于生效日期'));
+                  }
+                  return Promise.resolve();
+                },
+              }),
+            ]}
           >
             <EndTimeField disabled={modalType === 'view'} />
           </Form.Item>
@@ -1022,7 +1132,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <TextArea
               placeholder="请填写列入负面清单的原因，如处罚决定、失信行为等"
               rows={3}
-              maxLength={200}
+              maxLength={2000}
               showCount
               disabled={modalType === 'view'}
             />
@@ -1032,7 +1142,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <TextArea
               placeholder="请输入备注信息（选填）"
               rows={2}
-              maxLength={200}
+              maxLength={2000}
               showCount
               disabled={modalType === 'view'}
             />
@@ -1043,7 +1153,14 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
               multiple
               fileList={attachmentFileList}
               beforeUpload={() => false}
-              onChange={({ fileList }) => setAttachmentFileList(fileList)}
+              onChange={({ fileList }) => {
+                if (fileList.length > MAX_ATTACHMENT_COUNT) {
+                  message.warning(`附件数量最多 ${MAX_ATTACHMENT_COUNT} 个`);
+                  setAttachmentFileList(fileList.slice(0, MAX_ATTACHMENT_COUNT));
+                  return;
+                }
+                setAttachmentFileList(fileList);
+              }}
               disabled={modalType === 'view'}
             >
               {modalType !== 'view' && (
@@ -1139,7 +1256,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <CircleX size={40} />
             <strong>导入失败</strong>
             <span>文件中存在不符合要求的数据，请下载失败原因查看</span>
-            <Button type="link" size="small" icon={<Download size={14} />} onClick={handleDownloadFailure}>
+            <Button
+              className="import-failure-download"
+              type="link"
+              size="small"
+              icon={<Download size={14} />}
+              onClick={handleDownloadFailure}
+            >
               下载失败原因
             </Button>
           </div>
@@ -1161,6 +1284,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <Space size={8}>
               <Button size="small" type="primary" onClick={handleImportSuccess}>成功</Button>
               <Button size="small" danger onClick={handleImportFailure}>失败</Button>
+              <Button size="small" onClick={handleInvalidTemplate}>模板不符</Button>
             </Space>
           </div>
         )}
@@ -1175,8 +1299,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         destroyOnHidden
       >
         <Form form={importPreviewForm} layout="inline" className="import-preview-filter">
-          <Form.Item label="分供商名称" name="enterpriseName">
-            <Input placeholder="请输入分供商名称" allowClear style={{ width: 260 }} />
+          <Form.Item label="企业名称" name="enterpriseName">
+            <Input placeholder="请输入企业名称" allowClear style={{ width: 260 }} />
           </Form.Item>
           <Form.Item>
             <Space>
@@ -1254,12 +1378,9 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             </table>
           </div>
           <div className="excel-tip">
-            <span>
-              带 <span className="excel-required">*</span> 的列为必填项；
-            </span>
-            <span>「录入来源」仅可填写：外部数据同步 / 人工录入；</span>
-            <span>「列入日期」格式为 YYYY-MM-DD，如 2026-03-12；</span>
-            <span>「生效日期」「结束日期」格式为 YYYY-MM-DD，如 2026-03-12；结束日期可填写「长期」；</span>
+            <span>带 <span className="excel-required">*</span> 的列为必填项；</span>
+            <span>「统一社会信用代码」为选填，填写时须为 18 位数字或大写字母；</span>
+            <span>「生效时间」「结束时间」格式为 YYYY-MM-DD，如 2026-03-12；结束时间可填写「长期」，且不得早于生效时间；</span>
             <span>请勿修改模板表头，第 1 行为表头行，示例数据请在导入前删除。</span>
           </div>
         </div>

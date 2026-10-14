@@ -202,6 +202,12 @@
   color: #ff4d4f;
 }
 
+.import-result-failure .import-failure-download,
+.import-result-failure .import-failure-download span,
+.import-result-failure .import-failure-download svg {
+  color: #ff4d4f;
+}
+
 /* 导入模板预览（模拟 Excel 表格） */
 .excel-preview {
   border: 1px solid #e0e0e0;
@@ -293,6 +299,16 @@
   font-size: 12px;
   line-height: 18px;
   color: #8c8c8c;
+}
+
+/* 企业信息查询图标 */
+.enterprise-query-icon {
+  color: #1677ff;
+  cursor: pointer;
+}
+
+.enterprise-query-icon:hover {
+  color: #4096ff;
 }
 
 /* 响应式适配 */
