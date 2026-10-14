@@ -1,7 +1,13 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T04:07:32.798Z",
+  "updatedAt": "2026-10-14T09:10:15.630Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-opener-settings",
+      "kind": "item",
+      "title": "opener settings",
+      "itemKey": "prototypes/opener-settings"
+    },
     {
       "id": "folder-1790645030471-rnd61y",
       "kind": "folder",
@@ -528,12 +534,6 @@
       "itemKey": "prototypes/test"
     },
     {
-      "id": "item-prototypes-bidding-list",
-      "kind": "item",
-      "title": "招标列表",
-      "itemKey": "prototypes/bidding-list"
-    },
-    {
       "id": "folder-1776307124112-38pene",
       "kind": "folder",
       "title": "AI工坊",
@@ -678,6 +678,12 @@
           "kind": "item",
           "title": "plan-detail",
           "itemKey": "prototypes/plan-detail"
+        },
+        {
+          "id": "item-prototypes-excel-export-demo",
+          "kind": "item",
+          "title": "Excel 导出预览演示",
+          "itemKey": "prototypes/excel-export-demo"
         }
       ]
     }

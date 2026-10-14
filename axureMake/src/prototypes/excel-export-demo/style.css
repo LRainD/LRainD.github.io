@@ -1,0 +1,652 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Excel 导出预览演示 —— 仿真 Excel 2019 窗口样式
+   说明：仿真 Excel 属于「被演示的第三方软件」，其色值独立于 antd 主题令牌，
+        色板定义见 /src/prototypes/excel-export-demo/spec.md 4.2
+   ========================================================================== */
+
+:root {
+  --xl-accent: #217346;
+  --xl-accent-hover: #1b5e39;
+  --xl-sel: #107c41;
+  --xl-chrome: #f3f3f3;
+  --xl-chrome-hi: #f9f9f9;
+  --xl-hover: #e6e6e6;
+  --xl-border: #d0d0d0;
+  --xl-grid: #d4d4d4;
+  --xl-head-bg: #f2f2f2;
+  --xl-head-sel: #d6e7d6;
+  --xl-sel-fill: #e8f3ec;
+  --xl-text: #1f1f1f;
+  --xl-text-dim: #616161;
+  --xl-infobar: #fff4ce;
+  --xl-infobar-text: #7a6a00;
+  --xl-find: #fff200;
+
+  --xl-risk-high-bg: #ffc7ce;
+  --xl-risk-high-text: #9c0006;
+  --xl-risk-mid-bg: #ffeb9c;
+  --xl-risk-mid-text: #9c6500;
+  --xl-risk-low-bg: #c6efce;
+  --xl-risk-low-text: #006100;
+}
+
+/* ---------- 窗口外壳 ---------- */
+.xl-window {
+  background: #ffffff;
+  border: 1px solid var(--xl-border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16), 0 2px 6px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.xl-titlebar {
+  height: 32px;
+  background: var(--xl-accent);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0 0 10px;
+  font-size: 12px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.xl-qat {
+  height: 24px;
+  background: var(--xl-chrome);
+  border-bottom: 1px solid var(--xl-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+/* ---------- 选项卡 ---------- */
+.xl-tabs {
+  height: 30px;
+  background: var(--xl-chrome);
+  border-bottom: 1px solid var(--xl-border);
+  display: flex;
+  align-items: stretch;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.xl-tab {
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--xl-text);
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.xl-tab:hover {
+  background: var(--xl-hover);
+}
+
+.xl-tab-file {
+  background: var(--xl-accent);
+  color: #ffffff;
+  padding: 0 14px;
+}
+
+.xl-tab-file:hover {
+  background: var(--xl-accent-hover);
+}
+
+.xl-tab-active {
+  background: var(--xl-chrome-hi);
+  border-color: var(--xl-border);
+  border-bottom-color: var(--xl-chrome-hi);
+  font-weight: 600;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- 功能区 ---------- */
+.xl-ribbon {
+  background: var(--xl-chrome-hi);
+  border-bottom: 1px solid var(--xl-border);
+  padding: 4px 6px 2px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.xl-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 6px;
+  border-right: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.xl-group:last-child {
+  border-right: none;
+}
+
+.xl-group-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 1;
+}
+
+.xl-group-title {
+  text-align: center;
+  font-size: 10px;
+  color: var(--xl-text-dim);
+  padding-top: 1px;
+  white-space: nowrap;
+}
+
+.xl-tool {
+  min-width: 26px;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--xl-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.xl-tool:hover {
+  background: var(--xl-hover);
+  border-color: #c8c8c8;
+}
+
+.xl-tool:active {
+  background: #dcdcdc;
+}
+
+.xl-tool-on {
+  background: #dce9df;
+  border-color: #a8c7b3;
+}
+
+.xl-tool-wide {
+  min-width: auto;
+  padding: 0 6px;
+}
+
+.xl-tool-col {
+  flex-direction: column;
+  height: 38px;
+  min-width: 34px;
+  gap: 1px;
+  font-size: 10px;
+  color: var(--xl-text-dim);
+}
+
+.xl-select-mini {
+  height: 22px;
+  font-size: 11px;
+  border: 1px solid #c8c8c8;
+  background: #ffffff;
+  color: var(--xl-text);
+  border-radius: 2px;
+  padding: 0 2px;
+  outline: none;
+}
+
+/* ---------- 提示条 ---------- */
+.xl-infobar {
+  background: var(--xl-infobar);
+  color: var(--xl-infobar-text);
+  border-bottom: 1px solid #e3d48a;
+  font-size: 12px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ---------- 公式栏 ---------- */
+.xl-formula-bar {
+  height: 28px;
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--xl-border);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.xl-name-box {
+  width: 118px;
+  border-right: 1px solid var(--xl-border);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--xl-text);
+  background: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.xl-fx {
+  width: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-right: 1px solid var(--xl-border);
+  color: var(--xl-text-dim);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.xl-formula-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--xl-text);
+  background: transparent;
+  font-family: inherit;
+}
+
+/* ---------- 网格区 ---------- */
+.xl-grid-scroll {
+  flex: 1;
+  min-height: 260px;
+  overflow: auto;
+  position: relative;
+  background: #ffffff;
+}
+
+.xl-grid {
+  position: relative;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+.xl-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.xl-corner,
+.xl-colhead,
+.xl-rowhead {
+  background: var(--xl-head-bg);
+  color: var(--xl-text-dim);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  border-right: 1px solid var(--xl-grid);
+  border-bottom: 1px solid var(--xl-grid);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.xl-corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  padding: 0;
+}
+
+.xl-colhead {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.xl-rowhead {
+  position: sticky;
+  left: 0;
+  z-index: 20;
+  border-right: 1px solid var(--xl-border);
+}
+
+.xl-colhead-on,
+.xl-rowhead-on {
+  background: var(--xl-head-sel);
+  color: #0b5c31;
+  font-weight: 600;
+}
+
+.xl-colhead:hover,
+.xl-rowhead:hover {
+  background: #e8e8e8;
+}
+
+.xl-cell {
+  position: relative;
+  font-size: 13px;
+  color: var(--xl-text);
+  padding: 0 5px;
+  border-right: 1px solid var(--xl-grid);
+  border-bottom: 1px solid var(--xl-grid);
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.xl-grid-nolines .xl-cell {
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.xl-cell-head {
+  background: var(--xl-head-bg);
+  font-weight: 600;
+  justify-content: center;
+  color: var(--xl-text);
+  border-bottom: 1px solid var(--xl-border);
+}
+
+.xl-cell-total {
+  font-weight: 700;
+  background: #f7f7f7;
+  border-top: 1.5px solid #9e9e9e;
+}
+
+.xl-cell-banded {
+  background: #fafafa;
+}
+
+.xl-cell-num {
+  justify-content: flex-end;
+}
+
+.xl-cell-center {
+  justify-content: center;
+}
+
+.xl-cell-active {
+  background: #ffffff !important;
+  z-index: 2;
+}
+
+.xl-cell-editing {
+  padding: 0;
+}
+
+.xl-hash {
+  color: #9c0006;
+  opacity: 0.55;
+  letter-spacing: 1px;
+}
+
+.xl-filter-arrow {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  color: #5a5a5a;
+  flex-shrink: 0;
+}
+
+.xl-filter-arrow:hover {
+  background: #dcdcdc;
+}
+
+.xl-filter-arrow-on {
+  background: var(--xl-sel);
+  color: #ffffff;
+}
+
+/* 选区覆盖层 */
+.xl-sel-box {
+  position: absolute;
+  border: 2px solid var(--xl-sel);
+  pointer-events: none;
+  z-index: 12;
+  box-sizing: border-box;
+}
+
+.xl-fill-handle {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  background: var(--xl-sel);
+  border: 1px solid #ffffff;
+  pointer-events: none;
+}
+
+.xl-cell-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  background: #ffffff;
+  padding: 0 4px;
+  text-align: inherit;
+}
+
+.xl-find-hit {
+  background: var(--xl-find) !important;
+}
+
+/* 筛选面板 */
+.xl-filter-panel {
+  position: absolute;
+  z-index: 60;
+  width: 210px;
+  background: #ffffff;
+  border: 1px solid var(--xl-border);
+  border-radius: 3px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.xl-filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: var(--xl-text);
+}
+
+.xl-filter-item:hover {
+  background: var(--xl-sel-fill);
+}
+
+/* ---------- Sheet 标签栏 ---------- */
+.xl-sheetbar {
+  height: 30px;
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid var(--xl-border);
+  background: var(--xl-chrome);
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+.xl-sheet-tab {
+  padding: 0 14px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--xl-text);
+  border: 1px solid transparent;
+  border-top: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.xl-sheet-tab:hover {
+  background: var(--xl-hover);
+}
+
+.xl-sheet-tab-on {
+  background: #ffffff;
+  border-color: var(--xl-border);
+  border-top-color: #ffffff;
+  border-bottom: 2px solid var(--xl-accent);
+  font-weight: 600;
+  margin-top: -1px;
+}
+
+.xl-sheet-nav {
+  width: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--xl-text-dim);
+  cursor: default;
+  font-size: 11px;
+}
+
+.xl-sheet-nav:hover {
+  background: var(--xl-hover);
+}
+
+/* ---------- 状态栏 ---------- */
+.xl-statusbar {
+  height: 24px;
+  background: var(--xl-accent);
+  color: #ffffff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.xl-statusbar .xl-zoom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+input[type='range'].xl-zoom-range {
+  width: 90px;
+  height: 3px;
+  accent-color: #ffffff;
+}
+
+/* ---------- 说明型 Sheet（字段说明 / 导出规则 / 评审要点） ---------- */
+.xl-doc-sheet {
+  padding: 20px 24px;
+  font-size: 13px;
+  color: var(--xl-text);
+  background: #ffffff;
+}
+
+.xl-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.xl-doc-table th,
+.xl-doc-table td {
+  border: 1px solid var(--xl-grid);
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.xl-doc-table th {
+  background: var(--xl-head-bg);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.xl-doc-table td.xl-mono {
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+  font-size: 12px;
+  color: #0b5c31;
+}
+
+/* ---------- 演示条 ---------- */
+.demo-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.demo-step-on {
+  background: #e6f4ff;
+  border-color: #91caff;
+}
+
+.demo-step-idx {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  background: #f0f0f0;
+  color: #595959;
+  flex-shrink: 0;
+}
+
+.demo-step-on .demo-step-idx {
+  background: #1677ff;
+  color: #ffffff;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f4f4f4;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c8c8c8;
+  border: 3px solid #f4f4f4;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
