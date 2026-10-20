@@ -10,6 +10,7 @@
 .operation-admin-sider {
   background: #fff !important;
   position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -21,6 +22,12 @@
   align-items: center;
   padding: 0 16px;
   border-bottom: 1px solid #e8e8e8;
+  overflow: visible;
+}
+
+.operation-admin-logo-text {
+  position: relative;
+  z-index: 20;
 }
 
 .operation-admin-logo-icon {
@@ -106,7 +113,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .operation-admin-collapse {

@@ -1,0 +1,424 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #fa8c16;
+  --color-sidebar: #ffffff;
+  --color-sidebar-active: #fff7e6;
+  --color-bg-page: #f5f5f5;
+  --color-border-base: #f0f0f0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+/* ---------------- 面包屑 ---------------- */
+.bz-breadcrumb {
+  flex-shrink: 0;
+  padding: 13px 24px;
+  font-size: 13px;
+  color: #8c8c8c;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bz-crumb-link {
+  cursor: pointer;
+}
+
+.bz-crumb-link:hover {
+  color: #fa8c16;
+}
+
+.bz-crumb-sep {
+  margin: 0 8px;
+  color: #bfbfbf;
+}
+
+.bz-crumb-current {
+  color: #262626;
+}
+
+/* ---------------- 标题 + 采购信息 ---------------- */
+.bz-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 0 24px 30px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bz-head-left {
+  min-width: 0;
+}
+
+.bz-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 24px;
+}
+
+/* 采购方式标签 */
+.bz-tag {
+  display: inline-block;
+  padding: 1px 8px;
+  font-size: 13px;
+  line-height: 20px;
+  color: #6d4bd8;
+  background: #f0ecff;
+  border: 1px solid #ded4ff;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.bz-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  color: #1f1f1f;
+}
+
+.bz-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 340px));
+  column-gap: 135px;
+  row-gap: 13px;
+  font-size: 13px;
+  color: #666;
+}
+
+.bz-info-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bz-info-val {
+  color: #333;
+}
+
+.bz-info-region {
+  padding: 0 6px;
+  color: #333;
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.bz-info-icon {
+  margin-left: 5px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+/* 报名状态 */
+.bz-head-right {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.bz-status {
+  margin-bottom: 20px;
+  font-size: 26px;
+  line-height: 1;
+  color: #1890ff;
+}
+
+.bz-status-note {
+  font-size: 13px;
+  color: #333;
+}
+
+/* ---------------- 主体 ---------------- */
+.bz-body {
+  flex: 1;
+  display: flex;
+  padding: 0 20px;
+}
+
+.bz-panel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding-bottom: 28px;
+}
+
+/* Tab */
+.bz-tabs {
+  display: flex;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bz-tab {
+  position: relative;
+  padding: 21px 16px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #595959;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.bz-tab:hover {
+  color: #fa8c16;
+}
+
+.bz-tab.is-active {
+  font-weight: 700;
+  color: #fa8c16;
+}
+
+.bz-tab-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #fa8c16;
+}
+
+.bz-tab-badge {
+  position: absolute;
+  top: 6px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #fff;
+  text-align: center;
+  background: #ff4d4f;
+  border: 1px solid #fff;
+  border-radius: 8px;
+}
+
+/* ---------------- 澄清记录卡片 ---------------- */
+.bz-content {
+  padding: 16px 24px 0;
+}
+
+.bz-card {
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+}
+
+.bz-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.bz-card-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.bz-title-bar {
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  background: #fa8c16;
+  border-radius: 1px;
+}
+
+.bz-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+.bz-collapse {
+  display: inline-flex;
+  align-items: center;
+  color: #595959;
+  cursor: pointer;
+}
+
+.bz-collapse:hover {
+  color: #fa8c16;
+}
+
+.bz-card-body {
+  padding: 16px;
+}
+
+/* ---------------- 单条澄清记录 ---------------- */
+.bz-record {
+  padding: 20px 24px 24px;
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+}
+
+.bz-record + .bz-record {
+  margin-top: 16px;
+}
+
+.bz-label {
+  font-size: 14px;
+  line-height: 22px;
+  color: #333;
+}
+
+.bz-question-text {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #1f1f1f;
+}
+
+.bz-time {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #a6a6a6;
+}
+
+.bz-divider {
+  margin: 16px 0 18px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.bz-answer + .bz-answer {
+  margin-top: 18px;
+}
+
+.bz-answer-bubble {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #333;
+  background: #f5f5f5;
+  border-radius: 2px;
+}
+
+/* 补充回答按钮 */
+.bz-reply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #fa8c16;
+  background: #fff;
+  border: 1px solid #fa8c16;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bz-reply-btn:hover {
+  color: #fff;
+  background: #fa8c16;
+}
+
+/* ---------------- 补充回答表单 ---------------- */
+.bz-reply-form {
+  margin-top: 20px;
+}
+
+.bz-textarea {
+  min-height: 100px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 22px;
+  border-color: #e5e5e5;
+  border-radius: 2px;
+  resize: none;
+  box-shadow: none;
+}
+
+.bz-textarea:hover,
+.bz-textarea:focus {
+  border-color: #fa8c16;
+  box-shadow: none;
+}
+
+.bz-count {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #a6a6a6;
+  text-align: right;
+}
+
+.bz-file-tip {
+  margin-top: 22px;
+  font-size: 12px;
+  line-height: 22px;
+  color: #a6a6a6;
+}
+
+.bz-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+/* 添加附件按钮 */
+.bz-add-attach {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 14px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #333;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bz-add-attach:hover {
+  color: #fa8c16;
+  border-color: #fa8c16;
+}
+
+/* 发起电子签章并提交按钮 */
+.bz-sign-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #fff;
+  background: #fa8c16;
+  border: 1px solid #fa8c16;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bz-sign-submit:hover {
+  background: #e68a00;
+  border-color: #e68a00;
+}

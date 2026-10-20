@@ -1,0 +1,388 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1890ff;
+  --color-primary-dark: #096dd9;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 页头：面包屑 + 标题 + 倒计时 + 采购信息 */
+.cl-head {
+  margin: 0 -24px 16px;
+  padding: 12px 24px 16px;
+  background: #fff;
+}
+
+.cl-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 14px;
+}
+
+.cl-crumb-link {
+  color: #666;
+  cursor: pointer;
+}
+
+.cl-crumb-link:hover {
+  color: #1890ff;
+}
+
+.cl-crumb-sep {
+  color: #bfbfbf;
+}
+
+.cl-crumb-current {
+  color: #333;
+}
+
+.cl-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cl-category-tag {
+  background: #1890ff;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.cl-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0;
+}
+
+.cl-head-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 12px -24px 0;
+}
+
+/* 倒计时 */
+.cl-countdown-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 0 16px;
+  font-size: 13px;
+  color: #333;
+}
+
+.cl-countdown-label {
+  color: #333;
+}
+
+.cl-time-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid #1890ff;
+  border-radius: 2px;
+  color: #1890ff;
+  font-weight: 500;
+  background: #fff;
+}
+
+.cl-time-unit {
+  color: #333;
+}
+
+/* 采购信息栅格 */
+.cl-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 12px;
+  column-gap: 24px;
+  font-size: 12px;
+  color: #666;
+}
+
+.cl-info-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cl-link {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.cl-link:hover {
+  text-decoration: underline;
+}
+
+/* 全部澄清容器 */
+.cl-card {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.cl-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.cl-card-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cl-card-bar {
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  background: #1890ff;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.cl-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+.cl-card-head-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cl-export-btn {
+  height: 28px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+  border-radius: 2px !important;
+}
+
+.cl-collapse {
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.cl-collapse:hover {
+  color: #1890ff;
+}
+
+/* 分块容器 */
+.cl-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.cl-section {
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+}
+
+.cl-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cl-section-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cl-title-bar {
+  display: inline-block;
+  width: 4px;
+  height: 14px;
+  background: #1890ff;
+  border-radius: 1px;
+}
+
+.cl-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+/* 提问区 */
+.cl-ask-body {
+  padding: 16px;
+}
+
+.cl-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.cl-chip-label {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.cl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 6px 0 8px;
+  background: #f5f7fa;
+  border: 1px solid #d9e1ec;
+  border-radius: 2px;
+  font-size: 12px;
+  color: #333;
+}
+
+.cl-chip-close {
+  color: #8c9bb0;
+  cursor: pointer;
+}
+
+.cl-chip-close:hover {
+  color: #1890ff;
+}
+
+.cl-select-link {
+  font-size: 12px;
+}
+
+.cl-textarea {
+  border-radius: 2px !important;
+  resize: none;
+  font-size: 13px;
+}
+
+.cl-count {
+  text-align: right;
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+.cl-ask-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cl-attach-btn {
+  border: 1px solid #d9d9d9 !important;
+  color: #666 !important;
+  background: #fff !important;
+  border-radius: 2px !important;
+  height: 28px !important;
+  font-size: 13px !important;
+}
+
+.cl-attach-btn:hover {
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+}
+
+.cl-submit-btn {
+  border-radius: 2px !important;
+  height: 28px !important;
+  padding: 0 20px !important;
+  font-size: 13px !important;
+}
+
+/* 澄清记录 */
+.cl-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.cl-record {
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.cl-record-label {
+  font-size: 12px;
+  color: #666;
+}
+
+.cl-record-question {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f1f1f;
+  margin-top: 8px;
+  word-break: break-all;
+}
+
+.cl-record-time {
+  font-size: 12px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.cl-read-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 12px;
+  color: #666;
+}
+
+.cl-read-text {
+  min-width: 0;
+  word-break: break-all;
+}
+
+.cl-read-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.cl-record-status {
+  color: #999;
+  flex-shrink: 0;
+}

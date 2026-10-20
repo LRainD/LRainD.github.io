@@ -186,14 +186,30 @@ const TEMPLATE_SAMPLE_ROWS = [
   },
 ];
 
-const IMPORT_PREVIEW_COLUMNS = TEMPLATE_COLUMNS.map((column) => ({
-  title: column.required ? (
-    <span><span className="excel-required">*</span>{column.title}</span>
-  ) : column.title,
-  dataIndex: column.key,
-  key: column.key,
-  width: column.width,
-}));
+// 导入模板类型：中建安装 / 通用
+const TEMPLATE_TYPE_OPTIONS = [
+  { label: '中建安装', value: 'cscecInstall' },
+  { label: '通用', value: 'general' },
+];
+
+// 中建安装特有的模板字段列
+const CSCEC_INSTALL_ONLY_TEMPLATE_KEYS = [
+  'controlSituation',
+  'controlCategory',
+  'involvedPerson',
+  'contact',
+];
+
+// 通用模板列定义：不包含中建安装特有字段
+const GENERAL_TEMPLATE_COLUMNS = TEMPLATE_COLUMNS.filter(
+  (column) => !CSCEC_INSTALL_ONLY_TEMPLATE_KEYS.includes(column.key)
+);
+
+// 各类型模板的下载文件名称
+const TEMPLATE_FILE_NAMES: Record<string, string> = {
+  cscecInstall: '负面企业清单导入模板（中建安装）.xlsx',
+  general: '负面企业清单导入模板（通用）.xlsx',
+};
 
 // 初始负面企业清单数据
 const initialData = [
@@ -211,6 +227,8 @@ const initialData = [
     isLongTerm: false,
     attachments: ['失信信息公示.pdf'],
     reason: '企业被列为失信被执行人，未履行生效法律文书确定的义务',
+    involvedPerson: '张伟',
+    contact: '138****2106',
     remark: '已完成信用修复',
     creator: '系统同步',
     updater: 'jctest1',
@@ -231,6 +249,8 @@ const initialData = [
     isLongTerm: true,
     attachments: ['税务风险说明.docx'],
     reason: '存在重大税收违法失信行为，被税务部门列入黑名单',
+    involvedPerson: '李明',
+    contact: '139****5278',
     remark: '长期有效，需人工复核后移出',
     creator: '系统同步',
     updater: 'jctest1',
@@ -251,6 +271,8 @@ const initialData = [
     isLongTerm: false,
     attachments: [],
     reason: '近一年内发生 3 次中标后无故放弃中标资格',
+    involvedPerson: '王强',
+    contact: '136****8093',
     remark: '',
     creator: 'jctest1',
     updater: 'jctest1',
@@ -362,12 +384,11 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const [previewAttachments, setPreviewAttachments] = useState<string[]>([]);
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [importStatus, setImportStatus] = useState<'idle' | 'loading' | 'success' | 'failure'>('idle');
-  const [isImportPreviewOpen, setIsImportPreviewOpen] = useState(false);
-  const [importPreviewKeyword, setImportPreviewKeyword] = useState('');
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
+  const [templateType, setTemplateType] = useState('cscecInstall');
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [searchForm] = Form.useForm();
-  const [importPreviewForm] = Form.useForm();
   const selectedControlSituation = Form.useWatch('controlSituation', form);
 
   const getCurrentTime = () => dayjs().format('YYYY-MM-DD');
@@ -386,6 +407,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   const handleRemove = useCallback(
     (id: string) => {
       setDataSource((prev) => prev.filter((item: any) => item.id !== id));
+      setSelectedRowKeys((prev) => prev.filter((key) => key !== id));
       message.success('已移出负面企业清单');
 
       const event = eventList.find((e: any) => e.name === 'onEnterpriseRemove');
@@ -415,21 +437,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     setImportStatus('success');
   }, []);
 
-  const openImportPreview = useCallback(() => {
-    importPreviewForm.resetFields();
-    setImportPreviewKeyword('');
-    setIsImportPreviewOpen(true);
-  }, [importPreviewForm]);
-
-  const handleImportPreviewSearch = useCallback(() => {
-    setImportPreviewKeyword(importPreviewForm.getFieldValue('enterpriseName')?.trim() || '');
-  }, [importPreviewForm]);
-
-  const handleImportPreviewReset = useCallback(() => {
-    importPreviewForm.resetFields();
-    setImportPreviewKeyword('');
-  }, [importPreviewForm]);
-
   const handleImportConfirm = useCallback(() => {
     message.success('导入成功');
     closeImportModal();
@@ -450,9 +457,9 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   }, []);
 
   const handleDownloadTemplate = useCallback(() => {
-    message.success('模板下载中：负面企业清单导入模板.xlsx');
+    message.success(`模板下载中：${TEMPLATE_FILE_NAMES[templateType]}`);
     setIsTemplateOpen(false);
-  }, []);
+  }, [templateType]);
 
   const openTemplatePreview = useCallback(() => {
     setIsTemplateOpen(true);
@@ -478,6 +485,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           effectiveTime: record.effectiveTime ? dayjs(record.effectiveTime) : undefined,
           endTime: record.isLongTerm ? '长期' : record.endTime ? dayjs(record.endTime) : undefined,
           reason: record.reason,
+          involvedPerson: record.involvedPerson,
+          contact: record.contact,
           remark: record.remark,
         });
         setAttachmentFileList(
@@ -581,6 +590,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         isLongTerm,
         attachments: attachmentFileList.map((file) => file.name),
         reason: values.reason,
+        involvedPerson: values.involvedPerson || '',
+        contact: values.contact || '',
         remark: values.remark || '',
       };
 
@@ -698,6 +709,20 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       render: (_: any, record: any) => (record.isLongTerm ? '长期' : record.endTime || ''),
     },
     {
+      title: '涉及人员',
+      dataIndex: 'involvedPerson',
+      key: 'involvedPerson',
+      width: 120,
+      render: (value: string) => value || '-',
+    },
+    {
+      title: '涉及人员联系方式',
+      dataIndex: 'contact',
+      key: 'contact',
+      width: 160,
+      render: (value: string) => value || '-',
+    },
+    {
       title: '附件',
       dataIndex: 'attachments',
       key: 'attachments',
@@ -803,9 +828,34 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     return true;
   });
 
-  const filteredImportPreviewData = TEMPLATE_SAMPLE_ROWS.filter((item) =>
-    item.enterpriseName.toLowerCase().includes(importPreviewKeyword.toLowerCase())
-  );
+  // 表格行选择
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (keys: any[]) => setSelectedRowKeys(keys),
+  };
+
+  // 批量删除确认
+  const confirmBatchDelete = useCallback(() => {
+    const count = selectedRowKeys.length;
+    if (!count) return;
+    Modal.confirm({
+      title: '确认批量删除？',
+      content: `已选中 ${count} 条负面企业清单数据，删除后将无法恢复，请确认是否继续。`,
+      okText: '确认删除',
+      okButtonProps: { danger: true },
+      cancelText: '再想想',
+      centered: true,
+      onOk: () => {
+        setDataSource((prev) => prev.filter((item) => !selectedRowKeys.includes(item.id)));
+        setSelectedRowKeys([]);
+        message.success(`已删除 ${count} 条数据`);
+      },
+    });
+  }, [selectedRowKeys]);
+
+  // 按所选模板类型切换模板列与文件名称
+  const templateColumns = templateType === 'cscecInstall' ? TEMPLATE_COLUMNS : GENERAL_TEMPLATE_COLUMNS;
+  const templateFileName = TEMPLATE_FILE_NAMES[templateType];
 
   return (
     <OperationAdminLayout
@@ -923,8 +973,17 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           <div className="toolbar-left">
             <span className="toolbar-title">负面企业清单</span>
             <span className="toolbar-count">共 {filteredData.length} 条</span>
+            <span className="toolbar-selected">共选中 {selectedRowKeys.length} 条数据</span>
           </div>
           <div className="toolbar-right">
+            <Button
+              danger
+              icon={<Trash2 size={14} />}
+              disabled={selectedRowKeys.length === 0}
+              onClick={confirmBatchDelete}
+            >
+              批量删除
+            </Button>
             <Button icon={<UploadIcon size={14} />} onClick={openImportModal}>
               导入
             </Button>
@@ -937,6 +996,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           columns={columns}
           dataSource={filteredData}
           rowKey="id"
+          rowSelection={rowSelection}
           pagination={{
             total: filteredData.length,
             showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`,
@@ -944,7 +1004,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             showSizeChanger: true,
             showQuickJumper: true,
           }}
-          scroll={{ x: 2380 }}
+          scroll={{ x: 2660 }}
         />
       </Card>
 
@@ -1138,6 +1198,22 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             />
           </Form.Item>
 
+          <Form.Item label="涉及人员" name="involvedPerson">
+            <Input
+              placeholder="请输入涉及人员姓名（选填）"
+              maxLength={2000}
+              disabled={modalType === 'view'}
+            />
+          </Form.Item>
+
+          <Form.Item label="涉及人员联系方式" name="contact">
+            <Input
+              placeholder="请输入涉及人员联系方式（选填）"
+              maxLength={2000}
+              disabled={modalType === 'view'}
+            />
+          </Form.Item>
+
           <Form.Item label="备注" name="remark">
             <TextArea
               placeholder="请输入备注信息（选填）"
@@ -1217,7 +1293,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             {importStatus === 'success' && (
               <Popconfirm
                 title="确认导入"
-                description="建议点击预览查看后确认导入。"
+                description="确认后将导入本次校验通过的数据。"
                 okText="确认导入"
                 cancelText="取消"
                 onConfirm={handleImportConfirm}
@@ -1235,6 +1311,13 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           <span>3、请注意！导入不会校验重复数据，请谨慎操作，避免重复导入过多数据。</span>
         </div>
         <div className="import-template-action">
+          <span className="import-template-label">导入模板：</span>
+          <Select
+            className="import-template-select"
+            value={templateType}
+            onChange={setTemplateType}
+            options={TEMPLATE_TYPE_OPTIONS}
+          />
           <Button type="link" icon={<Download size={14} />} onClick={openTemplatePreview}>
             下载导入模板
           </Button>
@@ -1245,9 +1328,6 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             <CircleCheck size={40} />
             <strong>校验成功</strong>
             <span>本次共校验通过 3 条数据</span>
-            <Button className="import-preview-button" type="primary" size="small" onClick={openImportPreview}>
-              预览
-            </Button>
           </div>
         )}
 
@@ -1290,38 +1370,9 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         )}
       </Modal>
 
-      <Modal
-        title="导入数据预览"
-        open={isImportPreviewOpen}
-        onCancel={() => setIsImportPreviewOpen(false)}
-        footer={<Button onClick={() => setIsImportPreviewOpen(false)}>关闭</Button>}
-        width={1200}
-        destroyOnHidden
-      >
-        <Form form={importPreviewForm} layout="inline" className="import-preview-filter">
-          <Form.Item label="企业名称" name="enterpriseName">
-            <Input placeholder="请输入企业名称" allowClear style={{ width: 260 }} />
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <Button type="primary" icon={<Search size={14} />} onClick={handleImportPreviewSearch}>查询</Button>
-              <Button icon={<RotateCcw size={14} />} onClick={handleImportPreviewReset}>重置</Button>
-            </Space>
-          </Form.Item>
-        </Form>
-        <Table
-          columns={IMPORT_PREVIEW_COLUMNS}
-          dataSource={filteredImportPreviewData}
-          rowKey="serialNumber"
-          pagination={false}
-          size="small"
-          scroll={{ x: 1770 }}
-        />
-      </Modal>
-
       {/* 导入模板预览弹窗（模拟下载到的 Excel 内容） */}
       <Modal
-        title="负面企业清单导入模板.xlsx"
+        title={templateFileName}
         open={isTemplateOpen}
         onCancel={closeTemplatePreview}
         width={1000}
@@ -1338,26 +1389,26 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         <div className="excel-preview">
           <div className="excel-preview-header">
             <FileSpreadsheet size={16} color="#1d6f42" />
-            <span className="excel-file-name">负面企业清单导入模板.xlsx</span>
+            <span className="excel-file-name">{templateFileName}</span>
           </div>
           <div className="excel-sheet">
             <table className="excel-table">
               <colgroup>
                 <col style={{ width: 40 }} />
-                {TEMPLATE_COLUMNS.map((col) => (
+                {templateColumns.map((col) => (
                   <col key={col.key} style={{ width: col.width }} />
                 ))}
               </colgroup>
               <thead>
                 <tr className="excel-col-letter-row">
                   <th className="excel-row-no" />
-                  {TEMPLATE_COLUMNS.map((col, index) => (
+                  {templateColumns.map((col, index) => (
                     <th key={col.key}>{String.fromCharCode(65 + index)}</th>
                   ))}
                 </tr>
                 <tr className="excel-header-row">
                   <th className="excel-row-no">1</th>
-                  {TEMPLATE_COLUMNS.map((col) => (
+                  {templateColumns.map((col) => (
                     <th key={col.key}>
                       {col.title}
                       {col.required && <span className="excel-required">*</span>}
@@ -1369,7 +1420,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 {TEMPLATE_SAMPLE_ROWS.map((row, index) => (
                   <tr key={index}>
                     <td className="excel-row-no">{index + 2}</td>
-                    {TEMPLATE_COLUMNS.map((col) => (
+                    {templateColumns.map((col) => (
                       <td key={col.key}>{(row as any)[col.key] || ''}</td>
                     ))}
                   </tr>

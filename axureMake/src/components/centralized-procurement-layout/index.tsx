@@ -109,6 +109,10 @@ export interface CentralizedProcurementLayoutProps {
   sidebarItems?: MenuItem[];
   /** 默认展开的菜单组 key 列表 */
   defaultOpenGroupKeys?: string[];
+  /** 侧边栏初始是否收起（收起后宽度为 64px） */
+  defaultCollapsed?: boolean;
+  /** 顶部组织选择器展示的组织名称 */
+  orgName?: string;
   /** 菜单项点击回调 */
   onMenuClick?: (key: string) => void;
   /** 子菜单项点击回调 */
@@ -125,13 +129,15 @@ const Component = function CentralizedProcurementLayout(props: CentralizedProcur
     activeMenuKey = 'my-tasks',
     sidebarItems = DEFAULT_SIDEBAR_ITEMS,
     defaultOpenGroupKeys = ['bidding-procurement'],
+    defaultCollapsed = false,
+    orgName = '测试组织-股...',
     onMenuClick,
     onSubMenuClick,
     onThreeLevelMenuClick,
     children
   } = props;
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(defaultCollapsed);
   const [openGroupKeys, setOpenGroupKeys] = useState<string[]>(defaultOpenGroupKeys);
   const [hoveredSubMenu, setHoveredSubMenu] = useState<{
     parentKey: string;
@@ -176,7 +182,7 @@ const Component = function CentralizedProcurementLayout(props: CentralizedProcur
         </div>
         <div className="header-center">
           <div className="org-selector">
-            <span>测试组织-股...</span>
+            <span>{orgName}</span>
             <ChevronDown className="icon-small" />
           </div>
           <div className="search-box">

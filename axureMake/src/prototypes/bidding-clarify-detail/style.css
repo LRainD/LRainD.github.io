@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #fa8c16;
+  --color-sidebar: #ffffff;
+  --color-sidebar-active: #fff7e6;
+  --color-bg-page: #f5f5f5;
+  --color-border-base: #f0f0f0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+}
+
+/* 采购方式标签 */
+.bz-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 13px;
+  line-height: 20px;
+  color: #6d4bd8;
+  background: #f0ecff;
+  border: 1px solid #ded4ff;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* 采购信息栅格 */
+.bz-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 320px));
+  row-gap: 14px;
+  column-gap: 60px;
+  font-size: 13px;
+  color: #666;
+}
+
+.bz-info-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bz-info-val {
+  color: #333;
+}
+
+.bz-info-region {
+  padding: 0 6px;
+  color: #333;
+  background: #f0f0f0;
+  border-radius: 2px;
+}
+
+.bz-info-icon {
+  margin-left: 5px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+/* 资格审核状态 */
+.bz-audit-status {
+  font-size: 26px;
+  line-height: 1;
+  color: #1890ff;
+  margin-bottom: 18px;
+}
+
+.bz-audit-note {
+  font-size: 13px;
+  color: #333;
+}
+
+/* 澄清模式提示 */
+.bz-tip {
+  padding: 4px 0 18px;
+  font-size: 14px;
+  color: #fa541c;
+}
+
+/* 卡片 */
+.bz-card {
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.bz-card-last {
+  margin-bottom: 0;
+}
+
+.bz-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+}
+
+.bz-card-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.bz-card-head-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.bz-title-bar {
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  background: #fa8c16;
+  border-radius: 1px;
+}
+
+.bz-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+.bz-collapse {
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+  cursor: pointer;
+}
+
+.bz-collapse:hover {
+  color: #fa8c16;
+}
+
+/* 提问按钮 */
+.bz-btn-ask {
+  padding: 5px 18px;
+  font-size: 14px;
+  color: #fff;
+  background: #fa8c16;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.bz-btn-ask:hover:not(:disabled) {
+  background: #e68a00;
+}
+
+.bz-btn-ask:disabled {
+  color: #fff;
+  background: #d9d9d9;
+  cursor: not-allowed;
+}
+
+/* 提问截止提示 */
+.bz-ask-tip {
+  font-size: 12px;
+  color: #999;
+  white-space: nowrap;
+}
+
+/* 表格 */
+.bz-card-body {
+  padding: 0 16px 16px;
+}
+
+.bz-table .ant-table {
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  border: 1px solid #ebebeb;
+}
+
+.bz-table .ant-table-thead > tr > th {
+  padding: 15px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  background: #fafafa;
+  border-bottom: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
+  border-radius: 0;
+}
+
+.bz-table .ant-table-thead > tr > th:last-child {
+  border-right: none;
+}
+
+.bz-table .ant-table-thead > tr > th::before {
+  display: none !important;
+}
+
+.bz-table .ant-table-tbody > tr > td {
+  padding: 17px 12px;
+  text-align: center;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.bz-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: none;
+}
+
+.bz-table .ant-table-tbody > tr:hover > td,
+.bz-table .ant-table-tbody > tr.ant-table-row:hover > td {
+  background: #fff;
+}
+
+.bz-th {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bz-th-icon {
+  color: #bfbfbf;
+}

@@ -1,0 +1,426 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1890ff;
+  --color-primary-dark: #096dd9;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f2f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ---------- 页头：标题 + 倒计时 + 采购信息 ---------- */
+.cc-head {
+  margin: -16px -24px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.cc-head-inner {
+  padding: 14px 24px;
+}
+
+.cc-head-divider {
+  height: 1px;
+  background: #e8e8e8;
+}
+
+.cc-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cc-category-tag {
+  background: #1890ff;
+  color: #fff;
+  font-size: 12px;
+  line-height: 22px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.cc-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0;
+}
+
+.cc-countdown-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #333;
+}
+
+.cc-time-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+  padding: 0 4px;
+  border: 1px solid #1890ff;
+  border-radius: 2px;
+  color: #1890ff;
+  font-weight: 500;
+  background: #fff;
+}
+
+.cc-time-unit {
+  color: #333;
+}
+
+.cc-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  row-gap: 12px;
+  column-gap: 24px;
+  font-size: 12px;
+  color: #666;
+}
+
+.cc-info-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-link {
+  color: #1890ff;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.cc-link-inline {
+  margin-left: 0;
+}
+
+.cc-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- 内容区块卡片 ---------- */
+.cc-card {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.cc-card:last-child {
+  margin-bottom: 0;
+}
+
+.cc-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cc-card-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cc-bar {
+  display: inline-block;
+  width: 3px;
+  height: 16px;
+  background: #1890ff;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.cc-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+  white-space: nowrap;
+}
+
+.cc-card-head-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.cc-collapse {
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.cc-collapse:hover {
+  color: #1890ff;
+}
+
+.cc-style-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.cc-style-switch:hover {
+  text-decoration: underline;
+}
+
+/* ---------- 澄清详情 ---------- */
+.cc-detail-body {
+  padding: 22px 44px 28px;
+}
+
+.cc-field {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.cc-field:last-child {
+  margin-bottom: 0;
+}
+
+.cc-field-center {
+  align-items: center;
+}
+
+.cc-field-label {
+  flex-shrink: 0;
+  color: #333;
+  line-height: 22px;
+}
+
+.cc-field-value {
+  color: #333;
+  line-height: 22px;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.cc-deadline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cc-deadline-text {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.cc-delay {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+.cc-delay-help {
+  color: #bfbfbf;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 2px;
+}
+
+.cc-delay-help:hover {
+  color: #1890ff;
+}
+
+.cc-delay-colon {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.cc-delay-text {
+  white-space: nowrap;
+}
+
+/* 只读态：禁用复选框仍保持勾选态的主色外观 */
+.cc-delay .ant-checkbox-disabled .ant-checkbox-inner {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.cc-delay .ant-checkbox-disabled .ant-checkbox-inner::after {
+  border-color: #fff;
+}
+
+.cc-delay .ant-checkbox-disabled + span {
+  color: #333;
+  cursor: default;
+}
+
+.cc-delay-days {
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+}
+
+.cc-delay-tip {
+  max-width: 420px;
+}
+
+.cc-delay-tip-line {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 20px;
+  color: inherit;
+}
+
+.cc-delay-tip-line:last-child {
+  margin-bottom: 0;
+}
+
+/* 自动延时规则气泡：箭头与气泡底色保持一致（气泡文字色由 Tooltip styles.body 指定） */
+.cc-delay-tooltip .ant-tooltip-arrow::before {
+  background-color: #333;
+}
+
+.cc-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 2px;
+  background: #fff;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+.cc-file-chip:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.cc-file-icon {
+  color: #1d6f42;
+  flex-shrink: 0;
+}
+
+/* ---------- 审批记录 ---------- */
+.cc-approval-body {
+  padding: 16px 14px 24px;
+}
+
+.cc-flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 0 2px;
+}
+
+.cc-flow-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.cc-flow-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cc-btn-urge {
+  border-color: #1890ff !important;
+  color: #1890ff !important;
+  background: #fff !important;
+}
+
+.cc-btn-urge:hover {
+  border-color: #40a9ff !important;
+  color: #40a9ff !important;
+}
+
+.cc-btn-revoke {
+  border-color: #ff4d4f !important;
+  color: #ff4d4f !important;
+  background: #fff !important;
+}
+
+.cc-btn-revoke:hover {
+  border-color: #ff7875 !important;
+  color: #ff7875 !important;
+}
+
+.cc-table .ant-table {
+  font-size: 13px;
+}
+
+.cc-table .ant-table-thead > tr > th {
+  background: #fafafa !important;
+  color: #1f1f1f !important;
+  font-weight: 500;
+  padding: 10px 16px !important;
+}
+
+.cc-table .ant-table-tbody > tr > td {
+  color: #333;
+  padding: 17px 16px !important;
+}
+
+.cc-info-lines {
+  line-height: 22px;
+}
+
+.cc-approver-pill {
+  display: inline-block;
+  background: #1890ff;
+  color: #fff;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0 14px;
+  border-radius: 11px;
+}
+
+.cc-approver-text {
+  color: #333;
+}
+
+.cc-result-pending {
+  color: #fa8c16;
+}
+
+/* ---------- 响应式适配 ---------- */
+@media (max-width: 1199px) {
+  .cc-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .cc-info-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-detail-body {
+    padding: 16px 16px 20px;
+  }
+}

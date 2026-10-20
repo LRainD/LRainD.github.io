@@ -125,7 +125,7 @@ const Component = function OperationAdminLayout(props: OperationAdminLayoutProps
       >
         <div className="operation-admin-logo">
           <img src={logoImage} alt="运营后台logo" className="operation-admin-logo-icon" />
-          {!collapsed && <span className="operation-admin-logo-text">集采运营后台</span>}
+          <span className="operation-admin-logo-text">集采运营后台</span>
         </div>
         <div className="operation-admin-menu-wrapper">
           <Menu

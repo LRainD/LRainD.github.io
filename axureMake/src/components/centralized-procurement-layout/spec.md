@@ -16,6 +16,8 @@
 | `activeMenuKey` | `string` | `'compliance-settings'` | 当前选中的菜单项 key 值 |
 | `sidebarItems` | `MenuItem[]` | `DEFAULT_SIDEBAR_ITEMS` | 自定义左侧侧边栏菜单列表配置 |
 | `defaultOpenGroupKeys` | `string[]` | `['bidding-procurement']` | 初始展开的菜单组 key 列表 |
+| `defaultCollapsed` | `boolean` | `false` | 侧边栏初始是否为收起态（收起后宽度 64px，仅显示图标与缩减字样） |
+| `orgName` | `string` | `'测试组织-股...'` | 顶部组织选择器展示的组织名称 |
 | `onMenuClick` | `(key: string) => void` | - | 单级菜单项点击时的事件回调 |
 | `onSubMenuClick` | `(key: string, parentKey: string) => void` | - | 菜单组子项点击时的事件回调 |
 | `children` | `React.ReactNode` | - | 主体区展示的内容组件 |

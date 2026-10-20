@@ -96,6 +96,11 @@
   gap: 8px;
 }
 
+.toolbar-selected {
+  font-size: 12px;
+  color: #999;
+}
+
 .attachment-list {
   display: flex;
   flex-direction: column;
@@ -118,7 +123,19 @@
 }
 
 .import-template-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
+}
+
+.import-template-label {
+  font-size: 14px;
+  color: #262626;
+}
+
+.import-template-select {
+  width: 140px;
 }
 
 .import-upload-box {
@@ -180,18 +197,6 @@
 
 .import-result-success > svg {
   color: #52c41a;
-}
-
-.import-result .import-preview-button,
-.import-result .import-preview-button span {
-  color: #fff;
-}
-
-.import-preview-filter {
-  margin-bottom: 16px;
-  padding: 12px;
-  background: #fafafa;
-  border-radius: 6px;
 }
 
 .import-result-failure {

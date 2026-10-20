@@ -1,0 +1,430 @@
+/* 数字合规官检测中弹窗还原样式 */
+
+.compliance-detection-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 模拟背景样式 */
+.mock-bg {
+  padding: 24px;
+}
+
+.mock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  margin-bottom: 24px;
+}
+
+.mock-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.mock-content-placeholder {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 48px;
+  text-align: center;
+  color: #999;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.mock-content-placeholder p {
+  margin: 8px 0;
+}
+
+/* 弹窗定制样式 */
+.compliance-modal .ant-modal-content {
+  padding: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05), 0 12px 48px 16px rgba(0, 0, 0, 0.03) !important;
+}
+
+.compliance-modal .ant-modal-close {
+  top: 20px !important;
+  right: 24px !important;
+  color: #999 !important;
+}
+
+.compliance-modal .ant-modal-close:hover {
+  color: #666 !important;
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+.compliance-modal-content {
+  position: relative;
+  padding: 24px 32px 56px 32px;
+}
+
+/* 弹窗头部 */
+.compliance-header {
+  margin-bottom: 24px;
+}
+
+.compliance-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* 提示信息区域 */
+.compliance-tips-section {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.compliance-tips-section .main-tip {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin: 0 0 12px 0;
+  letter-spacing: 0.5px;
+}
+
+.compliance-tips-section .sub-tip {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin: 0 0 8px 0;
+}
+
+.compliance-tips-section .warning-tip {
+  font-size: 14px;
+  color: #fa8c16;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* 主体内容：左右布局 */
+.compliance-body {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* 左侧图片 */
+.compliance-left-image {
+  flex: 0 0 260px;
+  height: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+}
+
+.officer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 右侧规则列表 */
+.compliance-right-rules {
+  flex: 1;
+  max-width: 400px;
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* 自定义滚动条 */
+.compliance-right-rules::-webkit-scrollbar {
+  width: 4px;
+}
+
+.compliance-right-rules::-webkit-scrollbar-thumb {
+  background: #e8e8e8;
+  border-radius: 2px;
+}
+
+.rules-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-left: 32px;
+}
+
+/* 垂直连接线 */
+.timeline-line-vertical {
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-color: #f0f0f0;
+  z-index: 1;
+}
+
+/* 规则项包裹器 */
+.rule-item-wrapper {
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.rule-item-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.rule-icon-box {
+  position: absolute;
+  left: -32px;
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.rule-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-label {
+  flex: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.status-label.passed {
+  color: #52c41a;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+.status-label.failed {
+  color: #f5222d;
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+}
+
+.rule-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.llm-tag {
+  flex: none;
+  font-size: 11px;
+  background-color: #e6f7ff;
+  color: #1890ff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #91d5ff;
+  white-space: nowrap;
+}
+
+/* 大模型思考过程容器 */
+.llm-thought-container {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.thought-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #6c757d;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.thought-toggle:hover {
+  color: #1890ff;
+}
+
+.thought-detail {
+  padding-top: 10px;
+}
+
+.thought-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #868e96;
+  margin-bottom: 8px;
+}
+
+.thought-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #1890ff;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.thought-content-box {
+  font-size: 13px;
+  color: #495057;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+.supplier-thought-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.supplier-thought-item {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #edf0f2;
+}
+
+.supplier-thought-item.is-thinking {
+  border-color: #91d5ff;
+  background-color: #e6f7ff;
+}
+
+.supplier-thought-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.supplier-toggle-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: #6c757d;
+}
+
+.supplier-name {
+  color: #343a40;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.supplier-conclusion {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.supplier-conclusion.passed {
+  color: #389e0d;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+}
+
+.supplier-conclusion.failed {
+  color: #cf1322;
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+}
+
+.supplier-thought-item .thought-content-box {
+  padding-top: 10px;
+}
+
+/* 状态样式 */
+.rule-passed .rule-name { color: #389e0d; }
+.rule-icon-passed { color: #52c41a; font-size: 18px; }
+
+.rule-failed .rule-name { color: #cf1322; }
+.rule-icon-failed { color: #f5222d; font-size: 18px; }
+
+.rule-active .rule-name { color: #fa8c16; }
+.rule-icon-active { color: #fa8c16; font-size: 18px; }
+
+.rule-pending .rule-name { color: #bfbfbf; }
+.rule-icon-pending { color: #bfbfbf; font-size: 18px; }
+
+@keyframes pulse {
+  0% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.4; transform: scale(1); }
+}
+
+/* 跳过入口按钮：检测超过 3 秒后出现在弹窗右下角 */
+.skip-detection-btn.ant-btn {
+  position: absolute;
+  right: 32px;
+  bottom: 16px;
+  min-width: 88px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border-color: #d9d9d9;
+  background-color: #fff;
+  color: #595959;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: skip-btn-fade-in 0.3s ease;
+}
+
+.skip-detection-btn.ant-btn:hover {
+  border-color: #91d5ff !important;
+  background-color: #f0f8ff !important;
+  color: #1890ff !important;
+}
+
+@keyframes skip-btn-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 跳过二次确认弹窗 */
+.skip-confirm-modal .skip-confirm-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #262626;
+}
+
+.skip-confirm-modal .skip-confirm-count {
+  color: #fa8c16;
+  font-weight: 600;
+}
+
+.skip-confirm-modal .skip-confirm-note {
+  margin: 8px 0 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #8c8c8c;
+}
