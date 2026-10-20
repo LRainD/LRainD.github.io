@@ -81,13 +81,12 @@
    - 变量名必须是 `Component`，使用 `export default Component`
    - 详细规范见 `rules/development-guide.md`
 
-5. **验收页面还原**
-   - 运行验收命令：`node scripts/check-app-ready.mjs /prototypes/[页面名]`
-   - 提供预览 URL
-   - 确认页面基础功能正常（无编译错误、可正常访问）
+5. **验收页面还原（按需执行）**
+   - **默认不执行**：只有用户明确要求编译验收时，才运行验收命令：`node scripts/check-app-ready.mjs /prototypes/[页面名]`
+   - 验收时提供预览 URL，并确认页面基础功能正常（无编译错误、可正常访问）
 
 6. **生成规格文档**
-   - 基于已验收通过的页面代码生成规格文档
+   - 基于页面代码生成规格文档
    - 输出文件：`src/prototypes/<page-name>/spec.md`
    - 文档内容应包括：
      - 页面结构说明

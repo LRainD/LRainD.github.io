@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T02:40:38.483Z",
+  "updatedAt": "2026-10-20T07:01:55.473Z",
   "prototypes": [
     {
       "id": "item-prototypes-bidding-procurement-push-list",
@@ -740,6 +740,12 @@
     }
   ],
   "components": [
+    {
+      "id": "item-components-breadcrumb",
+      "kind": "item",
+      "title": "breadcrumb",
+      "itemKey": "components/breadcrumb"
+    },
     {
       "id": "item-components-risk-rule-config-page",
       "kind": "item",

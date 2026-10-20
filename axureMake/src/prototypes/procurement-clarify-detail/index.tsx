@@ -9,7 +9,7 @@
  */
 
 import React, { useState } from 'react';
-import { Button, Checkbox, ConfigProvider, Radio, Table, Tooltip } from 'antd';
+import { Button, Checkbox, ConfigProvider, Table, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import zhCN from 'antd/locale/zh_CN';
 import {
@@ -170,8 +170,6 @@ const APPROVAL_COLUMNS: ColumnsType<ApprovalRow> = [
 const Component = () => {
   const [detailOpen, setDetailOpen] = useState(true);
   const [approvalOpen, setApprovalOpen] = useState(true);
-  /** 是否设置提问截止时间：为「是」时才展示截止时间与自动延时 */
-  const [deadlineEnabled, setDeadlineEnabled] = useState(true);
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -240,59 +238,44 @@ const Component = () => {
               </div>
 
               <div className="cc-field cc-field-center">
-                <span className="cc-field-label">是否设置提问截止时间：</span>
-                <span className="cc-field-value">
-                  <Radio.Group
-                    value={deadlineEnabled}
-                    onChange={(e) => setDeadlineEnabled(e.target.value)}
-                  >
-                    <Radio value={true}>是</Radio>
-                    <Radio value={false}>否</Radio>
-                  </Radio.Group>
+                <span className="cc-field-label">提问截止时间：</span>
+                <span className="cc-field-value cc-deadline-row">
+                  <span className="cc-deadline-text">{QUESTION_DEADLINE}</span>
+                  <span className="cc-delay">
+                    <Checkbox checked={AUTO_DELAY_ENABLED} disabled>
+                      自动延时
+                    </Checkbox>
+                    <Tooltip
+                      placement="top"
+                      rootClassName="cc-delay-tooltip"
+                      styles={{
+                        body: { backgroundColor: '#333', color: 'rgba(255, 255, 255, 0.92)' }
+                      }}
+                      title={
+                        <div className="cc-delay-tip">
+                          <p className="cc-delay-tip-line">勾选自动延时设置时间后，</p>
+                          <p className="cc-delay-tip-line">
+                            若【审核通过时间+延长时间】早于【截止时间】，则最终截止时间为【截止时间】。如截止时间为
+                            2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 8:00，那最终截止时间为
+                            2024-10-01 12:00。
+                          </p>
+                          <p className="cc-delay-tip-line">
+                            若【审核通过时间+延长时间】晚于【截止时间】，则最终截止时间为【审核通过时间+延长时间】。如截止时间为
+                            2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 16:00，那最终截止时间为
+                            2024-10-01 19:00。
+                          </p>
+                        </div>
+                      }
+                    >
+                      <QuestionCircleOutlined className="cc-delay-help" />
+                    </Tooltip>
+                    <span className="cc-delay-colon">：</span>
+                    <span className="cc-delay-text">审批通过后</span>
+                    <span className="cc-delay-days">{AUTO_DELAY_DAYS}</span>
+                    <span className="cc-delay-text">天</span>
+                  </span>
                 </span>
               </div>
-
-              {deadlineEnabled && (
-                <div className="cc-field cc-field-center">
-                  <span className="cc-field-label">提问截止时间：</span>
-                  <span className="cc-field-value cc-deadline-row">
-                    <span className="cc-deadline-text">{QUESTION_DEADLINE}</span>
-                    <span className="cc-delay">
-                      <Checkbox checked={AUTO_DELAY_ENABLED} disabled>
-                        自动延时
-                      </Checkbox>
-                      <Tooltip
-                        placement="top"
-                        rootClassName="cc-delay-tooltip"
-                        styles={{
-                          body: { backgroundColor: '#333', color: 'rgba(255, 255, 255, 0.92)' }
-                        }}
-                        title={
-                          <div className="cc-delay-tip">
-                            <p className="cc-delay-tip-line">勾选自动延时设置时间后，</p>
-                            <p className="cc-delay-tip-line">
-                              若【审核通过时间+延长时间】早于【截止时间】，则最终截止时间为【截止时间】。如截止时间为
-                              2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 8:00，那最终截止时间为
-                              2024-10-01 12:00。
-                            </p>
-                            <p className="cc-delay-tip-line">
-                              若【审核通过时间+延长时间】晚于【截止时间】，则最终截止时间为【审核通过时间+延长时间】。如截止时间为
-                              2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 16:00，那最终截止时间为
-                              2024-10-01 19:00。
-                            </p>
-                          </div>
-                        }
-                      >
-                        <QuestionCircleOutlined className="cc-delay-help" />
-                      </Tooltip>
-                      <span className="cc-delay-colon">：</span>
-                      <span className="cc-delay-text">审批通过后</span>
-                      <span className="cc-delay-days">{AUTO_DELAY_DAYS}</span>
-                      <span className="cc-delay-text">天</span>
-                    </span>
-                  </span>
-                </div>
-              )}
 
               <div className="cc-field">
                 <span className="cc-field-label">澄清附件：</span>

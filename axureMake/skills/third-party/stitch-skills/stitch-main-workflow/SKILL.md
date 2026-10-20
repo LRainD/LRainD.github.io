@@ -102,9 +102,9 @@ Stitch 产物偏静态（HTML/CSS），经常会出现“截图对齐了，但�
 - 组件或页面必须 `export default`（参考 `vite-plugins/axhubComponentEnforcer.ts`）
 - 使用 Tailwind 时，`style.css` 顶部必须包含 `@import "tailwindcss";`
 
-### 6) 验收（必须跑完）
+### 6) 验收（按需执行）
 
-按目标类型执行验收脚本，结果必须为 `READY`：
+**默认不执行**：仅当用户明确要求编译验收时，才按目标类型执行验收脚本，且结果必须为 `READY`：
 
 ```bash
 node scripts/check-app-ready.mjs /prototypes/<name>
@@ -122,4 +122,4 @@ node scripts/check-app-ready.mjs /components/<name>
 ## 说明与非目标
 
 - 本技能不重复展开“必读规范”的详细说明，只做最小引用（默认已完成基础规范阅读）。
-- 本技能不要求额外平台接口适配约束；只要求本项目最小代码约束与验收通过。
+- 本技能不要求额外平台接口适配约束；只要求本项目最小代码约束（验收按需，仅在用户明确要求时执行）。

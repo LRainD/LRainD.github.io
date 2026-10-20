@@ -29,7 +29,7 @@ description: 在本项目新建或重构 `src/prototypes/*`、`src/components/*`
 2. 先按既有流程完成原型
 - 先按现有规则完成 `spec.md`
 - 再完成 `index.tsx`
-- 运行验收命令，确保当前原型已可交付
+- 编译验收按需执行：仅当用户明确要求时才运行验收命令
 
 3. 再完成 `.pen`（阻塞步骤）
 - 在目标目录生成 `<name>.pen`
@@ -49,7 +49,9 @@ description: 在本项目新建或重构 `src/prototypes/*`、`src/components/*`
 - 以后任何对 `spec.md`、`.pen`、`index.tsx` 的修改，都必须三者同步
 - 若只改了代码未改 Pencil，不视为完成交付
 
-## 验收命令
+## 验收命令（按需执行）
+
+> **默认不跑**：仅当用户明确要求编译验收时才运行。
 
 ```bash
 node scripts/check-app-ready.mjs /prototypes/<name>
@@ -60,5 +62,5 @@ node scripts/check-app-ready.mjs /components/<name>
 
 - 必须同时存在并同步：`spec.md`、`.pen`、`index.tsx`
 - `index.tsx` 顶部必须存在 Pencil 同步注释
-- `check-app-ready.mjs` 结果为 `READY`
+- 用户要求验收时，`check-app-ready.mjs` 结果为 `READY`
 - 交付时返回三个文件路径

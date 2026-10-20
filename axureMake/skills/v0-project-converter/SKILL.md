@@ -152,9 +152,9 @@ import { cn } from "../../lib/utils"
 - `@radix-ui/*` 组件
 - `lucide-react`, `recharts`, `date-fns` 等
 
-## 验收标准
+## 验收标准（按需执行）
 
-转换完成后运行验收脚本：
+**默认不执行**：仅当用户明确要求编译验收时，转换完成后运行验收脚本：
 
 ```bash
 node scripts/check-app-ready.mjs /prototypes/[页面名]

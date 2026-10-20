@@ -31,8 +31,8 @@ type ClarifyRecord = {
   question: string;
   /** 澄清时间 */
   time: string;
-  /** 回答截止时间 */
-  deadline: string;
+  /** 回答截止时间（可能不设置） */
+  deadline?: string;
   answers: Answer[];
   /** 是否展示补充回答表单（尚无回答的记录） */
   replyable?: boolean;
@@ -55,7 +55,6 @@ const RECORDS: ClarifyRecord[] = [
     key: '2',
     question: '根据股份管理要求，进行澄清',
     time: '2026-10-20 09:33:13',
-    deadline: '2026-10-22 09:33:13',
     answers: [],
     replyable: true
   },
@@ -163,7 +162,9 @@ const Component = () => {
                           <div className="bz-label">采购单位 问题：</div>
                           <div className="bz-question-text">{record.question}</div>
                           <div className="bz-time">澄清时间：{record.time}</div>
-                          <div className="bz-time">回答截止时间：{record.deadline}</div>
+                          {record.deadline && (
+                            <div className="bz-time">回答截止时间：{record.deadline}</div>
+                          )}
 
                           {record.answers.length > 0 && <div className="bz-divider" />}
 

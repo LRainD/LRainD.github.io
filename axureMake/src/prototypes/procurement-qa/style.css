@@ -20,12 +20,17 @@ body {
   font-size: 12px;
 }
 
-.qa-breadcrumb .ant-breadcrumb-link {
-  color: #666;
+.qa-breadcrumb-parent {
+  color: #8c8c8c;
+  cursor: pointer;
 }
 
-.qa-breadcrumb .ant-breadcrumb-separator {
-  color: #999;
+.qa-breadcrumb-current {
+  color: #1f1f1f;
+}
+
+.qa-breadcrumb-sep {
+  color: #bfbfbf;
 }
 
 /* 页面标题 + 倒计时 + 采购信息 */
@@ -288,6 +293,13 @@ body {
   color: #bfbfbf;
 }
 
+/* 附件列：蓝色「查看附件」按钮 */
+.qa-attach-btn {
+  color: #1890ff !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
 /* 弹窗及表单样式优化 */
 .custom-modal-title {
   display: flex;
@@ -430,14 +442,6 @@ body {
   flex-wrap: wrap;
 }
 
-.clarify-deadline-hint {
-  flex-basis: 100%;
-  margin-top: 4px;
-  font-size: 12px;
-  line-height: 18px;
-  color: #999;
-}
-
 .clarify-deadline-picker {
   width: 200px !important;
 }
@@ -486,9 +490,14 @@ body {
   margin: 0 0 8px;
   font-size: 13px;
   line-height: 20px;
-  color: #333;
+  color: inherit;
 }
 
 .clarify-delay-tip-line:last-child {
   margin-bottom: 0;
+}
+
+/* 自动延时规则气泡：箭头与气泡底色保持一致（气泡文字色由 Tooltip styles.body 指定） */
+.clarify-delay-tooltip .ant-tooltip-arrow::before {
+  background-color: #333;
 }

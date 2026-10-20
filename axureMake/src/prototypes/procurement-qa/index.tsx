@@ -17,7 +17,6 @@ import {
   InputNumber,
   Select,
   Checkbox,
-  Radio,
   Table,
   Modal,
   Popover,
@@ -26,7 +25,7 @@ import {
 } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { ChevronDown, ChevronUp, Info, Plus, ArrowLeft } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info, Plus } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import CentralizedProcurementLayout from '../../components/centralized-procurement-layout';
@@ -47,8 +46,6 @@ const Component = () => {
   // 是否走审批流程（用于演示不同分支）
   const [hasApproval, setHasApproval] = useState(true);
   const [clarifyContent, setClarifyContent] = useState('');
-  /** 是否设置提问截止时间：为「是」时才展示截止时间与自动延时 */
-  const [deadlineEnabled, setDeadlineEnabled] = useState(true);
   const [questionDeadline, setQuestionDeadline] = useState<any>(null);
   // 自动延时
   const [autoDelay, setAutoDelay] = useState(false);
@@ -60,7 +57,6 @@ const Component = () => {
       key: '1',
       index: 1,
       clarifyTime: '2026-10-15 16:53:21',
-      deadlineEnabled: '否',
       questionDeadline: '-',
       clarifyDesc: '23',
       attachCount: '0',
@@ -72,7 +68,6 @@ const Component = () => {
       key: '2',
       index: 2,
       clarifyTime: '2026-10-14 10:08:47',
-      deadlineEnabled: '是',
       questionDeadline: '2026-10-20 18:00:00',
       clarifyDesc: '明确 HRB400E 螺纹钢的抗震性能指标要求，详见附件说明',
       attachCount: '1',
@@ -84,7 +79,6 @@ const Component = () => {
       key: '3',
       index: 3,
       clarifyTime: '2026-10-13 09:32:15',
-      deadlineEnabled: '否',
       questionDeadline: '-',
       clarifyDesc: '交货地点统一为天津港仓库，运输费用由采购方承担',
       attachCount: '0',
@@ -96,7 +90,6 @@ const Component = () => {
       key: '4',
       index: 4,
       clarifyTime: '2026-10-11 14:45:02',
-      deadlineEnabled: '是',
       questionDeadline: '2026-10-18 12:00:00',
       clarifyDesc: '投标保证金缴纳方式调整为银行保函或电汇',
       attachCount: '2',
@@ -106,7 +99,7 @@ const Component = () => {
     }
   ]);
 
-  // 提问列表数据
+  // 回答列表数据
   const [askDataSource, setAskDataSource] = useState([
     {
       key: '1',
@@ -139,7 +132,6 @@ const Component = () => {
     setHasApproval(approval);
     setModeMenuOpen(false);
     setClarifyContent('');
-    setDeadlineEnabled(true);
     setQuestionDeadline(null);
     setAutoDelay(false);
     setDelayDays(2);
@@ -154,9 +146,7 @@ const Component = () => {
       key: String(clarifyDataSource.length + 1),
       index: clarifyDataSource.length + 1,
       clarifyTime: new Date().toISOString().replace('T', ' ').substring(0, 19),
-      deadlineEnabled: deadlineEnabled ? '是' : '否',
-      questionDeadline:
-        deadlineEnabled && questionDeadline ? questionDeadline.format('YYYY-MM-DD HH:mm:ss') : '-',
+      questionDeadline: questionDeadline ? questionDeadline.format('YYYY-MM-DD HH:mm:ss') : '-',
       clarifyDesc: clarifyContent,
       attachCount: '0',
       attach: '--',
@@ -178,9 +168,10 @@ const Component = () => {
         {/* 面包屑 */}
         <Breadcrumb
           className="qa-breadcrumb"
+          separator={<span className="qa-breadcrumb-sep">›</span>}
           items={[
-            { title: <span className="qa-breadcrumb-back"><ArrowLeft size={14} style={{ marginRight: 4 }} />采购列表</span> },
-            { title: '澄清' }
+            { title: <span className="qa-breadcrumb-parent">采购列表</span> },
+            { title: <span className="qa-breadcrumb-current">澄清</span> }
           ]}
         />
 
@@ -216,7 +207,7 @@ const Component = () => {
           </div>
         </div>
 
-        {/* 澄清大容器：白色底块，包裹标题栏 + 澄清列表 + 提问列表 */}
+        {/* 澄清大容器：白色底块，包裹标题栏 + 澄清列表 + 回答列表 */}
         <div className="qa-main-card">
           <div className="qa-main-head">
             <div className="qa-main-head-left">
@@ -265,7 +256,7 @@ const Component = () => {
                   <div className="qa-section-head-left">
                     <span className="qa-title-bar" />
                     <h2 className="qa-section-title">澄清列表</h2>
-                    <span className="qa-section-note">所有的澄清均对所有的分供商可见</span>
+                    <span className="qa-section-note">所有的澄清均对所有的分供商可见;回答截止时间以最新的澄清设置的回答截止时间为准，超过时间后分供商不可回答</span>
                   </div>
                   <div className="qa-section-head-right">
                     <span className="qa-collapse-icon" onClick={() => setClarifyListOpen(!clarifyListOpen)}>
@@ -286,11 +277,23 @@ const Component = () => {
                       columns={[
                         { title: '', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
                         { title: '澄清时间（审批通过时间）', dataIndex: 'clarifyTime', key: 'clarifyTime', align: 'center' },
-                        { title: '是否设置提问截止时间', dataIndex: 'deadlineEnabled', key: 'deadlineEnabled', align: 'center' },
-                        { title: '提问截止时间', dataIndex: 'questionDeadline', key: 'questionDeadline', align: 'center' },
+                        { title: '回答截止时间', dataIndex: 'questionDeadline', key: 'questionDeadline', align: 'center' },
                         { title: '澄清说明', dataIndex: 'clarifyDesc', key: 'clarifyDesc', align: 'center' },
                         { title: '附件数量', dataIndex: 'attachCount', key: 'attachCount', align: 'center' },
-                        { title: '附件', dataIndex: 'attach', key: 'attach', align: 'center' },
+                        {
+                          title: '附件',
+                          dataIndex: 'attach',
+                          key: 'attach',
+                          align: 'center',
+                          render: (_: string, record: any) =>
+                            record.attachCount !== '0' ? (
+                              <Button type="link" size="small" className="qa-attach-btn">
+                                查看附件
+                              </Button>
+                            ) : (
+                              '--'
+                            )
+                        },
                         { title: '状态', dataIndex: 'status', key: 'status', align: 'center' },
                         {
                           title: '操作',
@@ -305,12 +308,12 @@ const Component = () => {
                 )}
               </div>
 
-              {/* 提问列表 */}
+              {/* 回答列表 */}
               <div className="qa-section">
                 <div className="qa-section-head">
                   <div className="qa-section-head-left">
                     <span className="qa-title-bar" />
-                    <h2 className="qa-section-title">提问列表</h2>
+                    <h2 className="qa-section-title">回答列表</h2>
                   </div>
                   <div className="qa-section-head-right">
                     <Button>整体打包下载</Button>
@@ -371,8 +374,8 @@ const Component = () => {
                           { title: '', dataIndex: 'index', key: 'index', width: 60, align: 'center' },
                           { title: '分供商名称（账号）', dataIndex: 'supplier', key: 'supplier', width: 320, align: 'center' },
                           { title: '联系方式', dataIndex: 'contact', key: 'contact', width: 200, align: 'center' },
-                          { title: '提问时间', dataIndex: 'askTime', key: 'askTime', width: 200, align: 'center' },
-                          { title: '提问说明', dataIndex: 'askDesc', key: 'askDesc', width: 220, align: 'center' },
+                          { title: '回答时间', dataIndex: 'askTime', key: 'askTime', width: 200, align: 'center' },
+                          { title: '回答说明', dataIndex: 'askDesc', key: 'askDesc', width: 220, align: 'center' },
                           { title: '附件数量', dataIndex: 'attachCount', key: 'attachCount', width: 120, align: 'center' },
                           { title: '附件', dataIndex: 'attach', key: 'attach', width: 140, align: 'center' },
                           {
@@ -439,78 +442,66 @@ const Component = () => {
             </div>
 
             <div className="clarify-form-item">
-              <div className="clarify-label">是否设置提问截止时间：</div>
-              <div className="clarify-control">
-                <Radio.Group
-                  value={deadlineEnabled}
-                  onChange={(e) => setDeadlineEnabled(e.target.value)}
-                >
-                  <Radio value={true}>是</Radio>
-                  <Radio value={false}>否</Radio>
-                </Radio.Group>
+              <div className="clarify-label">
+                <span className="required-star">*</span>回答截止时间：
+              </div>
+              <div className="clarify-control clarify-deadline-row">
+                <DatePicker
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  placeholder="请选择回答截止时间"
+                  value={questionDeadline}
+                  onChange={(val) => setQuestionDeadline(val)}
+                  className={hasApproval ? 'clarify-deadline-picker' : 'clarify-deadline-picker-full'}
+                />
+                {hasApproval && (
+                  <div className="clarify-delay">
+                    <Checkbox
+                      checked={autoDelay}
+                      onChange={(e) => setAutoDelay(e.target.checked)}
+                    >
+                      自动延时
+                    </Checkbox>
+                    <Tooltip
+                      placement="top"
+                      rootClassName="clarify-delay-tooltip"
+                      styles={{
+                        body: { backgroundColor: '#333', color: 'rgba(255, 255, 255, 0.92)' }
+                      }}
+                      title={
+                        <div className="clarify-delay-tip">
+                          <p className="clarify-delay-tip-line">勾选自动延时设置时间后，</p>
+                          <p className="clarify-delay-tip-line">
+                            若【审核通过时间+延长时间】早于【截止时间】，则最终截止时间为【截止时间】。如截止时间为
+                            2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 8:00，那最终截止时间为
+                            2024-10-01 12:00。
+                          </p>
+                          <p className="clarify-delay-tip-line">
+                            若【审核通过时间+延长时间】晚于【截止时间】，则最终截止时间为【审核通过时间+延长时间】。如截止时间为
+                            2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 16:00，那最终截止时间为
+                            2024-10-01 19:00。
+                          </p>
+                        </div>
+                      }
+                    >
+                      <QuestionCircleOutlined className="clarify-delay-help" />
+                    </Tooltip>
+                    <span className="clarify-delay-colon">：</span>
+                    <span className="clarify-delay-text">审批通过后</span>
+                    <InputNumber
+                      className="clarify-delay-input"
+                      min={1}
+                      max={999}
+                      precision={0}
+                      value={delayDays}
+                      disabled={!autoDelay}
+                      onChange={(val) => setDelayDays(val as number | null)}
+                    />
+                    <span className="clarify-delay-text">天</span>
+                  </div>
+                )}
               </div>
             </div>
-
-            {deadlineEnabled && (
-              <div className="clarify-form-item">
-                <div className="clarify-label">提问截止时间：</div>
-                <div className="clarify-control clarify-deadline-row">
-                  <DatePicker
-                    showTime
-                    format="YYYY-MM-DD HH:mm:ss"
-                    placeholder="请选择提问截止时间"
-                    value={questionDeadline}
-                    onChange={(val) => setQuestionDeadline(val)}
-                    className={hasApproval ? 'clarify-deadline-picker' : 'clarify-deadline-picker-full'}
-                  />
-                  {hasApproval && (
-                    <div className="clarify-delay">
-                      <Checkbox
-                        checked={autoDelay}
-                        onChange={(e) => setAutoDelay(e.target.checked)}
-                      >
-                        自动延时
-                      </Checkbox>
-                      <Tooltip
-                        placement="top"
-                        title={
-                          <div className="clarify-delay-tip">
-                            <p className="clarify-delay-tip-line">勾选自动延时设置时间后，</p>
-                            <p className="clarify-delay-tip-line">
-                              若【审核通过时间+延长时间】早于【截止时间】，则最终截止时间为【截止时间】。如截止时间为
-                              2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 8:00，那最终截止时间为
-                              2024-10-01 12:00。
-                            </p>
-                            <p className="clarify-delay-tip-line">
-                              若【审核通过时间+延长时间】晚于【截止时间】，则最终截止时间为【审核通过时间+延长时间】。如截止时间为
-                              2024-10-01 12:00，延长时间设置 3 小时，审批通过时间为 2024-10-01 16:00，那最终截止时间为
-                              2024-10-01 19:00。
-                            </p>
-                          </div>
-                        }
-                      >
-                        <QuestionCircleOutlined className="clarify-delay-help" />
-                      </Tooltip>
-                      <span className="clarify-delay-colon">：</span>
-                      <span className="clarify-delay-text">审批通过后</span>
-                      <InputNumber
-                        className="clarify-delay-input"
-                        min={1}
-                        max={999}
-                        precision={0}
-                        value={delayDays}
-                        disabled={!autoDelay}
-                        onChange={(val) => setDelayDays(val as number | null)}
-                      />
-                      <span className="clarify-delay-text">天</span>
-                    </div>
-                  )}
-                  <div className="clarify-deadline-hint">
-                    未设置时，分供商可在任意时间提问
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div className="clarify-form-item">
               <div className="clarify-label">澄清附件：</div>

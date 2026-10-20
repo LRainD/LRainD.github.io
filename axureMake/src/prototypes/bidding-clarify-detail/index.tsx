@@ -12,11 +12,15 @@ import type { ColumnsType } from 'antd/es/table';
 import zhCN from 'antd/locale/zh_CN';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import BiddingLayout from '../../components/bidding-layout';
+import Breadcrumb from '../../components/breadcrumb';
 import './style.css';
+
+// 顶部面包屑文案
+const BREADCRUMB_ITEMS = ['投标/报价管理', '投标/报价列表', '投标/报价详情'];
 
 const TABS = ['采购(资格预审)公告', '联系方式', '报名附件', '采购文件', '澄清', '答疑'];
 
-// 提问截止时间（到年月日时分秒）
+// 回答截止时间（到年月日时分秒）
 const ASK_DEADLINE = '2026-10-16 18:00:00';
 
 // 已澄清列表
@@ -60,7 +64,7 @@ const CLARIFY_DATA: ClarifyItem[] = [
 const CLARIFY_COLUMNS: ColumnsType<ClarifyItem> = [
   { title: '', dataIndex: 'index', key: 'index', width: 80, align: 'center' },
   { title: '澄清时间', dataIndex: 'clarifyTime', key: 'clarifyTime', align: 'center' },
-  { title: '提问截止时间', dataIndex: 'askDeadline', key: 'askDeadline', width: 200, align: 'center' },
+  { title: '回答截止时间', dataIndex: 'askDeadline', key: 'askDeadline', width: 200, align: 'center' },
   { title: '澄清说明', dataIndex: 'clarifyDesc', key: 'clarifyDesc', align: 'center' },
   { title: '附件数量', dataIndex: 'attachCount', key: 'attachCount', width: 150, align: 'center' },
   { title: '附件', dataIndex: 'attach', key: 'attach', width: 150, align: 'center' },
@@ -79,7 +83,7 @@ const CLARIFY_COLUMNS: ColumnsType<ClarifyItem> = [
   { title: '操作', dataIndex: 'action', key: 'action', width: 150, align: 'center' }
 ];
 
-// 提问列表
+// 回答列表
 type AskItem = {
   key: string;
   index: number;
@@ -104,8 +108,8 @@ const ASK_DATA: AskItem[] = [
 
 const ASK_COLUMNS: ColumnsType<AskItem> = [
   { title: '', dataIndex: 'index', key: 'index', width: 80, align: 'center' },
-  { title: '提问时间', dataIndex: 'askTime', key: 'askTime', align: 'center' },
-  { title: '提问说明', dataIndex: 'askDesc', key: 'askDesc', align: 'center' },
+  { title: '回答时间', dataIndex: 'askTime', key: 'askTime', align: 'center' },
+  { title: '回答说明', dataIndex: 'askDesc', key: 'askDesc', align: 'center' },
   { title: '附件数量', dataIndex: 'attachCount', key: 'attachCount', width: 150, align: 'center' },
   { title: '附件', dataIndex: 'attach', key: 'attach', width: 150, align: 'center' },
   { title: '是否已被采购商查看', dataIndex: 'status', key: 'status', width: 260, align: 'center' }
@@ -124,13 +128,7 @@ const Component = () => {
           <div className="bg-white mb-3">
             <div className="h-[3px] w-full bg-primary" />
 
-            <div className="px-6 py-3 text-[12px] text-gray-500">
-              <span className="cursor-pointer hover:text-primary">投标/报价管理</span>
-              <span className="mx-2 text-gray-400">{'>'}</span>
-              <span className="cursor-pointer hover:text-primary">投标/报价列表</span>
-              <span className="mx-2 text-gray-400">{'>'}</span>
-              <span className="text-gray-700">投标/报价详情</span>
-            </div>
+            <Breadcrumb items={BREADCRUMB_ITEMS} />
 
             <div className="px-6 pt-2 pb-6 flex justify-between items-center gap-10">
               <div className="min-w-0">
@@ -194,7 +192,7 @@ const Component = () => {
 
             <div className="px-6 pt-4 pb-6">
               <div className="bz-tip">
-                当前澄清模式为“简版模式”，可以直接对澄清说明进行查看或直接发起提问
+                当前澄清模式为“简版模式”，可以直接对澄清说明进行查看或直接发起回答，回答截止时间以最新的澄清要求的回答截止时间为准
               </div>
 
               {/* 已澄清列表 */}
@@ -222,16 +220,16 @@ const Component = () => {
                 )}
               </div>
 
-              {/* 提问列表 */}
+              {/* 回答列表 */}
               <div className="bz-card bz-card-last">
                 <div className="bz-card-head">
                   <div className="bz-card-head-left">
                     <span className="bz-title-bar" />
-                    <span className="bz-card-title">提问列表</span>
+                    <span className="bz-card-title">回答列表</span>
                   </div>
                   <div className="bz-card-head-right">
-                    <span className="bz-ask-tip">已超过提问截止时间{ASK_DEADLINE}</span>
-                    <button className="bz-btn-ask" disabled>提问</button>
+                    <span className="bz-ask-tip">已超过回答截止时间{ASK_DEADLINE}</span>
+                    <button className="bz-btn-ask" disabled>回答</button>
                     <span className="bz-collapse" onClick={() => setAskOpen(!askOpen)}>
                       {askOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                     </span>

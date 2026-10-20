@@ -1,0 +1,24 @@
+.breadcrumb {
+  padding: 12px 24px;
+  font-size: 12px;
+  line-height: 20px;
+  color: #6b7280;
+}
+
+.breadcrumb-link {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.breadcrumb-link:hover {
+  color: var(--color-primary, #1677ff);
+}
+
+.breadcrumb-sep {
+  margin: 0 8px;
+  color: #9ca3af;
+}
+
+.breadcrumb-current {
+  color: #374151;
+}
