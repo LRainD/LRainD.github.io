@@ -86,7 +86,7 @@ const Component = () => {
         <div className="rrs-title-area">
           <span className="rrs-category-tag">物资</span>
           <h1 className="rrs-title">
-            {viewMode === 'summary' ? 'qiqi-劳务分包其他类' : 'qiqi-马甲检测'}
+            {viewMode === 'summary' ? 'qiqi-劳务分包其他类' : '棱镜识别“换马甲”检测”'}
           </h1>
         </div>
         {viewMode === 'summary' ? (
@@ -144,7 +144,7 @@ const Component = () => {
             <div className="rrs-card-head">
               <div className="rrs-card-head-left">
                 <span className="rrs-title-bar" />
-                <h2 className="rrs-card-title">负面清单换马甲检测详情</h2>
+                <h2 className="rrs-card-title">棱镜识别“换马甲”检测详情</h2>
               </div>
               <div className="rrs-card-head-right">
                 <ChevronUp size={16} className="rrs-muted cursor-pointer" />

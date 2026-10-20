@@ -434,16 +434,17 @@ body {
   color: #999;
 }
 
-/* 截止时间 + 自动延时：同一行并排，灰色说明文字换行到下一行 */
+/* 截止时间 + 自动延时：强制同一行展示 */
 .clarify-deadline-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .clarify-deadline-picker {
   width: 200px !important;
+  flex-shrink: 0;
 }
 
 .clarify-deadline-picker-full {
@@ -456,6 +457,8 @@ body {
   gap: 4px;
   font-size: 14px;
   color: #333;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .clarify-delay-help {
@@ -479,7 +482,13 @@ body {
 }
 
 .clarify-delay-input {
+  width: 64px !important;
+  flex-shrink: 0;
+}
+
+.clarify-delay-unit {
   width: 72px !important;
+  flex-shrink: 0;
 }
 
 .clarify-delay-tip {

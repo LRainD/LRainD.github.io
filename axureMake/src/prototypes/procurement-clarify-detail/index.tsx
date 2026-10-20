@@ -41,7 +41,7 @@ import CentralizedProcurementLayout from '../../components/centralized-procureme
 import type { MenuItem } from '../../components/centralized-procurement-layout';
 import './style.css';
 
-/** 提问截止时间（口径与「简版-发起澄清」一致） */
+/** 回答截止时间（口径与「简版-发起澄清」一致） */
 const QUESTION_DEADLINE = '2026-10-20 18:00:00';
 
 /** 自动延时（只读展示）：是否勾选 + 审批通过后延时天数 */
@@ -238,7 +238,7 @@ const Component = () => {
               </div>
 
               <div className="cc-field cc-field-center">
-                <span className="cc-field-label">提问截止时间：</span>
+                <span className="cc-field-label">回答截止时间：</span>
                 <span className="cc-field-value cc-deadline-row">
                   <span className="cc-deadline-text">{QUESTION_DEADLINE}</span>
                   <span className="cc-delay">
@@ -311,7 +311,7 @@ const Component = () => {
           {approvalOpen && (
             <div className="cc-approval-body">
               <div className="cc-flow-row">
-                <span className="cc-flow-name">审批流名称:FETEST-澄清提问简版</span>
+                <span className="cc-flow-name">审批流名称:FETEST-澄清回答简版</span>
                 <div className="cc-flow-actions">
                   <Button className="cc-btn-urge" icon={<ClockCircleOutlined />}>
                     催办/分享
