@@ -122,6 +122,7 @@ interface WarningRecord {
   warningType: string;
   warningCount: number;
   ruleConfig: React.ReactNode;
+  initialData: string;
   currentData: string;
   releaseStatus: string;
   releaseMethod: string;
@@ -139,6 +140,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 1,
     ruleConfig: '拟中标供应商数量：3家，投标供应商数量≥5家（N+2）',
+    initialData: '投标供应商数量 0 家',
     currentData: '投标供应商数量 0 家',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -154,6 +156,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 12,
     ruleConfig: '最短报名天数：8天',
+    initialData: '报名天数8天',
     currentData: '报名天数7天',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -169,6 +172,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 24,
     ruleConfig: '招标/采购公告需用模板化生成',
+    initialData: '本次招标/采购公告非模板化生成',
     currentData: '本次招标/采购公告非模板化生成',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -184,6 +188,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 58,
     ruleConfig: '劳务清单不应存在机械设备/主材/周材',
+    initialData: '本次劳务分包采购清单存在机械设备',
     currentData: '本次劳务分包采购清单存在机械设备',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -199,6 +204,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 52,
     ruleConfig: '非招采购不能包含招标、开标、评标、中标、约标、发标、定标、投标字样',
+    initialData: '此节点存在1个带标校供应商字样',
     currentData: '此节点存在1个带标校供应商字样',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -214,6 +220,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 1,
     ruleConfig: '最小评标人数：3人且需要为奇数',
+    initialData: '评标人数：2人',
     currentData: '评标人数：2人',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -229,6 +236,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 1,
     ruleConfig: '最小评标人数：3人且需要为奇数',
+    initialData: '评标人数：2人',
     currentData: '评标人数：2人',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -244,6 +252,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 4,
     ruleConfig: '调价轮次需与招标文件描述一致',
+    initialData: '本次招标已经发起3次调价',
     currentData: '本次招标已经发起3次调价',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -259,6 +268,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 27,
     ruleConfig: '招标/采购文件需用模板化生成',
+    initialData: '本次招标/采购文件非模板化生成',
     currentData: '本次招标/采购文件非模板化生成',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -274,6 +284,7 @@ const tableData: WarningRecord[] = [
     warningType: '预警',
     warningCount: 27,
     ruleConfig: '最短报价天数10天且 应急采购【需要】管控',
+    initialData: '报价天数10天',
     currentData: '报价天数2天',
     releaseStatus: '未解除',
     releaseMethod: '-',
@@ -295,6 +306,16 @@ const columns: TableColumnsType<WarningRecord> = [
   { title: '预警类型', dataIndex: 'warningType', width: 90 },
   { title: '预警次数', dataIndex: 'warningCount', width: 90, align: 'center' },
   { title: '规则配置', dataIndex: 'ruleConfig', width: 330 },
+  {
+    title: '初始判定数据',
+    dataIndex: 'initialData',
+    width: 210,
+    render: (value: string) => (
+      <span className="bwm-cell-ellipsis" title={value}>
+        {value}
+      </span>
+    )
+  },
   {
     title: '当前数据',
     dataIndex: 'currentData',
@@ -478,7 +499,7 @@ const Component: React.FC = () => {
               columns={columns}
               dataSource={tableData}
               rowKey="key"
-              scroll={{ x: 1560 }}
+              scroll={{ x: 1770 }}
               pagination={{
                 total: 954,
                 defaultPageSize: 10,

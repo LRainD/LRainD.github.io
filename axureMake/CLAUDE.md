@@ -24,6 +24,7 @@
 
 ## 📌 项目信息
 
+- 项目名称：未命名项目
 - 项目总文档：`src/docs/project-overview.md`
 
 ## ⚠️ 重要原则

@@ -32,10 +32,10 @@ import complianceImage from '../../../assets/images/数字合规官检测中.png
 import './style.css';
 
 export interface ComplianceHandle {
-  startFlow: () => void;
-  showDetection: () => void;
+  startFlow: (options?: { withInitialData?: boolean }) => void;
+  showDetection: (options?: { withInitialData?: boolean }) => void;
   hideDetection: () => void;
-  showRiskWarning: () => void;
+  showRiskWarning: (options?: { withInitialData?: boolean }) => void;
   hideRiskWarning: () => void;
 }
 
@@ -43,6 +43,10 @@ export interface ComplianceProps {
   onDetectionComplete?: () => void;
   /** 是否需要展示处置相关操作（勾选框、处置状态、处置模式、处置说明、处置附件），默认为 true */
   showDisposalFields?: boolean;
+  /** 是否展示解除状态、当前数据描述（及按入口决定的初次判定数据）列，默认为 false */
+  showReleaseFields?: boolean;
+  /** 点击「跳过演示」时是否弹出演示分支选择（有未解除 / 无未解除），默认为 false */
+  demoBranchSelect?: boolean;
   /** 自定义风险数据 */
   riskData?: RiskItem[];
 }
@@ -90,6 +94,12 @@ interface RiskItem {
   suppliers?: SupplierReasoning[];
   detailLinkText?: string;
   onDetailClick?: () => void;
+  /** 解除状态：已解除 / 未解除 */
+  releaseStatus?: '已解除' | '未解除';
+  /** 当前数据描述 */
+  currentData?: string;
+  /** 初次判定数据 */
+  initialData?: string;
 }
 
 const initialRules: RiskRule[] = [
@@ -325,9 +335,14 @@ const initialRiskData: RiskItem[] = [
 ];
 
 const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, ref) => {
-  const { onDetectionComplete, showDisposalFields = true, riskData: externalRiskData } = props;
+  const { onDetectionComplete, showDisposalFields = true, showReleaseFields = false, demoBranchSelect = false, riskData: externalRiskData } = props;
   const [detectionVisible, setDetectionVisible] = useState(false);
   const [warningVisible, setWarningVisible] = useState(false);
+  /** 演示分支：有未解除（全部数据）/ 无未解除（仅已解除数据） */
+  const [branchVisible, setBranchVisible] = useState(false);
+  const [demoBranch, setDemoBranch] = useState<'has-unreleased' | 'all-released'>('has-unreleased');
+  /** 是否展示「初次判定数据」列，由打开弹窗的入口决定 */
+  const [showInitialData, setShowInitialData] = useState(false);
 
   // 检测中规则状态
   const [rules, setRules] = useState<RiskRule[]>([]);
@@ -363,16 +378,25 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
   };
 
   useImperativeHandle(ref, () => ({
-    startFlow: () => {
+    startFlow: (options) => {
+      setShowInitialData(!!options?.withInitialData);
+      setDemoBranch('has-unreleased');
       setDetectionVisible(true);
       initRules();
     },
-    showDetection: () => {
+    showDetection: (options) => {
+      setShowInitialData(!!options?.withInitialData);
+      setDemoBranch('has-unreleased');
       setDetectionVisible(true);
       initRules();
     },
     hideDetection: () => setDetectionVisible(false),
-    showRiskWarning: () => setWarningVisible(true),
+    showRiskWarning: (options) => {
+      setShowInitialData(!!options?.withInitialData);
+      setDemoBranch('has-unreleased');
+      setBranchVisible(false);
+      setWarningVisible(true);
+    },
     hideRiskWarning: () => setWarningVisible(false)
   }));
 
@@ -560,7 +584,32 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
     setReasoningModal({ isOpen: true, item });
   };
 
-  const selectedCount = riskData.filter(item => item.selected).length;
+  /** 按演示分支过滤后的预警数据：无未解除时仅展示已解除数据 */
+  const displayRiskData =
+    demoBranch === 'all-released'
+      ? riskData.filter(item => item.releaseStatus === '已解除')
+      : riskData;
+
+  /** 未通过预警项数：无未解除分支下全部为已解除数据，未通过项数为 0 */
+  const notPassedCount = demoBranch === 'all-released' ? 0 : riskData.length;
+
+  const handleSkipDemo = () => {
+    if (demoBranchSelect) {
+      setBranchVisible(true);
+      return;
+    }
+    setDetectionVisible(false);
+    setWarningVisible(true);
+  };
+
+  const handleChooseBranch = (branch: 'has-unreleased' | 'all-released') => {
+    setDemoBranch(branch);
+    setBranchVisible(false);
+    setDetectionVisible(false);
+    setWarningVisible(true);
+  };
+
+  const selectedCount = displayRiskData.filter(item => item.selected).length;
 
   const renderRuleItem = (rule: RiskRule) => {
     let statusClass = 'rule-pending';
@@ -675,10 +724,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
             <Button
               size="small"
               type="link"
-              onClick={() => {
-                setDetectionVisible(false);
-                setWarningVisible(true);
-              }}
+              onClick={handleSkipDemo}
               style={{ padding: 0 }}
             >
               跳过演示
@@ -709,6 +755,38 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
         </div>
       </Modal>
 
+      {/* 演示分支选择 Modal */}
+      <Modal
+        title="选择演示分支"
+        open={branchVisible}
+        footer={null}
+        width={480}
+        centered
+        onCancel={() => setBranchVisible(false)}
+        className="compliance-branch-modal"
+        mask={{ closable: false }}
+      >
+        <p className="branch-tip">请选择本次演示的风控预警数据场景：</p>
+        <div className="branch-options">
+          <button
+            type="button"
+            className="branch-option"
+            onClick={() => handleChooseBranch('has-unreleased')}
+          >
+            <span className="branch-option-title">有未解除</span>
+            <span className="branch-option-desc">预警数据中包含「未解除」项，展示完整预警列表</span>
+          </button>
+          <button
+            type="button"
+            className="branch-option"
+            onClick={() => handleChooseBranch('all-released')}
+          >
+            <span className="branch-option-title">无未解除</span>
+            <span className="branch-option-desc">所有预警均为「已解除」状态，仅展示已解除数据</span>
+          </button>
+        </div>
+      </Modal>
+
       {/* 风控预警结果 Modal */}
       {warningVisible && (
         <div className="risk-warning-modal-overlay">
@@ -728,7 +806,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
             <div className="risk-warning-modal-body">
               <div className="mb-4 flex items-center justify-between">
                 <div className="text-sm text-text-secondary">
-                  本次未通过 <span className="text-orange-500 font-medium">{riskData.length}</span> 项风险预警，详情如下：
+                  本次未通过 <span className="text-orange-500 font-medium">{notPassedCount}</span> 项风险预警，详情如下：
                 </div>
                 <button className="flex items-center gap-1 text-primary text-sm font-medium border border-primary/20 px-3 py-1 rounded-sm hover:bg-primary/5 transition-colors">
                   <Download className="w-4 h-4" />
@@ -737,7 +815,15 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
               </div>
 
               <div className="overflow-x-auto border border-gray-200 rounded-sm">
-                <table className="risk-table">
+                <table
+                  className={`risk-table ${
+                    showReleaseFields
+                      ? showInitialData
+                        ? 'risk-table-with-release-initial'
+                        : 'risk-table-with-release'
+                      : ''
+                  }`}
+                >
                   <thead>
                     <tr>
                       {showDisposalFields && (
@@ -748,8 +834,11 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                       <th className="w-[60px] text-center">序号</th>
                       <th className="w-[180px]">风险预警名称</th>
                       <th className="w-[140px]">检测场景</th>
+                      {showReleaseFields && <th className="w-[100px] text-center">解除状态</th>}
                       {showDisposalFields && <th className="w-[100px]">处置状态</th>}
                       <th className="w-[400px]">风险预警信息</th>
+                      {showReleaseFields && <th className="w-[260px]">当前数据描述</th>}
+                      {showReleaseFields && showInitialData && <th className="w-[260px]">初次判定数据</th>}
                       <th className="w-[100px]">审查依据</th>
                       <th className="w-[280px]">处置建议</th>
                       {showDisposalFields && <th className="w-[120px]">处置模式</th>}
@@ -759,7 +848,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                     </tr>
                   </thead>
                   <tbody>
-                    {riskData.map((item) => (
+                    {displayRiskData.map((item, index) => (
                       <tr key={item.id} className={item.selected ? 'bg-blue-50/20' : ''}>
                         {showDisposalFields && (
                           <td className="text-center">
@@ -771,7 +860,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                             />
                           </td>
                         )}
-                        <td className="text-center text-text-secondary">{item.displayIndex}</td>
+                        <td className="text-center text-text-secondary">{index + 1}</td>
                         <td>
                           <div className="flex items-center gap-1.5">
                             <span className="status-tag status-tag-warning shrink-0">预警</span>
@@ -779,6 +868,11 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                           </div>
                         </td>
                         <td className="text-text-secondary">{item.scene}</td>
+                        {showReleaseFields && (
+                          <td className="text-center">
+                            <span className="text-text">{item.releaseStatus || '未解除'}</span>
+                          </td>
+                        )}
                         {showDisposalFields && (
                           <td>
                             <span className={item.status === '无需处置' ? 'text-text-tertiary font-medium' : 'text-text font-medium'}>
@@ -787,25 +881,43 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                           </td>
                         )}
                         <td>
-                          <div className="text-text-secondary leading-relaxed text-xs break-words pr-4">
-                            {item.info}
-                            {item.detailLinkText && (
-                              <button
-                                onClick={item.onDetailClick}
-                                className="text-primary hover:underline ml-1 font-medium"
-                              >
-                                {item.detailLinkText}
-                              </button>
-                            )}
-                          </div>
+                          {showReleaseFields && item.releaseStatus === '已解除' ? (
+                            <span className="text-text-tertiary text-xs">-</span>
+                          ) : (
+                            <div className="text-text-secondary leading-relaxed text-xs break-words pr-4">
+                              {item.info}
+                              {item.detailLinkText && (
+                                <button
+                                  onClick={item.onDetailClick}
+                                  className="text-primary hover:underline ml-1 font-medium"
+                                >
+                                  {item.detailLinkText}
+                                </button>
+                              )}
+                            </div>
+                          )}
                         </td>
+                        {showReleaseFields && (
+                          <td className="text-text-secondary leading-relaxed text-xs break-words pr-4">
+                            {item.currentData || '-'}
+                          </td>
+                        )}
+                        {showReleaseFields && showInitialData && (
+                          <td className="text-text-secondary leading-relaxed text-xs break-words pr-4">
+                            {item.initialData || '-'}
+                          </td>
+                        )}
                         <td>
-                          <button
-                            onClick={() => handleOpenReasoning(item)}
-                            className="text-primary hover:underline text-xs font-medium"
-                          >
-                            {item.suppliers ? '查看详情' : '查看依据'}
-                          </button>
+                          {item.suppliers || item.reasoning ? (
+                            <button
+                              onClick={() => handleOpenReasoning(item)}
+                              className="text-primary hover:underline text-xs font-medium"
+                            >
+                              {item.suppliers ? '查看详情' : '查看依据'}
+                            </button>
+                          ) : (
+                            <span className="text-text-tertiary text-xs">-</span>
+                          )}
                         </td>
                         <td className="text-text-secondary leading-relaxed text-xs pr-4">{item.suggestion}</td>
                         {showDisposalFields && <td className="text-text-secondary text-xs">{item.mode}</td>}

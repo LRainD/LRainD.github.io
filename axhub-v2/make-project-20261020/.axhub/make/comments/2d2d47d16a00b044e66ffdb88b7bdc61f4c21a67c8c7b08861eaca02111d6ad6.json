@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 3,
+  "kind": "document-edit-comments",
+  "resource": {
+    "id": "2d2d47d16a00b044e66ffdb88b7bdc61f4c21a67c8c7b08861eaca02111d6ad6",
+    "targetPath": "src/prototypes/annotation-demo/.spec/spec.md",
+    "filePath": ".axhub/make/comments/2d2d47d16a00b044e66ffdb88b7bdc61f4c21a67c8c7b08861eaca02111d6ad6.json"
+  },
+  "comments": [],
+  "images": [],
+  "documentPath": "src/prototypes/annotation-demo/.spec/spec.md"
+}

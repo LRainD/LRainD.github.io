@@ -346,6 +346,14 @@
   @apply min-w-[1600px] border-collapse text-sm table-fixed;
 }
 
+.risk-table-with-release {
+  @apply min-w-[1660px];
+}
+
+.risk-table-with-release-initial {
+  @apply min-w-[1920px];
+}
+
 .risk-table th {
   @apply bg-gray-50 text-left px-3 py-3 font-medium text-text-secondary border-b border-gray-200 whitespace-nowrap;
 }
@@ -404,5 +412,30 @@
 
 .feedback-modal-container {
   @apply bg-white rounded-sm shadow-2xl w-full max-w-[440px] flex flex-col overflow-hidden relative;
+}
+
+/* 演示分支选择弹窗样式 */
+.compliance-branch-modal .branch-tip {
+  @apply text-sm text-text-secondary mb-3;
+}
+
+.compliance-branch-modal .branch-options {
+  @apply flex flex-col gap-3;
+}
+
+.compliance-branch-modal .branch-option {
+  @apply w-full text-left border border-gray-200 rounded-sm px-4 py-3 bg-white cursor-pointer transition-colors flex flex-col gap-1;
+}
+
+.compliance-branch-modal .branch-option:hover {
+  @apply border-primary bg-blue-50/40;
+}
+
+.compliance-branch-modal .branch-option-title {
+  @apply text-sm font-medium text-text;
+}
+
+.compliance-branch-modal .branch-option-desc {
+  @apply text-xs text-text-tertiary leading-relaxed;
 }
 

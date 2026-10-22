@@ -123,7 +123,7 @@ export const SUPPLIERS: SupplierRow[] = [
             id: 'r2-2',
             type: 'warning',
             tagText: '【预警】',
-            content: '该分供商为负面清单中的分供商'
+            content: '棱镜分供商识别：该分供商被{列入组织}因{管控类别}、{列入组织}因{管控类别}列入名单'
           }
         ]
       }
@@ -197,17 +197,17 @@ export const RISK_DATA: RiskDataItem[] = [
   {
     id: 8,
     displayIndex: 2,
-    name: '负面清单分供商',
+    name: '棱镜分供商识别',
     scene: '风控预警',
     status: '待处置',
-    info: '分供商商“上海恒基建筑劳务有限公司”为负面清单中的分供商。',
-    suggestion: '建议详细核实该分供商',
+    info: '本次选中的分供商中存在 1 家分供商为棱镜识别分供商：1、上海恒基建筑劳务有限公司 被中建一局第一建筑有限公司因工程质量事故 / 违约退场列入名单',
+    suggestion: '建议对分供商进行核实',
     mode: '及时处置',
     description: '',
     attachments: [],
     selected: false,
-    ruleName: '负面清单分供商识别规则 v1.0',
-    reasoning: '【名单比对】系统自动比对集团负面清单库，该分供商与负面清单中的分供商完全一致。\n【列入组织】中建一局第一建筑有限公司\n【列入原因】工程质量事故 / 违约退场'
+    ruleName: '棱镜分供商识别规则 v1.0',
+    reasoning: ''
   },
   {
     id: 1,
