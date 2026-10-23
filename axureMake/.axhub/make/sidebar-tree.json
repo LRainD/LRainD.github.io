@@ -3,6 +3,12 @@
   "updatedAt": "2026-10-23T09:24:20.724Z",
   "prototypes": [
     {
+      "id": "item-prototypes-ai-material-price-governance",
+      "kind": "item",
+      "title": "AI物料标准化与价格治理平台",
+      "itemKey": "prototypes/ai-material-price-governance"
+    },
+    {
       "id": "item-prototypes-zishen",
       "kind": "item",
       "title": "zishen",
