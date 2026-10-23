@@ -1,0 +1,497 @@
+/* 采购基础信息页样式（设计变量来源：docs/design/design.md） */
+
+.pbi-page {
+  --pbi-primary: #0081cc;
+  --pbi-primary-hover: #0072b5;
+  --pbi-text: #000000;
+  --pbi-text-secondary: #666666;
+  --pbi-text-placeholder: #bfbfbf;
+  --pbi-border: #d9d9d9;
+  --pbi-divider: #f0f0f0;
+  --pbi-bg: #f5f5f5;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--pbi-text);
+  font-size: 13px;
+}
+
+/* ---------- 面包屑 + 操作栏 ---------- */
+.pbi-head {
+  margin: -16px -24px 12px;
+  background: #fff;
+}
+
+.pbi-breadcrumb {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 24px;
+  font-size: 12px;
+  color: var(--pbi-text-secondary);
+  border-bottom: 1px solid var(--pbi-divider);
+}
+
+.pbi-breadcrumb-sep {
+  margin: 0 6px;
+  color: #bfbfbf;
+}
+
+.pbi-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+}
+
+.pbi-category-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 2px;
+  background: var(--pbi-primary);
+  color: #fff;
+  font-size: 12px;
+}
+
+.pbi-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- 通用按钮（antd Button） ---------- */
+.pbi-toolbar .ant-btn {
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+/* 卡片头部小按钮 */
+.pbi-head-right .pbi-btn-sm.ant-btn {
+  height: 28px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+/* ---------- 卡片 ---------- */
+.pbi-card {
+  background: #fff;
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.pbi-card:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 流程步骤条（基于 step-bar 组件，仅按设计稿微调配色/间距） ---------- */
+/* 组件外层依赖 Tailwind 类名，本页未引入 Tailwind，这里显式补齐卡片样式与与下方模块的间距 */
+.pbi-stepbar {
+  margin-bottom: 12px;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* 主流程箭头条：左右内缩 16px，与截图一致 */
+.pbi-stepbar .step-container {
+  width: calc(100% - 32px);
+  margin: 16px;
+  border-color: #ececec;
+}
+
+.pbi-stepbar .step-item {
+  background: #f7f8fa;
+  color: #999;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pbi-stepbar .step-item::after {
+  border-left-color: #f7f8fa;
+}
+
+.pbi-stepbar .step-item.active {
+  background: var(--pbi-primary);
+  color: #fff;
+}
+
+.pbi-stepbar .step-item.active::after {
+  right: -15px;
+  border-left-color: var(--pbi-primary);
+}
+
+/* 子步骤：文字在上、圆点在下，圆点之间用细线连接 */
+.pbi-stepbar .sub-step-container {
+  min-height: 0;
+  padding: 20px 0 34px;
+}
+
+.pbi-stepbar .sub-step-label {
+  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #999;
+}
+
+.pbi-stepbar .sub-step-label.active {
+  color: #999;
+}
+
+.pbi-stepbar .sub-step-label.current {
+  color: var(--pbi-primary);
+  font-weight: 400;
+}
+
+.pbi-stepbar .sub-step-dot {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  margin-top: 0;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+}
+
+.pbi-stepbar .sub-step-dot.completed {
+  background: var(--pbi-primary);
+  border-color: var(--pbi-primary);
+}
+
+.pbi-stepbar .sub-step-dot.current {
+  background: #fff;
+  border: 3px solid var(--pbi-primary);
+}
+
+/* 连线穿过圆点圆心：圆点 16px 居中于底部 34px 内边距上，圆心距底部 34 + 8 = 42px */
+.pbi-stepbar .sub-step-line-container {
+  bottom: 41.5px;
+  height: 1px;
+}
+
+.pbi-stepbar .sub-step-line {
+  height: 1px;
+  background: #e8e8e8;
+}
+
+.pbi-stepbar .sub-step-line.active {
+  height: 1px;
+  background: var(--pbi-primary);
+}
+
+/* ---------- 卡片头部 ---------- */
+.pbi-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  padding: 0 16px 0 0;
+  border-bottom: 1px solid var(--pbi-divider);
+}
+
+.pbi-card-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #262626;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pbi-title-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 14px;
+  background: var(--pbi-primary);
+  transform: translateY(-50%);
+}
+
+.pbi-head-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pbi-collapse {
+  display: inline-flex;
+  align-items: center;
+  color: #8c8c8c;
+  cursor: pointer;
+}
+
+.pbi-collapse:hover {
+  color: #595959;
+}
+
+.pbi-ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #a855f7 0%, #4f7cf7 100%);
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.pbi-ai-btn:hover {
+  opacity: 0.9;
+}
+
+/* ---------- 表单 ---------- */
+.pbi-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 28px;
+  row-gap: 16px;
+  padding: 18px 24px 22px;
+}
+
+.pbi-field {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.pbi-label {
+  width: 84px;
+  flex-shrink: 0;
+  padding-right: 4px;
+  text-align: right;
+  font-size: 13px;
+  line-height: 32px;
+  color: #262626;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.pbi-label-wide {
+  width: 100px;
+}
+
+.pbi-required {
+  color: #ff3333;
+  margin-right: 2px;
+}
+
+.pbi-info-icon {
+  margin-left: 2px;
+  vertical-align: -2px;
+  color: #bfbfbf;
+}
+
+.pbi-control {
+  flex: 1;
+  min-width: 0;
+  max-width: 252px;
+}
+
+.pbi-static {
+  font-size: 13px;
+  line-height: 32px;
+  color: #262626;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pbi-static-placeholder {
+  color: var(--pbi-text-placeholder);
+}
+
+/* ---------- 表单控件（antd） ---------- */
+.pbi-page .ant-select,
+.pbi-page .ant-input,
+.pbi-page .ant-input-number,
+.pbi-page .ant-radio-wrapper,
+.pbi-page .ant-btn,
+.pbi-page .ant-upload {
+  font-family: inherit;
+}
+
+.pbi-control .ant-select,
+.pbi-control .ant-input,
+.pbi-control .ant-input-number {
+  width: 100%;
+}
+
+.pbi-control .ant-select-selection-placeholder,
+.pbi-control .ant-input::placeholder,
+.pbi-control .ant-input-number-input::placeholder {
+  color: var(--pbi-text-placeholder);
+}
+
+/* 概算金额 */
+.pbi-control-amount {
+  max-width: 270px;
+}
+
+.pbi-amount {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.pbi-amount-unit {
+  margin-left: 6px;
+  font-size: 13px;
+  color: #262626;
+  flex-shrink: 0;
+}
+
+/* 单选 */
+.pbi-radios {
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.pbi-radios .ant-radio-wrapper {
+  margin-inline-end: 24px;
+  font-size: 13px;
+}
+
+.pbi-radios .ant-radio-wrapper:last-child {
+  margin-inline-end: 0;
+}
+
+/* 多行标签 */
+.pbi-label-multiline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 16px;
+  padding-top: 2px;
+}
+
+.pbi-label-sub {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+/* ---------- 空状态 ---------- */
+.pbi-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 42px 0 52px;
+}
+
+.pbi-empty-icon {
+  color: #e8e8e8;
+}
+
+.pbi-empty-text {
+  font-size: 13px;
+  color: var(--pbi-text-placeholder);
+}
+
+/* ---------- 附加信息 ---------- */
+.pbi-extra-body {
+  padding: 22px 24px 36px;
+}
+
+.pbi-remark {
+  display: flex;
+  align-items: flex-start;
+}
+
+.pbi-remark-label {
+  width: 70px;
+  line-height: 32px;
+}
+
+.pbi-remark-control {
+  flex: 1;
+  min-width: 0;
+  max-width: 1080px;
+}
+
+.pbi-textarea.ant-input {
+  height: 80px;
+  padding: 6px 10px;
+  font-size: 13px;
+  resize: none;
+}
+
+.pbi-attachment {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 18px;
+}
+
+.pbi-attachment-label {
+  width: 70px;
+  line-height: 20px;
+}
+
+.pbi-attachment-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.pbi-attachment-meta {
+  font-size: 12px;
+  line-height: 20px;
+  color: #8c8c8c;
+}
+
+.pbi-attachment-gap {
+  margin-right: 14px;
+}
+
+/* 附件上传（antd Upload） */
+.pbi-upload {
+  display: block;
+  margin-top: 10px;
+}
+
+.pbi-upload .ant-btn {
+  height: 30px;
+  padding: 0 12px;
+  color: #595959;
+  font-size: 12px;
+}
+
+.pbi-upload .ant-upload-list {
+  margin-top: 10px;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 1440px) {
+  .pbi-form {
+    column-gap: 20px;
+  }
+
+  .pbi-control {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pbi-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .pbi-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pbi-stepbar .step-item {
+    font-size: 12px;
+  }
+}

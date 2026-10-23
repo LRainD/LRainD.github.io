@@ -44,25 +44,11 @@
   border-left-color: #4a86c9;
 }
 
-.step-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -17px;
-  width: 0;
-  height: 0;
-  border-top: 24px solid transparent;
-  border-bottom: 24px solid transparent;
-  border-left: 16px solid #fff;
-  z-index: 1;
-}
-
 .step-item:last-child {
   padding-right: 0;
 }
 
-.step-item:last-child::after,
-.step-item:last-child::before {
+.step-item:last-child::after {
   display: none;
 }
 

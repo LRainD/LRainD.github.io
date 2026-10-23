@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-22T02:41:08.763Z",
+  "updatedAt": "2026-10-23T09:24:20.724Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-zishen",
+      "kind": "item",
+      "title": "zishen",
+      "itemKey": "prototypes/zishen"
+    },
+    {
+      "id": "item-prototypes-procurement-base-info",
+      "kind": "item",
+      "title": "采购基础信息",
+      "itemKey": "prototypes/procurement-base-info"
+    },
     {
       "id": "item-prototypes-bidding-procurement-push-list",
       "kind": "item",
