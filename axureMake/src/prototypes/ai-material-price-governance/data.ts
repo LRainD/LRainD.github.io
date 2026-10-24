@@ -1,4 +1,4 @@
-export type PageKey = 'overview' | 'import' | 'governance' | 'standards' | 'price-review' | 'inquiry' | 'tasks';
+export type PageKey = 'purchase-list' | 'overview' | 'import' | 'governance' | 'standards' | 'price-review' | 'inquiry' | 'tasks';
 
 export type Atom = { key: string; label: string; value: string; confidence: number };
 export type MaterialItem = {
@@ -52,6 +52,7 @@ export type GovernanceTask = {
 };
 
 export const pageItems: Array<{ key: PageKey; label: string }> = [
+  { key: 'purchase-list', label: '编制采购清单' },
   { key: 'overview', label: '治理总览' },
   { key: 'import', label: '数据源接入' },
   { key: 'governance', label: 'AI治理工作台' },

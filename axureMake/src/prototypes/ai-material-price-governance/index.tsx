@@ -22,6 +22,7 @@ import { StandardsPage } from './StandardsPage';
 import { PriceReviewPage } from './PriceReviewPage';
 import { InquiryPage } from './InquiryPage';
 import { TasksPage } from './TasksPage';
+import { PurchaseListPage } from './PurchaseListPage';
 import './style.css';
 
 const PRICE_LIBRARY_ITEMS: MenuItem[] = DEFAULT_SIDEBAR_ITEMS.map(item => (
@@ -38,6 +39,7 @@ const isPageKey = (key: string): key is PageKey => pageItems.some(item => item.k
 const PageContent: React.FC = () => {
   const { page, setPage } = useDemo();
   const pages = {
+    'purchase-list': <PurchaseListPage />,
     overview: <OverviewPage />,
     import: <ImportPage />,
     governance: <GovernancePage />,

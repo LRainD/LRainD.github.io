@@ -1,0 +1,151 @@
+CREATE TABLE `lt_list_template` (
+`id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+`list_template_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单模板ID',
+`create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+`update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+`template_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模板类型：DEFAULT-默认模板、CUSTOM-自定义模板',
+`template_code` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模板CODE',
+`template_name` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '模板名称',
+`system_category` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属一级品类：0-物资、1-设备、2-劳务分包、3-专业分包、4-专业服务、5-租赁',
+`system_category_message` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '所属一级品类名称',
+`price_tax_separation` tinyint(1) DEFAULT NULL COMMENT '是否价税分离：0-否、1-是',
+`org_code` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属组织CODE',
+`list_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单类型：OTHER-其它、PRODUCT-商品、BOQ-工程量、CATEGORY_PRODUCT-类别+商品',
+`effective_status` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '生效状态：DISABLE-无效、ENABLE-有效',
+`quote_type` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '价格类型：FIXED-固定价、FLOAT-浮动价',
+`template_version` int unsigned NOT NULL DEFAULT '1' COMMENT '版本号',
+`tenant_id` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'cscec' COMMENT '租户id',
+`create_user_id` bigint NOT NULL COMMENT '创建者用户ID',
+`create_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建者用户姓名',
+`update_user_id` bigint NOT NULL COMMENT '修改者用户ID',
+`update_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '修改者用户姓名',
+`delete_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT '逻辑删除：0-NO_DELETED-未删除、1-DELETED-已删除',
+`use_system` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'JC_2_0' COMMENT '模板适用组织：JC_2_0-集采2.0、GROUP_136-集团136',
+`source_template_code` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '复制的模板，该字段为来源的template_code值',
+`real_system_category` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '实际品类',
+PRIMARY KEY (`id`)
+/*T![clustered_index] CLUSTERED */,
+UNIQUE KEY `uk_list_template_no` (`list_template_no`),
+KEY `idx_template_code` (`template_code`),
+KEY `idx_org_code` (`org_code`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1780440 COMMENT = 'D清单-清单模板'
+/*T![placement] PLACEMENT POLICY=`pbid` */
+
+CREATE TABLE `lt_list_column` (
+`id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+`list_column_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单列ID',
+`create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+`update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+`column_name` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列名称',
+`column_code` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列编码',
+`column_category` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列类别：SYSTEM-系统默认、CUSTOM-自定义、FIXED-固定',
+`effective_status` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '生效状态：DISABLE-无效、ENABLE-有效',
+`list_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单类型：OTHER-其它、PRODUCT-商品、BOQ-工程量清单、CATEGORY_PRODUCT-商品类别和商品',
+`value_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列的值类型：TEXT-文本、NUMBER-数字、DATE-日期、PERCENT-百分比、DROP_DOWN-下拉列表',
+`org_code` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '所属组织CODE',
+`optional` varchar(300) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '下拉列表的可选值JSON',
+`tenant_id` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'cscec' COMMENT '租户id',
+`create_user_id` bigint NOT NULL COMMENT '创建者用户ID',
+`create_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建者用户姓名',
+`update_user_id` bigint NOT NULL COMMENT '修改者用户ID',
+`update_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '修改者用户姓名',
+`delete_flag` tinyint(1) NOT NULL COMMENT '逻辑删除：0-NO_DELETED-未删除、1-DELETED-已删除',
+`rule` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '列约束规则扩展',
+`optional_content` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '枚举类型可选值JSON',
+PRIMARY KEY (`id`)
+/*T![clustered_index] CLUSTERED */,
+UNIQUE KEY `uk_list_column_no` (`list_column_no`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1351213 COMMENT = 'D清单-清单列'
+/*T![placement] PLACEMENT POLICY=`pbid` */
+
+CREATE TABLE `lt_list_column_constraint` (
+`id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+`list_column_constraint_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单列约束ID',
+`create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+`update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+`ascription_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '归属类型：SCENE-场景、TEMPLATE-模板',
+`ascription_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '归属ID',
+`list_column_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单列ID',
+`column_name` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列名称',
+`column_code` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列编码',
+`column_category` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列类别：SYSTEM-系统定义、CUSTOM-自定义、FIXED-固定',
+`sort_index` int NOT NULL COMMENT '排序序号',
+`list_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单类型：OTHER-其它、PRODUCT-商品、BOQ-工程量清单、CATEGORY_PRODUCT-商品类别和商品',
+`value_type` varchar(16) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '列的值类型：TEXT-文本、NUMBER-数字、DATE-日期、PERCENT-百分比、DROP_DOWN-下拉列表',
+`optional` varchar(200) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '下拉列表的可选值JSON',
+`calculation_type` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '计算类型：PRICE-下单价格、NUMBER-下单数量',
+`input_user_type` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '填写人类型：BID_INVITER-招标方、BIDDER-投标方',
+`formula` varchar(500) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '计算公式',
+`edit_enable` tinyint(1) DEFAULT NULL COMMENT '是否可编辑：0-否、1-是',
+`delete_enable` tinyint(1) DEFAULT NULL COMMENT '是否可删除：0-否、1-是',
+`required_enable` tinyint(1) DEFAULT NULL COMMENT '是否必填：0-否、1-是',
+`display_mode` varchar(500) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '显示方式：NO_DISPLAY-不显示、DISPLAY-显示、QUOTE-报价、SUMMARY-汇总显示',
+`tenant_id` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'cscec' COMMENT '租户id',
+`create_user_id` bigint NOT NULL COMMENT '创建者用户ID',
+`create_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建者用户姓名',
+`update_user_id` bigint NOT NULL COMMENT '修改者用户ID',
+`update_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '修改者用户姓名',
+`delete_flag` tinyint(1) NOT NULL COMMENT '逻辑删除：0-NO_DELETED-未删除、1-DELETED-已删除',
+`rule` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '列约束规则扩展',
+`optional_content` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '枚举类型可选值JSON',
+PRIMARY KEY (`id`)
+/*T![clustered_index] CLUSTERED */,
+UNIQUE KEY `uk_list_column_constraint_no` (`list_column_constraint_no`),
+KEY `idx_ascription_no` (`ascription_no`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 1970759 COMMENT = 'D清单-清单列约束'
+/*T![placement] PLACEMENT POLICY=`pbid` */
+
+CREATE TABLE `lt_list_instance_row0` (
+`id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+`list_instance_row_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单实例行ID',
+`create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+`update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+`list_instance_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单实例ID',
+`row_no` int NOT NULL COMMENT '行号',
+`row_category` varchar(64) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '行所属类别',
+`parent_id` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '父类清单实例行ID',
+`data_value` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '清单数据值JSON',
+`tenant_id` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'cscec' COMMENT '租户id',
+`create_user_id` bigint NOT NULL COMMENT '创建者用户ID',
+`create_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建者用户姓名',
+`update_user_id` bigint NOT NULL COMMENT '修改者用户ID',
+`update_name` varchar(40) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '修改者用户姓名',
+`delete_flag` tinyint(1) NOT NULL COMMENT '逻辑删除：0-NO_DELETED-未删除、1-DELETED-已删除',
+`rule_value` text COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '点约束扩展规则JSON',
+`list_row_code` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '清单实例行业务编号',
+PRIMARY KEY (`id`)
+/*T![clustered_index] CLUSTERED */,
+UNIQUE KEY `uk_list_instance_row_no` (`list_instance_row_no`),
+KEY `idx_list_instance_no` (`list_instance_no`, `delete_flag`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 16585768 COMMENT = '清单-清单实例行'
+/*T![placement] PLACEMENT POLICY=`pbid` */
+
+CREATE TABLE `lt_list_biz` (
+`id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+`list_biz_no` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '唯一标识',
+`create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+`update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '修改时间',
+`list_instance_no` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '清单实例ID',
+`tenant_id` varchar(36) COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'cscec' COMMENT '租户id',
+`biz_no` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '业务no',
+`biz_type` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '业务类型（招标/投标/约标）',
+`template_no` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '引用清单模板id',
+`source_no` varchar(36) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '业务清单来源id',
+`name` varchar(255) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '业务清单名称',
+`area_code` varchar(32) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '区域code',
+`area_name` varchar(32) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '区域名称',
+`supplier_id` bigint DEFAULT NULL COMMENT '供应商Id',
+`effective_status` varchar(16) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '生效状态',
+`create_user_id` bigint NOT NULL COMMENT '创建人系统id',
+`create_name` varchar(50) COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建人名称',
+`update_name` varchar(50) COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '修改人名称',
+`update_user_id` bigint DEFAULT NULL COMMENT '修改人系统id',
+`delete_flag` bit(1) NOT NULL DEFAULT b '0' COMMENT '删除标识',
+PRIMARY KEY (`id`)
+/*T![clustered_index] CLUSTERED */,
+UNIQUE KEY `uk_lt_list_biz_no` (`list_biz_no`),
+KEY `idx_list_instance_no` (`list_instance_no`),
+KEY `idx_biz_no` (`biz_no`),
+KEY `idx_biz_type_delete_flag` (`biz_type`, `delete_flag`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci AUTO_INCREMENT = 3963578 COMMENT = '业务清单数据'
+/*T![placement] PLACEMENT POLICY=`pbid` */
