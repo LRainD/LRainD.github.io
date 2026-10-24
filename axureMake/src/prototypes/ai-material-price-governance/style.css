@@ -21,7 +21,6 @@
 .pg-surface-small .pg-surface-header { min-height: 38px; padding: 0 12px; }
 .pg-surface-small .pg-surface-body { padding: 12px; }
 
-.pg-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .pg-page-title { margin: 0; font-size: 20px; line-height: 28px; font-weight: 650; color: #15191e; }
 .pg-page-subtitle { margin-top: 3px; color: #7b828c; font-size: 12px; }
 .pg-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 14px; }
@@ -41,6 +40,24 @@
 .pg-flow-label { font-size: 13px; font-weight: 600; }
 .pg-flow-desc { margin-top: 4px; color: #8a9099; font-size: 11px; }
 
+/* 页面头部：面包屑 + 单据标题栏 */
+.pg-head { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+.pg-breadcrumb { display: flex; align-items: center; gap: 6px; color: #7e8288; font-size: 12px; }
+.pg-breadcrumb-link { color: #7e8288; cursor: pointer; }
+.pg-breadcrumb-link:hover { text-decoration: underline; }
+.pg-breadcrumb-sep { color: #b6bbc1; }
+.pg-bill-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; padding: 9px 16px; border: 1px solid #e8eaed; border-radius: 4px; background: #fff; box-shadow: 0 2px 8px rgba(0, 129, 204, .06); }
+.pg-bill-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pg-bill-tag { flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 7px; border: 1px solid var(--pg-primary); border-radius: 2px; background: var(--pg-primary); color: #fff; font-size: 12px; }
+.pg-bill-name { overflow: hidden; color: #1f2329; font-size: 14px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.pg-bill-desc { overflow: hidden; color: #7e8288; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.pg-bill-action { flex-shrink: 0; display: flex; align-items: center; }
+.pg-bill-header .ant-btn { height: 28px; padding: 0 14px; font-size: 13px; box-shadow: none; }
+.pg-import-card .pg-surface-body { padding: 16px; }
+.pg-import-card .ant-steps { padding: 2px 8px 4px; }
+.pg-import-card .ant-steps-item-process .ant-steps-item-icon { border-color: var(--pg-primary); background: var(--pg-primary); }
+.pg-import-card .ant-steps-item-finish .ant-steps-item-icon { border-color: var(--pg-primary); }
+.pg-import-card .ant-steps-item-finish .ant-steps-icon { color: var(--pg-primary); }
 .pg-upload-card .ant-upload-wrapper .ant-upload-drag { padding: 26px 16px; background: #fbfdff; border-color: #b8d8eb; }
 .pg-upload-icon { color: var(--pg-primary); font-size: 32px; }
 .pg-file-list { margin-top: 12px; }
@@ -217,4 +234,7 @@
 @media (max-width: 1024px) {
   .pl-stepbar .step-item { padding-right: 24px; font-size: 12px; }
   .pl-stepbar .sub-step-label { white-space: normal; line-height: 16px; }
+  .pg-bill-header { flex-wrap: wrap; }
+  .pg-bill-title { flex-wrap: wrap; row-gap: 4px; }
+  .pg-bill-desc { white-space: normal; }
 }

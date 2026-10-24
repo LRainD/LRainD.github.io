@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import type { PageKey } from './data';
+import { pageItems, type PageKey } from './data';
 import { useDemo } from './context';
 
 export const Surface: React.FC<{
@@ -18,17 +18,34 @@ export const Surface: React.FC<{
   </section>
 );
 
+export const PageBreadcrumb: React.FC = () => {
+  const { page } = useDemo();
+  const current = pageItems.find(item => item.key === page);
+  return (
+    <div className="pg-breadcrumb">
+      <span className="pg-breadcrumb-link">价格库</span>
+      <span className="pg-breadcrumb-sep">›</span>
+      <span>{current ? current.label : '治理总览'}</span>
+    </div>
+  );
+};
+
 export const PageHeader: React.FC<{
   title: string;
   subtitle: string;
   action?: React.ReactNode;
-}> = ({ title, subtitle, action }) => (
-  <div className="pg-page-header">
-    <div>
-      <h1 className="pg-page-title">{title}</h1>
-      <div className="pg-page-subtitle">{subtitle}</div>
+  tag?: string;
+}> = ({ title, subtitle, action, tag = '价格库' }) => (
+  <div className="pg-head">
+    <PageBreadcrumb />
+    <div className="pg-bill-header">
+      <div className="pg-bill-title">
+        <span className="pg-bill-tag">{tag}</span>
+        <span className="pg-bill-name">{title}</span>
+        <span className="pg-bill-desc">{subtitle}</span>
+      </div>
+      {action && <div className="pg-bill-action">{action}</div>}
     </div>
-    {action}
   </div>
 );
 

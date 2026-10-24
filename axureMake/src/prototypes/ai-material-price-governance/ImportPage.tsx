@@ -31,8 +31,12 @@ export const ImportPage: React.FC = () => {
   };
 
   return <>
-    <PageHeader title="数据源接入" subtitle="接入采购清单、合同与招标文件，统一映射后进入 AI 原子化拆解" action={<Tag color="blue">单次支持 50 万条</Tag>} />
-    <Surface>
+    <PageHeader
+      title="数据源接入"
+      subtitle="接入采购清单、合同与招标文件，统一映射后进入 AI 原子化拆解"
+      action={<Tag color="blue">单次支持 50 万条</Tag>}
+    />
+    <Surface className="pg-import-card">
       <Steps current={step} items={[{ title: '上传数据' }, { title: '字段映射' }, { title: '确认导入' }]} style={{ marginBottom: 24 }} />
       {step === 0 && <div className="pg-upload-card">
         <Alert showIcon type="info" message="价格与品牌数据优先使用合同文本，其次为招标清单；结算单暂不纳入治理范围。" style={{ marginBottom: 16 }} />
