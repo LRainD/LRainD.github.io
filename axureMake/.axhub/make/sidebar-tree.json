@@ -788,6 +788,19 @@
           "itemKey": "prototypes/operation-template-mgmt-copy-copy"
         }
       ]
+    },
+    {
+      "id": "folder-1792758200000-price-library",
+      "kind": "folder",
+      "title": "价格库",
+      "children": [
+        {
+          "id": "item-prototypes-ai-material-price-governance",
+          "kind": "item",
+          "title": "AI物料标准化与价格治理平台",
+          "itemKey": "prototypes/ai-material-price-governance"
+        }
+      ]
     }
   ],
   "components": [
