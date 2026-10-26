@@ -1,1 +1,0 @@
-window.receiveForecastSourceChunk({"id":"cooperation","index":3,"gzip":"H4sIAAAAAAAAE4uOVnIOMDIwMjMwMzIxMLCwNDJS0lF63rnyxdaWJ/tmP9015fnG3UCRF/snvJiwFCIO5L5cPP/p5MaXS9cByfd7Op7v3vN0Qsf7PZ1KsToYBhoTY+Czae1P9k5+um7xkz0LUA2MBQCPSQxvowAAAA=="});
