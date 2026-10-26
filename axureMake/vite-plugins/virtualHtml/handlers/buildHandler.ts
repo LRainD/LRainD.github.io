@@ -10,8 +10,11 @@ import { readEntriesManifest } from '../../utils/entriesManifest';
  */
 const activeBuildMap = new Map<string, Promise<{ js: string } | null>>();
 
-/** 构建超时时间（毫秒） */
-const BUILD_TIMEOUT_MS = 120_000; // 2 分钟
+/** 构建超时时间（毫秒）
+ * 单入口 iife 构建会把 antd/pdfjs/xlsx 全量打进一个文件，实测 120s 不够（约 150s 就会超时返回 500，前端表现为 Failed to fetch code）。
+ * 这里放宽到 5 分钟，避免「构建其实能成功但被超时杀掉」。
+ */
+const BUILD_TIMEOUT_MS = 300_000; // 5 分钟
 
 async function runBuild(urlPath: string, projectRoot: string): Promise<{ js: string } | null> {
   try {

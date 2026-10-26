@@ -1,11 +1,24 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-23T12:13:08.410Z",
+  "updatedAt": "2026-10-25T11:05:08.806Z",
   "prototypes": [
+    {
+      "id": "folder-1792758200000-price-library",
+      "kind": "folder",
+      "title": "价格库",
+      "children": [
+        {
+          "id": "item-prototypes-ai-material-price-governance",
+          "kind": "item",
+          "title": "AI物料标准化与价格治理平台",
+          "itemKey": "prototypes/ai-material-price-governance"
+        }
+      ]
+    },
     {
       "id": "item-prototypes-zishen",
       "kind": "item",
-      "title": "zishen",
+      "title": "报名及资审汇总",
       "itemKey": "prototypes/zishen"
     },
     {
@@ -85,7 +98,7 @@
         {
           "id": "item-prototypes-negative-enterprise-list-copy",
           "kind": "item",
-          "title": "负面企业清单 副本",
+          "title": "采方-负面企业清单维护",
           "itemKey": "prototypes/negative-enterprise-list-copy"
         },
         {
@@ -786,19 +799,6 @@
           "kind": "item",
           "title": "企业关系配置-单页面 副本",
           "itemKey": "prototypes/operation-template-mgmt-copy-copy"
-        }
-      ]
-    },
-    {
-      "id": "folder-1792758200000-price-library",
-      "kind": "folder",
-      "title": "价格库",
-      "children": [
-        {
-          "id": "item-prototypes-ai-material-price-governance",
-          "kind": "item",
-          "title": "AI物料标准化与价格治理平台",
-          "itemKey": "prototypes/ai-material-price-governance"
         }
       ]
     }

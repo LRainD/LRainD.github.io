@@ -10,6 +10,7 @@ import { addAxhubMarker } from './vite-plugins/addAxhubMarker';
 import { axhubComponentEnforcer } from './vite-plugins/axhubComponentEnforcer';
 import { forceInlineDynamicImportsOff } from './vite-plugins/forceInlineDynamicImportsOff';
 import { injectStablePageIds } from './vite-plugins/injectStablePageIds';
+import { llmProxyPlugin } from './vite-plugins/llmProxyPlugin';
 import {
   MAKE_CONFIG_RELATIVE_PATH,
   MAKE_ENTRIES_RELATIVE_PATH,
@@ -82,6 +83,7 @@ async function loadServePlugins(): Promise<Plugin[]> {
 
   return [
     lanAccessControlPlugin(),
+    llmProxyPlugin(),
     writeDevServerInfoPlugin(),
     serveAdminPlugin(),
     axureBridgeProxyPlugin(),
