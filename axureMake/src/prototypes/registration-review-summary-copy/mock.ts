@@ -57,7 +57,7 @@ export interface RiskDataItem {
   ruleName: string;
   reasoning: string;
   suppliers?: RiskSupplierReasoning[];
-  releaseStatus?: '已解除' | '未解除';
+  releaseStatus?: '已解除' | '未解除' | '未命中' | '计算中';
   currentData?: string;
   initialData?: string;
 }
@@ -357,5 +357,39 @@ export const RISK_DATA: RiskDataItem[] = [
     initialData: '2026-08-21 15:51 初次判定：2 家分供商资质不满足企业资质承接范围',
     ruleName: '招标资质与承接范围匹配规则 v4.0',
     reasoning: '【资质比对】读取本次招标项目要求的资质等级（如：建筑工程施工总承包一级）。\n【供应商校验】校验供应商 彭才林 和 sup300 的资质证书。\n【不匹配识别】发现其资质等级为二级，或承接范围不包含本项目所属专业。\n【风险评估】资质不符属于合规性硬伤，可能导致项目无法通过政府审批或面临安全质量风险。\n【规则判定】触发“资质不满足承接范围”规则，处置状态设为“待处置”，处置模式为“及时处置”。'
+  },
+  {
+    id: 9,
+    displayIndex: 10,
+    name: '分供商资质合规性校验',
+    scene: '风控预警',
+    status: '待处置',
+    info: '',
+    suggestion: '',
+    mode: '及时处置',
+    description: '',
+    attachments: [],
+    selected: false,
+    releaseStatus: '未命中',
+    currentData: '钟犁sup200 的营业执照、施工劳务资质及安全生产许可证均在有效期内，资质承接范围满足本项目要求',
+    ruleName: '分供商资质合规性校验规则 v1.0',
+    reasoning: ''
+  },
+  {
+    id: 10,
+    displayIndex: 11,
+    name: '关联关系与信息重叠识别',
+    scene: '风控预警',
+    status: '待处置',
+    info: '',
+    suggestion: '',
+    mode: '及时处置',
+    description: '',
+    attachments: [],
+    selected: false,
+    releaseStatus: '计算中',
+    currentData: '正在比对 3 家报名分供商的股权、邮箱、联系电话及历史报名记录，预计 2 分钟内完成',
+    ruleName: '关联关系与信息重叠识别规则 v1.0',
+    reasoning: ''
   }
 ];

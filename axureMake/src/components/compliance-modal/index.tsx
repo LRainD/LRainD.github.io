@@ -43,7 +43,7 @@ export interface ComplianceProps {
   onDetectionComplete?: () => void;
   /** 是否需要展示处置相关操作（勾选框、处置状态、处置模式、处置说明、处置附件），默认为 true */
   showDisposalFields?: boolean;
-  /** 是否展示解除状态、当前数据描述（及按入口决定的初次判定数据）列，默认为 false */
+  /** 是否展示风险状态、当前数据描述（及按入口决定的初次判定数据）列，默认为 false */
   showReleaseFields?: boolean;
   /** 点击「跳过演示」时是否弹出演示分支选择（有未解除 / 无未解除），默认为 false */
   demoBranchSelect?: boolean;
@@ -94,8 +94,8 @@ interface RiskItem {
   suppliers?: SupplierReasoning[];
   detailLinkText?: string;
   onDetailClick?: () => void;
-  /** 解除状态：已解除 / 未解除 */
-  releaseStatus?: '已解除' | '未解除';
+  /** 风险状态：已解除 / 未解除 / 未命中 / 计算中 */
+  releaseStatus?: '已解除' | '未解除' | '未命中' | '计算中';
   /** 当前数据描述 */
   currentData?: string;
   /** 初次判定数据 */
@@ -590,8 +590,16 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
       ? riskData.filter(item => item.releaseStatus === '已解除')
       : riskData;
 
-  /** 未通过预警项数：无未解除分支下全部为已解除数据，未通过项数为 0 */
-  const notPassedCount = demoBranch === 'all-released' ? 0 : riskData.length;
+  /** 风险状态为「未命中」「计算中」时，仅展示当前数据描述，其余列展示占位符 */
+  const isEmptyRiskRow = (item: RiskItem) =>
+    item.releaseStatus === '未命中' || item.releaseStatus === '计算中';
+
+  /** 风险检测统计 */
+  const totalCount = displayRiskData.length;
+  const calculatingCount = displayRiskData.filter(item => item.releaseStatus === '计算中').length;
+  const missedCount = displayRiskData.filter(item => item.releaseStatus === '未命中').length;
+  const releasedCount = displayRiskData.filter(item => item.releaseStatus === '已解除').length;
+  const unreleasedCount = displayRiskData.filter(item => item.releaseStatus === '未解除').length;
 
   const handleSkipDemo = () => {
     if (demoBranchSelect) {
@@ -806,7 +814,11 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
             <div className="risk-warning-modal-body">
               <div className="mb-4 flex items-center justify-between">
                 <div className="text-sm text-text-secondary">
-                  本次未通过 <span className="text-orange-500 font-medium">{notPassedCount}</span> 项风险预警，详情如下：
+                  本次共完成 <span className="text-orange-500 font-medium">{totalCount}</span> 个业务风险项检测，
+                  <span className="text-orange-500 font-medium">{calculatingCount}</span> 个检测项计算中，
+                  <span className="text-orange-500 font-medium">{missedCount}</span> 个检测项未命中，
+                  <span className="text-orange-500 font-medium">{releasedCount}</span> 个检测项已解除，
+                  <span className="text-orange-500 font-medium">{unreleasedCount}</span> 个检测项未解除，解除比例 0%。
                 </div>
                 <button className="flex items-center gap-1 text-primary text-sm font-medium border border-primary/20 px-3 py-1 rounded-sm hover:bg-primary/5 transition-colors">
                   <Download className="w-4 h-4" />
@@ -834,7 +846,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                       <th className="w-[60px] text-center">序号</th>
                       <th className="w-[180px]">风险预警名称</th>
                       <th className="w-[140px]">检测场景</th>
-                      {showReleaseFields && <th className="w-[100px] text-center">解除状态</th>}
+                      {showReleaseFields && <th className="w-[100px] text-center">风险状态</th>}
                       {showDisposalFields && <th className="w-[100px]">处置状态</th>}
                       <th className="w-[400px]">风险预警信息</th>
                       {showReleaseFields && <th className="w-[260px]">当前数据描述</th>}
@@ -875,13 +887,17 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                         )}
                         {showDisposalFields && (
                           <td>
-                            <span className={item.status === '无需处置' ? 'text-text-tertiary font-medium' : 'text-text font-medium'}>
-                              {item.status}
-                            </span>
+                            {isEmptyRiskRow(item) ? (
+                              <span className="text-text-tertiary text-xs">-</span>
+                            ) : (
+                              <span className={item.status === '无需处置' ? 'text-text-tertiary font-medium' : 'text-text font-medium'}>
+                                {item.status}
+                              </span>
+                            )}
                           </td>
                         )}
                         <td>
-                          {showReleaseFields && item.releaseStatus === '已解除' ? (
+                          {isEmptyRiskRow(item) || (showReleaseFields && item.releaseStatus === '已解除') ? (
                             <span className="text-text-tertiary text-xs">-</span>
                           ) : (
                             <div className="text-text-secondary leading-relaxed text-xs break-words pr-4">
@@ -908,7 +924,9 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                           </td>
                         )}
                         <td>
-                          {item.suppliers || item.reasoning ? (
+                          {isEmptyRiskRow(item) ? (
+                            <span className="text-text-tertiary text-xs">-</span>
+                          ) : item.suppliers || item.reasoning ? (
                             <button
                               onClick={() => handleOpenReasoning(item)}
                               className="text-primary hover:underline text-xs font-medium"
@@ -919,11 +937,19 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                             <span className="text-text-tertiary text-xs">-</span>
                           )}
                         </td>
-                        <td className="text-text-secondary leading-relaxed text-xs pr-4">{item.suggestion}</td>
-                        {showDisposalFields && <td className="text-text-secondary text-xs">{item.mode}</td>}
+                        <td className="text-text-secondary leading-relaxed text-xs pr-4">
+                          {isEmptyRiskRow(item) ? <span className="text-text-tertiary text-xs">-</span> : item.suggestion}
+                        </td>
+                        {showDisposalFields && (
+                          <td className="text-text-secondary text-xs">
+                            {isEmptyRiskRow(item) ? <span className="text-text-tertiary text-xs">-</span> : item.mode}
+                          </td>
+                        )}
                         {showDisposalFields && (
                           <td className="pr-4">
-                            {item.status === '无需处置' ? (
+                            {isEmptyRiskRow(item) ? (
+                              <span className="text-text-tertiary text-xs">-</span>
+                            ) : item.status === '无需处置' ? (
                               <span className="text-text-tertiary">无需处置</span>
                             ) : (
                               <div className="relative">
@@ -938,7 +964,9 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                         )}
                         {showDisposalFields && (
                           <td>
-                            {item.status === '无需处置' ? (
+                            {isEmptyRiskRow(item) ? (
+                              <span className="text-text-tertiary text-xs">-</span>
+                            ) : item.status === '无需处置' ? (
                               <span className="text-text-tertiary">无需处置</span>
                             ) : (
                               <button className="upload-btn">
@@ -949,29 +977,33 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                           </td>
                         )}
                         <td>
-                          <div className="flex items-center gap-2 relative">
-                            <button
-                              onClick={() => handleSatisfaction(item.id, 'like')}
-                              className={`feedback-icon-btn ${item.satisfaction === 'like' ? 'active-like' : 'text-text-tertiary'}`}
-                              title="满意"
-                            >
-                              <ThumbsUp className={`w-4 h-4 ${item.satisfaction === 'like' ? 'fill-current' : ''}`} />
-                            </button>
-                            <button
-                              onClick={() => handleSatisfaction(item.id, 'dislike')}
-                              className={`feedback-icon-btn ${item.satisfaction === 'dislike' ? 'active-dislike' : 'text-text-tertiary'}`}
-                              title="不满意"
-                            >
-                              <ThumbsDown className={`w-4 h-4 ${item.satisfaction === 'dislike' ? 'fill-current' : ''}`} />
-                            </button>
-                            <button
-                              onClick={() => setFeedbackModal({ isOpen: true, itemId: item.id })}
-                              className="flex items-center gap-0.5 text-primary hover:underline text-xs ml-1"
-                            >
-                              <MessageSquare className="w-3 h-3" />
-                              反馈
-                            </button>
-                          </div>
+                          {isEmptyRiskRow(item) ? (
+                            <span className="text-text-tertiary text-xs">-</span>
+                          ) : (
+                            <div className="flex items-center gap-2 relative">
+                              <button
+                                onClick={() => handleSatisfaction(item.id, 'like')}
+                                className={`feedback-icon-btn ${item.satisfaction === 'like' ? 'active-like' : 'text-text-tertiary'}`}
+                                title="满意"
+                              >
+                                <ThumbsUp className={`w-4 h-4 ${item.satisfaction === 'like' ? 'fill-current' : ''}`} />
+                              </button>
+                              <button
+                                onClick={() => handleSatisfaction(item.id, 'dislike')}
+                                className={`feedback-icon-btn ${item.satisfaction === 'dislike' ? 'active-dislike' : 'text-text-tertiary'}`}
+                                title="不满意"
+                              >
+                                <ThumbsDown className={`w-4 h-4 ${item.satisfaction === 'dislike' ? 'fill-current' : ''}`} />
+                              </button>
+                              <button
+                                onClick={() => setFeedbackModal({ isOpen: true, itemId: item.id })}
+                                className="flex items-center gap-0.5 text-primary hover:underline text-xs ml-1"
+                              >
+                                <MessageSquare className="w-3 h-3" />
+                                反馈
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}

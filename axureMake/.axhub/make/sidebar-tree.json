@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T11:05:08.806Z",
+  "updatedAt": "2026-10-30T06:25:44.390Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-qual-review-condition-config-copy-copy",
+      "kind": "item",
+      "title": "qual review condition config copy copy",
+      "itemKey": "prototypes/qual-review-condition-config-copy-copy"
+    },
+    {
+      "id": "item-prototypes-qual-review-condition-config-copy",
+      "kind": "item",
+      "title": "qual review condition config copy",
+      "itemKey": "prototypes/qual-review-condition-config-copy"
+    },
     {
       "id": "folder-1792758200000-price-library",
       "kind": "folder",
