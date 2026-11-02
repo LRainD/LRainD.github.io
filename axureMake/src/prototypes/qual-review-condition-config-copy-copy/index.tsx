@@ -48,6 +48,15 @@ import {
   ShoppingCartOutlined
 } from '@ant-design/icons';
 import ConditionTreeSelector from '../../components/condition-tree-selector';
+import {
+  initialQualConditionData,
+  treeData,
+  purchaseCategories,
+  purchaseTypes,
+  biddingMethods,
+  applyCategoryTreeData,
+  regionTreeData
+} from './mockData';
 import './style.css';
 
 const { Sider, Content } = Layout;
@@ -72,23 +81,7 @@ const Component = function QualReviewConditionConfig() {
   const [globalEnabled, setGlobalEnabled] = useState(true);
 
   // 资格审查条件 - 表格数据
-  const [qualConditionData, setQualConditionData] = useState([
-    {
-      id: 1,
-      purchaseCategory: ['物资'],
-      purchaseType: ['招标采购', '区域联采', '战略采购', '集中采购', '分散采购'],
-      biddingMethod: ['竞价采购', '询比采购', '谈判采购', '公开招标'],
-      forceUse: false,
-      aiRecommend: false,
-      aiOnly: false,
-      postReviewEnabled: false,
-      postReviewCompliance: false,
-      fileDetectionEnabled: false,
-      conditionItems: [
-        { id: 101, conditionItem: '自定义', strength: '强制条件', conditionName: '', category: '', reviewMethod: '人工', mappingCode: '', forceUseType: '不强制使用(推...', excludeSubCategories: [] }
-      ]
-    }
-  ]);
+  const [qualConditionData, setQualConditionData] = useState(initialQualConditionData);
 
   // 左侧菜单项 - 运营后台风格
   const menuItems = [
@@ -130,51 +123,6 @@ const Component = function QualReviewConditionConfig() {
     }
   ];
 
-  // 树形数据 - 左侧组成列表
-  const treeData = [
-    {
-      title: '蜜蜂工作台',
-      key: 'bee-workbench',
-      children: []
-    },
-    {
-      title: '运营工作台',
-      key: 'operation-workbench',
-      children: []
-    },
-    {
-      title: '采购商工作台',
-      key: 'buyer-workbench',
-      children: [
-        {
-          title: '招标管理',
-          key: 'bidding-mgmt',
-          children: [
-            { title: '招标/询价列表', key: 'bidding-list' },
-            { title: '价格', key: 'price' },
-            { title: '保证金管理', key: 'deposit-mgmt' },
-            { title: '联采通知/邀约', key: 'joint-procurement' },
-            { title: '踏勘', key: 'survey' },
-            { title: '通用设置', key: 'general-settings' },
-            { title: '招标清单', key: 'bidding-inventory' },
-            { title: '电子招投标', key: 'e-bidding' },
-            { title: '增补退出', key: 'add-exit' },
-            { title: '废标管理', key: 'abandon-mgmt' },
-            {
-              title: '约标',
-              key: 'appointment-bid',
-              children: [
-                { title: '资格审查附件组成', key: 'data-governance', tag: 'NEW' },
-                { title: '采购基础信息-自定义分类配置', key: 'custom-classification', tag: 'NEW' },
-                { title: '推送公共服务云台配置', key: 'public-service', tag: 'NEW' }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ];
-
   // 树节点标题渲染 - 支持NEW标签
   const renderTreeTitle = (node: any) => {
     return (
@@ -206,76 +154,6 @@ const Component = function QualReviewConditionConfig() {
     { key: 'operation-log', label: '操作日志' },
   ];
 
-  const purchaseCategories = ['物资', '设备', '劳务分包', '专业分包', '专业服务', '租赁'];
-  const purchaseTypes = ['招标采购', '区域联采', '战略采购', '集中采购', '分散采购', '电子商城采购'];
-  const biddingMethods = ['公开招标', '邀请招标', '询比采购', '竞价采购', '谈判采购'];
-
-  // 不适用二级品类 - 品类树（五大一级品类及其二级品类）
-  const subCategoryTreeData = [
-    {
-      title: '物资',
-      value: '物资',
-      children: [
-        { title: '钢材', value: '物资/钢材' },
-        { title: '水泥及制品', value: '物资/水泥及制品' },
-        { title: '混凝土', value: '物资/混凝土' },
-        { title: '砂石骨料', value: '物资/砂石骨料' },
-        { title: '管材', value: '物资/管材' },
-        { title: '电线电缆', value: '物资/电线电缆' },
-        { title: '砌体材料', value: '物资/砌体材料' }
-      ]
-    },
-    {
-      title: '设备',
-      value: '设备',
-      children: [
-        { title: '机械设备', value: '设备/机械设备' },
-        { title: '电气设备', value: '设备/电气设备' },
-        { title: '仪器仪表', value: '设备/仪器仪表' },
-        { title: '电梯', value: '设备/电梯' },
-        { title: '暖通设备', value: '设备/暖通设备' }
-      ]
-    },
-    {
-      title: '劳务分包',
-      value: '劳务分包',
-      children: [
-        { title: '主体结构劳务', value: '劳务分包/主体结构劳务' },
-        { title: '土建劳务', value: '劳务分包/土建劳务' },
-        { title: '安装劳务', value: '劳务分包/安装劳务' },
-        { title: '装饰劳务', value: '劳务分包/装饰劳务' },
-        { title: '其他类', value: '劳务分包/其他类' }
-      ]
-    },
-    {
-      title: '专业分包',
-      value: '专业分包',
-      children: [
-        { title: '地基基础工程专业承包', value: '专业分包/地基基础工程专业承包' },
-        { title: '钢结构工程', value: '专业分包/钢结构工程' },
-        { title: '幕墙工程', value: '专业分包/幕墙工程' },
-        { title: '机电安装工程', value: '专业分包/机电安装工程' },
-        { title: '消防设施工程', value: '专业分包/消防设施工程' },
-        { title: '建筑装饰装修工程', value: '专业分包/建筑装饰装修工程' }
-      ]
-    },
-    {
-      title: '专业服务',
-      value: '专业服务',
-      children: [
-        { title: '勘察设计', value: '专业服务/勘察设计' },
-        { title: '工程监理', value: '专业服务/工程监理' },
-        { title: '检测检验', value: '专业服务/检测检验' },
-        { title: '造价咨询', value: '专业服务/造价咨询' },
-        { title: '招标代理', value: '专业服务/招标代理' }
-      ]
-    }
-  ];
-
-  const conditionItemOptions = ['自定义', '未在经营异常企业名单', '未在严重违法失信名单', '具备有效营业执照', '具备相关资质证书'];
-  const strengthOptions = ['强制条件', '建议条件'];
-  const forceUseTypeOptions = ['不强制使用(推荐)', '强制使用'];
-
   const handleAddRow = () => {
     setQualConditionData(prev => [
       ...prev,
@@ -284,12 +162,6 @@ const Component = function QualReviewConditionConfig() {
         purchaseCategory: ['物资'],
         purchaseType: ['招标采购'],
         biddingMethod: ['公开招标'],
-        forceUse: false,
-        aiRecommend: false,
-        aiOnly: false,
-        postReviewEnabled: false,
-        postReviewCompliance: false,
-        fileDetectionEnabled: false,
         conditionItems: []
       }
     ]);
@@ -306,7 +178,7 @@ const Component = function QualReviewConditionConfig() {
           ...item,
           conditionItems: [
             ...item.conditionItems,
-            { id: Date.now(), conditionItem: '', strength: '', conditionName: '', category: '', reviewMethod: '人工', mappingCode: '', forceUseType: '不强制使用(推荐)', excludeSubCategories: [] }
+            { id: Date.now(), conditionItem: '', strength: '', conditionName: '', category: '', reviewMethod: '人工', mappingCode: '', forceUseType: '不强制使用(推荐)', reviewBasis: '', region: [], applyCategories: [] }
           ]
         };
       }
@@ -477,7 +349,7 @@ const Component = function QualReviewConditionConfig() {
                         <div className="section-header">
                           <div className="section-title-bar">
                             <div className="title-indicator"></div>
-                            <h2 className="section-title">资格审查条件</h2>
+                            <h2 className="section-title">资格审查条件豁免场景配置</h2>
                           </div>
                           <Switch
                             size="small"
@@ -489,7 +361,7 @@ const Component = function QualReviewConditionConfig() {
                         {/* 参数说明 */}
                         <div className="param-desc">
                           <span className="desc-label">参数说明：</span>
-                          在对应品类及采购类型条件下，可配置供应商需要满足哪些资格审查条件
+                          该解决方案配置对应资审项在不通过的情况下改为资审通过及对应文案展示；适用于招标、采购、集中资格预审
                         </div>
 
                         {/* 适用组织范围 */}
@@ -511,11 +383,13 @@ const Component = function QualReviewConditionConfig() {
                               rowKey="id"
                               pagination={false}
                               bordered
+                              tableLayout="fixed"
                               columns={[
                                 {
                                   title: '采购品类',
                                   dataIndex: 'purchaseCategory',
                                   key: 'purchaseCategory',
+                                  width: '20%',
                                   render: (value: string[], record: any) => (
                                     <Select
                                       mode="multiple"
@@ -531,6 +405,7 @@ const Component = function QualReviewConditionConfig() {
                                   title: '采购类型&组织形式',
                                   dataIndex: 'purchaseType',
                                   key: 'purchaseType',
+                                  width: '27%',
                                   render: (value: string[], record: any) => (
                                     <Select
                                       mode="multiple"
@@ -546,6 +421,7 @@ const Component = function QualReviewConditionConfig() {
                                   title: '招标方式&采购方式',
                                   dataIndex: 'biddingMethod',
                                   key: 'biddingMethod',
+                                  width: '28%',
                                   render: (value: string[], record: any) => (
                                     <Select
                                       mode="multiple"
@@ -558,96 +434,12 @@ const Component = function QualReviewConditionConfig() {
                                   )
                                 },
                                 {
-                                  title: '强制使用',
-                                  dataIndex: 'forceUse',
-                                  key: 'forceUse',
-                                  width: 100,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'forceUse', checked)}
-                                    />
-                                  )
-                                },
-                                {
-                                  title: 'AI智能推荐资审条件',
-                                  dataIndex: 'aiRecommend',
-                                  key: 'aiRecommend',
-                                  width: 140,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'aiRecommend', checked)}
-                                    />
-                                  )
-                                },
-                                {
-                                  title: '是否只使用AI智能推荐资审条件',
-                                  dataIndex: 'aiOnly',
-                                  key: 'aiOnly',
-                                  width: 180,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'aiOnly', checked)}
-                                    />
-                                  )
-                                },
-                                {
-                                  title: '资格后审是否开启资审',
-                                  dataIndex: 'postReviewEnabled',
-                                  key: 'postReviewEnabled',
-                                  width: 150,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'postReviewEnabled', checked)}
-                                    />
-                                  )
-                                },
-                                {
-                                  title: '资格后审是否开启符合性审查',
-                                  dataIndex: 'postReviewCompliance',
-                                  key: 'postReviewCompliance',
-                                  width: 170,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'postReviewCompliance', checked)}
-                                    />
-                                  )
-                                },
-                                {
-                                  title: '是否启用文件检测',
-                                  dataIndex: 'fileDetectionEnabled',
-                                  key: 'fileDetectionEnabled',
-                                  width: 140,
-                                  align: 'center',
-                                  render: (value: boolean, record: any) => (
-                                    <Switch
-                                      size="small"
-                                      checked={value}
-                                      onChange={(checked) => handleUpdateRow(record.id, 'fileDetectionEnabled', checked)}
-                                    />
-                                  )
-                                },
-                                {
                                   title: '操作',
                                   key: 'action',
-                                  width: 120,
+                                  width: '25%',
                                   align: 'center',
                                   render: (_: any, record: any) => (
-                                    <Space wrap size="small">
+                                    <Space size="small" wrap={false}>
                                       <Button type="link" size="small" onClick={() => handleAddConditionItem(record.id)}>
                                         添加资格审查条件
                                       </Button>
@@ -670,13 +462,13 @@ const Component = function QualReviewConditionConfig() {
                                     rowKey="id"
                                     pagination={false}
                                     bordered
-                                    scroll={{ x: 'max-content' }}
+                                    tableLayout="fixed"
                                     columns={[
                                       {
                                         title: '资格审查条件项',
                                         dataIndex: 'conditionItem',
                                         key: 'conditionItem',
-                                        width: 200,
+                                        width: '25%',
                                         align: 'left',
                                         render: (value: string, record: any) => (
                                           <ConditionTreeSelector
@@ -690,6 +482,7 @@ const Component = function QualReviewConditionConfig() {
                                               } else {
                                                 handleUpdateConditionItem(row.id, record.id, 'conditionName', val);
                                               }
+                                              // 审查依据列由用户手工填写，切换条件项不清空、也不自动带出
                                               // 根据选中节点自动设置审查方式和分类
                                               if (treeKey === 'custom') {
                                                 // 自定义 → 人工
@@ -712,115 +505,93 @@ const Component = function QualReviewConditionConfig() {
                                         )
                                       },
                                       {
-                                        title: '资格审查强度',
-                                        dataIndex: 'strength',
-                                        key: 'strength',
-                                        render: (value: string, record: any) => (
-                                          <Select
-                                            value={value}
-                                            onChange={(val) => handleUpdateConditionItem(row.id, record.id, 'strength', val)}
-                                            options={strengthOptions.map(o => ({ label: o, value: o }))}
-                                            style={{ width: '100%' }}
-                                            placeholder="请选择"
-                                          />
-                                        )
-                                      },
-                                      {
                                         title: '资格审查条件名称',
                                         dataIndex: 'conditionName',
                                         key: 'conditionName',
-                                        render: (value: string, record: any) => {
-                                          const isFileDetect = record.treeKey && record.treeKey.startsWith('file-detect-') && record.treeKey !== 'file-detect-custom';
-                                          if (isFileDetect) {
-                                            return <span className="text-sm text-gray-700">{value || '-'}</span>;
-                                          }
-                                          return (
-                                            <Input
-                                              value={value}
-                                              onChange={(e) => handleUpdateConditionItem(row.id, record.id, 'conditionName', e.target.value)}
-                                              placeholder="请输入"
-                                            />
-                                          );
-                                        }
-                                      },
-                                      {
-                                        title: '资格审查条件分类',
-                                        dataIndex: 'category',
-                                        key: 'category',
+                                        width: '19%',
+                                        // 名称由「资格审查条件项」带出，只读展示，不允许手工修改
                                         render: (value: string) => (
-                                          <span className="text-sm text-gray-700">{value || '-'}</span>
+                                          <span className="condition-name-text">{value || '-'}</span>
                                         )
                                       },
                                       {
-                                        title: '审查方式',
-                                        dataIndex: 'reviewMethod',
-                                        key: 'reviewMethod',
-                                        render: (value: string) => (
-                                          <span className="text-sm text-gray-700">{value || '-'}</span>
-                                        )
-                                      },
-                                      {
-                                        title: '映射编码',
-                                        dataIndex: 'mappingCode',
-                                        key: 'mappingCode',
-                                        render: (value: string, record: any) => (
-                                          <Input
-                                            value={value}
-                                            onChange={(e) => handleUpdateConditionItem(row.id, record.id, 'mappingCode', e.target.value)}
-                                            placeholder="请输入"
+                                        title: (
+                                          <span>
+                                            区域
+                                            <Tooltip title="从全国开始逐级下钻到省 / 市 / 区县；不选表示全国范围均适用">
+                                              <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999', fontSize: 12 }} />
+                                            </Tooltip>
+                                          </span>
+                                        ),
+                                        dataIndex: 'region',
+                                        key: 'region',
+                                        width: '16%',
+                                        render: (value: string[], record: any) => (
+                                          <TreeSelect
+                                            value={value || []}
+                                            onChange={(val) => handleUpdateConditionItem(row.id, record.id, 'region', val)}
+                                            treeData={regionTreeData}
+                                            treeCheckable
+                                            showCheckedStrategy={TreeSelect.SHOW_PARENT}
+                                            treeDefaultExpandedKeys={['全国']}
+                                            showSearch
+                                            treeNodeFilterProp="title"
+                                            placeholder="请选择"
+                                            style={{ width: '100%' }}
+                                            maxTagCount={2}
+                                            allowClear
                                           />
                                         )
                                       },
                                       {
                                         title: (
                                           <span>
-                                            是否强制使用
-                                            <Tooltip title="控制该资审条件在报名环节是否强制要求满足">
+                                            <span style={{ color: '#ff4d4f' }}>*</span>
+                                            适用合作品类
+                                            <Tooltip title="必填：按一级品类 → 二级品类 → 三级品类逐级下钻选择；勾选二级品类表示其下全部三级品类均适用，不选表示全部品类均适用">
                                               <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999', fontSize: 12 }} />
                                             </Tooltip>
                                           </span>
                                         ),
-                                        dataIndex: 'forceUseType',
-                                        key: 'forceUseType',
-                                        width: 140,
-                                        render: (value: string, record: any) => (
-                                          <Select
-                                            value={value}
-                                            onChange={(val) => handleUpdateConditionItem(row.id, record.id, 'forceUseType', val)}
-                                            options={forceUseTypeOptions.map(o => ({ label: o, value: o }))}
-                                            style={{ width: '100%' }}
-                                            placeholder="请选择"
-                                          />
-                                        )
-                                      },
-                                      {
-                                        title: '不适用二级品类',
-                                        dataIndex: 'excludeSubCategories',
-                                        key: 'excludeSubCategories',
-                                        width: 220,
+                                        dataIndex: 'applyCategories',
+                                        key: 'applyCategories',
+                                        width: '16%',
                                         render: (value: string[], record: any) => (
                                           <TreeSelect
                                             value={value || []}
-                                            onChange={(val) => handleUpdateConditionItem(row.id, record.id, 'excludeSubCategories', val)}
-                                            treeData={subCategoryTreeData}
+                                            onChange={(val) => handleUpdateConditionItem(row.id, record.id, 'applyCategories', val)}
+                                            treeData={applyCategoryTreeData}
                                             treeCheckable
-                                            showCheckedStrategy={TreeSelect.SHOW_CHILD}
+                                            showCheckedStrategy={TreeSelect.SHOW_PARENT}
+                                            treeDefaultExpandAll
+                                            showSearch
+                                            treeNodeFilterProp="title"
                                             placeholder="请选择"
                                             style={{ width: '100%' }}
-                                            maxTagCount="responsive"
+                                            maxTagCount={2}
                                             allowClear
                                           />
                                         )
                                       },
                                       {
-                                        title: '操作',
-                                        key: 'action',
-                                        width: 100,
-                                        align: 'center',
-                                        render: (_: any, record: any) => (
-                                          <Button type="link" size="small" danger onClick={() => handleDeleteConditionItem(row.id, record.id)}>
-                                            删除
-                                          </Button>
+                                        title: (
+                                          <span>
+                                            审查依据列展示
+                                            <Tooltip title="在对应资审项不通过的情况下，改为通过的情况下，展示在审查依据列的文案；内容由用户手工填写">
+                                              <QuestionCircleOutlined style={{ marginLeft: 4, color: '#999', fontSize: 12 }} />
+                                            </Tooltip>
+                                          </span>
+                                        ),
+                                        dataIndex: 'reviewBasis',
+                                        key: 'reviewBasis',
+                                        width: '24%',
+                                        // 空白文本框，允许手工填写，不随条件项带出
+                                        render: (value: string, record: any) => (
+                                          <Input
+                                            value={value}
+                                            onChange={(e) => handleUpdateConditionItem(row.id, record.id, 'reviewBasis', e.target.value)}
+                                            placeholder="请输入"
+                                          />
                                         )
                                       }
                                     ]}

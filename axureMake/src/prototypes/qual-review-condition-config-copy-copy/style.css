@@ -472,8 +472,17 @@
 }
 
 .sub-table .ant-table-tbody > tr > td {
-  padding: 10px 16px;
+  padding: 10px 12px;
   vertical-align: middle;
+}
+
+/* 资格审查条件名称：由条件项带出，只读展示 */
+.condition-name-text {
+  display: inline-block;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  word-break: break-all;
 }
 
 /* 添加行按钮 */
