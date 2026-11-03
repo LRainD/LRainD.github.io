@@ -1,17 +1,23 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-30T06:25:44.390Z",
+  "updatedAt": "2026-11-03T05:50:13.650Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-disabled-list-check",
+      "kind": "item",
+      "title": "禁用名录校验",
+      "itemKey": "prototypes/disabled-list-check"
+    },
     {
       "id": "item-prototypes-qual-review-condition-config-copy-copy",
       "kind": "item",
-      "title": "qual review condition config copy copy",
+      "title": "资审条件豁免配置",
       "itemKey": "prototypes/qual-review-condition-config-copy-copy"
     },
     {
       "id": "item-prototypes-qual-review-condition-config-copy",
       "kind": "item",
-      "title": "qual review condition config copy",
+      "title": "资格审查条件配置-增加豁免",
       "itemKey": "prototypes/qual-review-condition-config-copy"
     },
     {
@@ -52,57 +58,6 @@
       "itemKey": "prototypes/opener-settings"
     },
     {
-      "id": "folder-1792132427320-z98rbs",
-      "kind": "folder",
-      "title": "澄清回复截止时间迭代",
-      "children": [
-        {
-          "id": "folder-1792401327959-z5aqjm",
-          "kind": "folder",
-          "title": "简版",
-          "children": [
-            {
-              "id": "item-prototypes-procurement-qa",
-              "kind": "item",
-              "title": "简版-发起澄清",
-              "itemKey": "prototypes/procurement-qa"
-            },
-            {
-              "id": "item-prototypes-procurement-clarify-detail",
-              "kind": "item",
-              "title": "简版-审批",
-              "itemKey": "prototypes/procurement-clarify-detail"
-            },
-            {
-              "id": "item-prototypes-bidding-clarify-detail",
-              "kind": "item",
-              "title": "简版-分供商查看澄清",
-              "itemKey": "prototypes/bidding-clarify-detail"
-            }
-          ]
-        },
-        {
-          "id": "folder-1792464009681-xz2uaq",
-          "kind": "folder",
-          "title": "详版",
-          "children": [
-            {
-              "id": "item-prototypes-procurement-clarify-all",
-              "kind": "item",
-              "title": "详版-发起澄清",
-              "itemKey": "prototypes/procurement-clarify-all"
-            },
-            {
-              "id": "item-prototypes-bidding-clarify-record",
-              "kind": "item",
-              "title": "详版-分供商回答",
-              "itemKey": "prototypes/bidding-clarify-record"
-            }
-          ]
-        }
-      ]
-    },
-    {
       "id": "folder-1790645030471-rnd61y",
       "kind": "folder",
       "title": "中建安装-棱镜",
@@ -110,13 +65,13 @@
         {
           "id": "item-prototypes-negative-enterprise-list-copy",
           "kind": "item",
-          "title": "采方-负面企业清单维护",
+          "title": "采方-棱镜识别分供商维护",
           "itemKey": "prototypes/negative-enterprise-list-copy"
         },
         {
           "id": "item-prototypes-negative-enterprise-list",
           "kind": "item",
-          "title": "负面企业清单",
+          "title": "运营-棱镜识别分供商",
           "itemKey": "prototypes/negative-enterprise-list"
         },
         {
@@ -128,13 +83,13 @@
         {
           "id": "item-prototypes-negative-supplier-check",
           "kind": "item",
-          "title": "负面分供商清单校验",
+          "title": "棱镜分供商识别校验",
           "itemKey": "prototypes/negative-supplier-check"
         },
         {
           "id": "item-prototypes-negative-supplier-relation-check",
           "kind": "item",
-          "title": "负面分供商清单关联校验",
+          "title": "棱镜识别分供商换马甲关联校验",
           "itemKey": "prototypes/negative-supplier-relation-check"
         }
       ]
@@ -395,19 +350,6 @@
       ]
     },
     {
-      "id": "folder-1784626442209-wraztp",
-      "kind": "folder",
-      "title": "集中资格预审",
-      "children": [
-        {
-          "id": "item-prototypes-centralized-qualification-review-base-info",
-          "kind": "item",
-          "title": "集中资格预审 - 编制基础信息",
-          "itemKey": "prototypes/centralized-qualification-review-base-info"
-        }
-      ]
-    },
-    {
       "id": "folder-1784526140646-ihwtg9",
       "kind": "folder",
       "title": "范本系统",
@@ -650,6 +592,57 @@
               "itemKey": "prototypes/payment-terms"
             }
           ]
+        },
+        {
+          "id": "folder-1792132427320-z98rbs",
+          "kind": "folder",
+          "title": "澄清回复截止时间迭代",
+          "children": [
+            {
+              "id": "folder-1792401327959-z5aqjm",
+              "kind": "folder",
+              "title": "简版",
+              "children": [
+                {
+                  "id": "item-prototypes-procurement-qa",
+                  "kind": "item",
+                  "title": "简版-发起澄清",
+                  "itemKey": "prototypes/procurement-qa"
+                },
+                {
+                  "id": "item-prototypes-procurement-clarify-detail",
+                  "kind": "item",
+                  "title": "简版-审批",
+                  "itemKey": "prototypes/procurement-clarify-detail"
+                },
+                {
+                  "id": "item-prototypes-bidding-clarify-detail",
+                  "kind": "item",
+                  "title": "简版-分供商查看澄清",
+                  "itemKey": "prototypes/bidding-clarify-detail"
+                }
+              ]
+            },
+            {
+              "id": "folder-1792464009681-xz2uaq",
+              "kind": "folder",
+              "title": "详版",
+              "children": [
+                {
+                  "id": "item-prototypes-procurement-clarify-all",
+                  "kind": "item",
+                  "title": "详版-发起澄清",
+                  "itemKey": "prototypes/procurement-clarify-all"
+                },
+                {
+                  "id": "item-prototypes-bidding-clarify-record",
+                  "kind": "item",
+                  "title": "详版-分供商回答",
+                  "itemKey": "prototypes/bidding-clarify-record"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -665,12 +658,6 @@
           "itemKey": "prototypes/solution-relation-rule-config"
         }
       ]
-    },
-    {
-      "id": "item-prototypes-test",
-      "kind": "item",
-      "title": "招标工作台 - 报名与资审汇总",
-      "itemKey": "prototypes/test"
     },
     {
       "id": "folder-1775037907912-7zoldr",

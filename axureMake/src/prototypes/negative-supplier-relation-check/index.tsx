@@ -1,5 +1,5 @@
 /**
- * @name 负面分供商清单关联校验
+ * @name 棱镜识别分供商换马甲关联校验
  * @description 风控预警中心-分供商规则：校验分供商是否与负面分供商清单存在关联关系。
  *              整页复用组件 src/components/risk-rule-config-page，本页只提供规则名称、规则说明、配置项与 4 个规则专有列。
  * @reference 规则截图：负面分供商清单关联校验
@@ -163,7 +163,7 @@ const treeData = DEFAULT_RULE_TREE.map(group =>
         ...group,
         children: [
           ...group.children,
-          { title: '负面分供商清单关联校验', key: 'supplier_negative_relation_check', type: '股', status: '启', isGuest: true, iconType: 'red' as const }
+          { title: '棱镜识别分供商换马甲关联校验', key: 'supplier_negative_relation_check', type: '股', status: '启', isGuest: true, iconType: 'red' as const }
         ]
       }
     : group
@@ -172,7 +172,7 @@ const treeData = DEFAULT_RULE_TREE.map(group =>
 const Component = function NegativeSupplierRelationCheckPage() {
   return (
     <RiskRuleConfigPage
-      ruleName="负面分供商清单关联校验"
+      ruleName="棱镜识别分供商换马甲关联校验"
       ruleDescription="检查分供商是否与负面分供商清单存在关联关系"
       defaultRuleEnabled
       config={{

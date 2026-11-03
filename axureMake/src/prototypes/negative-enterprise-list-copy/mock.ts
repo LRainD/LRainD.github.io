@@ -1,4 +1,4 @@
-// 负面企业清单模拟数据
+// 棱镜识别分供商模拟数据
 
 // 模拟当前登录用户
 export const currentUser = {
@@ -139,11 +139,11 @@ export const GENERAL_TEMPLATE_COLUMNS = TEMPLATE_COLUMNS.filter(
 
 // 各类型模板的下载文件名称
 export const TEMPLATE_FILE_NAMES: Record<string, string> = {
-  cscecInstall: '负面企业清单导入模板（中建安装）.xlsx',
-  general: '负面企业清单导入模板（通用）.xlsx',
+  cscecInstall: '棱镜识别分供商导入模板（中建安装）.xlsx',
+  general: '棱镜识别分供商导入模板（通用）.xlsx',
 };
 
-// 初始负面企业清单数据
+// 初始棱镜识别分供商数据
 export const initialData = [
   {
     id: '1',

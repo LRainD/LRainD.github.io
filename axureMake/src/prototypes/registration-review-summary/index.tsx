@@ -76,7 +76,7 @@ const Component = () => {
             ]
             : [
               { title: '风控预警' },
-              { title: '负面清单换马甲检测详情' }
+              { title: '棱镜识别分供商换马甲检测详情' }
             ]
         }
       />
@@ -139,7 +139,7 @@ const Component = () => {
             </div>
           </div>
 
-          {/* 负面清单换马甲检测详情卡片 */}
+          {/* 棱镜识别分供商换马甲检测详情卡片 */}
           <div className="rrs-card">
             <div className="rrs-card-head">
               <div className="rrs-card-head-left">
@@ -153,7 +153,7 @@ const Component = () => {
 
             <div className="rrs-vest-content">
               <div className="rrs-vest-subhead">
-                当前分供商（<strong>sup202</strong>）与 <strong>4</strong> 家负面清单分供商存在关联关系，详情如下：
+                当前分供商（<strong>sup202</strong>）与 <strong>4</strong> 家棱镜识别分供商存在关联关系，详情如下：
               </div>
 
               <table className="rrs-vest-native-table">
@@ -177,7 +177,7 @@ const Component = () => {
                     </td>
                     <td className="text-center py-4 border-b border-gray-100">
                       <div className="text-red-500 font-medium">上海恒基建筑劳务有限公司</div>
-                      <div className="text-red-500 text-xs">(负面清单分供商)</div>
+                      <div className="text-red-500 text-xs">(股权关联)</div>
                     </td>
                     <td className="py-4 border-b border-gray-100">
                       <div className="rrs-overlap-section">
@@ -223,7 +223,7 @@ const Component = () => {
                       <div className="rrs-overlap-section">
                         <div className="rrs-overlap-summary">
                           <span className="font-semibold text-red-500">概述：</span>
-                          <span className="text-red-500">检测到该供应商与负面清单分供商使用了相同的联系人邮箱地址</span>
+                          <span className="text-red-500">检测到该供应商与棱镜识别分供商使用了相同的联系人邮箱地址</span>
                         </div>
                         <div className="rrs-overlap-detail">
                           <span className="font-semibold text-red-500">详情：</span>
@@ -256,7 +256,7 @@ const Component = () => {
                       <div className="rrs-overlap-section">
                         <div className="rrs-overlap-summary">
                           <span className="font-semibold text-red-500">概述：</span>
-                          <span className="text-red-500">检测到该供应商报名时填写的联系电话与负面清单分供商注册/报名电话完全一致</span>
+                          <span className="text-red-500">检测到该供应商报名时填写的联系电话与棱镜识别分供商注册/报名电话完全一致</span>
                         </div>
                         <div className="rrs-overlap-detail">
                           <span className="font-semibold text-red-500">详情：</span>
@@ -289,7 +289,7 @@ const Component = () => {
                       <div className="rrs-overlap-section">
                         <div className="rrs-overlap-summary">
                           <span className="font-semibold text-red-500">概述：</span>
-                          <span className="text-red-500">检测到该供应商的高级管理人员（监事）在负面清单分供商中同时担任董事职务</span>
+                          <span className="text-red-500">检测到该供应商的高级管理人员（监事）在棱镜识别分供商中同时担任董事职务</span>
                         </div>
                         <div className="rrs-overlap-detail">
                           <span className="font-semibold text-red-500">详情：</span>

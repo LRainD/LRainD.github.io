@@ -1,5 +1,5 @@
 /**
- * @name 采方-负面企业清单维护
+ * @name 采方-棱镜识别分供商维护
  * @mode axure
  *
  * 参考资料：
@@ -42,8 +42,10 @@ import {
   Spin,
   Row,
   Col,
-  Breadcrumb
+  Breadcrumb,
+  Tooltip
 } from 'antd';
+import { QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import zhCN from 'antd/locale/zh_CN';
 import type {
   AxureProps,
@@ -156,7 +158,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     (id: string) => {
       setDataSource((prev) => prev.filter((item: any) => item.id !== id));
       setSelectedRowKeys((prev) => prev.filter((key) => key !== id));
-      message.success('已移出负面企业清单');
+      message.success('已移出棱镜识别分供商');
 
       const event = eventList.find((e: any) => e.name === 'onEnterpriseRemove');
       if (event) {
@@ -201,7 +203,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
   }, []);
 
   const handleDownloadFailure = useCallback(() => {
-    message.success('失败原因下载中：负面企业清单导入失败原因.xlsx');
+    message.success('失败原因下载中：棱镜识别分供商导入失败原因.xlsx');
   }, []);
 
   const handleDownloadTemplate = useCallback(() => {
@@ -349,7 +351,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
           values.creditCode &&
           dataSource.some((item: any) => item.creditCode === values.creditCode)
         ) {
-          message.error('该统一社会信用代码已存在负面清单中，请勿重复添加');
+          message.error('该统一社会信用代码已存在棱镜识别分供商中，请勿重复添加');
           return;
         }
 
@@ -499,8 +501,8 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             编辑
           </Button>
           <Popconfirm
-            title="移出负面企业清单"
-            description="移出后该企业将不再命中负面清单校验，是否继续？"
+            title="移出棱镜识别分供商"
+            description="移出后该企业将不再命中棱镜识别分供商校验，是否继续？"
             okText="确认移出"
             cancelText="取消"
             onConfirm={() => handleRemove(record.id)}
@@ -588,7 +590,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     if (!count) return;
     Modal.confirm({
       title: '确认批量删除？',
-      content: `已选中 ${count} 条负面企业清单数据，删除后将无法恢复，请确认是否继续。`,
+      content: `已选中 ${count} 条棱镜识别分供商数据，删除后将无法恢复，请确认是否继续。`,
       okText: '确认删除',
       okButtonProps: { danger: true },
       cancelText: '再想想',
@@ -600,6 +602,38 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       },
     });
   }, [selectedRowKeys]);
+
+  // 按当前查询条件批量删除
+  const confirmConditionDelete = useCallback(() => {
+    const targetIds = new Set(filteredData.map((item: any) => item.id));
+    const count = targetIds.size;
+    if (!count) {
+      message.warning('当前查询条件下暂无可删除的数据');
+      return;
+    }
+    Modal.confirm({
+      title: '确认按当前查询条件批量删除？',
+      content: (
+        <div>
+          <p style={{ marginBottom: 8 }}>
+            当前查询条件共匹配 <strong style={{ color: '#ff4d4f' }}>{count}</strong> 条棱镜识别分供商数据，删除后将从清单中移除且无法恢复。
+          </p>
+          <p style={{ marginBottom: 0, color: '#999' }}>
+            本次删除范围以当前查询条件为准，不受表格勾选影响。
+          </p>
+        </div>
+      ),
+      okText: '确认删除',
+      okButtonProps: { danger: true },
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        setDataSource((prev) => prev.filter((item: any) => !targetIds.has(item.id)));
+        setSelectedRowKeys((prev) => prev.filter((key) => !targetIds.has(key)));
+        message.success(`已按当前查询条件删除 ${count} 条数据`);
+      },
+    });
+  }, [filteredData]);
 
   // 按所选模板类型切换模板列与文件名称
   const templateColumns = templateType === 'cscecInstall' ? TEMPLATE_COLUMNS : GENERAL_TEMPLATE_COLUMNS;
@@ -616,7 +650,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
         style={{ marginBottom: 16 }}
         items={[
           { title: '风控预警中心' },
-          { title: '棱镜识别系统' },
+          { title: '棱镜识别分供商' },
         ]}
       />
 
@@ -723,21 +757,33 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       <Card>
         <div className="table-toolbar">
           <div className="toolbar-left">
-            <span className="toolbar-title">负面企业清单</span>
-            <span className="toolbar-count">共 {filteredData.length} 条</span>
-            <span className="toolbar-selected">共选中 {selectedRowKeys.length} 条数据</span>
+            <Tooltip title="将按当前查询条件删除匹配的全部数据，不受表格勾选影响">
+              <Button danger disabled={filteredData.length === 0} onClick={confirmConditionDelete}>
+                批量删除
+                <QuestionCircleOutlined className="toolbar-condition-delete-help" />
+              </Button>
+            </Tooltip>
+            <Button type="primary" ghost onClick={openImportModal}>
+              导入
+            </Button>
+            <span className="toolbar-divider" />
+            <Tooltip title="列表设置">
+              <Button
+                icon={<SettingOutlined />}
+                aria-label="列表设置"
+                onClick={() => message.info('列表设置功能建设中')}
+              />
+            </Tooltip>
           </div>
           <div className="toolbar-right">
+            <span className="toolbar-count">共 {filteredData.length} 条</span>
+            <span className="toolbar-selected">共选中 {selectedRowKeys.length} 条数据</span>
             <Button
               danger
-              icon={<Trash2 size={14} />}
               disabled={selectedRowKeys.length === 0}
               onClick={confirmBatchDelete}
             >
-              批量删除
-            </Button>
-            <Button icon={<UploadIcon size={14} />} onClick={openImportModal}>
-              导入
+              删除选中
             </Button>
             <Button type="primary" icon={<Plus size={14} />} onClick={() => openModal('add')}>
               新增企业
@@ -763,10 +809,10 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       <Modal
         title={
           modalType === 'add'
-            ? '新增负面企业'
+            ? '新增分供商'
             : modalType === 'view'
-              ? '查看负面企业'
-              : '编辑负面企业'
+              ? '查看分供商'
+              : '编辑分供商'
         }
         open={isModalOpen}
         onCancel={closeModal}
@@ -942,7 +988,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
             rules={[{ required: true, message: '请输入列入原因' }]}
           >
             <TextArea
-              placeholder="请填写列入负面清单的原因，如处罚决定、失信行为等"
+              placeholder="请填写列入棱镜识别分供商的原因，如处罚决定、失信行为等"
               rows={3}
               maxLength={2000}
               showCount
@@ -1036,7 +1082,7 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
 
       {/* 导入弹窗 */}
       <Modal
-        title="导入负面企业清单"
+        title="导入棱镜识别分供商"
         open={isImportOpen}
         onCancel={closeImportModal}
         footer={

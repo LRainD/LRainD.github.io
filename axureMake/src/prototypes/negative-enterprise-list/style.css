@@ -79,10 +79,17 @@
   gap: 8px;
 }
 
-.toolbar-title {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: #e5e6eb;
+}
+
+.toolbar-condition-delete-help {
+  margin-left: 4px;
+  font-size: 12px;
+  opacity: 0.85;
 }
 
 .toolbar-count {

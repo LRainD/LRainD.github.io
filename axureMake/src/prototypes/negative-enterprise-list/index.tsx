@@ -1,5 +1,5 @@
 /**
- * @name 负面企业清单
+ * @name 运营-棱镜识别分供商
  * @mode axure
  *
  * 参考资料：
@@ -41,8 +41,10 @@ import {
   Popconfirm,
   Spin,
   Row,
-  Col
+  Col,
+  Tooltip
 } from 'antd';
+import { QuestionCircleOutlined, SettingOutlined } from '@ant-design/icons';
 import zhCN from 'antd/locale/zh_CN';
 import type {
   AxureProps,
@@ -598,6 +600,39 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     });
   }, [selectedRowKeys]);
 
+  // 按当前查询条件批量删除
+  const confirmConditionDelete = useCallback(() => {
+    const targetIds = filteredData.map((item: any) => item.id);
+    const count = targetIds.length;
+    if (!count) {
+      message.warning('当前查询条件下暂无可删除的数据');
+      return;
+    }
+    Modal.confirm({
+      title: '确认按当前查询条件批量删除？',
+      content: (
+        <div>
+          <p style={{ marginBottom: 8 }}>
+            当前查询条件共匹配 <strong style={{ color: '#ff4d4f' }}>{count}</strong> 条负面企业数据，删除后将从清单中移除且无法恢复。
+          </p>
+          <p style={{ marginBottom: 0, color: '#999' }}>
+            本次删除范围以当前查询条件为准，不受表格勾选影响。
+          </p>
+        </div>
+      ),
+      okText: '确认删除',
+      okButtonProps: { danger: true },
+      cancelText: '取消',
+      centered: true,
+      onOk: () => {
+        const idSet = new Set(targetIds);
+        setDataSource((prev) => prev.filter((item) => !idSet.has(item.id)));
+        setSelectedRowKeys((prev) => prev.filter((key) => !idSet.has(key)));
+        message.success(`已按当前查询条件删除 ${count} 条数据`);
+      },
+    });
+  }, [filteredData]);
+
   // 按所选模板类型切换模板列与文件名称
   const templateColumns = templateType === 'cscecInstall' ? TEMPLATE_COLUMNS : GENERAL_TEMPLATE_COLUMNS;
   const templateFileName = TEMPLATE_FILE_NAMES[templateType];
@@ -716,21 +751,33 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
       <Card>
         <div className="table-toolbar">
           <div className="toolbar-left">
-            <span className="toolbar-title">负面企业清单</span>
-            <span className="toolbar-count">共 {filteredData.length} 条</span>
-            <span className="toolbar-selected">共选中 {selectedRowKeys.length} 条数据</span>
+            <Tooltip title="将按当前查询条件删除匹配的全部数据，不受表格勾选影响">
+              <Button danger disabled={filteredData.length === 0} onClick={confirmConditionDelete}>
+                批量删除
+                <QuestionCircleOutlined className="toolbar-condition-delete-help" />
+              </Button>
+            </Tooltip>
+            <Button type="primary" ghost onClick={openImportModal}>
+              导入
+            </Button>
+            <span className="toolbar-divider" />
+            <Tooltip title="列表设置">
+              <Button
+                icon={<SettingOutlined />}
+                aria-label="列表设置"
+                onClick={() => message.info('列表设置功能建设中')}
+              />
+            </Tooltip>
           </div>
           <div className="toolbar-right">
+            <span className="toolbar-count">共 {filteredData.length} 条</span>
+            <span className="toolbar-selected">共选中 {selectedRowKeys.length} 条数据</span>
             <Button
               danger
-              icon={<Trash2 size={14} />}
               disabled={selectedRowKeys.length === 0}
               onClick={confirmBatchDelete}
             >
-              批量删除
-            </Button>
-            <Button icon={<UploadIcon size={14} />} onClick={openImportModal}>
-              导入
+              删除选中
             </Button>
             <Button type="primary" icon={<Plus size={14} />} onClick={() => openModal('add')}>
               新增企业

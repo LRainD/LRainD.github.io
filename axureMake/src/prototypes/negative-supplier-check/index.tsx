@@ -1,5 +1,5 @@
 /**
- * @name 负面分供商清单校验
+ * @name 棱镜分供商识别校验
  * @description 风控预警中心-分供商规则：校验分供商是否命中负面分供商清单。
  *              整页复用组件 src/components/risk-rule-config-page，本页只提供规则名称、规则说明、配置项与 3 个规则专有列。
  * @reference 规则截图：负面分供商清单校验
