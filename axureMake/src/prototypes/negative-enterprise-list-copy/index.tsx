@@ -578,6 +578,15 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
     return true;
   });
 
+  // 按当前查询条件导出
+  const handleExport = useCallback(() => {
+    if (!filteredData.length) {
+      message.warning('当前查询条件下暂无可导出的数据');
+      return;
+    }
+    message.success(`导出中：共 ${filteredData.length} 条数据，文件：棱镜识别分供商.xlsx`);
+  }, [filteredData]);
+
   // 表格行选择
   const rowSelection = {
     selectedRowKeys,
@@ -763,8 +772,11 @@ const Component = forwardRef<AxureHandle, AxureProps>((props, ref) => {
                 <QuestionCircleOutlined className="toolbar-condition-delete-help" />
               </Button>
             </Tooltip>
-            <Button type="primary" ghost onClick={openImportModal}>
+            <Button type="primary" onClick={openImportModal}>
               导入
+            </Button>
+            <Button type="primary" ghost onClick={handleExport}>
+              导出
             </Button>
             <span className="toolbar-divider" />
             <Tooltip title="列表设置">

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-03T05:50:13.650Z",
+  "updatedAt": "2026-11-04T06:23:33.627Z",
   "prototypes": [
     {
       "id": "item-prototypes-disabled-list-check",
@@ -95,55 +95,6 @@
       ]
     },
     {
-      "id": "folder-1788162914038-rbpmlq",
-      "kind": "folder",
-      "title": "一单一检",
-      "children": [
-        {
-          "id": "item-prototypes-check-template-mgmt",
-          "kind": "item",
-          "title": "检查模板列表与编辑",
-          "itemKey": "prototypes/check-template-mgmt"
-        },
-        {
-          "id": "item-prototypes-organization-dispatch-config",
-          "kind": "item",
-          "title": "组织业务配置",
-          "itemKey": "prototypes/organization-dispatch-config"
-        },
-        {
-          "id": "item-prototypes-compliance-personnel-library",
-          "kind": "item",
-          "title": "合规人员库",
-          "itemKey": "prototypes/compliance-personnel-library"
-        },
-        {
-          "id": "item-prototypes-task-dispatch",
-          "kind": "item",
-          "title": "派发任务",
-          "itemKey": "prototypes/task-dispatch"
-        },
-        {
-          "id": "item-prototypes-my-tasks",
-          "kind": "item",
-          "title": "我的任务",
-          "itemKey": "prototypes/my-tasks"
-        },
-        {
-          "id": "item-prototypes-task-execution",
-          "kind": "item",
-          "title": "检查任务详情",
-          "itemKey": "prototypes/task-execution"
-        },
-        {
-          "id": "item-prototypes-rule-management",
-          "kind": "item",
-          "title": "规则管理",
-          "itemKey": "prototypes/rule-management"
-        }
-      ]
-    },
-    {
       "id": "folder-1774706974674-5x6tue",
       "kind": "folder",
       "title": "数字合规官",
@@ -193,14 +144,8 @@
             {
               "id": "item-prototypes-business-warning-monitor",
               "kind": "item",
-              "title": "business-warning-monitor",
+              "title": "业务预警监控",
               "itemKey": "prototypes/business-warning-monitor"
-            },
-            {
-              "id": "item-prototypes-supplier-risk-detail",
-              "kind": "item",
-              "title": "supplier-risk-detail",
-              "itemKey": "prototypes/supplier-risk-detail"
             },
             {
               "id": "item-prototypes-risk-rule-management",
@@ -420,6 +365,12 @@
               "kind": "item",
               "title": "报名信息弹窗 第二版 副本2",
               "itemKey": "prototypes/registration-info-modal-copy-copy2"
+            },
+            {
+              "id": "item-prototypes-registration-info-modal-copy-copy2-copy",
+              "kind": "item",
+              "title": "报名信息弹窗 第三版",
+              "itemKey": "prototypes/registration-info-modal-copy-copy2-copy"
             }
           ]
         },
@@ -716,12 +667,6 @@
       ]
     },
     {
-      "id": "item-prototypes-rule-config",
-      "kind": "item",
-      "title": "规则配置页面",
-      "itemKey": "prototypes/rule-config"
-    },
-    {
       "id": "folder-1771647506379-zzmigx",
       "kind": "folder",
       "title": "演示原型",
@@ -798,6 +743,55 @@
           "kind": "item",
           "title": "企业关系配置-单页面 副本",
           "itemKey": "prototypes/operation-template-mgmt-copy-copy"
+        }
+      ]
+    },
+    {
+      "id": "folder-1788162914038-rbpmlq",
+      "kind": "folder",
+      "title": "一单一检",
+      "children": [
+        {
+          "id": "item-prototypes-check-template-mgmt",
+          "kind": "item",
+          "title": "检查模板列表与编辑",
+          "itemKey": "prototypes/check-template-mgmt"
+        },
+        {
+          "id": "item-prototypes-organization-dispatch-config",
+          "kind": "item",
+          "title": "组织业务配置",
+          "itemKey": "prototypes/organization-dispatch-config"
+        },
+        {
+          "id": "item-prototypes-compliance-personnel-library",
+          "kind": "item",
+          "title": "合规人员库",
+          "itemKey": "prototypes/compliance-personnel-library"
+        },
+        {
+          "id": "item-prototypes-task-dispatch",
+          "kind": "item",
+          "title": "派发任务",
+          "itemKey": "prototypes/task-dispatch"
+        },
+        {
+          "id": "item-prototypes-my-tasks",
+          "kind": "item",
+          "title": "我的任务",
+          "itemKey": "prototypes/my-tasks"
+        },
+        {
+          "id": "item-prototypes-task-execution",
+          "kind": "item",
+          "title": "检查任务详情",
+          "itemKey": "prototypes/task-execution"
+        },
+        {
+          "id": "item-prototypes-rule-management",
+          "kind": "item",
+          "title": "规则管理",
+          "itemKey": "prototypes/rule-management"
         }
       ]
     }
