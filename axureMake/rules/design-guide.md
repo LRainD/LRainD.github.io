@@ -118,7 +118,10 @@
 ### 1. 生成时机
 
 - 设计方案确认后，立即产出 `spec.md`
-- 使用模板：`src/docs/templates/spec-template.md`
+- 使用模板（按功能类型选择，用户已明确约定）：
+  - **传统功能**：使用 `docs/template/traditional-prd-template.md`
+  - **AI 功能**：使用 `docs/template/ai-product-prd-template.md`
+- 模板章节需完整保留（需求背景、产品定位、用户故事、功能清单、用户旅程、测试标准、非功能性需求、迭代规划、附录），并基于当前实现填写，不保留模板空白占位
 
 ### 2. 文档内容
 

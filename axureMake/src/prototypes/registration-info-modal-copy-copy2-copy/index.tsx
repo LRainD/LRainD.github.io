@@ -8,38 +8,18 @@ import {
   Plus,
   AlertCircle,
   CheckCircle,
-  ImageIcon,
-  Loader2
+  ImageIcon
 } from 'lucide-react';
 
-import { FileAssistantModal } from '../../components/file-assistant-modal';
-import aiBadge from '../../../assets/media/image.png';
+import { AttachmentAssistantModal } from './attachment-assistant-modal';
+import {
+  AttachmentCategory,
+  createEmptyCategories,
+  createInitialCategories,
+  defaultContact,
+  recommendationMap
+} from './mock';
 import './style.css';
-
-interface Attachment {
-  id: number;
-  name: string;
-  signingStatus?: 'signing' | 'signed' | 'failed';
-  size?: string;
-  isAiRecommended?: boolean;
-  recommendationReason?: string;
-}
-
-interface AttachmentCategory {
-  id: string;
-  title: string;
-  required: boolean;
-  hasTemplate: boolean;
-  files: Attachment[];
-  noRecommendationReason?: string;
-}
-
-interface RecommendationMock {
-  id: number;
-  fileName: string;
-  size: string;
-  reason: string;
-}
 
 type UploadMethod = 'scan' | 'esign' | null;
 
@@ -52,54 +32,16 @@ type UploadMethod = 'scan' | 'esign' | null;
 const Component = () => {
   const [isContactExpanded, setIsContactExpanded] = useState(true);
   const [isAttachmentExpanded, setIsAttachmentExpanded] = useState(true);
-  const [contactName, setContactName] = useState('sup200');
-  const [phone, setPhone] = useState('18716574377');
-  const [email, setEmail] = useState('15623615623@139.com');
+  const [contactName, setContactName] = useState(defaultContact.contactName);
+  const [phone, setPhone] = useState(defaultContact.phone);
+  const [email, setEmail] = useState(defaultContact.email);
 
   // 附件上传方式，默认使用纸质扫描件以演示图片效果
   const [uploadMethod, setUploadMethod] = useState<UploadMethod>('scan');
 
-  const initialCategories: AttachmentCategory[] = [
-    {
-      id: 'health',
-      title: '职业健康安全认证体系证书',
-      required: false,
-      hasTemplate: true,
-      files: []
-    },
-    {
-      id: 'credit',
-      title: '工商企业信用等级',
-      required: false,
-      hasTemplate: true,
-      files: [
-        { id: 102, name: '工商登记信息证明.pdf', size: '920KB' }
-      ]
-    },
-    {
-      id: 'other',
-      title: '其他附件',
-      required: false,
-      hasTemplate: false,
-      files: []
-    },
-    {
-      id: 'idcard',
-      title: '法人身份证',
-      required: true,
-      hasTemplate: false,
-      files: [
-        { id: 101, name: '58052193124060022401088623860.jpg', size: '1.2MB' }
-      ]
-    }
-  ];
-
   // 分类附件状态 - 分别存储
-  const [scanCategories, setScanCategories] = useState<AttachmentCategory[]>(initialCategories);
-  const [esignCategories, setEsignCategories] = useState<AttachmentCategory[]>(initialCategories.map(cat => ({
-    ...cat,
-    files: []
-  })));
+  const [scanCategories, setScanCategories] = useState<AttachmentCategory[]>(createInitialCategories());
+  const [esignCategories, setEsignCategories] = useState<AttachmentCategory[]>(createEmptyCategories());
 
   const [hasImportedEsign, setHasImportedEsign] = useState(false);
 
@@ -120,11 +62,12 @@ const Component = () => {
     }));
   };
 
-  // 处理分类附件添加
+  // 处理分类附件添加 - 一键导入与手动添加共用同一个文件助手弹窗
   const handleAddCategoryFile = (categoryId: string) => {
     if (uploadMethod === 'esign') {
       setActiveCategoryId(categoryId);
-      setIsFileSelectOpen(true);
+      setAttachmentModalMode('add');
+      setIsAttachmentModalOpen(true);
     } else {
       const newId = Date.now();
       setCategories(prev => prev.map(cat => {
@@ -139,33 +82,15 @@ const Component = () => {
     }
   };
 
-  const handleFileAssistantConfirm = (selectedFiles: any[]) => {
-    if (activeCategoryId) {
-      const newAttachments = selectedFiles.map(f => ({
-        ...f,
-        id: Date.now() + f.id,
-        signingStatus: undefined // 初始不显示签章完成
-      }));
-
-      // 如果在步骤弹窗里触发手动添加，同时同步预览数据
-      if (isImportModalOpen) {
-        setPreviewCategories(prev => prev.map(cat => {
-          if (cat.id === activeCategoryId) {
-            return { ...cat, files: [...cat.files, ...newAttachments] };
-          }
-          return cat;
-        }));
-      } else {
-        setCategories(prev => prev.map(cat => {
-          if (cat.id === activeCategoryId) {
-            return { ...cat, files: [...cat.files, ...newAttachments] };
-          }
-          return cat;
-        }));
-      }
-
-      setIsFileSelectOpen(false);
-      setActiveCategoryId(null);
+  // 文件助手弹窗确认 - 弹窗内调整后的文件组成一次性带回页面
+  const handleAttachmentConfirm = (nextCategories: AttachmentCategory[]) => {
+    setCategories(nextCategories);
+    setIsAttachmentModalOpen(false);
+    setActiveCategoryId(null);
+    if (attachmentModalMode === 'import') {
+      setHasImportedEsign(true);
+      setImportSummary('已完成一键导入并填充文件组成');
+      setTimeout(() => setImportSummary(''), 3000);
     }
   };
 
@@ -174,14 +99,9 @@ const Component = () => {
     // 适配新的结构，删除逻辑已在 handleRemoveCategoryFile 处理
   };
 
-  // 选择文件弹窗状态
-  const [isFileSelectOpen, setIsFileSelectOpen] = useState(false);
-
-  // 一键导入步骤弹窗状态
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [importStep, setImportStep] = useState<1 | 2>(1);
-  const [isImporting, setIsImporting] = useState(false);
-  const [previewCategories, setPreviewCategories] = useState<AttachmentCategory[]>([]);
+  // 文件助手弹窗状态 - 一键导入与添加附件共用同一个弹窗
+  const [isAttachmentModalOpen, setIsAttachmentModalOpen] = useState(false);
+  const [attachmentModalMode, setAttachmentModalMode] = useState<'import' | 'add'>('import');
 
   // 提交失败弹窗状态
   const [isSubmitFailOpen, setIsSubmitFailOpen] = useState(false);
@@ -198,7 +118,7 @@ const Component = () => {
 
   // 监听模式变化触发引导
   React.useEffect(() => {
-    if (uploadMethod === 'esign' && !dontRemindAgain) {
+    if (uploadMethod === 'esign' && !dontRemindAgain && !hasImportedEsign) {
         setIsImportGuideOpen(true);
     }
   }, [uploadMethod]);
@@ -221,69 +141,9 @@ const Component = () => {
     }
   };
 
-  const recommendationMap: Record<string, RecommendationMock[]> = {
-    health: [
-      {
-        id: 201,
-        fileName: '职业健康安全管理体系认证证书_2024.pdf',
-        size: '1.5MB',
-        reason: '文件名称包含“职业健康安全”，且证书类型与当前附件要求匹配'
-      },
-      {
-        id: 202,
-        fileName: '职业健康安全认证证书_有效期.pdf',
-        size: '1.8MB',
-        reason: '文件库标签标记为“体系认证”，并匹配当前报名项目的资质要求'
-      }
-    ],
-    credit: [
-      {
-        id: 203,
-        fileName: '企业信用等级证书_AAA级.pdf',
-        size: '1.3MB',
-        reason: '文件名称包含“企业信用等级”，与附件组成类型关键词匹配'
-      }
-    ],
-    other: [],
-    idcard: []
-  };
-
   const handleStartImportModal = () => {
-    setImportStep(1);
-    setIsImporting(false);
-    setIsImportModalOpen(true);
-  };
-
-  const handleExecuteImportStep = () => {
-    setIsImporting(true);
-    setTimeout(() => {
-      // 计算推荐生成的结果
-      const updated = esignCategories.map(cat => {
-        const recommendations = recommendationMap[cat.id] || [];
-        const newFiles = recommendations
-          .filter(recommendation => !cat.files.some(file => file.id === recommendation.id))
-          .map(recommendation => ({
-            id: recommendation.id,
-            name: recommendation.fileName,
-            size: recommendation.size,
-            isAiRecommended: true,
-            recommendationReason: recommendation.reason,
-            signingStatus: undefined // 设为 undefined，初始不显示签章状态
-          }));
-        return newFiles.length > 0 ? { ...cat, files: [...cat.files, ...newFiles] } : cat;
-      });
-      setPreviewCategories(updated);
-      setIsImporting(false);
-      setImportStep(2);
-    }, 1000);
-  };
-
-  const handleConfirmImport = () => {
-    setEsignCategories(previewCategories);
-    setHasImportedEsign(true);
-    setIsImportModalOpen(false);
-    setImportSummary('已完成一键导入并填充文件组成');
-    setTimeout(() => setImportSummary(''), 3000);
+    setAttachmentModalMode('import');
+    setIsAttachmentModalOpen(true);
   };
 
   return (
@@ -413,79 +273,99 @@ const Component = () => {
 
               {isAttachmentExpanded && (
                 <div className="pl-1 space-y-4">
-                  {/* 附件是否使用电子签章 */}
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 text-right pr-1">
-                      <span className="text-red-500 text-xs">*</span>
-                      <span className="text-sm text-gray-700 whitespace-nowrap">附件盖章方式</span>
-                    </div>
-                    <span className="text-gray-700 mr-1">:</span>
-                    <div className="flex items-center gap-6 flex-shrink-0">
-                      <label className="flex items-center cursor-pointer">
-                        <div
-                          className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center transition-colors ${
-                            uploadMethod === 'esign'
-                              ? 'border-[#f5a623]'
-                              : 'border-gray-300'
-                          }`}
-                          onClick={() => setUploadMethod('esign')}
-                        >
-                          {uploadMethod === 'esign' && (
-                            <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
-                          )}
+                  {/* 附件盖章方式 - 卡片式选择，占满整行 */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => setUploadMethod('esign')}
+                        className={`text-left rounded-md border px-3 py-2 transition-all ${
+                          uploadMethod === 'esign'
+                            ? 'border-[#f5a623] bg-[#fff8ee] shadow-[0_0_0_1px_rgba(245,166,35,0.25)]'
+                            : 'border-gray-200 bg-white hover:border-[#f5a623]/60'
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div
+                            className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                              uploadMethod === 'esign' ? 'border-[#f5a623]' : 'border-gray-300'
+                            }`}
+                          >
+                            {uploadMethod === 'esign' && (
+                              <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-800">电子签章</span>
+                          <span className="ml-1.5 rounded-sm bg-[#f5a623] px-1.5 py-0.5 text-[10px] leading-none text-white">
+                            推荐
+                          </span>
                         </div>
-                        <span className="text-sm text-gray-700">电子签章</span>
-                      </label>
-                      <label className="flex items-center cursor-pointer">
-                        <div
-                          className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center transition-colors ${
-                            uploadMethod === 'scan'
-                              ? 'border-[#f5a623]'
-                              : 'border-gray-300'
+                        <p
+                          className={`mt-1 pl-6 text-[11px] leading-4 ${
+                            uploadMethod === 'esign' ? 'text-[#52a320]' : 'text-gray-400'
                           }`}
-                          onClick={() => setUploadMethod('scan')}
                         >
-                          {uploadMethod === 'scan' && (
-                            <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
-                          )}
+                          在线签署，最快10分钟完成，无需打印快递
+                        </p>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setUploadMethod('scan')}
+                        className={`text-left rounded-md border px-3 py-2 transition-all ${
+                          uploadMethod === 'scan'
+                            ? 'border-[#f5a623] bg-[#fff8ee] shadow-[0_0_0_1px_rgba(245,166,35,0.25)]'
+                            : 'border-gray-200 bg-white hover:border-[#f5a623]/60'
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div
+                            className={`w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                              uploadMethod === 'scan' ? 'border-[#f5a623]' : 'border-gray-300'
+                            }`}
+                          >
+                            {uploadMethod === 'scan' && (
+                              <div className="w-2 h-2 rounded-full bg-[#f5a623]"></div>
+                            )}
+                          </div>
+                          <span className="text-sm font-medium text-gray-800">纸质扫描件</span>
                         </div>
-                        <span className="text-sm text-gray-700">纸质扫描件</span>
-                      </label>
-                    </div>
+                        <p
+                          className={`mt-1 pl-6 text-[11px] leading-4 ${
+                            uploadMethod === 'scan' ? 'text-[#52a320]' : 'text-gray-400'
+                          }`}
+                        >
+                          需打印、盖章、扫描上传，约1-2天
+                        </p>
+                      </button>
                   </div>
 
                   {/* 附件字段 - 仅在选择了上传方式后显示 */}
                   {uploadMethod && (
                     <>
                   {/* 附件操作区 */}
-                    <div className="flex flex-col">
-                      <div className="flex items-start mb-3">
-                        <div className="w-24 flex-shrink-0 text-right pr-1">
-                          <span className="text-red-500 mr-0.5">*</span>
-                          <span className="text-sm text-gray-700">附件</span>
-                        </div>
-                        <span className="text-gray-700 mr-1 mt-0.5">:</span>
-                        <div className="flex-1">
-                            <div className="text-xs text-gray-400 leading-relaxed">
-                               {uploadMethod === 'esign' ? (
-                                <>
-                                  大小限制：100M　支持格式：.pdf
-                                  <br />
-                                  （电子签功能仅支持最多20个100M以内的pdf文件，若不满足需求，请选择纸质扫描件方式上传附件报名）
-                                </>
-                              ) : (
-                                <>
-                                  <span className="text-red-500 mr-1">*</span>附件： 大小限制：500M　支持格式：.jpeg、.jpg、.gif、.png、.doc、.doc_、.docx、.xl...
-                                  <br />
-                                  <span className="text-gray-400 pl-12">（如需使用电子签功能，请上传100M以内的pdf文件）</span>
-                                </>
-                              )}
-                            </div>
-                        </div>
+                    <div className="flex items-start text-xs text-gray-400 leading-relaxed">
+                      {/* 左侧字段名，右侧内容整体与之对齐 */}
+                      <div className="flex-shrink-0 whitespace-nowrap mr-3">
+                        <span className="text-red-500 mr-1">*</span>附件：
+                      </div>
+                      <div className="flex-1 min-w-0">
+                      <div className="mb-3">
+                        {uploadMethod === 'esign' ? (
+                          <>
+                            大小限制：100M　支持格式：.pdf
+                            <br />
+                            <span>（电子签功能仅支持最多20个100M以内的pdf文件，若不满足需求，请选择纸质扫描件方式上传附件报名）</span>
+                          </>
+                        ) : (
+                          <>
+                            大小限制：500M　支持格式：.jpeg、.jpg、.gif、.png、.doc、.doc_、.docx、.xl...
+                            <br />
+                            <span>（如需使用电子签功能，请上传100M以内的pdf文件）</span>
+                          </>
+                        )}
                       </div>
                       
-                      {uploadMethod === 'esign' && (
-                        <div className="ml-[100px] mb-3">
+                      {uploadMethod === 'esign' && !hasImportedEsign && (
+                        <div className="mb-3">
                            <button
                              ref={importButtonRef}
                              onClick={(e) => {
@@ -499,19 +379,11 @@ const Component = () => {
                            </button>
                         </div>
                       )}
-                      
-                      {/* 建议提示 */}
-                      {uploadMethod === 'esign' && (
-                          <div className="ml-[100px] mb-3">
-                            <p className="text-xs text-[#f5a623]">建议：请先检测报名文件完善性，再提交报名</p>
-                          </div>
-                      )}
-                    </div>
 
                       {/* 附件列表/分类展示 */}
                       {/* 附件列表/分类展示 - 仅当有附件或已进行一键导入时显示 */}
                       {(categories.some(cat => cat.files.length > 0) || (uploadMethod === 'esign' && hasImportedEsign)) && (
-                        <div className="ml-[100px] border border-gray-200 rounded bg-white divide-y divide-gray-100">
+                        <div className="border border-gray-200 rounded bg-white divide-y divide-gray-100">
                         {categories.map((cat) => (
                           <div key={cat.id} className="p-3">
                             {/* 分类标题与模板下载 */}
@@ -529,15 +401,12 @@ const Component = () => {
 
                             {/* 已上传文件列表 */}
                             {cat.files.length > 0 && (
-                              <div className="space-y-1.5 mb-2">
+                              <div className="flex flex-col items-start gap-1.5 mb-2">
                                 {cat.files.map((file) => (
                                   <div
                                     key={file.id}
-                                    className="relative max-w-full rounded border border-gray-200 bg-white px-2.5 py-1"
+                                    className="relative inline-flex items-center rounded border border-gray-200 bg-white pl-2.5 pr-2 py-1"
                                   >
-                                    {file.isAiRecommended && (
-                                      <img src={aiBadge} alt="AI 推荐" className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-white object-contain shadow-sm" />
-                                    )}
                                     {/* 签署状态标签 - 仅在电子签章模式且有状态时显示 */}
                                     {uploadMethod === 'esign' && file.signingStatus === 'signing' && (
                                       <div className="absolute -top-2 left-2 bg-[#f5a623] text-white text-[10px] px-1.5 py-0.5 rounded-sm leading-none z-10">
@@ -549,8 +418,8 @@ const Component = () => {
                                         签章完成
                                       </div>
                                     )}
-                                    
-                                    <div className="flex items-center">
+
+                                    <div className="flex items-center whitespace-nowrap">
                                       {file.name.toLowerCase().endsWith('.pdf') ? (
                                         <div className="flex-shrink-0 w-4 h-4 bg-red-50 rounded flex items-center justify-center mr-2">
                                           <span className="text-[8px] font-bold text-red-500 leading-none">PDF</span>
@@ -558,11 +427,8 @@ const Component = () => {
                                       ) : (
                                         <ImageIcon className="w-4 h-4 text-[#f5a623] mr-2 flex-shrink-0" />
                                       )}
-                                      <div className="flex flex-col">
-                                        <span className="text-sm text-gray-700 truncate max-w-[260px] mr-3">{file.name}</span>
-                                        {file.size && <span className="text-[10px] text-gray-400">{file.size}</span>}
-                                      </div>
-                                      <div className="flex items-center gap-2 ml-auto">
+                                      <span className="text-sm text-gray-700 truncate max-w-[260px]">{file.name}</span>
+                                      <div className="flex items-center gap-2 ml-3">
                                         <button className="text-gray-400 hover:text-gray-600">
                                           <Edit3 className="w-3.5 h-3.5" />
                                         </button>
@@ -571,12 +437,6 @@ const Component = () => {
                                         </button>
                                       </div>
                                     </div>
-                                    {file.isAiRecommended && file.recommendationReason && (
-                                      <p className="mt-1.5 max-w-[420px] break-words whitespace-normal border-t border-dashed border-[#f5a623]/30 pt-1.5 text-[11px] leading-4 text-[#b76a00]">
-                                        <span className="font-medium">推荐依据：</span>
-                                        <span className="mt-0.5 block">{file.recommendationReason}</span>
-                                      </p>
-                                    )}
                                   </div>
                                 ))}
                               </div>
@@ -597,21 +457,29 @@ const Component = () => {
                       </div>
                       )}
 
-                      {/* 导入操作总结提示 */}
-                      {importSummary && (
-                        <div className="ml-[100px]">
-                          <p className="mt-2 text-xs text-[#52a320]">{importSummary}</p>
+                      {/* 建议提示 - 一键导入后展示在文件组成下方 */}
+                      {uploadMethod === 'esign' && hasImportedEsign && (
+                        <div>
+                          <p className="mt-2 text-xs text-[#f5a623]">建议：请先检测报名文件完善性，再提交报名</p>
                         </div>
                       )}
 
+                      {/* 导入操作总结提示 */}
+                      {importSummary && (
+                        <div>
+                          <p className="mt-2 text-xs text-[#52a320]">{importSummary}</p>
+                        </div>
+                      )}
+                      </div>
+                    </div>
                     </>
                   )}
                 </div>
               )}
             </div>
 
-            {/* 底部提示 - 仅在电子签章上传时显示 */}
-            {uploadMethod === 'esign' && (
+            {/* 底部提示 - 一键导入完成并展示文件组成部分后才展示 */}
+            {uploadMethod === 'esign' && hasImportedEsign && (
               <div className="mt-6 mb-2">
                 <p className="text-sm text-gray-600 text-center">
                   存在 <span className="font-medium text-gray-800">签章中/签章失败</span> 的文件时，请先点击"发起电子签后报名"完成电子签章。
@@ -656,10 +524,17 @@ const Component = () => {
         </div>
       </div>
 
-      <FileAssistantModal 
-        isOpen={isFileSelectOpen}
-        onClose={() => setIsFileSelectOpen(false)}
-        onConfirm={handleFileAssistantConfirm}
+      <AttachmentAssistantModal
+        isOpen={isAttachmentModalOpen}
+        mode={attachmentModalMode}
+        categories={categories}
+        activeCategoryId={activeCategoryId}
+        recommendationMap={recommendationMap}
+        onClose={() => {
+          setIsAttachmentModalOpen(false);
+          setActiveCategoryId(null);
+        }}
+        onConfirm={handleAttachmentConfirm}
       />
 
       <Tour
@@ -675,7 +550,7 @@ const Component = () => {
           title: '一键导入，全新升级',
           description: (
             <div className="text-sm leading-6 text-gray-600">
-              <p>文件助手会根据当前报名附件要求，从您的文件库中智能匹配相关附件。确认后，推荐附件将自动追加到对应的文件组成中，已有附件不会被覆盖。</p>
+              <p>文件助手会根据当前报名附件要求，从您的文件库中智能匹配相关附件。确认后，推荐附件将自动追加到对应的文件组成中。</p>
               <p className="mt-2 text-xs text-gray-400">推荐结果仅供参考，请确认附件内容及有效期。</p>
               <Checkbox checked={dontRemindAgain} onChange={(event) => setDontRemindAgain(event.target.checked)} className="mt-4 text-xs text-gray-500">
                 不再提示
@@ -720,95 +595,6 @@ const Component = () => {
               >
                 知道了
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 一键导入步骤弹窗 */}
-      {isImportModalOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[100]">
-          <div className="bg-white w-[540px] rounded shadow-2xl flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b">
-              <h3 className="text-base font-bold text-gray-800">一键导入附件</h3>
-              <button onClick={() => setIsImportModalOpen(false)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
-            </div>
-            <div className="p-6">
-              {importStep === 1 ? (
-                <div className="py-4">
-                  <div className="text-center space-y-4">
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      文件助手将根据本次报名要求，从您的文件库中智能匹配相关附件并自动填充文件组成。
-                    </p>
-                    {isImporting ? (
-                      <div className="flex flex-col items-center justify-center py-6">
-                        <Loader2 className="w-8 h-8 text-[#f5a623] animate-spin mb-3" />
-                        <p className="text-sm font-medium text-[#f5a623]">正在智能查找与匹配附件...</p>
-                      </div>
-                    ) : (
-                      <div className="pt-2 flex justify-center gap-3">
-                        <button
-                          onClick={handleExecuteImportStep}
-                          className="px-6 py-2 bg-[#f5a623] text-white rounded text-sm hover:bg-[#e09513] transition-colors shadow-sm font-medium"
-                        >
-                          开始一键导入
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="bg-orange-50 border border-orange-100 rounded p-3 text-xs text-[#b76a00]">
-                    已为您智能匹配推荐以下文件组成附件。您也可以在此核对或通过"文件助手"手动添加补充附件。
-                  </div>
-
-                  {/* 展示匹配到的文件组成预览 */}
-                  <div className="max-h-[300px] overflow-y-auto border border-gray-200 rounded p-3 divide-y divide-gray-100 space-y-3">
-                    {previewCategories.map((cat) => (
-                      <div key={cat.id} className="pt-2 first:pt-0">
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-xs font-bold text-gray-700">
-                            {cat.required && <span className="text-red-500 mr-0.5">*</span>}
-                            {cat.title}
-                          </span>
-                          <button
-                            onClick={() => {
-                              setActiveCategoryId(cat.id);
-                              setIsFileSelectOpen(true);
-                            }}
-                            className="text-[11px] text-[#f5a623] hover:underline flex items-center"
-                          >
-                            <Plus className="w-3 h-3 mr-0.5" /> 手动添加
-                          </button>
-                        </div>
-
-                        {cat.files.length > 0 ? (
-                          <div className="space-y-1">
-                            {cat.files.map((f) => (
-                              <div key={f.id} className="flex items-center justify-between bg-gray-50 px-2 py-1 rounded text-xs">
-                                <span className="text-gray-700 truncate max-w-[300px]">{f.name}</span>
-                                <span className="text-[10px] text-gray-400">{f.size}</span>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-[11px] text-gray-400 italic py-0.5">暂无数据，可点击手动添加</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
-                    <button onClick={() => setIsImportModalOpen(false)} className="px-5 py-1.5 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">
-                      取消
-                    </button>
-                    <button onClick={handleConfirmImport} className="px-6 py-1.5 bg-[#f5a623] text-white rounded text-sm hover:bg-[#e09513] font-medium shadow-sm">
-                      确认带入页面
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

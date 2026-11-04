@@ -60,6 +60,7 @@
 | 组织业务配置 | `/prototypes/organization-dispatch-config/` | 按组织维护自查与互查派发配置 |
 | 我的任务 | `/prototypes/my-tasks/` | 查看和处理个人待办任务 |
 | 检查任务详情 | `/prototypes/task-execution/` | 执行检查、整改、复核与查看流转记录 |
+| 报名信息弹窗 | `/prototypes/registration-info-modal-copy-copy2-copy/` | 供应商报名信息、附件盖章方式、一键导入与提交反馈 |
 
 ### 7.2 页面级规格文档
 
@@ -70,6 +71,7 @@
 - 组织业务配置：`/src/prototypes/organization-dispatch-config/spec.md`
 - 我的任务：`/src/prototypes/my-tasks/spec.md`
 - 检查任务详情：`/src/prototypes/task-execution/spec.md`
+- 报名信息弹窗：`/src/prototypes/registration-info-modal-copy-copy2-copy/spec.md`
 
 ### 7.3 需求文档
 
@@ -163,6 +165,12 @@
 - 表单字段智能填充
 - 复杂配置项推荐
 - 数据自动补全
+
+### 9.4 规格文档模板约定
+
+- 传统功能：`spec.md` 使用 `docs/template/traditional-prd-template.md`
+- AI 功能：`spec.md` 使用 `docs/template/ai-product-prd-template.md`
+- 模板章节完整保留，并基于当前实现填写，避免遗留占位内容
 
 ## 10. 当前待补事项
 

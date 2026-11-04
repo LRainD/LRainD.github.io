@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-04T06:23:33.627Z",
+  "updatedAt": "2026-11-04T07:53:46.407Z",
   "prototypes": [
     {
       "id": "item-prototypes-disabled-list-check",
@@ -371,6 +371,12 @@
               "kind": "item",
               "title": "报名信息弹窗 第三版",
               "itemKey": "prototypes/registration-info-modal-copy-copy2-copy"
+            },
+            {
+              "id": "item-prototypes-bidding-document-composition-copy",
+              "kind": "item",
+              "title": "投标文件组成评审 第三版",
+              "itemKey": "prototypes/bidding-document-composition-copy"
             }
           ]
         },

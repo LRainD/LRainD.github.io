@@ -13,3 +13,4 @@
 2026-07-03 11:20 | upd | user | 创建运营后台统一布局组件 | operation-admin-layout,page-map,memory-log | - | - | - | -
 2026-09-01 19:11 | upd | user | 沉淀列表筛选样式 | project-overview,page-map | antd-new | - | - | -
 2026-10-12 16:18 | upd | user | 沉淀组织下拉面板通用约定 | project-overview | - | - | - | -
+2026-11-04 14:53 | upd | user | 沉淀spec模板按功能类型选择约定 | project-overview,design-guide,registration-info-modal-copy-copy2-copy | - | - | - | -
