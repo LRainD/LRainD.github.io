@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-04T07:53:46.407Z",
+  "updatedAt": "2026-11-06T01:17:14.386Z",
   "prototypes": [
     {
       "id": "item-prototypes-disabled-list-check",
@@ -105,9 +105,15 @@
           "title": "配置类",
           "children": [
             {
+              "id": "item-prototypes-digital-compliance-officer",
+              "kind": "item",
+              "title": "数字合规官配置",
+              "itemKey": "prototypes/digital-compliance-officer"
+            },
+            {
               "id": "item-prototypes-digital-compliance-settings",
               "kind": "item",
-              "title": "数字合规官设置",
+              "title": "合规官设置",
               "itemKey": "prototypes/digital-compliance-settings"
             },
             {
@@ -123,12 +129,6 @@
               "itemKey": "prototypes/digital-compliance-officer-copy"
             }
           ]
-        },
-        {
-          "id": "item-prototypes-procurement-list",
-          "kind": "item",
-          "title": "业务系统接入流程",
-          "itemKey": "prototypes/procurement-list"
         },
         {
           "id": "item-prototypes-ai-interaction-v2",
@@ -165,12 +165,6 @@
               "kind": "item",
               "title": "数字合规官AI交互",
               "itemKey": "prototypes/procurement-list-copy"
-            },
-            {
-              "id": "item-prototypes-digital-compliance-officer",
-              "kind": "item",
-              "title": "数字合规官配置",
-              "itemKey": "prototypes/digital-compliance-officer"
             }
           ]
         },
@@ -264,6 +258,19 @@
               "kind": "item",
               "title": "跳过-数字合规官检测中",
               "itemKey": "prototypes/digital-compliance-detection-copy"
+            },
+            {
+              "id": "folder-1793927822671-s7zg1f",
+              "kind": "folder",
+              "title": "合规官解除风险",
+              "children": [
+                {
+                  "id": "item-prototypes-registration-review-summary-copy-copy",
+                  "kind": "item",
+                  "title": "合规官解除风险",
+                  "itemKey": "prototypes/registration-review-summary-copy-copy"
+                }
+              ]
             },
             {
               "id": "folder-1792569005688-wo770b",
