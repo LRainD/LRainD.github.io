@@ -1,7 +1,32 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-06T01:17:14.386Z",
+  "updatedAt": "2026-11-08T12:55:31.082Z",
   "prototypes": [
+    {
+      "id": "item-prototypes-supplier-bad-behavior-check",
+      "kind": "item",
+      "title": "supplier bad behavior check",
+      "itemKey": "prototypes/supplier-bad-behavior-check"
+    },
+    {
+      "id": "item-prototypes-post-award-inspection",
+      "kind": "item",
+      "title": "标后巡检宣传页",
+      "itemKey": "prototypes/post-award-inspection"
+    },
+    {
+      "id": "folder-1793936238482-d9ikao",
+      "kind": "folder",
+      "title": "合作品类智能推荐",
+      "children": [
+        {
+          "id": "item-prototypes-jicai-purchase-list",
+          "kind": "item",
+          "title": "jicai-purchase-list",
+          "itemKey": "prototypes/jicai-purchase-list"
+        }
+      ]
+    },
     {
       "id": "item-prototypes-disabled-list-check",
       "kind": "item",

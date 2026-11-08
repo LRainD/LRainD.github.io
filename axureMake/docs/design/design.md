@@ -1,4 +1,6 @@
-# Design System 
+# Design System Inspired by 采购列表
+
+> Auto-extracted from `https://jicai.yzwqa.cn/tender/purchase/list` on 2026-11-06
 
 ## 1. Visual Theme & Atmosphere
 
@@ -19,7 +21,7 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 - **Primary Accent** (`#0081cc`) · `--color-primary`: Brand color, CTA backgrounds, link text, interactive highlights.
 - **Secondary Accent** (`#ff3333`) · `--color-secondary`: Secondary brand, hover states, complementary highlights.
 - **Background** (`#f5f5f5`) · `--color-bg`: Page background, primary canvas.
-- **Background Secondary** (`#0081cc`) · `--color-bg-secondary`: Cards, surfaces, alternating sections.
+- **Background Secondary** (`#ffffff`) · `--color-bg-secondary`: Cards, surfaces, alternating sections.
 
 ### Text
 - **Text Primary** (`#000000`) · `--color-text`: Headings and body text.
@@ -32,12 +34,11 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 
 | # | Hex | CSS Variable | Role | Area | Contrast |
 |---|---|---|---|---|---|
-| 1 | `#ffffff` | `--palette-1` | block | large | text-dark |
-| 2 | `#0081cc` | `--palette-2` | text-accent | large | text-light |
-| 3 | `#f5f5f5` | `--palette-3` | button | medium | text-dark |
-| 4 | `#262626` | `--palette-4` | button | medium | text-light |
-| 5 | `#0000ee` | `--palette-5` | text-accent | small | text-light |
-| 6 | `#ff3333` | `--palette-6` | badge | small | text-light |
+| 1 | `#0081cc` | `--palette-1` | text-accent | large | text-light |
+| 2 | `#ffffff` | `--palette-2` | block | large | text-dark |
+| 3 | `#f5f5f5` | `--palette-3` | button | large | text-dark |
+| 4 | `#262626` | `--palette-4` | block | large | text-light |
+| 5 | `#ff3333` | `--palette-5` | badge | small | text-light |
 
 ## 3. Typography Rules
 
@@ -49,22 +50,18 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 | Role | Font | Size | Weight | Line Height | Letter Spacing |
 |---|---|---|---|---|---|
 | H3 | -apple-system | 14px | 600 | 22px | normal |
-| Body | -apple-system | 14px | 400 | 16px | normal |
+| Small | -apple-system | 14px | 400 | 22px | normal |
 
 ### Type Scale
 
 | Token | Size | Suggested Usage |
 |---|---|---|
-| Display | `32px` | headings |
-| H1 | `24px` | headings |
-| H2 | `22px` | headings |
-| H3 | `18px` | headings |
-| H4 | `16px` | headings |
-| Body L | `14px` | body / supporting text |
-| Body | `13px` | body / supporting text |
-| Small | `12px` | body / supporting text |
-| XS | `11px` | body / supporting text |
-| Caption | `7px` | body / supporting text |
+| Display | `22px` | headings |
+| H1 | `18px` | headings |
+| H2 | `16px` | headings |
+| H3 | `14px` | headings |
+| H4 | `13px` | headings |
+| Body L | `12px` | body / supporting text |
 
 ## 4. Component Stylings
 
@@ -98,47 +95,17 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 }
 ```
 
-### Ghost Button 2
-
-```css
-.btn-ghost-2 {
-  background: transparent;
-  color: #bfbfbf;
-  border-radius: 2px;
-  padding: 0px 0px;
-  font-size: 12px;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-}
-```
-
 ### Filled Button
 
 ```css
 .btn-filled {
-  background: #0081cc;
-  color: #ffffff;
+  background: #ffffff;
+  color: #262626;
   border-radius: 2px;
-  padding: 0px 15px;
+  padding: 4px 11px;
   font-size: 14px;
   font-weight: 400;
-  border: 0.625px solid rgba(0, 0, 0, 0);
-  cursor: pointer;
-}
-```
-
-### Ghost Button 3
-
-```css
-.btn-ghost-3 {
-  background: transparent;
-  color: #ffffff;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 400;
-  border: none;
+  border: 0.625px solid rgb(217, 217, 217);
   cursor: pointer;
 }
 ```
@@ -158,40 +125,65 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 }
 ```
 
+### Filled Button 3
+
+```css
+.btn-filled-3 {
+  background: #0081cc;
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 0px 15px;
+  font-size: 14px;
+  font-weight: 400;
+  border: 0.625px solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+```
+
+### Outline Button
+
+```css
+.btn-outline {
+  background: transparent;
+  color: #0081cc;
+  border-radius: 2px;
+  padding: 0px 0px;
+  font-size: 14px;
+  font-weight: 400;
+  border: 0.625px solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+```
+
 ## 5. Layout Principles
 
-- **Base spacing unit:** `1px` — use multiples (2px, 3px, 4px, etc.)
+- **Base spacing unit:** `16px` — use multiples (32px, 48px, 64px, etc.)
 
 ### Spacing Scale (extracted from real elements)
 
 | Token | Value | Role |
 |---|---|---|
-| spacing-1 | `1px` | element |
-| spacing-2 | `16px` | element |
-| spacing-3 | `6px` | element |
-| spacing-4 | `4px` | element |
-| spacing-5 | `13px` | element |
-| spacing-6 | `2px` | element |
-| spacing-7 | `14px` | element |
-| spacing-8 | `20px` | element |
+| spacing-1 | `16px` | element |
+| spacing-2 | `4px` | element |
+| spacing-3 | `1px` | element |
+| spacing-4 | `6px` | element |
 
 ### Border Radius Scale
 
 | Token | Value | Element |
 |---|---|---|
 | radius-subtle | `2px` | subtle |
-| radius-card | `50px` | card |
 | radius-subtle | `4px` | subtle |
-| radius-card | `32px` | card |
-| radius-button | `10px` | button |
 | radius-button | `6px` | button |
+| radius-button | `7px` | button |
+| radius-card | `50px` | card |
 
 ## 6. Depth & Elevation
 
 | Level | Shadow | Usage |
 |---|---|---|
 | Low | `rgba(5, 205, 255, 0.1) 0px 2px 0px 0px` | Cards, subtle elevation |
-| Low | `rgb(255, 255, 255) 0px 0px 0px 1px` | Cards, subtle elevation |
+| Low | `rgba(38, 38, 38, 0.02) 0px 2px 0px 0px` | Cards, subtle elevation |
 | Low | `rgba(0, 0, 0, 0.5) 1px 1px 2px 0px` | Cards, subtle elevation |
 | High | `rgba(0, 0, 0, 0.08) 0px 6px 16px 0px, rgba(0, 0, 0, 0.12) 0px 3px 6px -4px, rgba...` | Modals, floating elements |
 | Mid | `rgba(0, 0, 0, 0.05) 2px 2px 5px 0px` | Dropdowns, popovers |
@@ -204,14 +196,14 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 - Use `#f5f5f5` as the primary background color
 - Use `Inter` for all headings and `sans-serif` for body text
 - Use `#0081cc` as the single dominant accent/CTA color
-- Maintain `1px` as the base spacing unit — all gaps should be multiples
+- Maintain `16px` as the base spacing unit — all gaps should be multiples
 - Use rounded corners (`2px`+) consistently for all interactive elements
 - Apply the shadow system for elevation — use the extracted shadow values
 
 ### Don't
 - Don't use colors outside the extracted palette without justification
 - Don't substitute Inter/sans-serif with generic alternatives
-- Don't use irregular spacing — stick to 1px grid
+- Don't use irregular spacing — stick to 16px grid
 - Don't use dark/black backgrounds — this is a light-themed design
 - Don't use sharp corners — they feel hostile in this rounded design language
 - Don't use oversized hero text — this brand uses restrained type
@@ -229,7 +221,7 @@ Friendly, approachable design with rounded shapes and generous whitespace.
 | Wide | > 1440px | Max-width container, center content |
 
 - Touch targets: minimum 44×44px on mobile
-- Maintain 1px base unit across breakpoints — only scale multipliers
+- Maintain 16px base unit across breakpoints — only scale multipliers
 
 ## 9. Agent Prompt Guide
 
@@ -246,10 +238,10 @@ Border:      #262626
 ### Example Prompts
 
 1. "Build a hero section with a `#f5f5f5` background, `Inter` heading in `#000000`, and a `#0081cc` CTA button with 2px radius."
-2. "Create a pricing card using background `#0081cc`, border `#262626`, `sans-serif` for text, and 3px padding."
+2. "Create a pricing card using background `#ffffff`, border `#262626`, `sans-serif` for text, and 48px padding."
 3. "Design a navigation bar — `#f5f5f5` background, `#000000` links, `#0081cc` for active state."
-4. "Build a feature grid with 3 columns, 3px gap, each card using the card component style."
-5. "Create a footer with `#000000` background, `#f5f5f5` text, and 2px padding."
+4. "Build a feature grid with 3 columns, 48px gap, each card using the card component style."
+5. "Create a footer with `#000000` background, `#f5f5f5` text, and 32px padding."
 
 ### Iteration Guide
 

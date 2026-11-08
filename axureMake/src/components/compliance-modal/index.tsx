@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Popover, Input } from 'antd';
 import {
   CheckCircleOutlined,
   LoadingOutlined,
@@ -35,8 +35,30 @@ export interface ComplianceHandle {
   startFlow: (options?: { withInitialData?: boolean }) => void;
   showDetection: (options?: { withInitialData?: boolean }) => void;
   hideDetection: () => void;
-  showRiskWarning: (options?: { withInitialData?: boolean }) => void;
+  /**
+   * 打开风控预警弹窗
+   * @param withInitialData 是否展示「初次判定数据」列
+   * @param withReleaseActions 是否展示右侧固定「操作」列（解除风险）。
+   *   仅在「右侧 AI 浮窗」入口传入；「提交审批」入口不传，避免在审批提交链路上出现解除入口。
+   */
+  showRiskWarning: (options?: { withInitialData?: boolean; withReleaseActions?: boolean }) => void;
   hideRiskWarning: () => void;
+}
+
+/** 用户提交的问题反馈记录 */
+export interface RiskFeedbackRecord {
+  id: string;
+  time: string;
+  type: string;
+  description: string;
+  attachments: string[];
+}
+
+/** 风险解除记录 */
+export interface RiskReleaseInfo {
+  note: string;
+  operator: string;
+  time: string;
 }
 
 export interface ComplianceProps {
@@ -100,6 +122,12 @@ interface RiskItem {
   currentData?: string;
   /** 初次判定数据 */
   initialData?: string;
+  /** 是否为「大模型」规则（规则引擎判定不参与解除） */
+  isLLM?: boolean;
+  /** 历史问题反馈记录 */
+  feedbacks?: RiskFeedbackRecord[];
+  /** 解除风险记录（解除后写入） */
+  releaseInfo?: RiskReleaseInfo;
 }
 
 const initialRules: RiskRule[] = [
@@ -343,6 +371,8 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
   const [demoBranch, setDemoBranch] = useState<'has-unreleased' | 'all-released'>('has-unreleased');
   /** 是否展示「初次判定数据」列，由打开弹窗的入口决定 */
   const [showInitialData, setShowInitialData] = useState(false);
+  /** 是否展示右侧固定「操作」列（解除风险），仅右侧 AI 浮窗入口开启 */
+  const [releaseActionsVisible, setReleaseActionsVisible] = useState(false);
 
   // 检测中规则状态
   const [rules, setRules] = useState<RiskRule[]>([]);
@@ -364,6 +394,14 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
     itemId: null
   });
   const [problemType, setProblemType] = useState<string>('');
+  const [problemDesc, setProblemDesc] = useState<string>('');
+  /** 解除风险弹窗 */
+  const [releaseModal, setReleaseModal] = useState<{ isOpen: boolean; item: RiskItem | null }>({
+    isOpen: false,
+    item: null
+  });
+  const [releaseNote, setReleaseNote] = useState('');
+  const [releaseError, setReleaseError] = useState('');
   const [reasoningModal, setReasoningModal] = useState<{ isOpen: boolean; item: RiskItem | null }>({
     isOpen: false,
     item: null
@@ -380,12 +418,14 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
   useImperativeHandle(ref, () => ({
     startFlow: (options) => {
       setShowInitialData(!!options?.withInitialData);
+      setReleaseActionsVisible(false);
       setDemoBranch('has-unreleased');
       setDetectionVisible(true);
       initRules();
     },
     showDetection: (options) => {
       setShowInitialData(!!options?.withInitialData);
+      setReleaseActionsVisible(false);
       setDemoBranch('has-unreleased');
       setDetectionVisible(true);
       initRules();
@@ -393,6 +433,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
     hideDetection: () => setDetectionVisible(false),
     showRiskWarning: (options) => {
       setShowInitialData(!!options?.withInitialData);
+      setReleaseActionsVisible(!!options?.withReleaseActions);
       setDemoBranch('has-unreleased');
       setBranchVisible(false);
       setWarningVisible(true);
@@ -584,15 +625,79 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
     setReasoningModal({ isOpen: true, item });
   };
 
+  /** 风险状态展示顺序：未解除 → 已解除 → 未命中 → 计算中 */
+  const releaseStatusOrder: Record<string, number> = {
+    未解除: 0,
+    已解除: 1,
+    未命中: 2,
+    计算中: 3
+  };
+
+  /** 风险状态文字颜色：按严重程度递减 */
+  const releaseStatusClass: Record<string, string> = {
+    未解除: 'text-[#e5484d] font-medium',
+    已解除: 'text-[#52a320]',
+    未命中: 'text-text-tertiary',
+    计算中: 'text-[#f5a623]'
+  };
+
+  const getReleaseStatus = (item: RiskItem) => item.releaseStatus || '未解除';
+
   /** 按演示分支过滤后的预警数据：无未解除时仅展示已解除数据 */
-  const displayRiskData =
+  const filteredRiskData =
     demoBranch === 'all-released'
       ? riskData.filter(item => item.releaseStatus === '已解除')
       : riskData;
 
+  /** 按风险状态严重程度排序展示 */
+  const displayRiskData = [...filteredRiskData].sort(
+    (a, b) => releaseStatusOrder[getReleaseStatus(a)] - releaseStatusOrder[getReleaseStatus(b)]
+  );
+
   /** 风险状态为「未命中」「计算中」时，仅展示当前数据描述，其余列展示占位符 */
   const isEmptyRiskRow = (item: RiskItem) =>
     item.releaseStatus === '未命中' || item.releaseStatus === '计算中';
+
+  /** 是否为「合规自查」场景下的大模型规则（只有这类规则允许合规官解除风险，用于纠正模型误判） */
+  const isSelfCheckLLM = (item: RiskItem) => !!item.isLLM && (item.scene || '').includes('合规自查');
+
+  /** 是否可执行「解除风险」 */
+  const canReleaseRisk = (item: RiskItem) =>
+    !isEmptyRiskRow(item) && item.releaseStatus !== '已解除' && isSelfCheckLLM(item);
+
+  /** 当前时间（YYYY-MM-DD HH:mm:ss） */
+  const nowText = () => {
+    const d = new Date();
+    const p = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(
+      d.getMinutes()
+    )}:${p(d.getSeconds())}`;
+  };
+
+  /** 确认解除风险：必须填写解除说明 */
+  const handleConfirmRelease = () => {
+    const item = releaseModal.item;
+    if (!item) return;
+    if (!releaseNote.trim()) {
+      setReleaseError('请填写解除说明，便于后续审计追溯');
+      return;
+    }
+    setRiskData(prev =>
+      prev.map(row =>
+        row.id === item.id
+          ? {
+              ...row,
+              releaseStatus: '已解除' as const,
+              releaseInfo: { note: releaseNote.trim(), operator: 'jctest1（合规官）', time: nowText() }
+            }
+          : row
+      )
+    );
+    setReleaseModal({ isOpen: false, item: null });
+    setReleaseNote('');
+    setReleaseError('');
+    showToast('风险已解除');
+  };
 
   /** 风险检测统计 */
   const totalCount = displayRiskData.length;
@@ -600,6 +705,8 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
   const missedCount = displayRiskData.filter(item => item.releaseStatus === '未命中').length;
   const releasedCount = displayRiskData.filter(item => item.releaseStatus === '已解除').length;
   const unreleasedCount = displayRiskData.filter(item => item.releaseStatus === '未解除').length;
+  /** 解除比例（已解除 / 检测项总数） */
+  const releasedRate = totalCount ? Math.round((releasedCount / totalCount) * 100) : 0;
 
   const handleSkipDemo = () => {
     if (demoBranchSelect) {
@@ -616,8 +723,6 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
     setDetectionVisible(false);
     setWarningVisible(true);
   };
-
-  const selectedCount = displayRiskData.filter(item => item.selected).length;
 
   const renderRuleItem = (rule: RiskRule) => {
     let statusClass = 'rule-pending';
@@ -818,7 +923,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                   <span className="text-orange-500 font-medium">{calculatingCount}</span> 个检测项计算中，
                   <span className="text-orange-500 font-medium">{missedCount}</span> 个检测项未命中，
                   <span className="text-orange-500 font-medium">{releasedCount}</span> 个检测项已解除，
-                  <span className="text-orange-500 font-medium">{unreleasedCount}</span> 个检测项未解除，解除比例 0%。
+                  <span className="text-orange-500 font-medium">{unreleasedCount}</span> 个检测项未解除，解除比例 {releasedRate}%。
                 </div>
                 <button className="flex items-center gap-1 text-primary text-sm font-medium border border-primary/20 px-3 py-1 rounded-sm hover:bg-primary/5 transition-colors">
                   <Download className="w-4 h-4" />
@@ -834,7 +939,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                         ? 'risk-table-with-release-initial'
                         : 'risk-table-with-release'
                       : ''
-                  }`}
+                  } ${releaseActionsVisible ? 'risk-table-has-actions' : ''}`}
                 >
                   <thead>
                     <tr>
@@ -857,11 +962,14 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                       {showDisposalFields && <th className="w-[320px]"><span className="text-red-500 mr-1">*</span>处置说明</th>}
                       {showDisposalFields && <th className="w-[160px]">处置附件</th>}
                       <th className="w-[140px]">反馈评价</th>
+                      {releaseActionsVisible && (
+                        <th className="w-[150px] risk-col-action">操作</th>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
                     {displayRiskData.map((item, index) => (
-                      <tr key={item.id} className={item.selected ? 'bg-blue-50/20' : ''}>
+                      <tr key={item.id} className={item.selected ? 'bg-blue-50/20 risk-row-selected' : ''}>
                         {showDisposalFields && (
                           <td className="text-center">
                             <input
@@ -876,13 +984,39 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                         <td>
                           <div className="flex items-center gap-1.5">
                             <span className="status-tag status-tag-warning shrink-0">预警</span>
-                            <span className="text-text font-medium leading-snug">{item.name}</span>
+                            <span className="text-text leading-snug">{item.name}</span>
                           </div>
                         </td>
                         <td className="text-text-secondary">{item.scene}</td>
                         {showReleaseFields && (
                           <td className="text-center">
-                            <span className="text-text">{item.releaseStatus || '未解除'}</span>
+                            {item.releaseInfo ? (
+                              <Popover
+                                trigger="hover"
+                                placement="top"
+                                content={
+                                  <div className="text-xs leading-relaxed max-w-[260px]">
+                                    <div className="mb-1">
+                                      <span className="text-text-tertiary">解除说明：</span>
+                                      {item.releaseInfo.note}
+                                    </div>
+                                    <div className="text-text-tertiary">
+                                      操作人：{item.releaseInfo.operator} · {item.releaseInfo.time}
+                                    </div>
+                                  </div>
+                                }
+                              >
+                                <span
+                                  className={`${releaseStatusClass[getReleaseStatus(item)]} cursor-help underline decoration-dotted`}
+                                >
+                                  {getReleaseStatus(item)}
+                                </span>
+                              </Popover>
+                            ) : (
+                              <span className={releaseStatusClass[getReleaseStatus(item)]}>
+                                {getReleaseStatus(item)}
+                              </span>
+                            )}
                           </td>
                         )}
                         {showDisposalFields && (
@@ -1005,6 +1139,27 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                             </div>
                           )}
                         </td>
+                        {releaseActionsVisible && (
+                          <td className="risk-col-action">
+                            {canReleaseRisk(item) ? (
+                              <Button
+                                type="link"
+                                size="small"
+                                danger
+                                className="risk-op-btn"
+                                onClick={() => {
+                                  setReleaseNote('');
+                                  setReleaseError('');
+                                  setReleaseModal({ isOpen: true, item });
+                                }}
+                              >
+                                解除风险
+                              </Button>
+                            ) : (
+                              <span className="text-text-tertiary text-xs">-</span>
+                            )}
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -1013,10 +1168,7 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
             </div>
 
             <div className="risk-warning-modal-footer">
-                <div className="bg-gray-50 px-3 py-1.5 rounded-sm text-sm text-text-secondary border border-gray-100">
-                  已选 <span className="font-medium text-text">{selectedCount}</span> 条
-                </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 ml-auto">
                   <button
                     onClick={() => setWarningVisible(false)}
                     className="action-btn action-btn-ghost px-6"
@@ -1205,6 +1357,8 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                 <textarea
                   placeholder="请详细描述您遇到的问题，以便我们更好地为您解决"
                   className="w-full border border-gray-200 rounded-sm p-3 text-sm h-32 focus:border-primary focus:outline-none resize-none bg-gray-50/30"
+                  value={problemDesc}
+                  onChange={(e) => setProblemDesc(e.target.value)}
                 />
               </div>
 
@@ -1232,13 +1386,98 @@ const ComplianceModal = forwardRef<ComplianceHandle, ComplianceProps>((props, re
                     showToast('请选择问题类型');
                     return;
                   }
+                  const targetId = feedbackModal.itemId;
+                  if (targetId !== null) {
+                    setRiskData(prev =>
+                      prev.map(row =>
+                        row.id === targetId
+                          ? {
+                              ...row,
+                              feedbacks: [
+                                ...(row.feedbacks || []),
+                                {
+                                  id: `f-${Date.now()}`,
+                                  time: nowText(),
+                                  type: problemType,
+                                  description: problemDesc.trim(),
+                                  attachments: []
+                                }
+                              ]
+                            }
+                          : row
+                      )
+                    );
+                  }
                   setFeedbackModal({ isOpen: false, itemId: null });
                   showToast('提交成功');
                   setProblemType('');
+                  setProblemDesc('');
                 }}
                 className="action-btn action-btn-primary px-8"
               >
                 提交反馈
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 解除风险 Modal */}
+      {releaseModal.isOpen && releaseModal.item && (
+        <div
+          className="feedback-modal-overlay"
+          onClick={() => setReleaseModal({ isOpen: false, item: null })}
+        >
+          <div
+            className="feedback-modal-container"
+            style={{ maxWidth: '580px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white shrink-0">
+              <div className="flex items-center">
+                <div className="w-1 h-4 bg-primary rounded-sm mr-2" />
+                <span className="font-medium text-text text-base">解除风险</span>
+              </div>
+              <button
+                onClick={() => setReleaseModal({ isOpen: false, item: null })}
+                className="text-text-tertiary hover:text-text transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto max-h-[70vh] bg-white flex-1">
+              <div>
+                <label className="block text-sm font-medium text-text mb-2">
+                  <span className="text-red-500 mr-1">*</span>解除说明
+                </label>
+                <div className="cm-release-field">
+                  <Input.TextArea
+                    rows={4}
+                    maxLength={200}
+                    showCount
+                    value={releaseNote}
+                    status={releaseError ? 'error' : undefined}
+                    placeholder="请填写解除理由，例如：该分供商已补充上传有效期内的施工劳务资质证书，模型识别为误判，人工复核通过。"
+                    onChange={(e) => {
+                      setReleaseNote(e.target.value);
+                      if (e.target.value.trim()) setReleaseError('');
+                    }}
+                  />
+                </div>
+                {releaseError && <div className="text-xs text-red-500 mt-1">{releaseError}</div>}
+              </div>
+            </div>
+
+            <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3 bg-gray-50/50 shrink-0">
+              <button
+                onClick={() => setReleaseModal({ isOpen: false, item: null })}
+                className="action-btn action-btn-ghost px-6"
+              >
+                取消
+              </button>
+              <button onClick={handleConfirmRelease} className="action-btn action-btn-primary px-8">
+                确认解除
               </button>
             </div>
           </div>

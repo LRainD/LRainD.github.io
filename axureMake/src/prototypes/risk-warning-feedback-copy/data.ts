@@ -43,6 +43,10 @@ export interface WarningRow {
   initialData: string;
   currentData: string;
   releaseStatus: '已解除' | '未解除';
+  /** 解除人（人工解除时的操作人） */
+  releaser?: string;
+  /** 解除说明（人工解除时填写的说明） */
+  releaseNote?: string;
   reviewBasis?: string;
   reviewSuppliers?: ReviewSupplier[];
   satisfaction: Satisfaction;
@@ -62,7 +66,7 @@ export const feedbackData: WarningRow[] = [
     ]
   },
   {
-    id: '2', businessDomain: '云筑集采', businessNo: '2021-13-CC037-000000207', businessName: '二局三华中标看...', businessType: '合同', organization: '中建二局三公司华中分公司', bureauOrg: '中建二局', bureauSubOrg: '二局三公司', operator: '王馨阳', businessStage: '合同', warningRule: '合同总额超招标预算', warningLevel: '中风险', detectionScene: '风控预警', warningType: '预警', warningTime: '2026-08-16 22:29:44', initialData: '合同金额：1,286万元', currentData: '合同金额：1,286万元', releaseStatus: '已解除', satisfaction: '满意',
+    id: '2', businessDomain: '云筑集采', businessNo: '2021-13-CC037-000000207', businessName: '二局三华中标看...', businessType: '合同', organization: '中建二局三公司华中分公司', bureauOrg: '中建二局', bureauSubOrg: '二局三公司', operator: '王馨阳', businessStage: '合同', warningRule: '合同总额超招标预算', warningLevel: '中风险', detectionScene: '风控预警', warningType: '预警', warningTime: '2026-08-16 22:29:44', initialData: '合同金额：1,286万元', currentData: '合同金额：1,286万元', releaseStatus: '已解除', releaser: '李伟（liwei03）', releaseNote: '人工解除：经核实合同金额 1,286 万元已包含变更签证部分，未超出招标预算上限，判定为误报，予以解除。', satisfaction: '满意',
     feedbacks: [
       { id: 'f-21', time: '2026-08-16 22:31:03', type: '其他问题', description: '预警内容清晰，已按提示完成复核。', attachments: [] }
     ]
@@ -76,7 +80,7 @@ export const feedbackData: WarningRow[] = [
     ]
   },
   {
-    id: '4', businessDomain: '云筑集采', businessNo: 'cscec202608040000201590', businessName: '潍坊公交新能源...', businessType: '招投标-非招采购', organization: '科工湖北公司', bureauOrg: '中建科工', bureauSubOrg: '科工湖北公司', operator: '胡臣', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', detectionScene: '风控预警', warningType: '拦截', warningTime: '2026-08-16 22:07:44', initialData: '报价时长：24小时', currentData: '报价时长：24小时', releaseStatus: '已解除', satisfaction: '未评价',
+    id: '4', businessDomain: '云筑集采', businessNo: 'cscec202608040000201590', businessName: '潍坊公交新能源...', businessType: '招投标-非招采购', organization: '科工湖北公司', bureauOrg: '中建科工', bureauSubOrg: '科工湖北公司', operator: '胡臣', businessStage: '发标', warningRule: '采购-总短报价时间', warningLevel: '高风险', detectionScene: '风控预警', warningType: '拦截', warningTime: '2026-08-16 22:07:44', initialData: '报价时长：24小时', currentData: '报价时长：24小时', releaseStatus: '已解除', releaser: '周婷（zhouting02）', releaseNote: '人工解除：该项目采用紧急采购方式，报价时长规则不适用，业务部门已提交说明材料，予以解除。', satisfaction: '未评价',
     feedbacks: []
   }
 ];

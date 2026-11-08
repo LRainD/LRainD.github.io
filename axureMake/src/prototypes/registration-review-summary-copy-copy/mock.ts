@@ -40,10 +40,20 @@ export interface RiskSupplierReasoning {
   reasoning: string;
 }
 
+/** 用户提交的问题反馈记录 */
+export interface RiskFeedbackRecord {
+  id: string;
+  time: string;
+  type: string;
+  description: string;
+  attachments: string[];
+}
+
 export interface RiskDataItem {
   id: number;
   displayIndex: number;
   name: string;
+  /** 检测场景：含「合规自查」且为大模型规则时，合规官才可解除风险 */
   scene: string;
   status: string;
   info: string;
@@ -60,6 +70,10 @@ export interface RiskDataItem {
   releaseStatus?: '已解除' | '未解除' | '未命中' | '计算中';
   currentData?: string;
   initialData?: string;
+  /** 是否为「大模型」规则 */
+  isLLM?: boolean;
+  /** 历史问题反馈 */
+  feedbacks?: RiskFeedbackRecord[];
 }
 
 export const SUPPLIERS: SupplierRow[] = [
@@ -191,6 +205,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: '钟犁sup200 仍与 4 家负面清单分供商存在股权、邮箱、电话及董监高关联',
     initialData: '2026-08-21 15:51 初次判定：与 4 家负面清单分供商存在关联，高风险',
+    isLLM: true,
     ruleName: '负面清单分供商“换马甲”识别规则 v1.0',
     reasoning: '系统自动比对分供商股权穿透图、高管履历及负面清单库，发现该供应商与历史黑名单企业存在高比例高管重叠与同地址注册特征。',
     suppliers: [
@@ -215,6 +230,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: '上海恒基建筑劳务有限公司仍在负面清单名单内（中建一局第一建筑有限公司因工程质量事故 / 违约退场列入）',
     initialData: '2026-08-21 15:51 初次判定：1 家分供商为棱镜识别分供商，高风险',
+    isLLM: false,
     ruleName: '棱镜分供商识别规则 v1.0',
     reasoning: ''
   },
@@ -222,7 +238,7 @@ export const RISK_DATA: RiskDataItem[] = [
     id: 1,
     displayIndex: 3,
     name: '报名附件是否满足公告要求',
-    scene: '风控预警',
+    scene: '合规自查、风控预警',
     status: '待处置',
     info: '经大模型深度解析，发现有3家供应商上传的报名附件不满足招标公告中的硬性资质与业绩要求。',
     suggestion: '建议进入审查依据查看各供应商的具体缺失项，并要求其限期重新上传或予以淘汰。',
@@ -233,6 +249,17 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: '3 家分供商报名附件仍缺少资质证书、业绩证明及有效期内的安全生产许可证',
     initialData: '2026-08-21 15:51 初次判定：3 家分供商报名附件不满足公告要求',
+    isLLM: true,
+    feedbacks: [
+      {
+        id: 'fb-1001',
+        time: '2026-09-23 09:12:47',
+        type: '预警信息不准确',
+        description:
+          'sup105 已补充上传近三年同类项目业绩合同（合同额 620 万、580 万），与预警所述“业绩不达 500 万门槛”不符，请复核模型识别结果。',
+        attachments: ['业绩合同扫描件.pdf']
+      }
+    ],
     ruleName: '报名附件合规性大模型深度审查规则 v1.0',
     reasoning: '系统调用大模型对所有已报名供应商上传的PDF附件进行OCR及语义解析，并与招标公告中的“第三章 供应商资质要求”进行逐项比对，发现部分供应商存在严重缺失。',
     suppliers: [
@@ -265,6 +292,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '已解除',
     currentData: 'sup101 法人李华失信记录已履行完毕，于 2026-09-10 移出失信被执行人名单',
     initialData: '2026-08-21 15:51 初次判定：法人李华存在失信被执行记录，执行标的 120 万元',
+    isLLM: false,
     ruleName: '法人信用准入限制规则 v2.1',
     reasoning: '【数据检索】系统自动检索到供应商 sup101 的法人代表为“李华”。\n【外部校验】调用最高人民法院失信被执行人名单接口，匹配到身份证号与姓名一致的失信记录，立案时间为 2025-11-12，执行标的为 1,200,000 元。\n【风险评估】法人代表存在失信记录，可能导致企业合同履约风险、资金链断裂风险，属于高风险事件。\n【规则判定】触发“法人失信一票否决/限制准入”规则，处置状态设为“待处置”，处置模式为“及时处置”。'
   },
@@ -283,6 +311,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '已解除',
     currentData: 'sup105 工商状态已恢复为“存续”，已移出经营异常名录',
     initialData: '2026-08-21 15:51 初次判定：sup105 工商状态变更为“经营异常”',
+    isLLM: false,
     ruleName: '工商存续状态实时监控规则 v1.0',
     reasoning: '【数据检索】监控到供应商 sup105 的工商登记状态发生变更。\n【变更识别】状态由“存续”变更为“经营异常”，异常原因为“未按规定期限公示年度报告”。\n【风险评估】经营异常可能意味着企业内部管理混乱或经营出现困难，会间接影响采购履约。\n【规则判定】触发“工商状态异常预警”规则，处置状态设为“待处置”，处置模式为“事后处置”。'
   },
@@ -301,6 +330,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: 'sup203、彭才林、钟莉等 8 家分供商仍存在电话、邮箱及 IP 地址重叠',
     initialData: '2026-08-21 15:51 初次判定：8 家分供商存在信息重叠',
+    isLLM: true,
     ruleName: '关联关系与信息重叠审计规则 v3.2',
     reasoning: '【关系挖掘】分析当前投标供应商的工商背景、历史投标记录、联系电话、邮箱及IP地址。\n【重叠识别】发现 sup203, 彭才林, 钟莉, sup201, sup300, sup247, sup330, sup332 之间存在电话号码重叠、IP地址重叠或高管交叉任职。\n【风险评估】存在围标、串标或关联交易的潜在风险，严重违反招投标公平公正原则。\n【规则判定】触发“多方信息重叠预警”规则，处置状态设为“待处置”，处置模式为“事后处置”。'
   },
@@ -319,6 +349,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '已解除',
     currentData: 'sup330 已完成信用修复，已移出严重违法失信企业名单',
     initialData: '2026-08-21 15:51 初次判定：sup330 被列入严重违法失信企业名单',
+    isLLM: false,
     ruleName: '企业严重违法失信名单筛查规则 v2.0',
     reasoning: '【数据检索】检索供应商 sup330 的企业信用信息公示系统记录。\n【违法识别】该企业被列入“严重违法失信企业名单（黑名单）”。\n【风险评估】严重违法失信企业在法律、行政、金融等多方面受到联合惩戒，履约能力极低，合作风险极大。\n【规则判定】触发“严重失信违法企业禁入”规则，处置状态设为“待处置”，处置模式为“事后处置”。'
   },
@@ -337,6 +368,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: 'sup247、sup330 仍处于经营异常名录中',
     initialData: '2026-08-21 15:51 初次判定：2 家分供商企业经营状态异常',
+    isLLM: false,
     ruleName: '企业经营异常名录筛查规则 v1.5',
     reasoning: '【数据检索】检索供应商 sup247 和 sup330 的最新工商数据。\n【异常识别】两家企业均被列入工商部门的经营异常名录。\n【风险评估】经营异常可能导致企业无法正常开具发票、账户被冻结等，影响项目进度。\n【规则判定】触发“企业经营状态异常预警”规则，处置状态设为“待处置”，处置模式为“事后处置”。'
   },
@@ -344,7 +376,7 @@ export const RISK_DATA: RiskDataItem[] = [
     id: 7,
     displayIndex: 9,
     name: '招标企业资质校验',
-    scene: '风控预警',
+    scene: '合规自查',
     status: '待处置',
     info: '您勾选的供应商有2个不满足企业资质承接范围校验，如下：彭才林, sup300; 查看企业资质承接范围校验规则',
     suggestion: '建议根据组织管理要求进行处理',
@@ -355,6 +387,17 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未解除',
     currentData: '彭才林、sup300 资质等级仍为二级，不满足本项目一级资质承接范围',
     initialData: '2026-08-21 15:51 初次判定：2 家分供商资质不满足企业资质承接范围',
+    isLLM: false,
+    feedbacks: [
+      {
+        id: 'fb-1002',
+        time: '2026-09-23 10:35:20',
+        type: '规则逻辑有误',
+        description:
+          '彭才林 已完成资质升级（建筑工程施工总承包一级），预警取用的仍是上季度缓存的资质数据，建议按最新工商资质重新校验。',
+        attachments: []
+      }
+    ],
     ruleName: '招标资质与承接范围匹配规则 v4.0',
     reasoning: '【资质比对】读取本次招标项目要求的资质等级（如：建筑工程施工总承包一级）。\n【供应商校验】校验供应商 彭才林 和 sup300 的资质证书。\n【不匹配识别】发现其资质等级为二级，或承接范围不包含本项目所属专业。\n【风险评估】资质不符属于合规性硬伤，可能导致项目无法通过政府审批或面临安全质量风险。\n【规则判定】触发“资质不满足承接范围”规则，处置状态设为“待处置”，处置模式为“及时处置”。'
   },
@@ -362,7 +405,7 @@ export const RISK_DATA: RiskDataItem[] = [
     id: 9,
     displayIndex: 10,
     name: '分供商资质合规性校验',
-    scene: '风控预警',
+    scene: '合规自查',
     status: '待处置',
     info: '',
     suggestion: '',
@@ -373,13 +416,14 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '未命中',
     currentData: '钟犁sup200 的营业执照、施工劳务资质及安全生产许可证均在有效期内，资质承接范围满足本项目要求',
     ruleName: '分供商资质合规性校验规则 v1.0',
+    isLLM: false,
     reasoning: ''
   },
   {
     id: 10,
     displayIndex: 11,
     name: '关联关系与信息重叠识别',
-    scene: '风控预警',
+    scene: '合规自查',
     status: '待处置',
     info: '',
     suggestion: '',
@@ -390,6 +434,7 @@ export const RISK_DATA: RiskDataItem[] = [
     releaseStatus: '计算中',
     currentData: '正在比对 3 家报名分供商的股权、邮箱、联系电话及历史报名记录，预计 2 分钟内完成',
     ruleName: '关联关系与信息重叠识别规则 v1.0',
+    isLLM: true,
     reasoning: ''
   }
 ];

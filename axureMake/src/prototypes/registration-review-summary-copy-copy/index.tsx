@@ -369,6 +369,7 @@ const Component = () => {
         onSubStepChange={(_, step) => {
           const label = typeof step === 'string' ? step : step.label;
           if (label === '提交审批') {
+            // 提交审批入口：预警弹窗不展示「操作」列，避免在审批链路上直接解除风险
             complianceRef.current?.showRiskWarning();
           }
         }}
@@ -818,7 +819,8 @@ const Component = () => {
           onClose={() => setIsAIPanelOpen(false)}
           onRiskNodeClick={(nodeKey) => {
             if (nodeKey === 'registration-summary') {
-              complianceRef.current?.showRiskWarning({ withInitialData: true });
+              // 右侧 AI 浮窗入口：展示「操作」列（解除风险）
+              complianceRef.current?.showRiskWarning({ withInitialData: true, withReleaseActions: true });
             } else if (nodeKey === 'list') {
               setViewMode('summary');
             }

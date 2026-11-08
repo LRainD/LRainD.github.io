@@ -439,3 +439,41 @@
   @apply text-xs text-text-tertiary leading-relaxed;
 }
 
+/* ===== 右侧固定「操作」列（解除风险） ===== */
+.risk-table .risk-col-action {
+  position: sticky;
+  right: 0;
+  z-index: 3;
+  background: #fff;
+  box-shadow: inset 8px 0 8px -8px rgba(0, 0, 0, 0.14);
+}
+
+.risk-table thead .risk-col-action {
+  background: #f7f9fb;
+  z-index: 4;
+}
+
+.risk-table tbody tr:hover .risk-col-action {
+  background: #f5f9ff;
+}
+
+.risk-table tbody tr.risk-row-selected .risk-col-action {
+  background: #f5f9ff;
+}
+
+.risk-op-btn.ant-btn {
+  padding: 0;
+  height: auto;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.risk-op-btn.ant-btn-link:not(:disabled):hover {
+  text-decoration: underline;
+}
+
+/* ===== 解除风险弹窗 ===== */
+.cm-release-field textarea {
+  font-size: 13px;
+}
+

@@ -54,6 +54,7 @@ const Component = () => {
   const [traceIdRow, setTraceIdRow] = useState<WarningRow | null>(null);
   const [traceId, setTraceId] = useState('');
   const [reviewBasisRow, setReviewBasisRow] = useState<WarningRow | null>(null);
+  const [releaseNoteRow, setReleaseNoteRow] = useState<WarningRow | null>(null);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [filters, setFilters] = useState({
     organization: 'all',
@@ -102,7 +103,12 @@ const Component = () => {
   };
 
   const handleReleaseRisk = (row: WarningRow) => {
-    setWarningRows(rows => rows.map(item => item.id === row.id ? { ...item, releaseStatus: '已解除' } : item));
+    setWarningRows(rows => rows.map(item => item.id === row.id ? {
+      ...item,
+      releaseStatus: '已解除' as const,
+      releaser: '当前用户（current_user）',
+      releaseNote: '人工解除：经运营人员核实，该预警为误报，予以解除。'
+    } : item));
     message.success('解除成功');
   };
 
@@ -131,6 +137,11 @@ const Component = () => {
     { title: '初始判定数据', dataIndex: 'initialData', width: 150, ellipsis: true },
     { title: '当前数据', dataIndex: 'currentData', width: 150, ellipsis: true },
     { title: '预警解除状态', dataIndex: 'releaseStatus', width: 112 },
+    { title: '解除人', dataIndex: 'releaser', width: 130, ellipsis: true, render: (value?: string) => value || '-' },
+    {
+      title: '解除说明', width: 90, align: 'center' as const,
+      render: (_: unknown, row: WarningRow) => row.releaseNote ? <Button type="link" size="small" onClick={() => setReleaseNoteRow(row)}>查看说明</Button> : '-'
+    },
     { title: '审查依据', width: 90, align: 'center' as const, render: (_: unknown, row: WarningRow) => row.reviewBasis ? <Button type="link" size="small" onClick={() => setReviewBasisRow(row)}>查看依据</Button> : '-' },
     {
       title: '预警时间', dataIndex: 'warningTime', width: 132,
@@ -369,7 +380,7 @@ const Component = () => {
             <Space><Button type="link" icon={<DownloadOutlined />}>导出</Button><Button size="small">⚙</Button></Space>
             <Text type="secondary" className="text-xs">本页: {dataSource.length}条　总计: 25303条</Text>
           </div>
-          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: (total: number) => `共 ${total} 条` }} scroll={{ x: 2520 }} />
+          <Table rowKey="id" columns={columns} dataSource={dataSource} size="small" pagination={{ current: 1, pageSize: 10, total: 25303, showSizeChanger: false, showQuickJumper: true, showTotal: (total: number) => `共 ${total} 条` }} scroll={{ x: 2730 }} />
         </Card>
       </div>
 
@@ -430,6 +441,15 @@ const Component = () => {
             }))}
           />
         ) : <div className="whitespace-pre-wrap text-sm leading-6">{reviewBasisRow.reviewBasis}</div>)}
+      </Modal>
+
+      <Modal title="解除说明" open={Boolean(releaseNoteRow)} onCancel={() => setReleaseNoteRow(null)} footer={<Button type="primary" onClick={() => setReleaseNoteRow(null)}>关闭</Button>} width={520} destroyOnHidden>
+        {releaseNoteRow && <>
+          <div className="mb-2 text-sm"><Text type="secondary">解除人：</Text>{releaseNoteRow.releaser || '-'}</div>
+          <div className="mb-2 text-sm"><Text type="secondary">业务编号：</Text>{releaseNoteRow.businessNo}</div>
+          <div className="mb-2 text-sm"><Text type="secondary">预警规则：</Text>{releaseNoteRow.warningRule}</div>
+          <div className="whitespace-pre-wrap rounded-sm bg-[#f7f9fc] p-3 text-sm leading-6">{releaseNoteRow.releaseNote}</div>
+        </>}
       </Modal>
     </OperationAdminLayout>
   );
