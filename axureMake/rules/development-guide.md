@@ -9,18 +9,27 @@ src/
 ├── prototypes/<name>/
 │   ├── index.tsx  # 必需
 │   ├── spec.md    # 必需
+│   ├── mock.ts    # 推荐：模拟数据与配套类型
 │   ├── style.css  # 可选
 │   ├── hack.css   # 可选（AI 不应修改）
 │   └── components/ # 可选：内部子组件目录
 └── components/<name>/
     ├── index.tsx
     ├── spec.md
+    ├── mock.ts    # 推荐：模拟数据与配套类型
     └── （同上）
 
 - 入口文件必须是 `index.tsx`
 - 目录内必须包含 `spec.md`
 - 目录（`name`）使用小写字母、数字、连字符（如 `login-page`）
 - 支持可选子目录 `components/` 用于拆分内部子组件
+
+### 模拟数据单独放置（新建页面默认遵循）
+
+- 新建页面或共享组件时，模拟数据、示例列表及配套类型统一定义在同目录 `mock.ts` 中，不写在 `index.tsx` 内
+- `index.tsx` 通过 `import { xxx } from './mock'` 引用，类型可用 `import { type Xxx } from './mock'`
+- 导出常量使用语义化命名（如 `initialRules`、`initialRiskData`、`RISK_DATA`），便于后续替换为真实接口数据
+- 仅当数据量极小（单条常量、无类型依赖）时可不拆分
 
 ## 核心约束
 

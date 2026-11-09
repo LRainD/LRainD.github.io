@@ -172,6 +172,13 @@
 - AI 功能：`spec.md` 使用 `docs/template/ai-product-prd-template.md`
 - 模板章节完整保留，并基于当前实现填写，避免遗留占位内容
 
+### 9.5 页面数据结构约定
+
+- 新建页面或共享组件时，模拟数据与配套类型统一放到同目录 `mock.ts`，`index.tsx` 只保留视图与交互逻辑
+- 引用方式：`import { initialRiskData, type RiskItem } from './mock'`
+- 常量命名使用语义化名称（如 `initialRules`、`initialRiskData`、`RISK_DATA`），便于后续对接真实接口
+- 详细规则见 `rules/development-guide.md`「模拟数据单独放置」
+
 ## 10. 当前待补事项
 
 - [ ] 补充页面地图（page-map.md）
