@@ -1,3 +1,11 @@
+/**
+ * @name 合作品类推荐
+ * @mode axure
+ *
+ * 参考资料：
+ * - /rules/development-guide.md
+ * - /skills/axure-export-workflow/SKILL.md
+ */
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   House,
@@ -41,6 +49,7 @@ import OpenPurchaseModal, {
 } from './OpenPurchaseModal';
 import SmartRecommendDrawer from './SmartRecommendDrawer';
 import CoopRecommendDrawer from './CoopRecommendDrawer';
+import ApplyCategoryModal from './ApplyCategoryModal';
 import './style.css';
 
 /* ──────────────────────────  静态数据  ────────────────────────── */
@@ -256,7 +265,7 @@ const Select: React.FC<{
 
 /* ──────────────────────────  页面  ────────────────────────── */
 
-const JicaiPurchaseList: React.FC = () => {
+const Component: React.FC = () => {
   const [railActive, setRailActive] = useState('bid');
   const [filtersOpen, setFiltersOpen] = useState(true);
 
@@ -282,6 +291,8 @@ const JicaiPurchaseList: React.FC = () => {
   /* 开启采购弹窗 */
   const [modalOpen, setModalOpen] = useState(false);
   const [drawer, setDrawer] = useState<'category' | 'coop' | null>(null);
+  /* 合作品类库「申请新增合作品类」弹窗 */
+  const [applyOpen, setApplyOpen] = useState(false);
   const [form, setForm] = useState<PurchaseForm>(EMPTY_PURCHASE_FORM);
   const [formErrors, setFormErrors] = useState<PurchaseFormErrors>({});
   const [flashCoop, setFlashCoop] = useState(false);
@@ -419,17 +430,18 @@ const JicaiPurchaseList: React.FC = () => {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
-  /* Esc 优先关浮窗，再关弹窗 */
+  /* Esc 优先关申请弹窗，再关浮窗，最后关开启采购弹窗 */
   useEffect(() => {
-    if (!modalOpen) return undefined;
+    if (!modalOpen && !applyOpen) return undefined;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (drawer) setDrawer(null);
+      if (applyOpen) setApplyOpen(false);
+      else if (drawer) setDrawer(null);
       else setModalOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [modalOpen, drawer]);
+  }, [modalOpen, drawer, applyOpen]);
 
   useEffect(() => {
     if (!flashCategory) return undefined;
@@ -803,7 +815,18 @@ const JicaiPurchaseList: React.FC = () => {
         <CoopRecommendDrawer
           onClose={() => setDrawer(null)}
           onApply={applyRecommendedCoop}
-          onApplyNewCoop={() => setToast('前往「合作品类库」申请添加合作品类（示意跳转）')}
+          onApplyNewCoop={() => setApplyOpen(true)}
+        />
+      )}
+
+      {/* ── 申请新增合作品类弹窗 ── */}
+      {applyOpen && (
+        <ApplyCategoryModal
+          onClose={() => setApplyOpen(false)}
+          onSubmit={() => {
+            setApplyOpen(false);
+            setToast('申请已提交，可在【我的任务】中查看进展情况');
+          }}
         />
       )}
 
@@ -818,4 +841,4 @@ const JicaiPurchaseList: React.FC = () => {
   );
 };
 
-export default JicaiPurchaseList;
+export default Component;

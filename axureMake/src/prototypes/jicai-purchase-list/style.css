@@ -1616,3 +1616,99 @@
   color: #0070b4;
   text-decoration: underline;
 }
+
+/* ───────────────  申请新增合作品类弹窗  ─────────────── */
+
+/* 叠加在推荐浮窗之上 */
+.jc-mask-top {
+  z-index: 1200;
+}
+
+.jc-modal-sm {
+  width: 620px;
+}
+
+.jc-apply-title {
+  position: relative;
+  padding-left: 10px;
+}
+
+.jc-apply-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 16px;
+  background: var(--jc-primary);
+  transform: translateY(-50%);
+}
+
+.jc-modal-sm .jc-modal-body {
+  padding-top: 20px;
+}
+
+/* 单行输入框（三级品类 / 备注） */
+.jc-form-input {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.jc-form-input input {
+  width: 100%;
+  height: 33px;
+  padding: 0 10px;
+  border: 1px solid var(--jc-border);
+  border-radius: 2px;
+  outline: 0;
+  background: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--jc-text);
+  transition: border-color 0.15s ease;
+}
+
+.jc-form-input input:hover {
+  border-color: #a9b0bb;
+}
+
+.jc-form-input input:focus {
+  border-color: var(--jc-primary);
+}
+
+.jc-form-input input::placeholder {
+  color: #bfbfbf;
+}
+
+.jc-form-input.is-error input {
+  border-color: #f53f3f;
+}
+
+/* 二级品类未选一级时置灰 */
+.jc-form-select select:disabled {
+  background: #f5f6f7;
+  color: #bfbfbf;
+  cursor: not-allowed;
+}
+
+.jc-form-hint {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 20px;
+  color: #a3a6ad;
+}
+
+.jc-form-files {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.jc-apply-note {
+  margin: 14px 0 4px;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+  color: #1d2129;
+}

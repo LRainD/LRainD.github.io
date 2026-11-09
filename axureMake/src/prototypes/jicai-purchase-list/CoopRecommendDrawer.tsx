@@ -64,7 +64,7 @@ const SAMPLE_NAME = 'XX项目2026年度商品混凝土及砂浆集中采购';
 const CoopRecommendDrawer: React.FC<{
   onClose: () => void;
   onApply: (coop: string) => void;
-  /** 未匹配到时点「前往合作品类库申请添加」——该页面由其他产品负责，这里只做提示 */
+  /** 未匹配到时点击「可点击申请添加 >>>」，弹出「申请新增合作品类」弹窗 */
   onApplyNewCoop: () => void;
 }> = ({ onClose, onApply, onApplyNewCoop }) => {
   const [name, setName] = useState('');
@@ -192,7 +192,7 @@ const CoopRecommendDrawer: React.FC<{
             <p className="jc-coop-reason">
               合作品类库中暂无与本次招采名称匹配的品类，可先
               <button type="button" className="jc-coop-link" onClick={onApplyNewCoop}>
-                前往合作品类库申请添加
+                可点击申请添加 &gt;&gt;&gt;
               </button>
               ，审核通过后即可选用。
             </p>
